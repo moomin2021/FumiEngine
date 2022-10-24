@@ -2,13 +2,13 @@
 // --WindowsAPI-- //
 #include <Windows.h>
 
-class FMWinAPI {
+class WinAPI {
 #pragma region メンバ変数
 public:
 
 private:
 	// --インスタンス-- //
-	static FMWinAPI* myInstance_;
+	static WinAPI* myInstance_;
 
 	// --ウィンドウサイズ-- //
 	const int winWidth_;// --> 横幅
@@ -31,7 +31,7 @@ private:
 #pragma region メンバ関数
 public:
 	// --インスタンス読み込み-- //
-	static FMWinAPI* GetInstance();
+	static WinAPI* GetInstance();
 
 	// --インスタンス解放-- //
 	void Release();
@@ -52,13 +52,13 @@ public:
 
 private:
 	// --コンストラクタ-- //
-	FMWinAPI();
+	WinAPI();
 
 	// --デストラクタ-- //
-	~FMWinAPI();
+	~WinAPI();
 #pragma endregion
 
 	// --禁止-- //
-	FMWinAPI(const FMWinAPI&) = delete;// --------------> コピーコンストラクタ禁止
-	FMWinAPI& operator = (const FMWinAPI&) = delete;// -> コピー代入演算子禁止
+	WinAPI(const WinAPI&) = delete;// --------------> コピーコンストラクタ禁止
+	WinAPI& operator = (const WinAPI&) = delete;// -> コピー代入演算子禁止
 };

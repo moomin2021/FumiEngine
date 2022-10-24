@@ -7,7 +7,7 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --WinAPIクラス-- //
-	FMWinAPI* winAPI = FMWinAPI::GetInstance();// -> インスタンス取得
+	WinAPI* winAPI = WinAPI::GetInstance();// -> インスタンス取得
 	winAPI->Initialize();// -> 初期化処理
 
 	// --コンソールへの文字出力

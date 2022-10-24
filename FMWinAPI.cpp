@@ -4,19 +4,19 @@
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 // --インスタンスの初期化-- //
-FMWinAPI* FMWinAPI::myInstance_ = nullptr;
+WinAPI* WinAPI::myInstance_ = nullptr;
 
 // --インスタンス読み込み-- //
-FMWinAPI* FMWinAPI::GetInstance() {
+WinAPI* WinAPI::GetInstance() {
 	// --インスタンスが無かったら生成する-- //
-	if (myInstance_ == nullptr) myInstance_ = new FMWinAPI();
+	if (myInstance_ == nullptr) myInstance_ = new WinAPI();
 
 	// --インスタンスを返す-- //
 	return myInstance_;
 }
 
 // --インスタンス解放-- //
-void FMWinAPI::Release() {
+void WinAPI::Release() {
 	// --インスタンスが無かったら何もせずに終了する-- //
 	if (myInstance_ == nullptr) return;
 
@@ -26,7 +26,7 @@ void FMWinAPI::Release() {
 }
 
 // --コンストラクタ-- //
-FMWinAPI::FMWinAPI() :
+WinAPI::WinAPI() :
 #pragma region 定数初期化
 	// --ウィンドウサイズ-- //
 	winWidth_(1280),// -> 横幅
@@ -37,12 +37,12 @@ FMWinAPI::FMWinAPI() :
 }
 
 // --デストラクタ-- //
-FMWinAPI::~FMWinAPI() {
+WinAPI::~WinAPI() {
 	
 }
 
 // --初期化処理-- //
-void FMWinAPI::Initialize() {
+void WinAPI::Initialize() {
 	// --ウィンドウクラスの設定-- //
 	winClass_.cbSize = sizeof(WNDCLASSEX);// -> WNDCLASSEX構造体のサイズ
 	winClass_.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定(アドレスを代入)
@@ -78,7 +78,7 @@ void FMWinAPI::Initialize() {
 }
 
 // --終了メッセージがきているか参照-- //
-bool FMWinAPI::IsEndMessage() {
+bool WinAPI::IsEndMessage() {
 	// --メッセージがあるか-- //
 	if (PeekMessage(&msg_, nullptr, 0, 0, PM_REMOVE))
 	{
@@ -96,10 +96,10 @@ bool FMWinAPI::IsEndMessage() {
 }
 
 // --ウィンドウクラス登録解除-- //
-void FMWinAPI::WinClassUnregister() { UnregisterClass(winClass_.lpszClassName, winClass_.hInstance); }
+void WinAPI::WinClassUnregister() { UnregisterClass(winClass_.lpszClassName, winClass_.hInstance); }
 
 // --ウィンドゥクラスを参照-- //
-WNDCLASSEX FMWinAPI::GetWinClass() { return winClass_; }
+WNDCLASSEX WinAPI::GetWinClass() { return winClass_; }
 
 // --ウィンドウプロシージャ(システムメッセージを処理するための関数)-- //
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
