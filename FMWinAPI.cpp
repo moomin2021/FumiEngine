@@ -60,7 +60,7 @@ void FMWinAPI::Initialize() {
 	AdjustWindowRect(&winRect_, WS_OVERLAPPEDWINDOW, false);
 
 	// --ウィンドウオブジェクトの生成-- //
-	winHandle_ = CreateWindow(
+	hwnd_ = CreateWindow(
 		winClass_.lpszClassName,// ------> クラス名
 		L"DirectXGame",// -------> タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,// --> 標準的なウィンドウスタイル
@@ -74,7 +74,7 @@ void FMWinAPI::Initialize() {
 		nullptr);// -------------> オプション
 
 	// --ウィンドウを表示状態にする-- //
-	ShowWindow(winHandle_, SW_SHOW);
+	ShowWindow(hwnd_, SW_SHOW);
 }
 
 // --終了メッセージがきているか参照-- //
@@ -97,9 +97,6 @@ bool FMWinAPI::IsEndMessage() {
 
 // --ウィンドウクラス登録解除-- //
 void FMWinAPI::WinClassUnregister() { UnregisterClass(winClass_.lpszClassName, winClass_.hInstance); }
-
-// --ウィンドゥクラスを参照-- //
-WNDCLASSEX FMWinAPI::GetWinClass() { return winClass_; }
 
 // --ウィンドウプロシージャ(システムメッセージを処理するための関数)-- //
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
