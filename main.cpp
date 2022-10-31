@@ -1,5 +1,6 @@
 #pragma region 自クラス読み込み(含める)
 #include "FMWinAPI.h"// -> WinAPI
+#include "FMDX12Cmd.h"// -> DirectX12
 #pragma endregion
 
 
@@ -9,6 +10,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --WinAPIクラス-- //
 	WinAPI* winAPI = WinAPI::GetInstance();// -> インスタンス取得
 	winAPI->Initialize();// -> 初期化処理
+
+	// --DirectX12クラス-- //
+	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
+	dx12->Initialize();// -> 初期化処理
 
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
