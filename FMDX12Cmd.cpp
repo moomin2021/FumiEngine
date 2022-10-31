@@ -174,10 +174,10 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	// --画面の幅を指定する
-	swapChainDesc.Width = 1280;
+	swapChainDesc.Width = win->GetWidth();;
 
 	// --画面の高さを指定する
-	swapChainDesc.Height = 720;
+	swapChainDesc.Height = win->GetHeight();
 
 	// --色情報の書式（表示形式）
 	//※DXGI_FORMAT_R8G8B8A8_UNORMはアルファを含むチャンネルあたり8ビットをサポート
@@ -207,7 +207,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	// --スワップチェーンの生成-- //
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue.Get(), hwnd, &swapChainDesc, nullptr, nullptr,
+		commandQueue.Get(), win->GetHWND(), &swapChainDesc, nullptr, nullptr,
 		(IDXGISwapChain1**)&swapChain1);
 	assert(SUCCEEDED(result));
 

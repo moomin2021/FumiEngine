@@ -13,7 +13,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --DirectX12クラス-- //
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
-	dx12->Initialize();// -> 初期化処理
+	dx12->Initialize(winAPI);// -> 初期化処理
 
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
