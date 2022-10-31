@@ -21,7 +21,7 @@ private:
 	RECT winRect_;
 
 	// --ウィンドウハンドル(オブジェクト)-- //
-	HWND winHandle_;
+	HWND hwnd_;
 
 	// --メッセージ-- //
 	MSG msg_;
@@ -46,8 +46,17 @@ public:
 	void WinClassUnregister();
 
 #pragma region ゲッター
-	// --ウィンドゥクラスを参照-- //
-	WNDCLASSEX GetWinClass();
+	// --ウィンドゥクラスを取得-- //
+	WNDCLASSEX GetWNDCLASSEX() { return winClass_; }
+
+	// --ウィンドウハンドル(オブジェクト)を取得-- //
+	HWND GetHWND() { return hwnd_; }
+
+	// --ウィンドウの横サイズを取得-- //
+	int GetWidth() { return winHeight_; }
+
+	// --ウィンドウの縦サイズを取得-- //
+	int GetHeight() { return winHeight_; }
 #pragma endregion
 
 private:
