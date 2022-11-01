@@ -51,9 +51,9 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
 
-	/// --デバックレイヤーの有効か -- ///
+	/// --デバックレイヤーの有効か-- ///
 	/// ※Visual Studioの「出力」ウィンドウで追加のエラーメッセージが表示できるように ///
-#pragma region
+#pragma region デバックレイヤーの有効か
 
 #ifdef _DEBUG
 	//デバッグレイヤーをオンに
@@ -70,7 +70,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	/// --アダプタの列挙-- ///
 	/// ※PCにあるグラフィックボードを、仮想的なデバイスを含めて全部リストアップする ///
-#pragma region
+#pragma region アダプタの列挙
 
 	// --DXGIファクトリーの生成-- //
 	// DXGI = グラフィックスインフラストラクチャ
@@ -99,7 +99,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	/// --アダプタの選別-- //
 	/// ※検出されたグラフィックスデバイスの中で性能の低いもの除外して、専用デバイスを採用する ///
-#pragma region
+#pragma region アダプタの選別
 
 	// --妥当なアダプタを選別する-- //
 	for (size_t i = 0; i < adapters.size(); i++)
@@ -124,7 +124,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	/// --デバイスの生成-- ///
 	/// ※採用したグラフィックスデバイスを操作するためにD3D12Deviceオブジェクトを生成 ///
 	/// ※これは普通１ゲームに1つしか作らない ///
-#pragma region
+#pragma region デバイスの生成
 
 	// --対応レベルの配列-- //
 	D3D_FEATURE_LEVEL levels[] = {
@@ -181,7 +181,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	/// --コマンドリスト-- ///
 	/// ※GPUに、まとめて命令を送るためのコマンドリストを生成する //
-#pragma region
+#pragma region コマンドリスト
 
 	// --コマンドアロケータを生成-- //
 	// ※コマンドリストはコマンドアロケータから生成するので、先にコマンドアロケータを作る //
@@ -203,7 +203,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	/// --コマンドキュー-- ///
 	/// ※コマンドリストをGPUに順に実行させていく為の仕組み ///
-#pragma region
+#pragma region コマンドキュー
 
 	// --コマンドキューの設定-- //
 	// ※{}をつけることで構造体の中身を0でクリアしている。
@@ -220,7 +220,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	/// --スワップチェーン-- ///
 	/// ※スワップチェーンは、ダブルバッファリングやトリプルバッファリングを簡単に実装するための仕組み ///
 	/// ※表示中の画面（フロントバッファ）・描画中の画面（バックバッファ）
-#pragma region
+#pragma region スワップチェーン
 
 	// --スワップチェーンの設定-- //
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
@@ -272,7 +272,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	/// --レンダーターゲットビュー-- ///
 	/// ※バックバッファを描画キャンパスとして扱う為のオブジェクト //
 	/// ※ダブルバッファリングではバッファが２つあるので２つ作る //
-#pragma region
+#pragma region レンダーターゲットビュー
 
 	// ※レンダーターゲットビューはデスクリプタヒープに生成するので、先にデスクリプタヒープを作る //
 	// --デスクリプタヒープの設定-- //
@@ -315,12 +315,61 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	/// --フェンスの生成-- ///
 	/// ※CPUとGPUで同期をとるためのDirectXの仕組み ///
-#pragma region
+#pragma region フェンスの生成
 
 	result = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 #pragma endregion
 	/// --END-- ///
+
+	/// --深度バッファ-- ///
+#pragma region 深度バッファ
+	// --リソース設定-- //
+	D3D12_RESOURCE_DESC depthResourceDesc{};
+	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	depthResourceDesc.Width = win->GetWidth();// ---> レンダーターゲットに合わせる
+	depthResourceDesc.Height = win->GetHeight();// -> レンダーターゲットに合わせる
+	depthResourceDesc.DepthOrArraySize = 1;
+	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;// -> 深度値フォーマット
+	depthResourceDesc.SampleDesc.Count = 1;
+	depthResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;// -> デプスステンシル
+
+	// --深度値用ヒーププロパティ-- //
+	D3D12_HEAP_PROPERTIES depthHeapProp{};
+	depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+	// --深度値のクリア設定-- //
+	D3D12_CLEAR_VALUE depthClearValue{};
+	depthClearValue.DepthStencil.Depth = 1.0f;// -> 深度値1.0f（最大値）でクリア
+	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;// -> 深度値フォーマット
+
+	// --リソース生成-- //
+	ComPtr<ID3D12Resource> depthBuff = nullptr;
+	result = device->CreateCommittedResource(
+		&depthHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&depthResourceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,// -> 深度値書き込みに使用
+		&depthClearValue,
+		IID_PPV_ARGS(&depthBuff)
+	);
+
+	// --深度ビュー用デスクリプタヒープ作成-- //
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.NumDescriptors = 1;// -> 深度ビューは1つ
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;// -> デプスステンシルビュー
+	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+
+	// --深度ビュー作成-- //
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;// -> 深度値フォーマット
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	device->CreateDepthStencilView(
+		depthBuff.Get(),
+		&dsvDesc,
+		dsvHeap->GetCPUDescriptorHandleForHeapStart()
+	);
+#pragma endregion
 }
 
 // --描画前処理-- //

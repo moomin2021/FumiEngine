@@ -43,6 +43,7 @@ private:
 	D3D12_RESOURCE_BARRIER barrierDesc;// -> リソースバリア
 	ComPtr<ID3D12Fence> fence;// -> フェンス
 	UINT64 fenceVal;// -> フェンス値
+	ComPtr<ID3D12DescriptorHeap> dsvHeap;// -> 深度ステンシルビュー
 
 #pragma endregion
 
