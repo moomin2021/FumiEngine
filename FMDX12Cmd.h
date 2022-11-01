@@ -34,10 +34,12 @@ private:
 
 	ComPtr<ID3D12Device> device;// -> デバイス
 	ComPtr<IDXGIFactory7> dxgiFactory;// -> DXGIファクトリー
-	ComPtr<ID3D12CommandAllocator> cmdAllocator;// -> コマンドアロケータ
-	ID3D12GraphicsCommandList* commandList;// -> コマンドリスト
-	ComPtr<ID3D12CommandQueue> commandQueue;// -> コマンドキュー
 	ComPtr<IDXGISwapChain4> swapChain;// -> スワップチェーン
+	ComPtr<ID3D12CommandAllocator> cmdAllocator;// -> コマンドアロケータ
+	ComPtr<ID3D12GraphicsCommandList> commandList;// -> コマンドリスト
+	ComPtr<ID3D12CommandQueue> commandQueue;// -> コマンドキュー
+	ComPtr<ID3D12DescriptorHeap> rtvHeap;// -> レンダーターゲットビュー
+
 #pragma endregion
 
 #pragma region メンバ関数

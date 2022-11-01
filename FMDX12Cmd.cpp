@@ -23,9 +23,15 @@ void DX12Cmd::Release() {
 }
 
 // --コンストラクタ-- //
-DX12Cmd::DX12Cmd()
-#pragma region 定数初期化
-
+DX12Cmd::DX12Cmd() :
+#pragma region 初期化リスト
+	device(nullptr),// -> デバイス
+	dxgiFactory(nullptr),// -> DXGIファクトリー
+	cmdAllocator(nullptr),// -> コマンドアロケータ
+	commandList(nullptr),// -> コマンドリスト
+	commandQueue(nullptr),// -> コマンドキュー
+	swapChain(nullptr),// -> スワップチェーン
+	rtvHeap(nullptr)// -> レンダーターゲットビュー
 #pragma endregion
 {
 
@@ -41,6 +47,23 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
 
+	/// --デバックレイヤーの有効か -- ///
+	/// ※Visual Studioの「出力」ウィンドウで追加のエラーメッセージが表示できるように ///
+#pragma region
+
+#ifdef _DEBUG
+	//デバッグレイヤーをオンに
+	ComPtr<ID3D12Debug1> debugController;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
+		debugController->EnableDebugLayer();
+		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+#endif
+
+#pragma endregion
+	/// --END-- ///
+
 	/// --アダプタの列挙-- ///
 	/// ※PCにあるグラフィックボードを、仮想的なデバイスを含めて全部リストアップする ///
 #pragma region
@@ -51,10 +74,10 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	assert(SUCCEEDED(result));
 
 	// --アダプターの列挙用-- //
-	std::vector<IDXGIAdapter4*> adapters;
+	std::vector<ComPtr<IDXGIAdapter4>> adapters;
 
 	// --ここに特定の名前を持つアダプターオブジェクトが入る-- //
-	IDXGIAdapter4* tmpAdapter = nullptr;
+	ComPtr<IDXGIAdapter4> tmpAdapter = nullptr;
 
 	// --パフォーマンスが高いものから順に、全てのアダプターを列挙する-- //
 	for (UINT i = 0;
@@ -114,7 +137,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	for (size_t i = 0; i < _countof(levels); i++)
 	{
 		// 採用したアダプターでデバイスを生成
-		result = D3D12CreateDevice(tmpAdapter, levels[i],
+		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
 			IID_PPV_ARGS(&device));
 		if (result == S_OK)
 		{
@@ -126,6 +149,31 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 #pragma endregion
 	/// --END-- ///
+
+#ifdef _DEBUG
+	ComPtr<ID3D12InfoQueue> infoQueue;
+	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);	//やばいエラーの時止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);		//エラーの時止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);	//警告の時止まる
+	}
+
+	//抑制するエラー
+	D3D12_MESSAGE_ID denyIds[] = {
+		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE
+	};
+
+	//抑制される表示レベル
+	D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+	D3D12_INFO_QUEUE_FILTER filter{};
+	filter.DenyList.NumIDs = _countof(denyIds);
+	filter.DenyList.pIDList = denyIds;
+	filter.DenyList.NumSeverities = _countof(severities);
+	filter.DenyList.pSeverityList = severities;
+	//指定したエラーの表示を抑制する
+	infoQueue->PushStorageFilter(&filter);
+#endif
 
 	/// --コマンドリスト-- ///
 	/// ※GPUに、まとめて命令を送るためのコマンドリストを生成する //
@@ -213,6 +261,62 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	// --生成したIDXGISwapChain1のオブジェクトをIDXGISwapChain4に変換する-- //
 	swapChain1.As(&swapChain);
+
+#pragma endregion
+	/// --END-- ///
+
+	/// --レンダーターゲットビュー-- ///
+	/// ※バックバッファを描画キャンパスとして扱う為のオブジェクト //
+	/// ※ダブルバッファリングではバッファが２つあるので２つ作る //
+#pragma region
+
+	// ※レンダーターゲットビューはデスクリプタヒープに生成するので、先にデスクリプタヒープを作る //
+	// --デスクリプタヒープの設定-- //
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットビュー
+	rtvHeapDesc.NumDescriptors = swapChainDesc.BufferCount; // 裏表の2つ
+
+	// --デスクリプタヒープの生成-- //
+	device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
+
+	// ※スワップチェーン内に生成されたバックバッファのアドレスを入れておく
+	// --バックバッファ-- //
+	std::vector<ComPtr<ID3D12Resource>> backBuffers;
+	backBuffers.resize(swapChainDesc.BufferCount);
+
+	// --スワップチェーンの全てのバッファについて処理する-- //
+	for (size_t i = 0; i < backBuffers.size(); i++)
+	{
+		// --スワップチェーンからバッファを取得
+		swapChain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
+
+		// --デスクリプタヒープのハンドルを取得
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
+
+		// --裏か表かでアドレスがずれる
+		rtvHandle.ptr += i * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
+
+		// --レンダーターゲットビューの設定
+		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
+
+		// --シェーダーの計算結果をSRGBに変換して書き込む
+		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+
+		// --レンダーターゲットビューの生成
+		device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+	}
+
+#pragma endregion
+	/// --END-- ///
+
+	/// --フェンスの生成-- ///
+	/// ※CPUとGPUで同期をとるためのDirectXの仕組み ///
+#pragma region
+
+	ComPtr<ID3D12Fence> fence = nullptr;
+	UINT64 fenceVal = 0;
+	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 #pragma endregion
 	/// --END-- ///

@@ -30,7 +30,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	winAPI->WinClassUnregister();
 
 #pragma region メモリ解放
-	winAPI->Release();// -> WinAPI
+	winAPI->Release();// -> WinAPIクラス
+	dx12->Release();// -> DirectX12クラス
 #pragma endregion
 
 	return 0;
