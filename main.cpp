@@ -23,7 +23,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (winAPI->IsEndMessage() == true) break;
 
+		// --描画前処理-- //
+		dx12->PreDraw();
 
+		// --描画後処理-- //
+		dx12->PostDraw();
 	}
 
 	// --ウィンドウクラス登録解除-- //

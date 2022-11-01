@@ -39,6 +39,10 @@ private:
 	ComPtr<ID3D12GraphicsCommandList> commandList;// -> コマンドリスト
 	ComPtr<ID3D12CommandQueue> commandQueue;// -> コマンドキュー
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;// -> レンダーターゲットビュー
+	std::vector<ComPtr<ID3D12Resource>> backBuffers;// -> バックバッファ
+	D3D12_RESOURCE_BARRIER barrierDesc;// -> リソースバリア
+	ComPtr<ID3D12Fence> fence;// -> フェンス
+	UINT64 fenceVal;// -> フェンス値
 
 #pragma endregion
 
@@ -53,6 +57,12 @@ public:
 	// --初期化処理-- //
 	void Initialize(WinAPI * win);
 
+	// --描画前処理-- //
+	void PreDraw();
+
+	// --描画後処理-- //
+	void PostDraw();
+
 #pragma region ゲッター
 	
 #pragma endregion
@@ -63,9 +73,6 @@ private:
 
 	// --デストラクタ-- //
 	~DX12Cmd();
-
-	// --アダプタ初期化処理-- //
-	void InitializeAdapter();
 #pragma endregion
 
 	// --禁止-- //

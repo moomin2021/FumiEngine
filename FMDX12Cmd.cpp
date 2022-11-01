@@ -31,7 +31,11 @@ DX12Cmd::DX12Cmd() :
 	commandList(nullptr),// -> コマンドリスト
 	commandQueue(nullptr),// -> コマンドキュー
 	swapChain(nullptr),// -> スワップチェーン
-	rtvHeap(nullptr)// -> レンダーターゲットビュー
+	rtvHeap(nullptr),// -> レンダーターゲットビュー
+	backBuffers{},// -> バックバッファ
+	barrierDesc{},// -> リソースバリア
+	fence(nullptr),// -> フェンス
+	fenceVal(0)// -> フェンス値
 #pragma endregion
 {
 
@@ -281,7 +285,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	// ※スワップチェーン内に生成されたバックバッファのアドレスを入れておく
 	// --バックバッファ-- //
-	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	backBuffers.resize(swapChainDesc.BufferCount);
 
 	// --スワップチェーンの全てのバッファについて処理する-- //
@@ -314,15 +317,103 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	/// ※CPUとGPUで同期をとるためのDirectXの仕組み ///
 #pragma region
 
-	ComPtr<ID3D12Fence> fence = nullptr;
-	UINT64 fenceVal = 0;
-	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	result = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 #pragma endregion
 	/// --END-- ///
 }
 
-// --アダプタ初期化処理-- //
-void DX12Cmd::InitializeAdapter() {
+// --描画前処理-- //
+void DX12Cmd::PreDraw() {
+	/// --1.リソースバリアで書き込み可能に変更-- ///
+#pragma region
+	// --バックバッファの番号を取得(2つなので0番か1番)-- //
+	UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 
+	barrierDesc.Transition.pResource = backBuffers[bbIndex].Get(); // バックバッファを指定
+	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
+	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
+	commandList->ResourceBarrier(1, &barrierDesc);
+
+#pragma endregion
+	/// --END-- ///
+
+	/// --2.描画先の変更-- ///
+#pragma region
+
+		// レンダーターゲットビューのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
+	rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeap.Get()->GetDesc().Type);
+
+	//// --深度ステンシルビュー用デスクリプタヒープのハンドルを取得-- //
+	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+
+#pragma endregion
+	/// ※これ以降の描画コマンドでは、ここで指定した描画キャンパスに絵を描いていくことになる ///
+	/// --END-- ///
+	
+	/// --3.画面クリア R G B A-- ///
+	/// ※バックバッファには前回に描いた絵がそのまま残っているので、一旦指定色で塗りつぶす ///
+#pragma region
+
+	FLOAT clearColor[] = { 0.1f, 0.25, 0.5f, 0.0f }; // 青っぽい色
+	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	//commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+#pragma endregion
+	/// --END-- ///
+}
+
+// --描画後処理-- //
+void DX12Cmd::PostDraw() {
+	// --関数が成功したかどうかを判別する用変数-- //
+	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
+	HRESULT result;
+
+	/// --5.リソースバリアを戻す-- ///
+#pragma region
+
+		// --バックバッファを書き込み可能状態から画面表示状態に変更する
+	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
+	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
+	commandList->ResourceBarrier(1, &barrierDesc);
+
+	// --ここまでため込んだコマンドを実行し描画する処理-- //
+	{
+		// --命令のクローズ
+		result = commandList->Close();
+		assert(SUCCEEDED(result));
+
+		// --コマンドリストの実行
+		ID3D12CommandList* commandLists[] = { commandList.Get() };
+		commandQueue->ExecuteCommandLists(1, commandLists);
+
+		// --画面に表示するバッファをフリップ(裏表の入替え)
+		result = swapChain->Present(1, 0);
+		assert(SUCCEEDED(result));
+	}
+	// --END-- //
+
+	// --コマンドの実行完了を待つ-- //
+	commandQueue->Signal(fence.Get(), ++fenceVal);
+	if (fence->GetCompletedValue() != fenceVal)
+	{
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+		fence->SetEventOnCompletion(fenceVal, event);
+		WaitForSingleObject(event, INFINITE);
+		CloseHandle(event);
+	}
+
+	// --キューをクリア-- //
+	// ※次の使用に備えてコマンドアロケータとコマンドリストをリセットしておく //
+	result = cmdAllocator->Reset();
+	assert(SUCCEEDED(result));
+
+	// --再びコマンドリストを貯める準備-- //
+	result = commandList->Reset(cmdAllocator.Get(), nullptr);
+	assert(SUCCEEDED(result));
+
+#pragma endregion
+	/// --END-- ///
 }
