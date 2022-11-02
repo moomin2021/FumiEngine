@@ -14,17 +14,10 @@ private:
 	const int winWidth_;// --> 横幅
 	const int winHeight_;// -> 縦幅
 
-	// --ウィンドウクラス-- //
-	WNDCLASSEX winClass_;
-
-	// --ウィンドウサイズ-- //
-	RECT winRect_;
-
-	// --ウィンドウハンドル(オブジェクト)-- //
-	HWND hwnd_;
-
-	// --メッセージ-- //
-	MSG msg_;
+	WNDCLASSEX winClass_;// -> ウィンドウクラス
+	RECT winRect_;// -> ウィンドウサイズ
+	HWND hwnd_;// -> ウィンドウハンドル(オブジェクト)
+	MSG msg_;// -> メッセージ
 
 #pragma endregion
 

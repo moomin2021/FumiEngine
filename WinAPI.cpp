@@ -27,10 +27,15 @@ void WinAPI::Release() {
 
 // --コンストラクタ-- //
 WinAPI::WinAPI() :
-#pragma region 定数初期化
+#pragma region 初期化リスト
 	// --ウィンドウサイズ-- //
 	winWidth_(1280),// -> 横幅
-	winHeight_(720)// --> 縦幅
+	winHeight_(720),// --> 縦幅
+
+	winClass_{},// -> ウィンドウクラス
+	winRect_{},// -> ウィンドウサイズ
+	hwnd_{},// -> ウィンドウハンドル(オブジェクト)
+	msg_{}// -> メッセージ
 #pragma endregion
 {
 
