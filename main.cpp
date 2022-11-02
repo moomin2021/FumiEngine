@@ -1,6 +1,6 @@
 #pragma region Ž©ƒNƒ‰ƒX“Ç‚Ýž‚Ý(ŠÜ‚ß‚é)
-#include "FMWinAPI.h"// -> WinAPI
-#include "FMDX12Cmd.h"// -> DirectX12
+#include "WinAPI.h"// -> WinAPI
+#include "DX12Cmd.h"// -> DirectX12
 #pragma endregion
 
 
