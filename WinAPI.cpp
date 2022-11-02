@@ -1,4 +1,4 @@
-#include "FMWinAPI.h"
+#include "WinAPI.h"
 
 // --ウィンドウプロシージャプロトタイプ宣言-- //
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
