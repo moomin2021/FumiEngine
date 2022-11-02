@@ -33,9 +33,5 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --ウィンドウクラス登録解除-- //
 	winAPI->WinClassUnregister();
 
-#pragma region メモリ解放
-	dx12->Release();// -> DirectX12クラス
-#pragma endregion
-
 	return 0;
 }

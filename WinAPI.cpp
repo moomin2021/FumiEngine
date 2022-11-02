@@ -5,7 +5,9 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 // --インスタンス読み込み-- //
 WinAPI* WinAPI::GetInstance() {
+	// --インスタンス生成-- //
 	static WinAPI win;
+
 	// --インスタンスを返す-- //
 	return &win;
 }

@@ -29,9 +29,6 @@ class DX12Cmd
 public:
 
 private:
-	// --インスタンス-- //
-	static DX12Cmd* myInstance_;
-
 	ComPtr<ID3D12Device> device;// -> デバイス
 	ComPtr<IDXGIFactory7> dxgiFactory;// -> DXGIファクトリー
 	ComPtr<IDXGISwapChain4> swapChain;// -> スワップチェーン
@@ -51,9 +48,6 @@ private:
 public:
 	// --インスタンス読み込み-- //
 	static DX12Cmd* GetInstance();
-
-	// --インスタンス解放-- //
-	void Release();
 
 	// --初期化処理-- //
 	void Initialize(WinAPI * win);
