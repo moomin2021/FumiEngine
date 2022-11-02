@@ -127,13 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FMDX12Cmd.cpp" />
-    <ClCompile Include="FMWinAPI.cpp" />
+    <ClCompile Include="DX12Cmd.cpp" />
+    <ClCompile Include="WinAPI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FMDX12Cmd.h" />
-    <ClInclude Include="FMWinAPI.h" />
+    <ClInclude Include="DX12Cmd.h" />
+    <ClInclude Include="WinAPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

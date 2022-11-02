@@ -1,4 +1,4 @@
-#include "FMDX12Cmd.h"
+#include "DX12Cmd.h"
 
 // --インスタンスの初期化-- //
 DX12Cmd* DX12Cmd::myInstance_ = nullptr;
