@@ -7,9 +7,6 @@ class WinAPI {
 public:
 
 private:
-	// --インスタンス-- //
-	static WinAPI* myInstance_;
-
 	// --ウィンドウサイズ-- //
 	const int winWidth_;// --> 横幅
 	const int winHeight_;// -> 縦幅
@@ -25,9 +22,6 @@ private:
 public:
 	// --インスタンス読み込み-- //
 	static WinAPI* GetInstance();
-
-	// --インスタンス解放-- //
-	void Release();
 
 	// --初期化処理-- //
 	void Initialize();

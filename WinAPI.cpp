@@ -3,26 +3,11 @@
 // --ウィンドウプロシージャプロトタイプ宣言-- //
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-// --インスタンスの初期化-- //
-WinAPI* WinAPI::myInstance_ = nullptr;
-
 // --インスタンス読み込み-- //
 WinAPI* WinAPI::GetInstance() {
-	// --インスタンスが無かったら生成する-- //
-	if (myInstance_ == nullptr) myInstance_ = new WinAPI();
-
+	static WinAPI win;
 	// --インスタンスを返す-- //
-	return myInstance_;
-}
-
-// --インスタンス解放-- //
-void WinAPI::Release() {
-	// --インスタンスが無かったら何もせずに終了する-- //
-	if (myInstance_ == nullptr) return;
-
-	// --インスタンス解放-- //
-	delete myInstance_;
-	myInstance_ = nullptr;
+	return &win;
 }
 
 // --コンストラクタ-- //
