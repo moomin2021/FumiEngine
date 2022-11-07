@@ -23,6 +23,9 @@ using namespace Microsoft::WRL;
 // --文字列-- //
 #include <string>
 
+// --パイプライン-- //
+#include "Pipeline.h"
+
 class DX12Cmd
 {
 #pragma region メンバ変数
@@ -41,6 +44,11 @@ private:
 	ComPtr<ID3D12Fence> fence;// -> フェンス
 	UINT64 fenceVal;// -> フェンス値
 	ComPtr<ID3D12DescriptorHeap> dsvHeap;// -> 深度ステンシルビュー
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	ComPtr<ID3D12Resource> depthBuff;// -> リソース設定
+
+	// --スプライト用のパイプライン-- //
+	static PipelineSet spritePipeline_;
 
 #pragma endregion
 
@@ -64,6 +72,9 @@ public:
 
 	// --コマンドリストを取得-- //
 	static ID3D12GraphicsCommandList* GetCmdList() { return commandList.Get(); }
+
+	// --スプライト用のパイプラインを取得-- //
+	static PipelineSet GetSpritePipeline() { return spritePipeline_; }
 #pragma endregion
 
 private:

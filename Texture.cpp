@@ -1,14 +1,15 @@
 #include "Texture.h"
 
+#include "DX12Cmd.h"
+
 // --SRV用デスクリプタヒープ-- //
 ComPtr<ID3D12DescriptorHeap> Texture::srvHeap_ = nullptr;
-
-// --デバイス-- //
-ID3D12Device* Texture::device_ = nullptr;
 
 D3D12_CPU_DESCRIPTOR_HANDLE Texture::srvHandle_ = {};
 
 UINT Texture::imageCount_ = 0;
+
+ComPtr<ID3D12Resource> Texture::texBuff = nullptr;
 
 // --インスタンス読み込み-- //
 Texture* Texture::GetInstance() {
@@ -20,9 +21,9 @@ Texture* Texture::GetInstance() {
 }
 
 // --コンストラクタ-- //
-Texture::Texture()
+Texture::Texture() 
 #pragma region 初期化リスト
-
+	//device_(nullptr)
 #pragma endregion
 {
 
@@ -34,7 +35,7 @@ Texture::~Texture() {}
 // --初期化処理-- //
 void Texture::Initialize(ID3D12Device* device) {
 	// --DirectXクラスのデバイス取得-- //
-	this->device_ = device;
+	//this->device_ = device;
 
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
@@ -72,8 +73,8 @@ void Texture::Initialize(ID3D12Device* device) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	ComPtr<ID3D12Resource> texBuff = nullptr;
-	result = this->device_->CreateCommittedResource(
+	//ComPtr<ID3D12Resource> texBuff = nullptr;
+	result = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -105,7 +106,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
 	// --設定をもとにSRV用デスクリプタヒープを生成-- //
-	result = this->device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
+	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
 	// --SRVヒープの先頭ハンドルを取得-- //
@@ -119,7 +120,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	this->device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
+	device->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
 }
 
 // --テクスチャの読み込み-- //
@@ -171,8 +172,8 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	ComPtr<ID3D12Resource> texBuff = nullptr;
-	result = device_->CreateCommittedResource(
+	//ComPtr<ID3D12Resource> texBuff = nullptr;
+	result = DX12Cmd::GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -206,13 +207,13 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --CBV, SRV, UAVの1個分のサイズを取得-- //
-	UINT descriptorSize = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT descriptorSize = DX12Cmd::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	// --ハンドルを1つ進める-- //
 	srvHandle_.ptr += descriptorSize;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
+	DX12Cmd::GetDevice()->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
 
 	// --画像カウンタインクリメント-- //
 	imageCount_++;

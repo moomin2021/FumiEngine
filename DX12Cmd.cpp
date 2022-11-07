@@ -15,6 +15,9 @@ ComPtr<ID3D12Device> DX12Cmd::device_ = nullptr;
 // --コマンドリスト-- //
 ComPtr<ID3D12GraphicsCommandList> DX12Cmd::commandList = nullptr;
 
+// --スプライト用のパイプライン-- //
+PipelineSet DX12Cmd::spritePipeline_ = { nullptr, nullptr };
+
 // --コンストラクタ-- //
 DX12Cmd::DX12Cmd() :
 #pragma region 初期化リスト
@@ -42,7 +45,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
 
-	/// --デバックレイヤーの有効か-- ///
 	/// ※Visual Studioの「出力」ウィンドウで追加のエラーメッセージが表示できるように ///
 #pragma region デバックレイヤーの有効か
 
@@ -59,7 +61,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --アダプタの列挙-- ///
 	/// ※PCにあるグラフィックボードを、仮想的なデバイスを含めて全部リストアップする ///
 #pragma region アダプタの列挙
 
@@ -88,7 +89,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --アダプタの選別-- //
 	/// ※検出されたグラフィックスデバイスの中で性能の低いもの除外して、専用デバイスを採用する ///
 #pragma region アダプタの選別
 
@@ -112,7 +112,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --デバイスの生成-- ///
 	/// ※採用したグラフィックスデバイスを操作するためにD3D12Deviceオブジェクトを生成 ///
 	/// ※これは普通１ゲームに1つしか作らない ///
 #pragma region デバイスの生成
@@ -151,7 +150,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	{
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);	//やばいエラーの時止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);		//エラーの時止まる
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);	//警告の時止まる
+		//infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);	//警告の時止まる
 	}
 
 	//抑制するエラー
@@ -170,7 +169,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	infoQueue->PushStorageFilter(&filter);
 #endif
 
-	/// --コマンドリスト-- ///
 	/// ※GPUに、まとめて命令を送るためのコマンドリストを生成する //
 #pragma region コマンドリスト
 
@@ -192,7 +190,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --コマンドキュー-- ///
 	/// ※コマンドリストをGPUに順に実行させていく為の仕組み ///
 #pragma region コマンドキュー
 
@@ -208,7 +205,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --スワップチェーン-- ///
 	/// ※スワップチェーンは、ダブルバッファリングやトリプルバッファリングを簡単に実装するための仕組み ///
 	/// ※表示中の画面（フロントバッファ）・描画中の画面（バックバッファ）
 #pragma region スワップチェーン
@@ -260,14 +256,13 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --レンダーターゲットビュー-- ///
 	/// ※バックバッファを描画キャンパスとして扱う為のオブジェクト //
 	/// ※ダブルバッファリングではバッファが２つあるので２つ作る //
 #pragma region レンダーターゲットビュー
 
 	// ※レンダーターゲットビューはデスクリプタヒープに生成するので、先にデスクリプタヒープを作る //
 	// --デスクリプタヒープの設定-- //
-	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	//D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットビュー
 	rtvHeapDesc.NumDescriptors = swapChainDesc.BufferCount; // 裏表の2つ
 
@@ -304,11 +299,10 @@ void DX12Cmd::Initialize(WinAPI* win) {
 #pragma endregion
 	/// --END-- ///
 
-	/// --フェンスの生成-- ///
 	/// ※CPUとGPUで同期をとるためのDirectXの仕組み ///
 #pragma region フェンスの生成
 
-	result = device_->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	result = device_->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 #pragma endregion
 	/// --END-- ///
@@ -335,7 +329,6 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;// -> 深度値フォーマット
 
 	// --リソース生成-- //
-	ComPtr<ID3D12Resource> depthBuff = nullptr;
 	result = device_->CreateCommittedResource(
 		&depthHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -361,6 +354,9 @@ void DX12Cmd::Initialize(WinAPI* win) {
 		dsvHeap->GetCPUDescriptorHandleForHeapStart()
 	);
 #pragma endregion
+
+	// --スプライト用のパイプラインを生成-- //
+	spritePipeline_ = CreateSpritePipeline();
 }
 
 // --描画前処理-- //
@@ -383,23 +379,57 @@ void DX12Cmd::PreDraw() {
 
 		// レンダーターゲットビューのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	rtvHandle.ptr += bbIndex * device_->GetDescriptorHandleIncrementSize(rtvHeap.Get()->GetDesc().Type);
+	rtvHandle.ptr += bbIndex * device_->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 
 	//// --深度ステンシルビュー用デスクリプタヒープのハンドルを取得-- //
-	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-	commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 #pragma endregion
 	/// ※これ以降の描画コマンドでは、ここで指定した描画キャンパスに絵を描いていくことになる ///
 	/// --END-- ///
-	
+
 	/// --3.画面クリア R G B A-- ///
 	/// ※バックバッファには前回に描いた絵がそのまま残っているので、一旦指定色で塗りつぶす ///
 #pragma region
 
 	FLOAT clearColor[] = { 0.1f, 0.25, 0.5f, 0.0f }; // 青っぽい色
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	//commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+#pragma endregion
+	/// --END-- ///
+
+	/// --ビューポート設定-- ///
+#pragma region
+
+		// --ビューポート設定コマンド-- //
+	D3D12_VIEWPORT viewport{};
+	viewport.Width = WinAPI::GetWidth();
+	viewport.Height = WinAPI::GetHeight();
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+
+	// --ビューポート設定コマンドを、コマンドリストに積む-- //
+	commandList->RSSetViewports(1, &viewport);
+
+#pragma endregion
+	/// --END-- ///
+
+	/// --シザー矩形-- ///
+#pragma region
+
+		// --シザー矩形-- //
+	D3D12_RECT scissorRect{};
+	scissorRect.left = 0; // 切り抜き座標左
+	scissorRect.right = scissorRect.left + WinAPI::GetWidth(); // 切り抜き座標右
+	scissorRect.top = 0; // 切り抜き座標上
+	scissorRect.bottom = scissorRect.top + WinAPI::GetHeight(); // 切り抜き座標下
+
+	// --シザー矩形設定コマンドを、コマンドリストに積む-- //
+	commandList->RSSetScissorRects(1, &scissorRect);
 
 #pragma endregion
 	/// --END-- ///
@@ -414,7 +444,7 @@ void DX12Cmd::PostDraw() {
 	/// --5.リソースバリアを戻す-- ///
 #pragma region
 
-		// --バックバッファを書き込み可能状態から画面表示状態に変更する
+	// --バックバッファを書き込み可能状態から画面表示状態に変更する
 	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
 	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
 	commandList->ResourceBarrier(1, &barrierDesc);

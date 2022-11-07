@@ -20,7 +20,7 @@ public:
 
 private:
 	// --デバイス-- //
-	static ID3D12Device* device_;
+	//ID3D12Device* device_;
 
 	// --SRVヒープの先頭ハンドルを取得-- //
 	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
@@ -30,6 +30,8 @@ private:
 
 	// --SRV用デスクリプタヒープ-- //
 	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
+
+	static ComPtr<ID3D12Resource> texBuff;
 
 	/// --メンバ変数END-- ///
 	///---------------- ///

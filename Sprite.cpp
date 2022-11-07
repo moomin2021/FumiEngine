@@ -112,7 +112,7 @@ void Sprite::Initialize() {
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --インデックスバッファの生成-- //
-	ID3D12Resource* indexBuff = nullptr;
+	//ID3D12Resource* indexBuff = nullptr;
 	result = DX12Cmd::GetDevice()->CreateCommittedResource(
 		&heapVSProp,// -> ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -205,10 +205,10 @@ void Sprite::Update() {
 
 	// --頂点バッファ転送-- //
 	// --頂点データ-- //
-	vertices[0] = { {   0.0f, scale.y, 0.0f }, {0.0f, 1.0f} };// -> 左下
+	vertices[0] = { {   0.0f, 100.0f * scale.y, 0.0f }, {0.0f, 1.0f} };// -> 左下
 	vertices[1] = { {   0.0f,   0.0f, 0.0f }, {0.0f, 0.0f} };// -> 左上
-	vertices[2] = { { scale.x, scale.y, 0.0f }, {1.0f, 1.0f} };// -> 右下
-	vertices[3] = { { scale.x,   0.0f, 0.0f }, {1.0f, 0.0f} };// -> 右上
+	vertices[2] = { { 100.0f * scale.x, 100.0f * scale.y, 0.0f }, {1.0f, 1.0f} };// -> 右下
+	vertices[3] = { { 100.0f * scale.x,   0.0f, 0.0f }, {1.0f, 0.0f} };// -> 右上
 
 	// --全頂点に対して-- //
 	for (int i = 0; i < _countof(vertices); i++)
@@ -226,25 +226,38 @@ void Sprite::Draw(int textureHandle) {
 	srvGpuHandle.ptr += textureHandle;
 
 	// --コマンドリスト取得-- //
-	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
+	//ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
 
 	// --指定されたSRVをルートパラメータ1番に設定-- //
-	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	DX12Cmd::GetCmdList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	// --頂点バッファビューの設定コマンド-- //
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	DX12Cmd::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
 
 	// --定数バッファビュー（CBV）の設定コマンド-- //
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
 	// --インデックスバッファビューの設定コマンド-- //
-	cmdList->IASetIndexBuffer(&ibView);
+	DX12Cmd::GetCmdList()->IASetIndexBuffer(&ibView);
 
-	// --描画コマンド-- //
-	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	//// --描画コマンド-- //
+	DX12Cmd::GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
+// --描画前処理-- //
 void Sprite::PreDraw()
 {
+	// --コマンドリスト取得-- //
+	//ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
 
+	// パイプラインステートの設定
+	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetSpritePipeline().pipelineState.Get());
+	// ルートシグネチャの設定
+	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetSpritePipeline().rootSignature.Get());
+	// プリミティブ形状を設定
+	DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// --デスクリプタヒープの配列をセットするコマンド-- //
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
+	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 }
