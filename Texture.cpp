@@ -3,6 +3,13 @@
 // --SRV用デスクリプタヒープ-- //
 ComPtr<ID3D12DescriptorHeap> Texture::srvHeap_ = nullptr;
 
+// --デバイス-- //
+ID3D12Device* Texture::device_ = nullptr;
+
+D3D12_CPU_DESCRIPTOR_HANDLE Texture::srvHandle_ = {};
+
+UINT Texture::imageCount_ = 0;
+
 // --インスタンス読み込み-- //
 Texture* Texture::GetInstance() {
 	// --インスタンス生成-- //
@@ -13,11 +20,9 @@ Texture* Texture::GetInstance() {
 }
 
 // --コンストラクタ-- //
-Texture::Texture() :
+Texture::Texture()
 #pragma region 初期化リスト
-	device_(nullptr),// -> デバイス
-	srvHandle_{},
-	imageCount_(0)
+
 #pragma endregion
 {
 
@@ -167,7 +172,7 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 
 	// --テクスチャバッファの生成-- //
 	ComPtr<ID3D12Resource> texBuff = nullptr;
-	result = this->device_->CreateCommittedResource(
+	result = device_->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -201,13 +206,13 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --CBV, SRV, UAVの1個分のサイズを取得-- //
-	UINT descriptorSize = this->device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT descriptorSize = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	// --ハンドルを1つ進める-- //
 	srvHandle_.ptr += descriptorSize;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	this->device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
+	device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
 
 	// --画像カウンタインクリメント-- //
 	imageCount_++;

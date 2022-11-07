@@ -20,13 +20,13 @@ public:
 
 private:
 	// --デバイス-- //
-	ID3D12Device* device_;
+	static ID3D12Device* device_;
 
 	// --SRVヒープの先頭ハンドルを取得-- //
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
+	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
 
 	// --読み込む画像が何枚目か-- //
-	UINT imageCount_;
+	static UINT imageCount_;
 
 	// --SRV用デスクリプタヒープ-- //
 	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
@@ -45,7 +45,7 @@ public:
 	void Initialize(ID3D12Device* device);
 
 	// --テクスチャの読み込み-- //
-	int LoadTexture(const wchar_t* szFile);
+	static int LoadTexture(const wchar_t* szFile);
 
 	// --SRVヒープ参照-- //
 	static ID3D12DescriptorHeap* GetSRVHeap();
