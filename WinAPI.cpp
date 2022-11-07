@@ -12,13 +12,13 @@ WinAPI* WinAPI::GetInstance() {
 	return &win;
 }
 
+// --ウィンドウサイズ-- //
+const int WinAPI::winWidth_ = 1280;
+const int WinAPI::winHeight_ = 720;
+
 // --コンストラクタ-- //
 WinAPI::WinAPI() :
 #pragma region 初期化リスト
-	// --ウィンドウサイズ-- //
-	winWidth_(1280),// -> 横幅
-	winHeight_(720),// --> 縦幅
-
 	winClass_{},// -> ウィンドウクラス
 	winRect_{},// -> ウィンドウサイズ
 	hwnd_{},// -> ウィンドウハンドル(オブジェクト)

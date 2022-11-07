@@ -29,11 +29,11 @@ class DX12Cmd
 public:
 
 private:
-	ComPtr<ID3D12Device> device_;// -> デバイス
+	static ComPtr<ID3D12Device> device_;// -> デバイス
 	ComPtr<IDXGIFactory7> dxgiFactory;// -> DXGIファクトリー
 	ComPtr<IDXGISwapChain4> swapChain;// -> スワップチェーン
 	ComPtr<ID3D12CommandAllocator> cmdAllocator;// -> コマンドアロケータ
-	ComPtr<ID3D12GraphicsCommandList> commandList;// -> コマンドリスト
+	static ComPtr<ID3D12GraphicsCommandList> commandList;// -> コマンドリスト
 	ComPtr<ID3D12CommandQueue> commandQueue;// -> コマンドキュー
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;// -> レンダーターゲットビュー
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;// -> バックバッファ
@@ -60,7 +60,10 @@ public:
 
 #pragma region ゲッター
 	// --デバイスを取得-- //
-	ID3D12Device* GetDevice() { return device_.Get(); }
+	static ID3D12Device* GetDevice() { return device_.Get(); }
+
+	// --コマンドリストを取得-- //
+	static ID3D12GraphicsCommandList* GetCmdList() { return commandList.Get(); }
 #pragma endregion
 
 private:

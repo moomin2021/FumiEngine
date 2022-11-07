@@ -8,8 +8,8 @@ public:
 
 private:
 	// --ウィンドウサイズ-- //
-	const int winWidth_;// --> 横幅
-	const int winHeight_;// -> 縦幅
+	static const int winWidth_;// --> 横幅
+	static const int winHeight_;// -> 縦幅
 
 	WNDCLASSEX winClass_;// -> ウィンドウクラス
 	RECT winRect_;// -> ウィンドウサイズ
@@ -40,10 +40,10 @@ public:
 	HWND GetHWND() { return hwnd_; }
 
 	// --ウィンドウの横サイズを取得-- //
-	int GetWidth() { return winHeight_; }
+	static int GetWidth() { return winHeight_; }
 
 	// --ウィンドウの縦サイズを取得-- //
-	int GetHeight() { return winHeight_; }
+	static int GetHeight() { return winHeight_; }
 #pragma endregion
 
 private:

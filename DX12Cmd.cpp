@@ -9,13 +9,17 @@ DX12Cmd* DX12Cmd::GetInstance() {
 	return &dx12;
 }
 
+// --デバイス-- //
+ComPtr<ID3D12Device> DX12Cmd::device_ = nullptr;
+
+// --コマンドリスト-- //
+ComPtr<ID3D12GraphicsCommandList> DX12Cmd::commandList = nullptr;
+
 // --コンストラクタ-- //
 DX12Cmd::DX12Cmd() :
 #pragma region 初期化リスト
-	device_(nullptr),// -> デバイス
 	dxgiFactory(nullptr),// -> DXGIファクトリー
 	cmdAllocator(nullptr),// -> コマンドアロケータ
-	commandList(nullptr),// -> コマンドリスト
 	commandQueue(nullptr),// -> コマンドキュー
 	swapChain(nullptr),// -> スワップチェーン
 	rtvHeap(nullptr),// -> レンダーターゲットビュー
