@@ -29,7 +29,7 @@ class DX12Cmd
 public:
 
 private:
-	ComPtr<ID3D12Device> device;// -> デバイス
+	ComPtr<ID3D12Device> device_;// -> デバイス
 	ComPtr<IDXGIFactory7> dxgiFactory;// -> DXGIファクトリー
 	ComPtr<IDXGISwapChain4> swapChain;// -> スワップチェーン
 	ComPtr<ID3D12CommandAllocator> cmdAllocator;// -> コマンドアロケータ
@@ -59,7 +59,8 @@ public:
 	void PostDraw();
 
 #pragma region ゲッター
-	
+	// --デバイスを取得-- //
+	ID3D12Device* GetDevice() { return device_.Get(); }
 #pragma endregion
 
 private:

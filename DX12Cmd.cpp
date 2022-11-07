@@ -12,7 +12,7 @@ DX12Cmd* DX12Cmd::GetInstance() {
 // --コンストラクタ-- //
 DX12Cmd::DX12Cmd() :
 #pragma region 初期化リスト
-	device(nullptr),// -> デバイス
+	device_(nullptr),// -> デバイス
 	dxgiFactory(nullptr),// -> DXGIファクトリー
 	cmdAllocator(nullptr),// -> コマンドアロケータ
 	commandList(nullptr),// -> コマンドリスト
@@ -129,7 +129,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	{
 		// 採用したアダプターでデバイスを生成
 		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
-			IID_PPV_ARGS(&device));
+			IID_PPV_ARGS(&device_));
 		if (result == S_OK)
 		{
 			// デバイスを生成できた時点でループを抜ける
@@ -173,13 +173,13 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	// --コマンドアロケータを生成-- //
 	// ※コマンドリストはコマンドアロケータから生成するので、先にコマンドアロケータを作る //
 	// ※コマンドリストに格納する命令の為のメモリを管理するオブジェクト //
-	result = device->CreateCommandAllocator(
+	result = device_->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,// -> コマンドアロケータの種類
 		IID_PPV_ARGS(&cmdAllocator));// -> 各インターフェイス固有のGUID
 	assert(SUCCEEDED(result));// -> ID3D12CommandAllocatorインターフェイスのポインタを格納する変数アドレス
 
 	// --コマンドリストを生成-- //
-	result = device->CreateCommandList(0,
+	result = device_->CreateCommandList(0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		cmdAllocator.Get(), nullptr,
 		IID_PPV_ARGS(&commandList));
@@ -198,7 +198,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 
 	// --標準設定でコマンドキューを生成-- //
-	result = device->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue));
+	result = device_->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue));
 	assert(SUCCEEDED(result));
 
 #pragma endregion
@@ -268,7 +268,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	rtvHeapDesc.NumDescriptors = swapChainDesc.BufferCount; // 裏表の2つ
 
 	// --デスクリプタヒープの生成-- //
-	device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
+	device_->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
 
 	// ※スワップチェーン内に生成されたバックバッファのアドレスを入れておく
 	// --バックバッファ-- //
@@ -284,7 +284,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 
 		// --裏か表かでアドレスがずれる
-		rtvHandle.ptr += i * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
+		rtvHandle.ptr += i * device_->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 
 		// --レンダーターゲットビューの設定
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
@@ -294,7 +294,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 		// --レンダーターゲットビューの生成
-		device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+		device_->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
 	}
 
 #pragma endregion
@@ -304,7 +304,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	/// ※CPUとGPUで同期をとるためのDirectXの仕組み ///
 #pragma region フェンスの生成
 
-	result = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	result = device_->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 #pragma endregion
 	/// --END-- ///
@@ -332,7 +332,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 
 	// --リソース生成-- //
 	ComPtr<ID3D12Resource> depthBuff = nullptr;
-	result = device->CreateCommittedResource(
+	result = device_->CreateCommittedResource(
 		&depthHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
@@ -345,13 +345,13 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;// -> 深度ビューは1つ
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;// -> デプスステンシルビュー
-	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+	result = device_->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 
 	// --深度ビュー作成-- //
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;// -> 深度値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	device->CreateDepthStencilView(
+	device_->CreateDepthStencilView(
 		depthBuff.Get(),
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart()
@@ -379,7 +379,7 @@ void DX12Cmd::PreDraw() {
 
 		// レンダーターゲットビューのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeap.Get()->GetDesc().Type);
+	rtvHandle.ptr += bbIndex * device_->GetDescriptorHandleIncrementSize(rtvHeap.Get()->GetDesc().Type);
 
 	//// --深度ステンシルビュー用デスクリプタヒープのハンドルを取得-- //
 	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();

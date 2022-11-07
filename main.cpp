@@ -1,6 +1,7 @@
 #pragma region 自クラス読み込み(含める)
 #include "WinAPI.h"// -> WinAPI
 #include "DX12Cmd.h"// -> DirectX12
+#include "Texture.h"// -> Texture
 #pragma endregion
 
 
@@ -14,6 +15,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --DirectX12クラス-- //
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
 	dx12->Initialize(winAPI);// -> 初期化処理
+
+	// --テクスチャクラス-- //
+	Texture* texture = Texture::GetInstance();// -> インスタンス取得
+	texture->Initialize(dx12->GetDevice());// -> 初期化処理
 
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
