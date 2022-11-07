@@ -67,7 +67,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	ID3D12Resource* texBuff = nullptr;
+	ComPtr<ID3D12Resource> texBuff = nullptr;
 	result = this->device_->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -114,7 +114,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	this->device_->CreateShaderResourceView(texBuff, &srvDesc, srvHandle_);
+	this->device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
 }
 
 // --テクスチャの読み込み-- //
@@ -166,7 +166,7 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	ID3D12Resource* texBuff = nullptr;
+	ComPtr<ID3D12Resource> texBuff = nullptr;
 	result = this->device_->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -207,7 +207,7 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	srvHandle_.ptr += descriptorSize;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	this->device_->CreateShaderResourceView(texBuff, &srvDesc, srvHandle_);
+	this->device_->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
 
 	// --画像カウンタインクリメント-- //
 	imageCount_++;
