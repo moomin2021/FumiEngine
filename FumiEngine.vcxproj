@@ -137,6 +137,7 @@
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="WinAPI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="WinAPI.h" />
   </ItemGroup>
   <ItemGroup>

@@ -22,9 +22,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Texture* texture = Texture::GetInstance();// -> インスタンス取得
 	texture->Initialize(dx12->GetDevice());// -> 初期化処理
 
-	Sprite* sprite = new Sprite();
-	sprite->Initialize();
-
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
 
@@ -33,14 +30,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (winAPI->IsEndMessage() == true) break;
 
-		sprite->Update();
-
 		// --描画前処理-- //
 		dx12->PreDraw();
 
+		// スプライト描画前処理
 		Sprite::PreDraw();
-
-		sprite->Draw();
 
 		// --描画後処理-- //
 		dx12->PostDraw();
@@ -48,8 +42,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --ウィンドウクラス登録解除-- //
 	winAPI->WinClassUnregister();
-
-	delete sprite;
 
 	return 0;
 }

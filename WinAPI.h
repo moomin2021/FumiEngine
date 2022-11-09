@@ -40,7 +40,7 @@ public:
 	HWND GetHWND() { return hwnd_; }
 
 	// --ウィンドウの横サイズを取得-- //
-	static int GetWidth() { return winHeight_; }
+	static int GetWidth() { return winWidth_; }
 
 	// --ウィンドウの縦サイズを取得-- //
 	static int GetHeight() { return winHeight_; }

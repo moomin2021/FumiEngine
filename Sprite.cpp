@@ -9,9 +9,12 @@
 // --テクスチャクラス-- //
 #include "Texture.h"
 
+// --便利系関数-- //
+#include "Util.h"
+
 // --コンストラクタ-- //
 Sprite::Sprite() : vbView{}, ibView{}, constBuff(nullptr), constMap(nullptr), vertBuff(nullptr), vertMap(nullptr),
-color{ 1.0f, 1.0f, 1.0f, 1.0f }, scale{ 1.0f, 1.0f } {}
+position{0.0f, 0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f } {}
 
 // --初期化処理-- //
 void Sprite::Initialize() {
@@ -174,6 +177,9 @@ void Sprite::Initialize() {
 	constMap->color = color;
 
 	// --平行投影行列-- //
+	//matProjection = XMMatrixOrthographicOffCenterLH(
+	//	0.0f, (float)WinAPI::GetWidth(), (float)WinAPI::GetHeight(), 0.0f, 0.0f, 1.0f);
+
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f, (float)WinAPI::GetWidth(), (float)WinAPI::GetHeight(), 0.0f, 0.0f, 1.0f);
 
