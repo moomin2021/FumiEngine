@@ -14,10 +14,8 @@
 
 // --コンストラクタ-- //
 Sprite::Sprite() : vbView{}, ibView{}, constBuff(nullptr), constMap(nullptr), vertBuff(nullptr), vertMap(nullptr),
-position{0.0f, 0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f } {}
-
-// --初期化処理-- //
-void Sprite::Initialize() {
+position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
+{
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
@@ -176,10 +174,6 @@ void Sprite::Initialize() {
 	// --スプライトの色を変える-- //
 	constMap->color = color;
 
-	// --平行投影行列-- //
-	//matProjection = XMMatrixOrthographicOffCenterLH(
-	//	0.0f, (float)WinAPI::GetWidth(), (float)WinAPI::GetHeight(), 0.0f, 0.0f, 1.0f);
-
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f, (float)WinAPI::GetWidth(), (float)WinAPI::GetHeight(), 0.0f, 0.0f, 1.0f);
 
@@ -199,7 +193,7 @@ void Sprite::Update() {
 	matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
 
 	// --平行移動-- //
-	matWorld *= XMMatrixTranslation(position.x, position.y, position.z);
+	matWorld *= XMMatrixTranslation(position.x, position.y, 0.0f);
 
 	// --定数バッファの転送-- //
 
@@ -230,9 +224,6 @@ void Sprite::Draw(int textureHandle) {
 
 	// --ハンドルを指定された分まで進める-- //
 	srvGpuHandle.ptr += textureHandle;
-
-	// --コマンドリスト取得-- //
-	//ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
 
 	// --指定されたSRVをルートパラメータ1番に設定-- //
 	DX12Cmd::GetCmdList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);

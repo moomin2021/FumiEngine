@@ -36,7 +36,7 @@ public:
 	float rotation;
 
 	// --座標-- //
-	XMFLOAT3 position;
+	XMFLOAT2 position;
 
 	// --ワールド行列-- //
 	XMMATRIX matWorld;
@@ -67,7 +67,7 @@ private:
 	Vertices2D* vertMap;
 
 	// --インデックスバッファ-- //
-	ComPtr<ID3D12Resource> indexBuff = nullptr;
+	ComPtr<ID3D12Resource> indexBuff;
 
 	// --インデックスバッファビュー-- //
 	D3D12_INDEX_BUFFER_VIEW ibView;
@@ -84,9 +84,6 @@ private:
 public:
 	// --コンストラクタ-- //
 	Sprite();
-
-	// --初期化処理-- //
-	void Initialize();
 
 	// --更新処理-- //
 	void Update();

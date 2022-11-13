@@ -22,6 +22,12 @@
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{ba87fa7c-777f-43f4-a896-32bab32869db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\2D">
+      <UniqueIdentifier>{5700c1ab-5f8b-438d-bbd1-bd4d51dc0fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2D">
+      <UniqueIdentifier>{e891e97d-e8e6-49ad-8d60-4e7b75ca03e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,9 +42,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Pipeline.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="FumiEngine.cpp">
       <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +65,6 @@
     <ClInclude Include="Texture.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Pipeline.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="FumiEngine.h">
       <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

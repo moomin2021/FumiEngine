@@ -31,10 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sprite[0] = new Sprite();
 	sprite[1] = new Sprite();
 
-	sprite[0]->Initialize();
-
-	sprite[1]->position = { 100.0f, 100.0f, 0.0f };
-	sprite[1]->Initialize();
+	sprite[1]->position = { 100.0f, 100.0f };
 
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
