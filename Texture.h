@@ -14,14 +14,13 @@ using namespace DirectX;
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
+#include <array>
+
 class Texture {
 	///  --メンバ変数-- ///
 public:
 
 private:
-	// --デバイス-- //
-	//ID3D12Device* device_;
-
 	// --SRVヒープの先頭ハンドルを取得-- //
 	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
 
@@ -31,7 +30,8 @@ private:
 	// --SRV用デスクリプタヒープ-- //
 	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-	static ComPtr<ID3D12Resource> texBuff;
+	// テクスチャバッファ
+	static std::array<ComPtr<ID3D12Resource>, 2056> texBuff_;
 
 	/// --メンバ変数END-- ///
 	///---------------- ///

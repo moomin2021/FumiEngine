@@ -2,14 +2,17 @@
 
 #include "DX12Cmd.h"
 
+// --SRVヒープの先頭ハンドルを取得-- //
+D3D12_CPU_DESCRIPTOR_HANDLE Texture::srvHandle_ = {};
+
+// --読み込む画像が何枚目か-- //
+UINT Texture::imageCount_ = 0;
+
 // --SRV用デスクリプタヒープ-- //
 ComPtr<ID3D12DescriptorHeap> Texture::srvHeap_ = nullptr;
 
-D3D12_CPU_DESCRIPTOR_HANDLE Texture::srvHandle_ = {};
-
-UINT Texture::imageCount_ = 0;
-
-ComPtr<ID3D12Resource> Texture::texBuff = nullptr;
+// テクスチャバッファ
+std::array<ComPtr<ID3D12Resource>, 2056> Texture::texBuff_ = {};
 
 // --インスタンス読み込み-- //
 Texture* Texture::GetInstance() {
@@ -73,7 +76,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	//ComPtr<ID3D12Resource> texBuff = nullptr;
+	ComPtr<ID3D12Resource> texBuff;
 	result = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -93,17 +96,17 @@ void Texture::Initialize(ID3D12Device* device) {
 	);
 	assert(SUCCEEDED(result));
 
+	// 設定を保存
+	texBuff_[imageCount_] = texBuff;
+
 #pragma endregion
 	/// --END-- ///
-
-	// --SRVの最大個数-- //
-	const size_t kMaxSRVCount = 2056;
 
 	// --デスクリプタヒープの設定-- //
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvHeapDesc.NumDescriptors = kMaxSRVCount;
+	srvHeapDesc.NumDescriptors = 2056;
 
 	// --設定をもとにSRV用デスクリプタヒープを生成-- //
 	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
@@ -120,7 +123,7 @@ void Texture::Initialize(ID3D12Device* device) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	device->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
+	device->CreateShaderResourceView(texBuff_[imageCount_].Get(), &srvDesc, srvHandle_);
 }
 
 // --テクスチャの読み込み-- //
@@ -172,7 +175,7 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	// --テクスチャバッファの生成-- //
-	//ComPtr<ID3D12Resource> texBuff = nullptr;
+	ComPtr<ID3D12Resource> texBuff = nullptr;
 	result = DX12Cmd::GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -199,6 +202,12 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 		assert(SUCCEEDED(result));
 	}
 
+	// --画像カウンタインクリメント-- //
+	imageCount_++;
+
+	// 設定を保存
+	texBuff_[imageCount_] = texBuff;
+
 	// --シェーダリソースビュー設定-- //
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = textureResourceDesc.Format;
@@ -213,10 +222,7 @@ int Texture::LoadTexture(const wchar_t* szFile) {
 	srvHandle_.ptr += descriptorSize;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	DX12Cmd::GetDevice()->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle_);
-
-	// --画像カウンタインクリメント-- //
-	imageCount_++;
+	DX12Cmd::GetDevice()->CreateShaderResourceView(texBuff_[imageCount_].Get(), &srvDesc, srvHandle_);
 
 	// --ハンドルを返す-- //
 	return descriptorSize * imageCount_;
