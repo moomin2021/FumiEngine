@@ -5,6 +5,7 @@
 #pragma endregion
 
 #include "Sprite.h"
+#include "FumiEngine.h"
 
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
@@ -22,8 +23,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Texture* texture = Texture::GetInstance();// -> インスタンス取得
 	texture->Initialize(dx12->GetDevice());// -> 初期化処理
 
-	int valoHandle = Texture::LoadTexture(L"Resources/valo.jpg");
-	int haeHandle = Texture::LoadTexture(L"Resources/hae.png");
+	int valoHandle = LoadTexture(L"Resources/valo.jpg");
+	int haeHandle = LoadTexture(L"Resources/hae.png");
 
 	// スプライト
 	Sprite* sprite[2];

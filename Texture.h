@@ -19,19 +19,18 @@ using namespace Microsoft::WRL;
 class Texture {
 	///  --メンバ変数-- ///
 public:
-
-private:
-	// --SRVヒープの先頭ハンドルを取得-- //
-	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
-
 	// --読み込む画像が何枚目か-- //
 	static UINT imageCount_;
 
-	// --SRV用デスクリプタヒープ-- //
-	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
-
 	// テクスチャバッファ
 	static std::array<ComPtr<ID3D12Resource>, 2056> texBuff_;
+
+	// --SRVヒープの先頭ハンドルを取得-- //
+	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
+
+private:
+	// --SRV用デスクリプタヒープ-- //
+	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 	/// --メンバ変数END-- ///
 	///---------------- ///
@@ -45,9 +44,6 @@ public:
 	/// </summary>
 	/// <param name="device_"> デバイス </param>
 	void Initialize(ID3D12Device* device);
-
-	// --テクスチャの読み込み-- //
-	static int LoadTexture(const wchar_t* szFile);
 
 	// --SRVヒープ参照-- //
 	static ID3D12DescriptorHeap* GetSRVHeap();
