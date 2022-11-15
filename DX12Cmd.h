@@ -50,6 +50,9 @@ private:
 	// --スプライト用のパイプライン-- //
 	static PipelineSet spritePipeline_;
 
+	// --オブジェクト3D用のパイプライン-- //
+	static PipelineSet object3DPipeline_;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -75,6 +78,9 @@ public:
 
 	// --スプライト用のパイプラインを取得-- //
 	static PipelineSet GetSpritePipeline() { return spritePipeline_; }
+
+	// --オブジェクト3D用のパイプラインを取得-- //
+	static PipelineSet GetObject3DPipeline() { return object3DPipeline_; }
 #pragma endregion
 
 private:

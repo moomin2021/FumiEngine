@@ -4,7 +4,7 @@
 #include "WinAPI.h"
 
 // --DirextX12-- //
-#include "DX12Cmd.h"// -> DirectX12
+#include "DX12Cmd.h"
 
 // --テクスチャクラス-- //
 #include "Texture.h"

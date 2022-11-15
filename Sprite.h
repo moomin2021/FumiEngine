@@ -20,7 +20,7 @@ struct Vertices2D {
 	XMFLOAT2 uv;
 };
 
-// --定数バッファ用データ構造体（マテリアル）-- //
+// --定数バッファ用データ構造体（行列と色）-- //
 struct ConstBufferData {
 	// --色（RBGA）-- //
 	XMFLOAT4 color;

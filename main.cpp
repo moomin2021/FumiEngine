@@ -6,6 +6,7 @@
 
 #include "Sprite.h"
 #include "FumiEngine.h"
+#include "Object3D.h"
 
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
@@ -33,6 +34,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	sprite[1]->position = { 100.0f, 100.0f };
 
+	Object3D* object = new Object3D();
+	object->CreateCube();
+
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
 
@@ -44,8 +48,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		sprite[0]->Update();
 		sprite[1]->Update();
 
+		object->Update();
+
 		// --描画前処理-- //
 		dx12->PreDraw();
+
+		Object3D::PreDraw();
+		object->Draw(valoHandle);
 
 		// スプライト描画前処理
 		Sprite::PreDraw();
@@ -61,6 +70,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	delete sprite[0];
 	delete sprite[1];
+	delete object;
 
 	return 0;
 }

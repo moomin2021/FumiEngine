@@ -28,3 +28,6 @@ struct PipelineSet {
 
 // --スプライト用パイプライン生成-- //
 PipelineSet CreateSpritePipeline();
+
+// --オブジェクト3Dのパイプライン生成-- //
+PipelineSet CreateObject3DPipeline();
