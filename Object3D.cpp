@@ -19,7 +19,7 @@ Object3D::Object3D() :
 #pragma region 初期化リスト
 	// 座標、回転角、スケール
 	position_{ 0.0f, 0.0f, 0.0f },
-	rotation_{ 0.0f, 45.0f, 0.0f },
+	rotation_{ 0.0f, 0.0f, 0.0f },
 	scale_{ 1.0f, 1.0f, 1.0f },
 
 	// 色
