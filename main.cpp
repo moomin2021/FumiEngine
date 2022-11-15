@@ -34,8 +34,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	sprite[1]->position = { 100.0f, 100.0f };
 
-	Object3D* object = new Object3D();
-	object->CreateCube();
+	Object3D* object[2];
+	object[0] = new Object3D();
+	object[1] = new Object3D();
+	object[0]->CreateCube();
+	object[1]->CreateCube();
+	object[0]->position_.x = 2.0f;
+	object[0]->rotation_.x = 45.0f;
 
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
@@ -48,13 +53,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		sprite[0]->Update();
 		sprite[1]->Update();
 
-		object->Update();
+		object[0]->Update();
+		object[1]->Update();
 
 		// --描画前処理-- //
 		dx12->PreDraw();
 
 		Object3D::PreDraw();
-		object->Draw(valoHandle);
+		object[0]->Draw(valoHandle);
+		object[1]->Draw(valoHandle);
 
 		// スプライト描画前処理
 		Sprite::PreDraw();
@@ -70,7 +77,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	delete sprite[0];
 	delete sprite[1];
-	delete object;
+	delete object[0];
+	delete object[1];
 
 	return 0;
 }
