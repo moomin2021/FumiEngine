@@ -87,6 +87,12 @@ public:
 	// --立方体の頂点データとインデックスデータを作成-- //
 	void CreateCube();
 
+	// --モデルの頂点データとインデックスデータを作成-- //
+	void CreateModel();
+
+	// 頂点バッファとインデックスバッファの作成
+	void CreateBuffer();
+
 	// --更新処理-- //
 	void Update();
 

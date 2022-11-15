@@ -38,7 +38,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	object[0] = new Object3D();
 	object[1] = new Object3D();
 	object[0]->CreateCube();
-	object[1]->CreateCube();
+	object[1]->CreateModel();
 	object[0]->position_.x = 2.0f;
 	object[0]->rotation_.x = 45.0f;
 
@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// スプライト描画前処理
 		Sprite::PreDraw();
 		sprite[0]->Draw(valoHandle);
-		sprite[1]->Draw(haeHandle);
+		sprite[1]->Draw();
 
 		// --描画後処理-- //
 		dx12->PostDraw();

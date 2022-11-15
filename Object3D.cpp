@@ -9,6 +9,12 @@
 // --便利系関数-- //
 #include "Util.h"
 
+// --モデル読み込みのため-- //
+#include <fstream>
+#include <sstream>
+#include <string>
+using namespace std;
+
 Object3D::Object3D() :
 #pragma region 初期化リスト
 	// 座標、回転角、スケール
@@ -277,6 +283,113 @@ void Object3D::CreateCube()
 		XMStoreFloat3(&vertices_[index2].normal, normal);
 	}
 #pragma endregion
+
+	// 頂点バッファとインデックスバッファの作成
+	CreateBuffer();
+}
+
+void Object3D::CreateModel()
+{
+#pragma region モデルを読み込む
+	// ファイルストリーム
+	ifstream file;
+
+	// [obj]ファイルを開く
+	file.open("Resources/cube/cube.obj");
+
+	// ファイルオープン失敗をチェック
+	assert(!file.fail());
+
+	vector<XMFLOAT3> positions;// -> 頂点座標
+	vector<XMFLOAT3> normals;// -> 法線ベクトル
+	vector<XMFLOAT2> texcoords;// -> テクスチャUV
+
+	// 1行ずつ読み込む
+	string line;
+
+	while (getline(file, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		istringstream line_stream(line);
+
+		// 半角スペース区切りで行の先頭文字列を取得
+		string key;
+		getline(line_stream, key, ' ');
+
+		// 先頭文字列が[v]なら頂点座標
+		if (key == "v") {
+			// X, Y, Z座標読み込み
+			XMFLOAT3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+
+			// 座標データに追加
+			positions.emplace_back(position);
+
+			// 頂点データに追加
+			Vertices3D vertex{};
+			vertex.pos = position;
+			vertices_.emplace_back(vertex);
+		}
+
+		// 先頭文字列が[f]ならポリゴン(三角形)
+		if (key == "f") {
+			// 半角スペース区切りで行の続きを読み込む
+			string index_string;
+			while (getline(line_stream, index_string, ' ')) {
+				// 頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
+				istringstream index_stream(index_string);
+				unsigned short indexPosition;
+				index_stream >> indexPosition;
+
+				// 頂点インデックスに追加
+				indices_.emplace_back(indexPosition - 1);
+			}
+		}
+	}
+
+	// ファイルを閉じる
+	file.close();
+#pragma endregion
+
+#pragma region 法線計算
+	for (size_t i = 0; i < indices_.size() / 3; i++) {
+		// --三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short index0 = indices_[i * 3 + 0];
+		unsigned short index1 = indices_[i * 3 + 1];
+		unsigned short index2 = indices_[i * 3 + 2];
+
+		// --三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices_[index0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices_[index1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices_[index2].pos);
+
+		// --p0->p1ベクトル、p0->p2ベクトルを計算（ベクトルの減算）
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+
+		// --外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+
+		// --正規化
+		normal = XMVector3Normalize(normal);
+
+		// --求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices_[index0].normal, normal);
+		XMStoreFloat3(&vertices_[index1].normal, normal);
+		XMStoreFloat3(&vertices_[index2].normal, normal);
+	}
+#pragma endregion
+
+	// 頂点バッファとインデックスバッファの作成
+	CreateBuffer();
+}
+
+void Object3D::CreateBuffer()
+{
+	// 関数が成功したかどうかを判別する用変数
+	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
+	HRESULT result;
 
 #pragma region 頂点バッファ作成
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
