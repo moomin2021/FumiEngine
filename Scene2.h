@@ -14,14 +14,14 @@
 // --キーボード入力クラス-- //
 #include "Key.h"
 
-class Scene1 : public BaseScene {
+class Scene2 : public BaseScene {
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
-	Scene1();
+	Scene2();
 
 	// デストラクタ
-	~Scene1();
+	~Scene2();
 
 	// 初期化処理
 	void Initialize();
@@ -31,9 +31,6 @@ public:
 
 	// 描画処理
 	void Draw();
-
-	// リセット処理
-	void Reset();
 
 private:
 
