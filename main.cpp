@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "FumiEngine.h"
 #include "Object3D.h"
+#include "SceneManager.h"
 
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
