@@ -25,12 +25,6 @@ Object3D::Object3D() :
 	// 色
 	color_{ 1.0f, 1.0f, 1.0f, 1.0f },
 
-	// --ビュー変換行列-- //
-	matView_{},
-	eye_{0.0f, 0.0f, -10.0f},
-	target_{0.0f, 0.0f, 0.0f},
-	up_{0.0f, 1.0f, 0.0f},
-
 	// --透視投影行列の計算-- //
 	matProjection_{},
 
@@ -92,12 +86,9 @@ Object3D::Object3D() :
 		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
 		0.1f, 1000.0f// ------------------------> 前端、奥端
 	);
-
-	// --ビュー変換行列-- //
-	matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 }
 
-void Object3D::Update()
+void Object3D::Update(Camera* camera)
 {
 	// 関数が成功したかどうかを判別する用変数
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
@@ -124,7 +115,7 @@ void Object3D::Update()
 	assert(SUCCEEDED(result));
 
 	// --定数バッファへデータ転送-- //
-	constMap->mat = matWorld * matView_ * matProjection_;// -> 行列
+	constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> 行列
 	constMap->color = color_;// -> 色
 
 	// --繋がりを解除-- //

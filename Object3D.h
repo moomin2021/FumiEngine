@@ -14,6 +14,9 @@ using namespace Microsoft::WRL;
 // --シーケンスコンテナの一種-- //
 #include <vector>
 
+// --カメラクラス-- //
+#include "Camera.h"
+
 // --頂点データ-- //
 struct Vertices3D {
 	// --XYZ座標-- //
@@ -67,12 +70,6 @@ private:
 	// --定数バッファ-- //
 	ComPtr<ID3D12Resource> constBuff_;
 
-	// --ビュー変換行列-- //
-	XMMATRIX matView_;
-	XMFLOAT3 eye_;
-	XMFLOAT3 target_;
-	XMFLOAT3 up_;
-
 	// --透視投影行列の計算-- //
 	XMMATRIX matProjection_;
 
@@ -94,7 +91,7 @@ public:
 	void CreateBuffer();
 
 	// --更新処理-- //
-	void Update();
+	void Update(Camera* camera);
 
 	// --描画処理-- //
 	void Draw(int textureHandle = 0);

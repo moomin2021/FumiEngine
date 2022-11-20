@@ -8,6 +8,7 @@
 #include "FumiEngine.h"
 #include "Object3D.h"
 #include "SceneManager.h"
+#include "Camera.h"
 
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
@@ -43,6 +44,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	object[0]->position_.x = 2.0f;
 	object[0]->rotation_.x = 45.0f;
 
+	Camera* camera = new Camera();
+	camera->eye_ = { 0.0f, 0.0f, -10.0f };
+
 	// --コンソールへの文字出力
 	OutputDebugStringA("Hello,DirectX!!\n");
 
@@ -51,11 +55,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (winAPI->IsEndMessage() == true) break;
 
+		camera->Update();
+
 		sprite[0]->Update();
 		sprite[1]->Update();
 
-		object[0]->Update();
-		object[1]->Update();
+		object[0]->Update(camera);
+		object[1]->Update(camera);
 
 		// --描画前処理-- //
 		dx12->PreDraw();
