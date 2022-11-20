@@ -20,6 +20,13 @@ using namespace Microsoft::WRL;
 // --オブジェクト3Dクラス-- //
 #include "Object3D.h"
 
+enum BillBoardType {
+	BILLBOARDX,
+	BILLBOARDY,
+	BILLBOARDZ,
+	BILLBOARDALL,
+};
+
 class BillBoard {
 	/// メンバ変数
 public:
@@ -57,7 +64,7 @@ public:
 	void CreateBuffer();
 
 	// --更新処理-- //
-	void Update(Camera* camera);
+	void Update(Camera* camera, BillBoardType type);
 
 	// --描画処理-- //
 	void Draw(int textureHandle = 0);

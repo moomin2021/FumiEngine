@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Scene1.h"
+#include "Scene2.h"
 
 // 現在のシーンを空にする
 BaseScene* SceneManager::myScene_ = nullptr;
@@ -29,6 +30,9 @@ void SceneManager::ChangeScene(SCENE scene) {
 		myScene_ = new Scene1();
 		myScene_->Initialize();
 		break;
+	case SCENE::SCENE2:
+		myScene_ = new Scene2();
+		myScene_->Initialize();
 	default:
 		break;
 	}
@@ -37,6 +41,14 @@ void SceneManager::ChangeScene(SCENE scene) {
 void SceneManager::Update() {
 	// 現在のシーンの更新処理
 	myScene_->Update();
+
+	if (key_->TriggerKey(DIK_1)) {
+		ChangeScene(SCENE1);
+	}
+
+	else if (key_->TriggerKey(DIK_2)) {
+		ChangeScene(SCENE2);
+	}
 }
 
 void SceneManager::Draw() {

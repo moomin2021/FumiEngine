@@ -9,6 +9,7 @@ public:
 	// シーン列挙型
 	enum SCENE {
 		SCENE1,
+		SCENE2,
 	};
 
 	// コンストラクタ
@@ -21,10 +22,10 @@ public:
 	static void ChangeScene(SCENE scene);
 
 	// 現在のシーンの更新処理
-	static void Update();
+	void Update();
 
 	// 現在のシーンの描画処理
-	static void Draw();
+	void Draw();
 
 private:
 

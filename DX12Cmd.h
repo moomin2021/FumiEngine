@@ -53,6 +53,9 @@ private:
 	// --オブジェクト3D用のパイプライン-- //
 	static PipelineSet object3DPipeline_;
 
+	// --ビルボード用のパイプライン-- //
+	static PipelineSet billBoardPipeline_;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -81,6 +84,9 @@ public:
 
 	// --オブジェクト3D用のパイプラインを取得-- //
 	static PipelineSet GetObject3DPipeline() { return object3DPipeline_; }
+
+	// --ビルボード用のパイプラインを取得
+	static PipelineSet GetBillBoardPipeline() { return billBoardPipeline_; }
 #pragma endregion
 
 private:

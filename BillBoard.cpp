@@ -91,7 +91,7 @@ BillBoard::BillBoard() :
 	CreateSquare();
 }
 
-void BillBoard::Update(Camera* camera)
+void BillBoard::Update(Camera* camera, BillBoardType type)
 {
 	// 視点座標
 	XMVECTOR eyePos = XMLoadFloat3(&camera->eye_);
@@ -138,12 +138,43 @@ void BillBoard::Update(Camera* camera)
 	matCameraRot.r[2] = cameraAxisZ;
 	matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
 
-	// 全方向ビルボード行列の計算 //
 	XMMATRIX matBillboard;
-	matBillboard.r[0] = cameraAxisX;
-	matBillboard.r[1] = cameraAxisY;
-	matBillboard.r[2] = cameraAxisZ;
-	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+
+	if (type == BILLBOARDX) {
+
+	}
+
+	else if (type == BILLBOARDY) {
+		// カメラX軸、Y軸、Z軸 //
+		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+
+		// X軸は共通 //
+		ybillCameraAxisX = cameraAxisX;
+
+		// Y軸はワールド座標系のY軸 //
+		ybillCameraAxisY = XMVector3Normalize(upVec);
+
+		// Z軸はX軸→Y軸の外積で求まる //
+		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
+
+		// Y軸回りのビルボード行列 //
+		matBillboard.r[0] = ybillCameraAxisX;
+		matBillboard.r[1] = ybillCameraAxisY;
+		matBillboard.r[2] = ybillCameraAxisZ;
+		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+	}
+
+	else if (type == BILLBOARDZ) {
+
+	}
+
+	else if (type == BILLBOARDALL) {
+		// 全方向ビルボード行列の計算 //
+		matBillboard.r[0] = cameraAxisX;
+		matBillboard.r[1] = cameraAxisY;
+		matBillboard.r[2] = cameraAxisZ;
+		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+	}
 
 	// 転置により逆行列(逆回転)を計算 //
 	//matView = XMMatrixTranspose(matCameraRot);
@@ -206,9 +237,9 @@ void BillBoard::Draw(int textureHandle)
 void BillBoard::PreDraw()
 {
 	// パイプラインステートの設定
-	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetObject3DPipeline().pipelineState.Get());
+	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
 	// ルートシグネチャの設定
-	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetObject3DPipeline().rootSignature.Get());
+	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
 	// プリミティブ形状を設定
 	DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

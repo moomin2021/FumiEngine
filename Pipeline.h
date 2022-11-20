@@ -31,3 +31,6 @@ PipelineSet CreateSpritePipeline();
 
 // --オブジェクト3Dのパイプライン生成-- //
 PipelineSet CreateObject3DPipeline();
+
+// --ビルボード用のパイプライン生成-- //
+PipelineSet CreateBillBoardPipeline();

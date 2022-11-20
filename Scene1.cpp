@@ -57,7 +57,7 @@ void Scene1::Update() {
 	object_->Update(camera_);
 
 	// ビルボード更新処理
-	billBoard_->Update(camera_);
+	billBoard_->Update(camera_, BillBoardType::BILLBOARDALL);
 }
 
 void Scene1::Draw() {

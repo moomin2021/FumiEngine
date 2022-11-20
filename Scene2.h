@@ -44,11 +44,8 @@ private:
 	// カメラ
 	Camera* camera_;
 
-	// オブジェクト
-	Object3D* object_;
-
 	// ビルボード
-	BillBoard* billBoard_;
+	BillBoard* billBoard_[10];
 
 	// 画像ハンドル
 	int valoHandle_;
