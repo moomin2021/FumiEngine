@@ -138,8 +138,10 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
     <ClCompile Include="FumiEngine.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Pipeline.cpp" />
+    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -154,8 +156,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="FumiEngine.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="Scene1.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />

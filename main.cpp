@@ -2,6 +2,7 @@
 #include "WinAPI.h"// -> WinAPI
 #include "DX12Cmd.h"// -> DirectX12
 #include "Texture.h"// -> Texture
+#include "Key.h"// -> キーボード入力
 #pragma endregion
 
 #include "Sprite.h"
@@ -9,6 +10,7 @@
 #include "Object3D.h"
 #include "SceneManager.h"
 #include "Camera.h"
+#include "Scene1.h"
 
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
@@ -26,54 +28,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Texture* texture = Texture::GetInstance();// -> インスタンス取得
 	texture->Initialize(dx12->GetDevice());// -> 初期化処理
 
-	int valoHandle = LoadTexture(L"Resources/valo.jpg");
-	int haeHandle = LoadTexture(L"Resources/hae.png");
+	// --キーボードクラス-- //
+	Key* key = Key::GetInstance();
+	key->Initialize(winAPI);
 
-	// スプライト
-	Sprite* sprite[2];
-	sprite[0] = new Sprite();
-	sprite[1] = new Sprite();
-
-	sprite[1]->position = { 100.0f, 100.0f };
-
-	Object3D* object[2];
-	object[0] = new Object3D();
-	object[1] = new Object3D();
-	object[0]->CreateCube();
-	object[1]->CreateModel();
-	object[0]->position_.x = 2.0f;
-	object[0]->rotation_.x = 45.0f;
-
-	Camera* camera = new Camera();
-	camera->eye_ = { 0.0f, 0.0f, -10.0f };
-
-	// --コンソールへの文字出力
-	OutputDebugStringA("Hello,DirectX!!\n");
+	// --シーンを管理するクラス-- //
+	SceneManager* sceneManager = new SceneManager();
+	sceneManager->ChangeScene(SceneManager::SCENE1);
 
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (winAPI->IsEndMessage() == true) break;
 
-		camera->Update();
+		// キーボード入力更新処理
+		key->Update();
 
-		sprite[0]->Update();
-		sprite[1]->Update();
-
-		object[0]->Update(camera);
-		object[1]->Update(camera);
+		// シーン更新処理
+		sceneManager->Update();
 
 		// --描画前処理-- //
 		dx12->PreDraw();
 
-		Object3D::PreDraw();
-		object[0]->Draw(valoHandle);
-		object[1]->Draw(valoHandle);
-
-		// スプライト描画前処理
-		Sprite::PreDraw();
-		sprite[0]->Draw(valoHandle);
-		sprite[1]->Draw();
+		sceneManager->Draw();
 
 		// --描画後処理-- //
 		dx12->PostDraw();
@@ -82,10 +59,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --ウィンドウクラス登録解除-- //
 	winAPI->WinClassUnregister();
 
-	delete sprite[0];
-	delete sprite[1];
-	delete object[0];
-	delete object[1];
+	delete sceneManager;
 
 	return 0;
 }
