@@ -1,41 +1,41 @@
 #pragma once
-#include "BaseScene.h"
-#include "Key.h"
-#include <memory>
+#include "BaseScene.h"// -> 各シーンのベース
+#include "Key.h"// -> キーボード入力
 
 class SceneManager {
+	// --メンバ変数-- //
+public:
+
+private:
+	// キーボード入力クラス
+	Key* key_;
+
+	// 現在のシーン
+	BaseScene* nowScene_;
+
 	// --メンバ関数-- //
 public:
-	// シーン列挙型
-	enum SCENE {
-		SCENE1,
-		SCENE2,
-	};
+	// インスタンス取得
+	static SceneManager* GetInstance();
 
+	// 更新処理
+	void Update();
+
+	// 描画処理
+	void Draw();
+
+private:
 	// コンストラクタ
 	SceneManager();
 
 	// デストラクタ
 	~SceneManager();
 
-	// シーンを引数のシーンに変える
-	static void ChangeScene(SCENE scene);
-
-	// 現在のシーンの更新処理
-	void Update();
-
-	// 現在のシーンの描画処理
-	void Draw();
-
-private:
-
-	// --メンバ変数-- //
+	// --禁止-- //
 public:
+	// コピーコンストラクタ
+	SceneManager(const SceneManager& instance) = delete;
 
-private:
-	// 現在のシーン
-	static BaseScene* myScene_;
-
-	// キーボード入力
-	Key* key_;
+	// 代入演算子
+	SceneManager& operator=(const SceneManager& instance) = delete;
 };

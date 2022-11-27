@@ -5,13 +5,7 @@
 #include "Key.h"// -> キーボード入力
 #pragma endregion
 
-#include "Sprite.h"
-#include "FumiEngine.h"
-#include "Object3D.h"
 #include "SceneManager.h"
-#include "Camera.h"
-#include "Scene1.h"
-
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -32,9 +26,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Key* key = Key::GetInstance();
 	key->Initialize(winAPI);
 
-	// --シーンを管理するクラス-- //
-	SceneManager* sceneManager = new SceneManager();
-	sceneManager->ChangeScene(SceneManager::SCENE1);
+	// --シーン管理クラス-- //
+	SceneManager* sceneM = SceneManager::GetInstance();
 
 	// --ゲームループ-- //
 	while (true) {
@@ -44,13 +37,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// キーボード入力更新処理
 		key->Update();
 
-		// シーン更新処理
-		sceneManager->Update();
+		// シーン管理クラス更新処理
+		sceneM->Update();
 
 		// --描画前処理-- //
 		dx12->PreDraw();
 
-		sceneManager->Draw();
+		// シーン管理クラス描画処理
+		sceneM->Draw();
 
 		// --描画後処理-- //
 		dx12->PostDraw();
@@ -58,8 +52,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --ウィンドウクラス登録解除-- //
 	winAPI->WinClassUnregister();
-
-	delete sceneManager;
 
 	return 0;
 }
