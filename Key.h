@@ -17,9 +17,6 @@ public:
 	// インスタンス読み込み
 	static Key* GetInstance();
 
-	// デストラクタ
-	~Key();
-
 	// 初期化処理
 	void Initialize(WinAPI * win);
 
@@ -41,6 +38,8 @@ public:
 	bool TriggerKey(UINT8 key) { return keys_[key] && !oldKeys_[key]; }
 
 private:
+	// デストラクタ
+	~Key();
 
 	// --メンバ変数-- //
 public:
