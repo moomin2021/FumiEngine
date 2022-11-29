@@ -23,6 +23,9 @@ using namespace Microsoft::WRL;
 // --文字列-- //
 #include <string>
 
+// --時間を扱う為の標準ライブラリ-- //
+#include <chrono>
+
 // --パイプライン-- //
 #include "Pipeline.h"
 
@@ -47,6 +50,9 @@ private:
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	ComPtr<ID3D12Resource> depthBuff;// -> リソース設定
 
+	// 記録時間(FPS固定用)
+	std::chrono::steady_clock::time_point reference_;
+
 	// --スプライト用のパイプライン-- //
 	static PipelineSet spritePipeline_;
 
@@ -65,6 +71,12 @@ public:
 
 	// --初期化処理-- //
 	void Initialize(WinAPI * win);
+
+	// FPS固定初期化処理
+	void InitializeFixFPS();
+
+	// FPS固定更新処理
+	void UpdateFixFPS();
 
 	// --描画前処理-- //
 	void PreDraw();

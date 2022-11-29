@@ -1,4 +1,5 @@
 #include "WinAPI.h"
+#pragma comment(lib, "winmm.lib")
 
 // --ウィンドウプロシージャプロトタイプ宣言-- //
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -35,6 +36,9 @@ WinAPI::~WinAPI() {
 
 // --初期化処理-- //
 void WinAPI::Initialize() {
+	// システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
+
 	// --ウィンドウクラスの設定-- //
 	winClass_.cbSize = sizeof(WNDCLASSEX);// -> WNDCLASSEX構造体のサイズ
 	winClass_.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定(アドレスを代入)
