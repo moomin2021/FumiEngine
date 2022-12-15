@@ -38,13 +38,6 @@ struct ConstBufferData3D {
 	XMMATRIX mat;
 };
 
-// --描画タイプ-- //
-enum DrawType {
-	None = 0,// -> なし
-	Cube = 1,// -> 立方体
-	Model = 2// -> モデル
-};
-
 class Object3D {
 	/// メンバ変数
 public:
@@ -72,9 +65,6 @@ private:
 
 	// --透視投影行列の計算-- //
 	XMMATRIX matProjection_;
-
-	// --描画タイプ-- //
-	int drawType_;
 
 	/// メンバ関数
 public:

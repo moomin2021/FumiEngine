@@ -2,7 +2,7 @@
 #include "DX12Cmd.h"
 #include "Texture.h"
 
-int LoadTexture(const wchar_t* szFile) {
+int LoadTexture(const std::string fileName) {
 
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
@@ -11,9 +11,13 @@ int LoadTexture(const wchar_t* szFile) {
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
+	// ユニコード文字列に変換する
+	wchar_t wfilepath[128];
+	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, fileName.c_str(), -1, wfilepath, _countof(wfilepath));
+
 	// --WICテクスチャのロード-- //
 	result = LoadFromWICFile(
-		szFile,
+		wfilepath,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg
 	);

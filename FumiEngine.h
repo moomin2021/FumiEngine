@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 // テクスチャのハンドルをint型で取得
-int LoadTexture(const wchar_t* szFile);
+int LoadTexture(const std::string fileName);

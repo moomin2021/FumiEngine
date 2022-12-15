@@ -59,6 +59,9 @@ private:
 	// --オブジェクト3D用のパイプライン-- //
 	static PipelineSet object3DPipeline_;
 
+	// --モデル用のパイプライン
+	static PipelineSet modelPipeline_;
+
 	// --ビルボード用のパイプライン-- //
 	static PipelineSet billBoardPipeline_;
 
@@ -96,6 +99,9 @@ public:
 
 	// --オブジェクト3D用のパイプラインを取得-- //
 	static PipelineSet GetObject3DPipeline() { return object3DPipeline_; }
+
+	// --モデル用のパイプラインを取得-- //
+	static PipelineSet GetModelPipeline() { return modelPipeline_; }
 
 	// --ビルボード用のパイプラインを取得
 	static PipelineSet GetBillBoardPipeline() { return billBoardPipeline_; }
