@@ -3,8 +3,9 @@
 
 // コンストラクタ
 GameScene::GameScene() :
-	sprite_(nullptr),// -> スプライト
-	model_(nullptr),
+	key_(nullptr),
+	player_(nullptr),
+	cube_(nullptr),
 	camera_(nullptr)
 {
 
@@ -12,41 +13,54 @@ GameScene::GameScene() :
 
 // デストラクタ
 GameScene::~GameScene() {
-	delete sprite_;// -> スプライト
-	delete model_;
+	delete player_;
+	delete cube_;
 	delete camera_;
 }
 
 // 初期化処理
 void GameScene::Initialize() {
-	// スプライト
-	sprite_ = new Sprite();
-	model_ = new Model();
-	model_->CreateModel("player_rest");
+	key_ = Key::GetInstance();
+
+	// プレイヤーモデル
+	player_ = new Model();
+	player_->CreateModel("player_rest");
+	player_->position_ = { -10.0f, 0.0f, 0.0f };
+
+	// キューブモデル
+	cube_ = new Model();
+	cube_->CreateModel("cube");
+	cube_->position_ = { 10.0f, 0.0f, 0.0f };
+
+	// カメラ
 	camera_ = new Camera();
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
-	textureHandle_ = LoadTexture("Resources/valo.jpg");
-	object_ = new Object3D();
-	object_->CreateModel();
 }
 
 // 更新処理
 void GameScene::Update() {
+	camera_->eye_.x += key_->PushKey(DIK_D) - key_->PushKey(DIK_A);
+	camera_->eye_.z += key_->PushKey(DIK_W) - key_->PushKey(DIK_S);
+
+	// カメラの更新
 	camera_->Update();
 
-	sprite_->Update();
-	model_->Update(camera_);
-	object_->Update(camera_);
+	// プレイヤーモデルの更新
+	player_->Update(camera_);
+
+	// キューブモデルの更新
+	cube_->Update(camera_);
 }
 
 // 描画処理
 void GameScene::Draw() {
-	Sprite::PreDraw();
-	sprite_->Draw(textureHandle_);
 
+	// モデル描画前処理
 	Model::PreDraw();
-	model_->Draw();
 
-	Object3D::PreDraw();
-	//object_->Draw();
+	// プレイヤーモデル描画
+	player_->Draw();
+
+	// キューブモデル描画
+	cube_->Draw();
 }

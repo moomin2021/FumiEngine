@@ -2,6 +2,12 @@
 #include "BaseScene.h"// -> 各シーンのベース
 #include "Key.h"// -> キーボード入力
 
+// シーン列挙型
+enum SCENE {
+	TITLE,
+	GAME
+};
+
 class SceneManager {
 	// --メンバ変数-- //
 public:
@@ -17,6 +23,9 @@ private:
 public:
 	// インスタンス取得
 	static SceneManager* GetInstance();
+
+	// シーンを変更
+	void ChangeScene(int sceneNo);
 
 	// 更新処理
 	void Update();

@@ -1,25 +1,22 @@
 #pragma once
-#include "BaseScene.h"// -> シーンのベース
+#include "BaseScene.h"
 #include "Sprite.h"// -> スプライト
 #include "Model.h"// -> モデルクラス
 #include "Camera.h"
 #include "Object3D.h"
+#include "Key.h"
 
 class GameScene : public BaseScene {
 	// --メンバ変数-- //
 public:
 
 private:
-	// スプライト
-	Sprite* sprite_;
+	Key* key_;
 
-	Model* model_;
+	Model* player_;
+	Model* cube_;
 
 	Camera* camera_;
-
-	int textureHandle_;
-
-	Object3D* object_;
 
 	// --メンバ関数-- //
 public:
