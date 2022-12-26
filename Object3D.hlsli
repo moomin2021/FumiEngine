@@ -1,10 +1,15 @@
 cbuffer ConstBufferData3D : register(b0)
 {
-    // --色（RBGA）-- //
-    float4 color;
-
 	// --行列-- //
     matrix mat;
+}
+
+cbuffer MaterialData : register(b1)
+{
+    float3 m_ambient : packoffset(c0); // -> アンビエント係数
+    float3 m_diffuse : packoffset(c1); // -> ディフェーズ係数
+    float3 m_specular : packoffset(c2); // -> スペキュラー係数
+    float m_alpha : packoffset(c2.w); // -> アルファ
 }
 
 // --頂点シェーダーの出力構造体-- //

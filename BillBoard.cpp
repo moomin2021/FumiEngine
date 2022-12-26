@@ -54,7 +54,7 @@ BillBoard::BillBoard() :
 	// 定数バッファのリソース設定
 	D3D12_RESOURCE_DESC resdesc{};
 	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(ConstBufferData3D) + 0xff) & ~0xff;
+	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
 	resdesc.Height = 1;
 	resdesc.DepthOrArraySize = 1;
 	resdesc.MipLevels = 1;
@@ -72,7 +72,7 @@ BillBoard::BillBoard() :
 	assert(SUCCEEDED(result));
 
 	// 定数バッファのマッピング
-	ConstBufferData3D* constMap;
+	ObjectBuff* constMap;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	assert(SUCCEEDED(result));
 
@@ -198,13 +198,12 @@ void BillBoard::Update(Camera* camera, BillBoardType type)
 	matWorld *= matTrans;// -> ワールド行列に平行移動を反映
 
 	// --マッピング-- //
-	ConstBufferData3D* constMap = nullptr;
+	ObjectBuff* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	assert(SUCCEEDED(result));
 
 	// --定数バッファへデータ転送-- //
 	constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> 行列
-	constMap->color = color_;// -> 色
 
 	// --繋がりを解除-- //
 	constBuff_->Unmap(0, nullptr);
@@ -256,7 +255,7 @@ void BillBoard::CreateSquare()
 
 #pragma region 頂点データ作成
 	// 立方体頂点データ
-	Vertices3D vertices[] = {
+	Vertex3D vertices[] = {
 		// 前面
 		{{ -0.5f, -0.5f, -0.5f}, {}, {0.0f, 1.0f}},// -> 左下 0
 		{{ -0.5f,  0.5f, -0.5f}, {}, {0.0f, 0.0f}},// -> 左上 1
@@ -357,7 +356,7 @@ void BillBoard::CreateBuffer()
 	vbView_.StrideInBytes = sizeof(vertices_[0]);// -> 頂点1つ分のデータサイズ
 
 	// --Map処理でメインメモリとGPUのメモリを紐づける-- //
-	Vertices3D* vertMap = nullptr;
+	Vertex3D* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 

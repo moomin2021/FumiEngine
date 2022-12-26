@@ -14,7 +14,8 @@ private:
 	Key* key_;
 
 	Model* player_;
-	Model* cube_;
+	
+	Object3D* object_;
 
 	Camera* camera_;
 

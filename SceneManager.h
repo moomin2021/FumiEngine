@@ -24,9 +24,6 @@ public:
 	// インスタンス取得
 	static SceneManager* GetInstance();
 
-	// シーンを変更
-	void ChangeScene(int sceneNo);
-
 	// 更新処理
 	void Update();
 
@@ -39,6 +36,9 @@ private:
 
 	// デストラクタ
 	~SceneManager();
+
+	// シーン切り替え
+	void ChangeScene(int changeSceneNum);
 
 	// --禁止-- //
 public:

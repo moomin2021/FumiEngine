@@ -40,7 +40,7 @@ public:
 
 private:
 	// --頂点データ-- //
-	std::vector<Vertices3D> vertices_;// -> 頂点データ
+	std::vector<Vertex3D> vertices_;// -> 頂点データ
 	D3D12_VERTEX_BUFFER_VIEW vbView_;// -> 頂点バッファビュー
 	ComPtr<ID3D12Resource> vertBuff_;// -> 頂点バッファ
 

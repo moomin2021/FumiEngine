@@ -10,28 +10,6 @@ SceneManager* SceneManager::GetInstance()
 	return &instance;
 }
 
-void SceneManager::ChangeScene(int sceneNo)
-{
-	// 現在のシーンが空ではなかったら
-	//if (nowScene_ != nullptr) {
-	//	// 現在のシーンをメモリ解放
-	//	delete nowScene_;
-	//}
-	delete nowScene_;
-
-	// 指定されたシーンのインスタンス生成と初期化
-	switch (sceneNo)
-	{
-	case SCENE::TITLE:
-		nowScene_ = new TitleScene();
-		break;
-	case SCENE::GAME:
-		nowScene_ = new GameScene();// -> インスタンス生成
-		break;
-	}
-	nowScene_->Initialize();
-}
-
 // コンストラクタ
 SceneManager::SceneManager() {
 	// インスタンス取得
@@ -47,12 +25,24 @@ SceneManager::~SceneManager() {
 	delete nowScene_;
 }
 
+void SceneManager::ChangeScene(int changeSceneNum)
+{
+	// 現在のシーンを解放処理
+	if (nowScene_ != nullptr) {
+		delete nowScene_;
+	}
+
+	switch (changeSceneNum)
+	{
+	case SCENE::TITLE:
+		nowScene_ = new TitleScene();
+		nowScene_->Initialize();
+		break;
+	}
+}
+
 // 更新処理
 void SceneManager::Update() {
-	if (key_->TriggerKey(DIK_1)) {
-		ChangeScene(SCENE::TITLE);
-	}
-	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE::GAME);
 
 	nowScene_->Update();
 }

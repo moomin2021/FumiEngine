@@ -5,7 +5,7 @@
 GameScene::GameScene() :
 	key_(nullptr),
 	player_(nullptr),
-	cube_(nullptr),
+	object_(nullptr),
 	camera_(nullptr)
 {
 
@@ -14,7 +14,7 @@ GameScene::GameScene() :
 // デストラクタ
 GameScene::~GameScene() {
 	delete player_;
-	delete cube_;
+	delete object_;
 	delete camera_;
 }
 
@@ -22,19 +22,16 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 	key_ = Key::GetInstance();
 
-	// プレイヤーモデル
-	player_ = new Model();
-	player_->CreateModel("player_rest");
-	player_->position_ = { -10.0f, 0.0f, 0.0f };
-
-	// キューブモデル
-	cube_ = new Model();
-	cube_->CreateModel("cube");
-	cube_->position_ = { 10.0f, 0.0f, 0.0f };
-
 	// カメラ
 	camera_ = new Camera();
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
+
+	// プレイヤーモデル
+	player_ = player_->CreateModel("player_rest");
+
+	object_ = object_->CreateObject3D();
+	object_->SetCamera(camera_);
+	object_->SetModel(player_);
 }
 
 // 更新処理
@@ -45,22 +42,15 @@ void GameScene::Update() {
 	// カメラの更新
 	camera_->Update();
 
-	// プレイヤーモデルの更新
-	player_->Update(camera_);
-
-	// キューブモデルの更新
-	cube_->Update(camera_);
+	object_->rotation_.y += 0.1f;
 }
 
 // 描画処理
 void GameScene::Draw() {
 
 	// モデル描画前処理
-	Model::PreDraw();
+	Object3D::PreDraw();
 
 	// プレイヤーモデル描画
-	player_->Draw();
-
-	// キューブモデル描画
-	cube_->Draw();
+	object_->Draw();
 }

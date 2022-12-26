@@ -427,17 +427,22 @@ PipelineSet CreateObject3DPipeline()
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// --ルートパラメータの設定-- //
-	D3D12_ROOT_PARAMETER rootParams[2] = {};
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;// --> 定数のバッファビュー
 	rootParams[0].Descriptor.ShaderRegister = 0;// ------------------> 定数バッファ番号
 	rootParams[0].Descriptor.RegisterSpace = 0;// -------------------> デフォルト値
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;// -> 全てのシェーダーから見える
 
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;// --> 定数のバッファビュー
+	rootParams[1].Descriptor.ShaderRegister = 1;// ------------------> 定数バッファ番号
+	rootParams[1].Descriptor.RegisterSpace = 0;// -------------------> デフォルト値
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;// -> 全てのシェーダーから見える
+
 	// -- テクスチャレジスタ0番-- //
-	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;// -> 種類
-	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;// -------> デスクリプタレンジ
-	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;// --------------------> デスクリプタレンジ数
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;// -------------> 全てのシェーダから見える
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;// -> 種類
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;// -------> デスクリプタレンジ
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;// --------------------> デスクリプタレンジ数
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;// -------------> 全てのシェーダから見える
 
 	// --テクスチャサンプラーの設定-- //
 	// ※テクスチャがオブジェクトに張り付くときの拡大縮小の補間方法などを指定するもの //
