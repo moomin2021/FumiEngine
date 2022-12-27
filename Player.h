@@ -1,22 +1,36 @@
 #pragma once
 #include "Vector3.h"
 #include "Camera.h"
+#include "Key.h"
+#include "Mouse.h"
 
 class Player {
 	// メンバ変数
 public:
 
 private:
-	// 足元の座標
-	Vector3 legPos_;
+	Key* key_;// -> キーボード入力
+	Mouse* mouse_;// -> マウス入力
+	Camera* camera_;// -> カメラ
 
-	// カメラ
-	Camera* camera_;
+	// カメラアングル
+	float angleX_, angleY_;
+
+	// カメラ感度
+	float cameraSens_;
+
+	float moveSpeed_;// -> 移動速度
+
+	Vector3 forwardVec_;// -> 前方ベクトル
+	Vector3 rightVec_;// -> 右ベクトル
 
 	// メンバ関数
 public:
 	// コンストラクタ
 	Player();
+
+	// デストラクタ
+	~Player();
 
 	// 初期化処理
 	void Initialize();
@@ -33,7 +47,9 @@ public:
 #pragma endregion
 
 private:
-	// デストラクタ
-	~Player();
+	// 視点移動
+	void EyeMove();
 
+	// 移動処理
+	void Move();
 };

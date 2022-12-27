@@ -1,10 +1,11 @@
 #pragma once
-#include "BaseScene.h"
+#include "BaseScene.h"// -> ベースシーンクラス
 #include "Sprite.h"// -> スプライト
 #include "Model.h"// -> モデルクラス
-#include "Camera.h"
-#include "Object3D.h"
-#include "Key.h"
+#include "Camera.h"// -> カメラクラス
+#include "Object3D.h"// -> オブジェクト3D
+#include "Key.h"// -> キーボード入力
+#include "Player.h"// -> プレイヤークラス
 
 class GameScene : public BaseScene {
 	// --メンバ変数-- //
@@ -13,6 +14,12 @@ public:
 private:
 	// キーボード入力
 	Key* key_;
+
+	// カメラ
+	Camera* camera_;
+
+	// プレイヤー
+	Player* player_;
 
 	// モデル
 	Model* blackFloor_;// -> 黒色の床
@@ -23,9 +30,6 @@ private:
 
 	// オブジェクト
 	Object3D* floor_[maxFloor_];// -> 床
-
-	// カメラ
-	Camera* camera_;
 
 	// --メンバ関数-- //
 public:
