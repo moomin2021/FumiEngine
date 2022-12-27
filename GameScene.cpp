@@ -7,12 +7,10 @@ GameScene::GameScene() :
 
 	// モデル
 	blackFloor_(nullptr),// -> 黒色の床
+	whiteFloor_(nullptr),// -> 白色の床
 
 	// オブジェクト
 	floor_{},// -> 床
-
-	// 各オブジェクトの数
-	maxFloor_(0)
 
 	// カメラ
 	camera_(nullptr)
@@ -22,27 +20,38 @@ GameScene::GameScene() :
 
 // デストラクタ
 GameScene::~GameScene() {
-	delete player_;
-	for (size_t i = 0; i < 10; i++) delete object_[i];
+	delete blackFloor_;
+	delete whiteFloor_;
+	for (size_t i = 0; i < maxFloor_; i++) delete floor_[i];
 	delete camera_;
 }
 
 // 初期化処理
 void GameScene::Initialize() {
+	// キーボード入力
 	key_ = Key::GetInstance();
+
+	// モデル
+	blackFloor_ = Model::CreateModel("blackFloor");// -> 黒色の床
+	whiteFloor_ = Model::CreateModel("whiteFloor");// -> 白色の床
 
 	// カメラ
 	camera_ = new Camera();
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 
-	// プレイヤーモデル
-	player_ = player_->CreateModel("player_rest");
-	
-	for (size_t i = 0; i < 10; i++) {
-		object_[i] = Object3D::CreateObject3D();
-		object_[i]->position_ = { -10.0f + (2.0f * i), 0.0f, 0.0f };
-		object_[i]->SetCamera(camera_);
-		object_[i]->SetModel(player_);
+	// オブジェクト
+	for (size_t i = 0; i < maxFloor_; i++) {
+		floor_[i] = Object3D::CreateObject3D();
+		floor_[i]->position_ = { -4.5f + (1.0f * (i % 10)), 0.0f, -4.5f + (1.0f * (i / 10)) };
+		floor_[i]->SetCamera(camera_);
+		if ((i / 10) % 2 == 0 ) {
+			if (i % 2 == 0) floor_[i]->SetModel(blackFloor_);
+			if (i % 2 == 1) floor_[i]->SetModel(whiteFloor_);
+		}
+		else {
+			if (i % 2 == 0) floor_[i]->SetModel(whiteFloor_);
+			if (i % 2 == 1) floor_[i]->SetModel(blackFloor_);
+		}
 	}
 }
 
@@ -53,10 +62,6 @@ void GameScene::Update() {
 
 	// カメラの更新
 	camera_->Update();
-
-	for (size_t i = 0; i < 10; i++) {
-		object_[i]->rotation_.y += 0.1f;
-	}
 }
 
 // 描画処理
@@ -66,7 +71,7 @@ void GameScene::Draw() {
 	Object3D::PreDraw();
 
 	// プレイヤーモデル描画
-	for (size_t i = 0; i < 10; i++) {
-		object_[i]->Draw();
+	for (size_t i = 0; i < maxFloor_; i++) {
+		floor_[i]->Draw();
 	}
 }

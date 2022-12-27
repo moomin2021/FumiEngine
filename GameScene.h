@@ -16,12 +16,13 @@ private:
 
 	// モデル
 	Model* blackFloor_;// -> 黒色の床
+	Model* whiteFloor_;// -> 白色の床
 	
-	// オブジェクト
-	Object3D* floor_[100];// -> 床
-
 	// 各オブジェクトの数
-	size_t maxFloor_;
+	static const size_t maxFloor_ = 100;
+
+	// オブジェクト
+	Object3D* floor_[maxFloor_];// -> 床
 
 	// カメラ
 	Camera* camera_;
