@@ -3,9 +3,18 @@
 
 // コンストラクタ
 GameScene::GameScene() :
-	key_(nullptr),
-	player_(nullptr),
-	object_{},
+	key_(nullptr),// -> キーボード入力
+
+	// モデル
+	blackFloor_(nullptr),// -> 黒色の床
+
+	// オブジェクト
+	floor_{},// -> 床
+
+	// 各オブジェクトの数
+	maxFloor_(0)
+
+	// カメラ
 	camera_(nullptr)
 {
 

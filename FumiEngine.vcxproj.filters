@@ -52,6 +52,12 @@
     <Filter Include="ソース ファイル\Input">
       <UniqueIdentifier>{cc76c0bd-bcad-4392-b9d3-df19d9b1df45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{fd965ca7-6810-4941-a58c-75c258464d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{c10ce134-8896-4c5a-94bf-dd89ffac1dd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,6 +117,9 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -169,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Mouse.h">
       <Filter>ヘッダー ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

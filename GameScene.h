@@ -11,12 +11,19 @@ class GameScene : public BaseScene {
 public:
 
 private:
+	// キーボード入力
 	Key* key_;
 
-	Model* player_;
+	// モデル
+	Model* blackFloor_;// -> 黒色の床
 	
-	Object3D* object_[10];
+	// オブジェクト
+	Object3D* floor_[100];// -> 床
 
+	// 各オブジェクトの数
+	size_t maxFloor_;
+
+	// カメラ
 	Camera* camera_;
 
 	// --メンバ関数-- //
