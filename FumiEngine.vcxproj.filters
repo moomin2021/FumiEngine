@@ -108,6 +108,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

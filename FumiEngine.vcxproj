@@ -141,6 +141,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="SceneManager.h" />

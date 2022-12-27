@@ -3,6 +3,7 @@
 #include "DX12Cmd.h"// -> DirectX12
 #include "Texture.h"// -> Texture
 #include "Key.h"// -> キーボード入力
+#include "Mouse.h"// -> マウスキーボード入力
 #pragma endregion
 
 #include "SceneManager.h"
@@ -26,6 +27,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Key* key = Key::GetInstance();
 	key->Initialize(winAPI);
 
+	// マウス入力
+	Mouse* mouse = Mouse::GetInstance();
+	mouse->Initialize(winAPI);
+
 	// --シーン管理クラス-- //
 	SceneManager* sceneM = SceneManager::GetInstance();
 
@@ -36,6 +41,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// キーボード入力更新処理
 		key->Update();
+
+		// マウス入力更新処理
+		mouse->Update();
 
 		// シーン管理クラス更新処理
 		sceneM->Update();
