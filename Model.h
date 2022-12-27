@@ -70,7 +70,7 @@ public:// メンバ変数
 
 public:// メンバ関数
 	// [Model]インスタンス作成
-	Model* CreateModel(std::string fileName);
+	static Model* CreateModel(std::string fileName);
 
 private:// メンバ関数
 	// モデル読み込み
