@@ -16,7 +16,7 @@ SceneManager::SceneManager() {
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = new GameScene();
+	nowScene_ = new TitleScene();
 	nowScene_->Initialize();
 }
 
@@ -38,11 +38,18 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = new TitleScene();
 		nowScene_->Initialize();
 		break;
+	case SCENE::GAME:
+		nowScene_ = new GameScene();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
 // 更新処理
 void SceneManager::Update() {
+
+	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE::TITLE);
+	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE::GAME);
 
 	nowScene_->Update();
 }
