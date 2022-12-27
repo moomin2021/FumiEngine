@@ -26,16 +26,6 @@ struct ObjectBuff {
 	XMMATRIX mat;
 };
 
-// 定数バッファ構造体(マテリアル)
-struct MaterialBuff {
-	XMFLOAT3 ambient;// -> アンビエント係数
-	float pad1;// -> パディング
-	XMFLOAT3 diffuse;// -> ディフェーズ係数
-	float pad2;// -> パディング
-	XMFLOAT3 specular;// -> スペキュラー係数
-	float alpha;// -> アルファ
-};
-
 class Object3D {
 public:// メンバ変数
 	XMFLOAT3 position_;// -> 座標
@@ -66,7 +56,7 @@ private:// メンバ変数
 
 public:// メンバ関数
 	// [Object3D]インスタンス作成
-	Object3D* CreateObject3D();
+	static Object3D* CreateObject3D();
 
 	// 描画処理
 	void Draw();
@@ -79,7 +69,7 @@ public:// メンバ関数
 	void SetCamera(Camera* camera) { camera_ = camera; }
 
 	// モデルを設定
-	void SetModel(Model* model);
+	void SetModel(Model* model) { model_ = model; };
 #pragma endregion
 
 private:// メンバ関数
@@ -88,13 +78,4 @@ private:// メンバ関数
 
 	// 初期化処理
 	void Initialize();
-
-	// マテリアルバッファ作成
-	void CreateMaterialBuff();
-
-	// 頂点バッファを作成
-	void CreateVertexBuff();
-
-	// インデックスバッファを作成
-	void CreateIndexBuff();
 };

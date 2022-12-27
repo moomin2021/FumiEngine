@@ -15,7 +15,7 @@ private:
 
 	Model* player_;
 	
-	Object3D* object_;
+	Object3D* object_[10];
 
 	Camera* camera_;
 

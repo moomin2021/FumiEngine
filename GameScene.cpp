@@ -5,7 +5,7 @@
 GameScene::GameScene() :
 	key_(nullptr),
 	player_(nullptr),
-	object_(nullptr),
+	object_{},
 	camera_(nullptr)
 {
 
@@ -14,7 +14,7 @@ GameScene::GameScene() :
 // デストラクタ
 GameScene::~GameScene() {
 	delete player_;
-	delete object_;
+	for (size_t i = 0; i < 10; i++) delete object_[i];
 	delete camera_;
 }
 
@@ -28,10 +28,13 @@ void GameScene::Initialize() {
 
 	// プレイヤーモデル
 	player_ = player_->CreateModel("player_rest");
-
-	object_ = object_->CreateObject3D();
-	object_->SetCamera(camera_);
-	object_->SetModel(player_);
+	
+	for (size_t i = 0; i < 10; i++) {
+		object_[i] = Object3D::CreateObject3D();
+		object_[i]->position_ = { -10.0f + (2.0f * i), 0.0f, 0.0f };
+		object_[i]->SetCamera(camera_);
+		object_[i]->SetModel(player_);
+	}
 }
 
 // 更新処理
@@ -42,7 +45,9 @@ void GameScene::Update() {
 	// カメラの更新
 	camera_->Update();
 
-	object_->rotation_.y += 0.1f;
+	for (size_t i = 0; i < 10; i++) {
+		object_[i]->rotation_.y += 0.1f;
+	}
 }
 
 // 描画処理
@@ -52,5 +57,7 @@ void GameScene::Draw() {
 	Object3D::PreDraw();
 
 	// プレイヤーモデル描画
-	object_->Draw();
+	for (size_t i = 0; i < 10; i++) {
+		object_[i]->Draw();
+	}
 }

@@ -5,11 +5,19 @@
 #include <sstream>
 using namespace std;
 
+// --DirextX12-- //
+#include "DX12Cmd.h"
+
 #include "FumiEngine.h"
 
 Model* Model::CreateModel(std::string fileName) {
 	Model* model = new Model();
 	model->LoadModel(fileName);
+
+	// 定数バッファ作成
+	model->CreateVertexBuff();// ---> 頂点バッファ
+	model->CreateIndexBuff();// ----> インデックスバッファ
+	model->CreateMaterialBuff();// -> マテリアルバッファ
 
 	return model;
 }
@@ -32,9 +40,13 @@ void Model::LoadModel(std::string name)
 	vector<XMFLOAT3> normals;// ---> 法線ベクトル
 	vector<XMFLOAT2> texcoords;// -> テクスチャUV
 
+	size_t num = 0;
+
 	// 1行ずつ読み込む
 	string line;
 	while (getline(file, line)) {
+		num++;
+
 		// 1行分の文字列をストリームに変換して解析しやすくする
 		std::istringstream line_stream(line);
 
@@ -116,6 +128,8 @@ void Model::LoadModel(std::string name)
 		}
 	}
 
+	num = num;
+
 	// ファイルを閉じる
 	file.close();
 }
@@ -184,4 +198,148 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 
 	// ファイルを閉じる
 	file.close();
+}
+
+void Model::CreateVertexBuff()
+{
+	// 関数実行の成否を判別用の変数
+	HRESULT result;
+
+	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
+	UINT sizeVB = static_cast<UINT>(sizeof(vertexes_[0]) * vertexes_.size());
+
+	// --頂点バッファの設定-- //
+	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+
+	// --リソース設定-- //
+	D3D12_RESOURCE_DESC resDesc{};
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	// --頂点バッファの生成-- //
+	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+		&heapProp, // ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc, // リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vertexBuff_));
+	assert(SUCCEEDED(result));
+
+	// --頂点バッファビューの作成-- //
+	vbView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// -> GPU仮想アドレス
+	vbView_.SizeInBytes = sizeVB;// -> 頂点バッファのサイズ
+	vbView_.StrideInBytes = sizeof(vertexes_[0]);// -> 頂点1つ分のデータサイズ
+
+	// --Map処理でメインメモリとGPUのメモリを紐づける-- //
+	Vertex3D* vertMap = nullptr;
+	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result));
+
+	// --全頂点に対して-- //
+	for (int i = 0; i < vertexes_.size(); i++)
+	{
+		vertMap[i] = vertexes_[i]; // 座標をコピー
+	}
+
+	// --繋がりを解除-- //
+	vertexBuff_->Unmap(0, nullptr);
+}
+
+void Model::CreateIndexBuff()
+{
+	// 関数実行の成否を判別用の変数
+	HRESULT result;
+
+	// --インデックスデータ全体のサイズ-- //
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexes_.size());
+
+	// --頂点バッファの設定-- //
+	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+
+	// --リソース設定-- //
+	D3D12_RESOURCE_DESC resDesc{};
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeIB; // 頂点データ全体のサイズ
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	// --インデックスバッファの生成-- //
+	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+		&heapProp,// -> ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,// -> リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&indexBuff_)
+	);
+
+	// --インデックスバッファビュー作成-- //
+	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
+	ibView_.Format = DXGI_FORMAT_R16_UINT;
+	ibView_.SizeInBytes = sizeIB;
+
+	// --インデックスバッファをマッピング-- //
+	uint16_t* indexMap = nullptr;
+	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
+	assert(SUCCEEDED(result));
+
+	// --全インデックスに対して-- //
+	for (size_t i = 0; i < indexes_.size(); i++)
+	{
+		indexMap[i] = indexes_[i];
+	}
+
+	// --マッピング解除-- //
+	indexBuff_->Unmap(0, nullptr);
+}
+
+void Model::CreateMaterialBuff()
+{
+	// 関数実行の成否を判別用の変数
+	HRESULT result;
+
+	// 定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+	// 定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(MaterialBuff) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	// 定数バッファの生成
+	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&materialBuff_));
+	assert(SUCCEEDED(result));
+
+	// マテリアル定数バッファのマッピング
+	MaterialBuff* materialMap;
+	result = materialBuff_->Map(0, nullptr, (void**)&materialMap);
+	assert(SUCCEEDED(result));
+	materialMap->ambient = material_.ambient;
+	materialMap->diffuse = material_.diffuse;
+	materialMap->specular = material_.specular;
+	materialMap->alpha = material_.alpha;
+	materialBuff_->Unmap(0, nullptr);
 }
