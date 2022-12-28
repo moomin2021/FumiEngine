@@ -7,6 +7,7 @@
 class Player {
 	// メンバ変数
 public:
+	Vector3 oldPos_;// -> 前フレームの座標
 
 private:
 	Key* key_;// -> キーボード入力

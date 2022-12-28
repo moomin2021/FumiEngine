@@ -39,6 +39,10 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	oldPos_.x = camera_->eye_.x;
+	oldPos_.y = camera_->eye_.y;
+	oldPos_.z = camera_->eye_.z;
+
 	// ‹“_ˆÚ“®ˆ—
 	EyeMove();
 

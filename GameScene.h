@@ -6,6 +6,7 @@
 #include "Object3D.h"// -> オブジェクト3D
 #include "Key.h"// -> キーボード入力
 #include "Player.h"// -> プレイヤークラス
+#include "Stage.h"
 
 class GameScene : public BaseScene {
 	// --メンバ変数-- //
@@ -21,15 +22,21 @@ private:
 	// プレイヤー
 	Player* player_;
 
+	// ステージ
+	Stage* stage_;
+
 	// モデル
-	Model* blackFloor_;// -> 黒色の床
-	Model* whiteFloor_;// -> 白色の床
+	Model* blackFloorM_;// -> 黒色の床
+	Model* whiteFloorM_;// -> 白色の床
+	Model* wallM_;// -> 壁
 	
 	// 各オブジェクトの数
-	static const size_t maxFloor_ = 100;
+	static const size_t maxFloor_ = 169;
+	static const size_t maxWall_ = 5;
 
 	// オブジェクト
 	Object3D* floor_[maxFloor_];// -> 床
+	Object3D* wallObj_[maxWall_];// -> 壁
 
 	// --メンバ関数-- //
 public:
@@ -49,5 +56,7 @@ public:
 	void Draw();
 
 private:
+	// 当たり判定処理
+	void Collision();
 
 };
