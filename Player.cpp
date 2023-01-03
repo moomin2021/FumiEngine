@@ -3,6 +3,9 @@
 
 Player::Player() :
 #pragma region 初期化リスト
+	col_{},// -> 当たり判定用データ
+	oldCol_{},
+
 	key_(nullptr),// -> キーボード入力
 	mouse_(nullptr),// -> マウス
 	camera_(nullptr),// -> カメラ
@@ -25,6 +28,9 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	col_ = { 0.0f, 0.0f, 1.0f };// -> 当たり判定用データ
+	oldCol_ = { 0.0f, 0.0f, 1.0f };
+
 	key_ = Key::GetInstance();// -> キーボード入力インスタンス取得
 	mouse_ = Mouse::GetInstance();// -> マウス入力インスタンス取得
 
@@ -39,9 +45,7 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	oldPos_.x = camera_->eye_.x;
-	oldPos_.y = camera_->eye_.y;
-	oldPos_.z = camera_->eye_.z;
+	oldCol_ = col_;
 
 	// 視点移動処理
 	EyeMove();
@@ -100,4 +104,8 @@ void Player::Move()
 	camera_->target_.x = camera_->eye_.x + sinf(Util::Degree2Radian(angleX_)) * 10.0f;
 	//camera_->target_.y = camera_->eye_.y + cosf(Util::Degree2Radian(angleY_)) * 10.0f;
 	camera_->target_.z = camera_->eye_.z + cosf(Util::Degree2Radian(angleX_)) * 10.0f;
+
+	// 当たり判定を更新
+	col_.x = camera_->eye_.x;
+	col_.y = camera_->eye_.z;
 }

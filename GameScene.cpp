@@ -1,20 +1,19 @@
 #include "GameScene.h"
 #include "FumiEngine.h"
 
-bool CirBoxCol(float cirX, float cirY, float cirR, float boxX1, float boxY1, float boxX2, float boxY2) {
-	if ((boxX1 < cirX) && (cirX < boxX2) && (boxY1 - cirR < cirY) && (cirY < boxY2 + cirR)) return true;
-	if ((boxX1 - cirR < cirX) && (cirX < boxX2 + cirR) && (boxY1 < cirY) && (cirY < boxY2)) return true;
-	if (pow((double)boxX1 - cirX, 2) + pow((double)boxY1 - cirY, 2) < pow(cirR, 2)) return true;
-	if (pow((double)boxX1 - cirX, 2) + pow((double)boxY2 - cirY, 2) < pow(cirR, 2)) return true;
-	if (pow((double)boxX2 - cirX, 2) + pow((double)boxY1 - cirY, 2) < pow(cirR, 2)) return true;
-	if (pow((double)boxX2 - cirX, 2) + pow((double)boxY2 - cirY, 2) < pow(cirR, 2)) return true;
-	return false;
-}
+bool CirBoxCol(Circle cir, RectAngle box) {
+	float boxX1 = box.x - box.rX;
+	float boxX2 = box.x + box.rX;
+	float boxY1 = box.y - box.rY;
+	float boxY2 = box.y + box.rY;
 
-bool PointBoxCol(float pX, float pY, float boxX1, float boxY1, float boxX2, float boxY2) {
-	if (pX > boxX1 || pX < boxX2) return false;
-	if (pY > boxY1 || pY < boxY2) return false;
-	return true;
+	if ((boxX1 < cir.x) && (cir.x < boxX2) && (boxY1 - cir.r < cir.y) && (cir.y < boxY2 + cir.r)) return true;
+	if ((boxX1 - cir.r < cir.x) && (cir.x < boxX2 + cir.r) && (boxY1 < cir.y) && (cir.y < boxY2)) return true;
+	if (pow((double)boxX1 - cir.x, 2) + pow((double)boxY1 - cir.y, 2) < pow(cir.r, 2)) return true;
+	if (pow((double)boxX1 - cir.x, 2) + pow((double)boxY2 - cir.y, 2) < pow(cir.r, 2)) return true;
+	if (pow((double)boxX2 - cir.x, 2) + pow((double)boxY1 - cir.y, 2) < pow(cir.r, 2)) return true;
+	if (pow((double)boxX2 - cir.x, 2) + pow((double)boxY2 - cir.y, 2) < pow(cir.r, 2)) return true;
+	return false;
 }
 
 // コンストラクタ
@@ -47,7 +46,6 @@ GameScene::~GameScene() {
 	delete whiteFloorM_;
 	delete wallM_;
 	for (size_t i = 0; i < maxFloor_; i++) delete floor_[i];
-	for (size_t i = 0; i < maxWall_; i++) delete wallObj_[i];
 }
 
 // 初期化処理
@@ -81,15 +79,6 @@ void GameScene::Initialize() {
 		}
 	}
 
-	for (size_t i = 0; i < maxWall_; i++) {
-		wallObj_[i] = Object3D::CreateObject3D();
-		wallObj_[i]->position_ = { -20.0f + (i * 10.0f), 5.0f, 10.0f };
-		wallObj_[i]->scale_ = { 10.0f, 10.0f, 10.0f };
-		wallObj_[i]->rotation_.y = -90.0f;
-		wallObj_[i]->SetCamera(camera_);
-		wallObj_[i]->SetModel(wallM_);
-	}
-
 	// プレイヤー初期化処理
 	player_ = new Player();
 	player_->Initialize();
@@ -121,8 +110,6 @@ void GameScene::Draw() {
 	// プレイヤーモデル描画
 	for (size_t i = 0; i < maxFloor_; i++) floor_[i]->Draw();
 
-	//for (size_t i = 0; i < maxWall_; i++) wallObj_[i]->Draw();
-
 	// プレイヤー描画処理
 	player_->Draw();
 
@@ -131,31 +118,11 @@ void GameScene::Draw() {
 
 void GameScene::Collision() {
 	for (size_t i = 0; i < stage_->wallsObj_.size(); i++) {
-		if (stage_->wallsObj_[i].rotation_.y >= 90.0f) {
-			if (CirBoxCol(camera_->eye_.x, camera_->eye_.z, 1.0f,
-				stage_->wallsObj_[i].position_.x - 5.0f, stage_->wallsObj_[i].position_.z - 0.5f,
-				stage_->wallsObj_[i].position_.x + 5.0f, stage_->wallsObj_[i].position_.z + 0.5f)) {
-				camera_->eye_.x = player_->oldPos_.x;
-				camera_->eye_.y = player_->oldPos_.y;
-				camera_->eye_.z = player_->oldPos_.z;
-			}
-		}
-		else {
-			if (CirBoxCol(camera_->eye_.x, camera_->eye_.z, 1.0f,
-				stage_->wallsObj_[i].position_.x - 0.5f, stage_->wallsObj_[i].position_.z - 5.0f,
-				stage_->wallsObj_[i].position_.x + 0.5f, stage_->wallsObj_[i].position_.z + 5.0f)) {
-				camera_->eye_.x = player_->oldPos_.x;
-				camera_->eye_.y = player_->oldPos_.y;
-				camera_->eye_.z = player_->oldPos_.z;
-			}
-		}
 
-		//if (PointBoxCol(camera_->eye_.x, camera_->eye_.z,
-		//	wallObj_[i]->position_.x + 5.0f, wallObj_[i]->position_.z + 0.5f,
-		//	wallObj_[i]->position_.x - 5.0f, wallObj_[i]->position_.z - 0.5f)) {
-		//	camera_->eye_.x = player_->oldPos_.x;
-		//	camera_->eye_.y = player_->oldPos_.y;
-		//	camera_->eye_.z = player_->oldPos_.z;
-		//}
+		if (CirBoxCol(player_->col_, stage_->wallsCol_[i])) {
+			camera_->eye_.x = player_->oldCol_.x;
+			camera_->eye_.z = player_->oldCol_.y;
+			player_->col_ = player_->oldCol_;
+		}
 	}
 }

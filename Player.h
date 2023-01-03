@@ -1,25 +1,28 @@
 #pragma once
 #include "Vector3.h"
+#include "Vector2.h"
 #include "Camera.h"
 #include "Key.h"
 #include "Mouse.h"
 
+struct Circle {
+	float x, y;// -> 座標
+	float r;// -> 半径
+};
+
 class Player {
 	// メンバ変数
 public:
-	Vector3 oldPos_;// -> 前フレームの座標
+	Circle col_;// -> 当たり判定用データ
+	Circle oldCol_;// -> 1フレーム前のデータ
 
 private:
 	Key* key_;// -> キーボード入力
 	Mouse* mouse_;// -> マウス入力
 	Camera* camera_;// -> カメラ
 
-	// カメラアングル
-	float angleX_, angleY_;
-
-	// カメラ感度
-	float cameraSens_;
-
+	float angleX_, angleY_;// -> カメラアングル
+	float cameraSens_;// -> カメラ感度
 	float moveSpeed_;// -> 移動速度
 
 	Vector3 forwardVec_;// -> 前方ベクトル

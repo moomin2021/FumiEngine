@@ -3,11 +3,19 @@
 #include "Model.h"
 #include <vector>
 #include "Camera.h"
+#include "Vector2.h"
+
+// 長方形データ
+struct RectAngle {
+	float x, y;
+	float rX, rY;
+};
 
 class Stage {
 	// メンバ変数
 public:
 	std::vector<Object3D> wallsObj_;// 壁
+	std::vector<RectAngle> wallsCol_;// 壁当たり判定
 private:
 	int area_[27][27];
 

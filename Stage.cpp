@@ -1,12 +1,20 @@
 #include "Stage.h"
 
 Stage::Stage() :
-	wallM_(nullptr)
+	// モデル
+	wallM_(nullptr),// -> 壁
+
+	// オブジェクト
+	wallsObj_{},
+
+	// 当たり判定用
+	wallsCol_{}
 {}
 
 Stage::~Stage() {
 	delete wallM_;
-	//wallsObj_.clear();
+	wallsObj_.clear();
+	wallsCol_.clear();
 }
 
 void Stage::Initialize() {
@@ -58,6 +66,19 @@ void Stage::Initialize() {
 				wall->position_ = { j * 5.0f, 5.0f, i * -5.0f};
 				if (i % 2 == 0) wall->rotation_.y = 90.0f;
 				wallsObj_.emplace_back(*wall);
+
+				RectAngle obj{};
+				obj.x = wall->position_.x;
+				obj.y = wall->position_.z;
+				if (wall->rotation_.y >= 90.0f) {
+					obj.rX = 5.0f;
+					obj.rY = 0.5f;
+				}
+				else {
+					obj.rX = 0.5f;
+					obj.rY = 5.0f;
+				}
+				wallsCol_.emplace_back(obj);
 				delete wall;
 			}
 		}
