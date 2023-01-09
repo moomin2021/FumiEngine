@@ -9,7 +9,7 @@ class Stage {
 	// ƒƒ“ƒo•Ï”
 public:
 	std::vector<Object3D> wallsObj_;// •Ç
-	std::vector<Box2D> wallsCol_;// •Ç“–‚½‚è”»’è
+	std::vector<Line2D> wallsCol_;// •Ç“–‚½‚è”»’è
 private:
 	int area_[27][27];
 

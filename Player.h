@@ -10,7 +10,6 @@ class Player {
 	// メンバ変数
 public:
 	Circle2D col_;// -> 当たり判定用データ
-	Circle2D oldCol_;// -> 1フレーム前のデータ
 	Object3D* object_;
 	Model* model_;
 
@@ -42,6 +41,8 @@ public:
 
 	// 描画処理
 	void Draw();
+
+	void Target();
 
 #pragma region セッター
 	// カメラを設定

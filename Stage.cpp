@@ -67,16 +67,18 @@ void Stage::Initialize() {
 				if (i % 2 == 0) wall->rotation_.y = 90.0f;
 				wallsObj_.emplace_back(*wall);
 
-				Box2D obj{};
-				obj.p.x = wall->position_.x;
-				obj.p.y = wall->position_.z;
+				Line2D obj{};
 				if (wall->rotation_.y >= 90.0f) {
-					obj.rX = 5.0f;
-					obj.rY = 0.5f;
+					obj.sP.x = wall->position_.x - 5.0f;
+					obj.sP.y = wall->position_.z;
+					obj.eP.x = wall->position_.x + 5.0f;
+					obj.eP.y = wall->position_.z;
 				}
 				else {
-					obj.rX = 0.5f;
-					obj.rY = 5.0f;
+					obj.sP.x = wall->position_.x;
+					obj.sP.y = wall->position_.z - 5.0f;
+					obj.eP.x = wall->position_.x;
+					obj.eP.y = wall->position_.z + 5.0f;
 				}
 				wallsCol_.emplace_back(obj);
 				delete wall;

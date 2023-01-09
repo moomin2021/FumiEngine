@@ -21,6 +21,30 @@ bool calcSegmentIntersectPos(Line2D line1, Line2D line2, Vector2* intersect) {
 	return true;
 }
 
+bool CirLineCol(Circle2D cir, Line2D line, float& minDist) {
+	// 点から線分に向かって垂直に線を引いた時のベクトルを求める
+	Vector2 vec;
+	float dot;
+	{
+		Vector2 sP2CirPVec = cir.p - line.sP;
+		dot = sP2CirPVec.dot(line.vec().normalize());
+		vec = (line.sP + line.vec().normalize() * dot) - cir.p;
+		minDist = vec.length();
+	}
+
+	float t = dot / line.vec().length();
+	if (t < 0.0f) {
+		minDist = (line.sP - cir.p).length();
+	}
+
+	if (t > 1.0f) {
+		minDist = (line.eP - cir.p).length();
+	}
+
+	if (cir.r > minDist) return true;
+	return false;
+}
+
 bool CirBoxCol(Circle2D cir, Box2D box) {
 	float boxX1 = box.p.x - box.rX;
 	float boxX2 = box.p.x + box.rX;
@@ -114,11 +138,11 @@ void GameScene::Update() {
 	// プレイヤー更新処理
 	player_->Update();
 
-	// カメラの更新
-	camera_->Update();
-
 	// 当たり判定処理
 	Collision();
+
+	// カメラの更新
+	camera_->Update();
 }
 
 // 描画処理
@@ -137,49 +161,32 @@ void GameScene::Draw() {
 }
 
 void GameScene::Collision() {
-	for (size_t i = 0; i < stage_->wallsObj_.size(); i++) {
-		if (CirBoxCol(player_->col_, stage_->wallsCol_[i])) {
+	for (size_t i = 0; i < stage_->wallsCol_.size(); i++) {
+		float dist = 0.0f;
+		if (CirLineCol(player_->col_, stage_->wallsCol_[i], dist)) {
 			WallSlide(stage_->wallsCol_[i]);
 		}
 	}
 }
 
-void GameScene::WallSlide(Box2D& wall) {
-	Line2D lines[4];
-	lines[0] = { {wall.p.x + wall.rX, wall.p.y + wall.rY}, {wall.p.x + wall.rX, wall.p.y - wall.rY} };
-	lines[1] = { {wall.p.x + wall.rX, wall.p.y - wall.rY}, {wall.p.x - wall.rX, wall.p.y - wall.rY} };
-	lines[2] = { {wall.p.x - wall.rX, wall.p.y - wall.rY}, {wall.p.x - wall.rX, wall.p.y + wall.rY} };
-	lines[3] = { {wall.p.x - wall.rX, wall.p.y + wall.rY}, {wall.p.x + wall.rX, wall.p.y + wall.rY} };
-
-	float minDist = 1000.0f;// -> 最短距離
-
-	bool isIntersection[4];// -> 交差しているか
-	Vector2 intersection[4];// -> 交差点
-	Vector2 inte;// -> 最短交差点
-	bool flag = false;
-
-	Line2D playerMoveLine = { player_->oldCol_.p, player_->col_.p + Vector2(player_->col_.p - player_->oldCol_.p).normalize() * 10.0f};
-	for (size_t i = 0; i < 4; i++) {
-		isIntersection[i] = calcSegmentIntersectPos(playerMoveLine, lines[i], &intersection[i]);
-		if (isIntersection[i]) {
-			if (Vector2(intersection[i] - player_->oldCol_.p).length() < minDist) {
-				minDist = Vector2(intersection[i] - player_->oldCol_.p).length();
-				inte = intersection[i];
-			}
-			flag = true;
-		}
+void GameScene::WallSlide(Line2D& wall) {
+	// 点から線分に向かって垂直に線を引いた時のベクトルを求める
+	Vector2 resultPos;
+	Vector2 vec;
+	float dot;
+	{
+		Vector2 sP2CirPVec = player_->col_.p - wall.sP;
+		dot = sP2CirPVec.dot(wall.vec().normalize());
+		resultPos = wall.sP + wall.vec().normalize() * dot;
+		vec = player_->col_.p - (wall.sP + wall.vec().normalize() * dot);
+		resultPos += vec.normalize() * (player_->col_.r);
 	}
 
-	if (flag == false) {
-		return;
-	}
+	player_->col_.p = resultPos;
+	player_->object_->position_.x = resultPos.x;
+	player_->object_->position_.z = resultPos.y;
+	camera_->eye_.x = resultPos.x;
+	camera_->eye_.z = resultPos.y;
 
-	Vector2 vec = player_->oldCol_.p - inte;
-	Vector2 vecNor = vec;
-	Vector2 vec1 = vecNor.normalize() * player_->col_.r;
-	player_->col_.p = inte + vec1;
-	player_->object_->position_.x = inte.x + vec1.x;
-	player_->object_->position_.z = inte.y + vec1.y;
-	//camera_->eye_.x = camera_->eye_.x + vec1.x;
-	//camera_->eye_.z = camera_->eye_.z + vec1.y;
+	player_->Target();
 }
