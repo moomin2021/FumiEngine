@@ -1,20 +1,18 @@
 #pragma once
 #include "Vector3.h"
-#include "Vector2.h"
 #include "Camera.h"
 #include "Key.h"
 #include "Mouse.h"
-
-struct Circle {
-	float x, y;// -> 座標
-	float r;// -> 半径
-};
+#include "Object3D.h"
+#include "ColType.h"
 
 class Player {
 	// メンバ変数
 public:
-	Circle col_;// -> 当たり判定用データ
-	Circle oldCol_;// -> 1フレーム前のデータ
+	Circle2D col_;// -> 当たり判定用データ
+	Circle2D oldCol_;// -> 1フレーム前のデータ
+	Object3D* object_;
+	Model* model_;
 
 private:
 	Key* key_;// -> キーボード入力

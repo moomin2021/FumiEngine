@@ -24,15 +24,23 @@ Player::Player() :
 
 Player::~Player()
 {
+	delete object_;
+	delete model_;
 }
 
 void Player::Initialize()
 {
-	col_ = { 0.0f, 0.0f, 1.0f };// -> 当たり判定用データ
-	oldCol_ = { 0.0f, 0.0f, 1.0f };
+	col_ = { {-10.0f, 0.0f }, 1.0f };// -> 当たり判定用データ
+	oldCol_ = { {0.0f, 0.0f }, 1.0f};
 
 	key_ = Key::GetInstance();// -> キーボード入力インスタンス取得
 	mouse_ = Mouse::GetInstance();// -> マウス入力インスタンス取得
+
+	model_ = Model::CreateModel("player_rest");
+	object_ = Object3D::CreateObject3D();
+	object_->SetCamera(camera_);
+	object_->SetModel(model_);
+	object_->position_.x = -10.0f;
 
 	// カメラアングル
 	angleX_ = 0.0f;
@@ -51,11 +59,14 @@ void Player::Update()
 	EyeMove();
 
 	Move();
+
+	object_->position_.x = col_.p.x;
+	object_->position_.z = col_.p.y;
 }
 
 void Player::Draw()
 {
-
+	object_->Draw();
 }
 
 void Player::EyeMove()
@@ -98,14 +109,15 @@ void Player::Move()
 	rightMove.z += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * rightVec_.z * moveSpeed_;
 	rightMove.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * rightVec_.x * moveSpeed_;
 
-	camera_->eye_.x += forwardMove.x + rightMove.x;
-	//camera_->eye_.y += forwardMove.y + rightMove.y;
-	camera_->eye_.z += forwardMove.z + rightMove.z;
+	//camera_->eye_.x += forwardMove.x + rightMove.x;
+	//camera_->eye_.z += forwardMove.z + rightMove.z;
 	camera_->target_.x = camera_->eye_.x + sinf(Util::Degree2Radian(angleX_)) * 10.0f;
-	//camera_->target_.y = camera_->eye_.y + cosf(Util::Degree2Radian(angleY_)) * 10.0f;
 	camera_->target_.z = camera_->eye_.z + cosf(Util::Degree2Radian(angleX_)) * 10.0f;
 
 	// 当たり判定を更新
-	col_.x = camera_->eye_.x;
-	col_.y = camera_->eye_.z;
+	//col_.pos.x = camera_->eye_.x;
+	//col_.pos.y = camera_->eye_.z;
+	col_.p.x += forwardMove.x + rightMove.x;
+	//camera_->eye_.y += forwardMove.y + rightMove.y;
+	col_.p.y += forwardMove.z + rightMove.z;
 }

@@ -67,9 +67,9 @@ void Stage::Initialize() {
 				if (i % 2 == 0) wall->rotation_.y = 90.0f;
 				wallsObj_.emplace_back(*wall);
 
-				RectAngle obj{};
-				obj.x = wall->position_.x;
-				obj.y = wall->position_.z;
+				Box2D obj{};
+				obj.p.x = wall->position_.x;
+				obj.p.y = wall->position_.z;
 				if (wall->rotation_.y >= 90.0f) {
 					obj.rX = 5.0f;
 					obj.rY = 0.5f;

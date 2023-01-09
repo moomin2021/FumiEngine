@@ -53,17 +53,29 @@ void WinAPI::Initialize() {
 	winRect_ = { 0, 0, winWidth_, winHeight_ };
 
 	// --自動でサイズを補正する-- //
-	AdjustWindowRect(&winRect_, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&winRect_, WS_POPUP, false);
+
+	// ディスプレイの情報を取得
+	MONITORINFOEX monitorInfoEx;
+	{
+		HMONITOR hMonitor;
+		POINT pt = { 100, 100 };
+
+		hMonitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+
+		monitorInfoEx.cbSize = sizeof(monitorInfoEx);
+		GetMonitorInfo(hMonitor, &monitorInfoEx);
+	}
 
 	// --ウィンドウオブジェクトの生成-- //
 	hwnd_ = CreateWindow(
 		winClass_.lpszClassName,// ------> クラス名
 		L"DirectXGame",// -------> タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,// --> 標準的なウィンドウスタイル
-		CW_USEDEFAULT,// --------> 表示X座標(OSに任せる)
-		CW_USEDEFAULT,// --------> 表示Y座標(OSに任せる)
-		winRect_.right - winRect_.left,// -> ウィンドウ横幅
-		winRect_.bottom - winRect_.top,// -> ウィンドウ縦幅
+		WS_POPUP,// --> 標準的なウィンドウスタイル
+		monitorInfoEx.rcWork.left,
+		monitorInfoEx.rcWork.top,
+		monitorInfoEx.rcWork.right,
+		monitorInfoEx.rcWork.bottom,
 		nullptr,// --------------> 親ウィンドウハンドル
 		nullptr,// --------------> メニューハンドル
 		winClass_.hInstance,// ----------> 呼び出しアプリケーションハンドル
@@ -71,6 +83,12 @@ void WinAPI::Initialize() {
 
 	// --ウィンドウを表示状態にする-- //
 	ShowWindow(hwnd_, SW_SHOW);
+
+	// マウスカーソルを消す
+	ShowCursor(false);
+
+	// マウスポインタがウィンドウの外に行けるかどうか設定
+	ClipCursor(&monitorInfoEx.rcWork);
 }
 
 // --終了メッセージがきているか参照-- //

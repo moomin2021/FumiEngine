@@ -57,4 +57,6 @@ private:
 	// “–‚½‚è”»’èˆ—
 	void Collision();
 
+	void WallSlide(Box2D& wall);// -> •Ç‚¸‚èˆ—
+
 };

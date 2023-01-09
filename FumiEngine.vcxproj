@@ -160,6 +160,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BillBoard.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColType.h" />
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="GameScene.h" />
