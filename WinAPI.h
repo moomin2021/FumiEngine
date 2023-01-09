@@ -8,8 +8,8 @@ public:
 
 private:
 	// --ウィンドウサイズ-- //
-	static const int winWidth_;// --> 横幅
-	static const int winHeight_;// -> 縦幅
+	static int winWidth_;// --> 横幅
+	static int winHeight_;// -> 縦幅
 
 	WNDCLASSEX winClass_;// -> ウィンドウクラス
 	RECT winRect_;// -> ウィンドウサイズ

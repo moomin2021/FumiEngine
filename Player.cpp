@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "Util.h"
+#include "FumiEngine.h"
+#include "WinAPI.h"
 
 Player::Player() :
 #pragma region 初期化リスト
@@ -23,8 +25,7 @@ Player::Player() :
 
 Player::~Player()
 {
-	delete object_;
-	delete model_;
+	delete reticle_;
 }
 
 void Player::Initialize()
@@ -34,12 +35,6 @@ void Player::Initialize()
 	key_ = Key::GetInstance();// -> キーボード入力インスタンス取得
 	mouse_ = Mouse::GetInstance();// -> マウス入力インスタンス取得
 
-	model_ = Model::CreateModel("player_rest");
-	object_ = Object3D::CreateObject3D();
-	object_->SetCamera(camera_);
-	object_->SetModel(model_);
-	object_->position_.x = -10.0f;
-
 	// カメラアングル
 	angleX_ = 0.0f;
 	angleY_ = 90.0f;
@@ -47,6 +42,11 @@ void Player::Initialize()
 	cameraSens_ = 0.05f;// -> カメラ感度
 
 	moveSpeed_ = 0.4f;// -> 移動速度
+
+	reticleH_ = LoadTexture("Resources/reticle.png");
+	reticle_ = new Sprite();
+	reticle_->position.x = WinAPI::GetWidth() / 2.0f;
+	reticle_->position.y = WinAPI::GetHeight() / 2.0f;
 }
 
 void Player::Update()
@@ -58,13 +58,14 @@ void Player::Update()
 
 	col_.p.x = camera_->eye_.x;
 	col_.p.y = camera_->eye_.z;
-	object_->position_.x = camera_->eye_.x;
-	object_->position_.z = camera_->eye_.z;
+
+	reticle_->Update();
 }
 
 void Player::Draw()
 {
-	object_->Draw();
+	Sprite::PreDraw();
+	reticle_->Draw(reticleH_);
 }
 
 void Player::EyeMove()

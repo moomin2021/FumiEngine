@@ -88,6 +88,7 @@ void Stage::Initialize() {
 }
 
 void Stage::Draw() {
+	Object3D::PreDraw();
 	for (size_t i = 0; i < wallsObj_.size(); i++) {
 		wallsObj_[i].Draw();
 	}

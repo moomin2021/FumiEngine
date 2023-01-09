@@ -154,10 +154,10 @@ void GameScene::Draw() {
 	// プレイヤーモデル描画
 	for (size_t i = 0; i < maxFloor_; i++) floor_[i]->Draw();
 
+	stage_->Draw();
+
 	// プレイヤー描画処理
 	player_->Draw();
-
-	stage_->Draw();
 }
 
 void GameScene::Collision() {
@@ -183,8 +183,6 @@ void GameScene::WallSlide(Line2D& wall) {
 	}
 
 	player_->col_.p = resultPos;
-	player_->object_->position_.x = resultPos.x;
-	player_->object_->position_.z = resultPos.y;
 	camera_->eye_.x = resultPos.x;
 	camera_->eye_.z = resultPos.y;
 

@@ -5,13 +5,12 @@
 #include "Mouse.h"
 #include "Object3D.h"
 #include "ColType.h"
+#include "Sprite.h"
 
 class Player {
 	// メンバ変数
 public:
 	Circle2D col_;// -> 当たり判定用データ
-	Object3D* object_;
-	Model* model_;
 
 private:
 	Key* key_;// -> キーボード入力
@@ -24,6 +23,9 @@ private:
 
 	Vector3 forwardVec_;// -> 前方ベクトル
 	Vector3 rightVec_;// -> 右ベクトル
+
+	int reticleH_;// -> レティクルの画像
+	Sprite* reticle_;// -> レティクルのスプライト
 
 	// メンバ関数
 public:

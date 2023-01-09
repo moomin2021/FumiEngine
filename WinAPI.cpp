@@ -13,9 +13,8 @@ WinAPI* WinAPI::GetInstance() {
 	return &win;
 }
 
-// --ウィンドウサイズ-- //
-const int WinAPI::winWidth_ = 1280;
-const int WinAPI::winHeight_ = 720;
+int WinAPI::winWidth_ = 1280;
+int WinAPI::winHeight_ = 720;
 
 // --コンストラクタ-- //
 WinAPI::WinAPI() :
@@ -80,6 +79,9 @@ void WinAPI::Initialize() {
 		nullptr,// --------------> メニューハンドル
 		winClass_.hInstance,// ----------> 呼び出しアプリケーションハンドル
 		nullptr);// -------------> オプション
+
+	winWidth_ = monitorInfoEx.rcWork.right;
+	winHeight_ = monitorInfoEx.rcWork.bottom;
 
 	// --ウィンドウを表示状態にする-- //
 	ShowWindow(hwnd_, SW_SHOW);

@@ -4,6 +4,7 @@
 #include "Object3D.h"
 #include "Camera.h"
 #include "Key.h"
+#include "Sprite.h"
 
 class TitleScene : public BaseScene {
 	// --メンバ変数-- //
@@ -18,6 +19,8 @@ private:
 
 	// オブジェクト
 	Object3D* object_;
+
+	Sprite* sprite_;
 
 	// カメラ
 	Camera* camera_;

@@ -5,7 +5,8 @@ TitleScene::TitleScene() :
 	key_(nullptr),
 	player_(nullptr),
 	object_(nullptr),
-	camera_(nullptr)
+	camera_(nullptr),
+	sprite_(nullptr)
 {
 }
 
@@ -14,6 +15,7 @@ TitleScene::~TitleScene()
 	delete player_;
 	delete object_;
 	delete camera_;
+	delete sprite_;
 }
 
 void TitleScene::Initialize()
