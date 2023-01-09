@@ -161,10 +161,25 @@ void GameScene::Draw() {
 }
 
 void GameScene::Collision() {
-	for (size_t i = 0; i < stage_->wallsCol_.size(); i++) {
-		float dist = 0.0f;
-		if (CirLineCol(player_->col_, stage_->wallsCol_[i], dist)) {
-			WallSlide(stage_->wallsCol_[i]);
+	bool isCol_ = true;
+
+	while (isCol_) {
+		isCol_ = false;
+		float minDist = 1000.0f;
+		size_t index = 0;
+		for (size_t i = 0; i < stage_->wallsCol_.size(); i++) {
+			float dist = 0.0f;
+			if (CirLineCol(player_->col_, stage_->wallsCol_[i], dist)) {
+				if (dist < minDist) {
+					index = i;
+					minDist = dist;
+				}
+				isCol_ = true;
+			}
+		}
+
+		if (isCol_) {
+			WallSlide(stage_->wallsCol_[index]);
 		}
 	}
 }

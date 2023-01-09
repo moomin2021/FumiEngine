@@ -11,6 +11,7 @@ class Player {
 	// メンバ変数
 public:
 	Circle2D col_;// -> 当たり判定用データ
+	Circle2D oldCol_;
 
 private:
 	Key* key_;// -> キーボード入力

@@ -31,6 +31,7 @@ Player::~Player()
 void Player::Initialize()
 {
 	col_ = { {-10.0f, 0.0f }, 1.0f };// -> 当たり判定用データ
+	oldCol_ = { {0.0f, 0.0f}, 1.0f };
 
 	key_ = Key::GetInstance();// -> キーボード入力インスタンス取得
 	mouse_ = Mouse::GetInstance();// -> マウス入力インスタンス取得
@@ -51,6 +52,8 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	oldCol_ = col_;
+
 	// 視点移動処理
 	EyeMove();
 
