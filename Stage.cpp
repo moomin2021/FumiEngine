@@ -1,4 +1,7 @@
 #include "Stage.h"
+#include <string>
+#include <fstream>
+#include <sstream>
 
 Stage::Stage() :
 	// ƒ‚ƒfƒ‹
@@ -67,36 +70,37 @@ void Stage::Initialize() {
 				wall->SetCamera(camera_);
 				wall->scale_ = { 10.0f, 10.0f, 10.0f };
 				wall->position_ = { j * 5.0f, 5.0f, i * -5.0f};
-				if (i % 2 == 0) wall->rotation_.y = 90.0f;
+				if (i % 2 == 0) wall->rotation_.y = 0.0f;
+				else wall->rotation_.y = 90.0f;
 				wallsObj_.emplace_back(*wall);
 
 				Line2D obj{};
 				if (wall->rotation_.y >= 90.0f) {
-					obj.sP.x = wall->position_.x - 5.0f;
-					obj.sP.y = wall->position_.z;
-					obj.eP.x = wall->position_.x + 5.0f;
-					obj.eP.y = wall->position_.z;
-				}
-				else {
 					obj.sP.x = wall->position_.x;
 					obj.sP.y = wall->position_.z - 5.0f;
 					obj.eP.x = wall->position_.x;
 					obj.eP.y = wall->position_.z + 5.0f;
 				}
+				else {
+					obj.sP.x = wall->position_.x - 5.0f;
+					obj.sP.y = wall->position_.z;
+					obj.eP.x = wall->position_.x + 5.0f;
+					obj.eP.y = wall->position_.z;
+				}
 				wallsCol2D_.emplace_back(obj);
 
 				Board board{};
 				if (wall->rotation_.y >= 90.0f) {
-					board.p[0] = { wall->position_.x + 5.0f, wall->position_.y + 5.0f, wall->position_.z };
-					board.p[1] = { wall->position_.x - 5.0f, wall->position_.y + 5.0f, wall->position_.z };
-					board.p[2] = { wall->position_.x - 5.0f, wall->position_.y - 5.0f, wall->position_.z };
-					board.p[3] = { wall->position_.x + 5.0f, wall->position_.y - 5.0f, wall->position_.z };
-				}
-				else {
 					board.p[0] = { wall->position_.x, wall->position_.y + 5.0f, wall->position_.z + 5.0f };
 					board.p[1] = { wall->position_.x, wall->position_.y + 5.0f, wall->position_.z - 5.0f };
 					board.p[2] = { wall->position_.x, wall->position_.y - 5.0f, wall->position_.z - 5.0f };
 					board.p[3] = { wall->position_.x, wall->position_.y - 5.0f, wall->position_.z + 5.0f };
+				}
+				else {
+					board.p[0] = { wall->position_.x + 5.0f, wall->position_.y + 5.0f, wall->position_.z };
+					board.p[1] = { wall->position_.x - 5.0f, wall->position_.y + 5.0f, wall->position_.z };
+					board.p[2] = { wall->position_.x - 5.0f, wall->position_.y - 5.0f, wall->position_.z };
+					board.p[3] = { wall->position_.x + 5.0f, wall->position_.y - 5.0f, wall->position_.z };
 				}
 				wallsCol3D_.emplace_back(board);
 				delete wall;
@@ -151,4 +155,8 @@ void Stage::Draw() {
 	for (size_t i = 0; i < doors_.size(); i++) {
 		doors_[i].Draw();
 	}
+}
+
+void Stage::LoadStage() {
+
 }

@@ -15,11 +15,9 @@ public:
 
 	std::vector<Door> doors_;
 
-	//std::vector<Object3D> doorsObj_;
-	//std::vector<Line2D> doorsCol2D_;
-	//std::vector<Door> doorsCol3D_;
+	std::vector<int[27][27]> areas_;
 
-	//std::vector<Door> doors_;
+
 private:
 	int area_[27][27];
 
@@ -46,6 +44,8 @@ public:
 	void Draw();
 
 	void SetCamera(Camera* camera) { camera_ = camera; }
+
+	void LoadStage();
 
 private:
 
