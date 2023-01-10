@@ -21,6 +21,38 @@ bool calcSegmentIntersectPos(Line2D line1, Line2D line2, Vector2* intersect) {
 	return true;
 }
 
+bool RayBoardCol(Line3D line, Board board, float &minDist) {
+	Vector3 p0 = board.p[0];// -> 平面の適当な座標
+
+	Vector3 p02sP = line.sP - p0;
+	Vector3 p02eP = line.eP - p0;
+
+	Vector3 boardN = board.normal();
+
+	float d1 = boardN.dot(p02sP);
+	float d2 = boardN.dot(p02eP);
+
+	if (d1 * d2 > 0) return false;
+
+	float m = fabsf(d1);
+	float n = fabsf(d2);
+
+	// 平面と線分の交点
+	Vector3 ip = (line.sP * n + line.eP * m) / (m + n);
+
+	minDist = (ip - line.sP).length();
+
+	for (size_t i = 0; i < 4; i++) {
+		Vector3 side = board.p[(i + 1) % 4] - board.p[i];
+		Vector3 p2ip = ip - board.p[i];
+		Vector3 c = side.cross(p2ip);
+		float d = boardN.dot(c);
+		if (d < 0) return false;
+	}
+
+	return true;
+}
+
 bool CirLineCol(Circle2D cir, Line2D line, float& minDist) {
 	// 点から線分に向かって垂直に線を引いた時のベクトルを求める
 	Vector2 vec;
@@ -90,6 +122,7 @@ GameScene::~GameScene() {
 	delete whiteFloorM_;
 	delete wallM_;
 	for (size_t i = 0; i < maxFloor_; i++) delete floor_[i];
+	delete openOrClose_;
 }
 
 // 初期化処理
@@ -131,12 +164,22 @@ void GameScene::Initialize() {
 	stage_ = new Stage();
 	stage_->SetCamera(camera_);
 	stage_->Initialize();
+
+	openOrClose_ = new Sprite();
+	openOrClose_->position.x = WinAPI::GetWidth() / 2.0f - 75.0f;
+	openOrClose_->position.y = WinAPI::GetHeight() / 2.0f + 100.0f;
+	openOrClose_->scale = { 1.5f, 0.8f };
+	openOrClose_->Update();
+
+	openOrCloseH_ = LoadTexture("Resources/openOrClose.png");
 }
 
 // 更新処理
 void GameScene::Update() {
 	// プレイヤー更新処理
 	player_->Update();
+
+	stage_->Update();
 
 	// 当たり判定処理
 	Collision();
@@ -158,28 +201,55 @@ void GameScene::Draw() {
 
 	// プレイヤー描画処理
 	player_->Draw();
+
+	Sprite::PreDraw();
+	if (isText_) openOrClose_->Draw(openOrCloseH_);
 }
 
 void GameScene::Collision() {
+	// 壁とプレイヤーの当たり判定
+	WallCol();
+
+	// ドアとプレイヤーの視線の当たり判定
+	DoorCol();
+}
+
+void GameScene::WallCol()
+{
 	bool isCol_ = true;
 
 	while (isCol_) {
 		isCol_ = false;
 		float minDist = 1000.0f;
+		size_t num = 0;
 		size_t index = 0;
-		for (size_t i = 0; i < stage_->wallsCol_.size(); i++) {
+		for (size_t i = 0; i < stage_->wallsCol2D_.size(); i++) {
 			float dist = 0.0f;
-			if (CirLineCol(player_->col_, stage_->wallsCol_[i], dist)) {
+			if (CirLineCol(player_->col_, stage_->wallsCol2D_[i], dist)) {
 				if (dist < minDist) {
 					index = i;
 					minDist = dist;
+					num = 0;
+				}
+				isCol_ = true;
+			}
+		}
+
+		for (size_t i = 0; i < stage_->doors_.size(); i++) {
+			float dist = 0.0f;
+			if (CirLineCol(player_->col_, stage_->doors_[i].col2D_, dist)) {
+				if (dist < minDist) {
+					index = i;
+					minDist = dist;
+					num = 1;
 				}
 				isCol_ = true;
 			}
 		}
 
 		if (isCol_) {
-			WallSlide(stage_->wallsCol_[index]);
+			if (num == 0) WallSlide(stage_->wallsCol2D_[index]);
+			if (num == 1) WallSlide(stage_->doors_[index].col2D_);
 		}
 	}
 }
@@ -202,4 +272,54 @@ void GameScene::WallSlide(Line2D& wall) {
 	camera_->eye_.z = resultPos.y;
 
 	player_->Target();
+}
+
+void GameScene::DoorCol() {
+
+	size_t num = 0;
+	size_t index = 0;
+	bool isCol = false;
+	float minDist = 1000.0f;
+	isText_ = false;
+
+	for (size_t i = 0; i < stage_->wallsCol3D_.size(); i++) {
+		float dist = 0.0f;
+		if (RayBoardCol(player_->ray_, stage_->wallsCol3D_[i], dist)) {
+			if (dist < minDist) {
+				index = i;
+				minDist = dist;
+				num = 0;
+				isCol = false;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < stage_->doors_.size(); i++) {
+		float dist = 0.0f;
+		if (RayBoardCol(player_->ray_, stage_->doors_[i].col3D_, dist)) {
+			if (dist < minDist) {
+				index = i;
+				minDist = dist;
+				num = 1;
+				isCol = true;
+			}
+		}
+	}
+
+	if (num == 1) {
+		if (stage_->doors_[index].isMove_ == false) {
+			if (key_->TriggerKey(DIK_F)) {
+				stage_->doors_[index].isMove_ = true;
+
+				Vector3 pos{};
+				pos.x = stage_->doors_[index].object_.position_.x;
+				pos.y = stage_->doors_[index].object_.position_.y;
+				pos.z = stage_->doors_[index].object_.position_.z;
+
+				stage_->doors_[index].oldPos_ = pos;
+			}
+
+			isText_ = isCol;
+		}
+	}
 }

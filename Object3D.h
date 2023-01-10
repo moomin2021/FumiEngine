@@ -72,9 +72,9 @@ public:// メンバ関数
 	void SetModel(Model* model) { model_ = model; };
 #pragma endregion
 
+	Object3D();
 private:// メンバ関数
 	// コンストラクタ
-	Object3D();
 
 	// 初期化処理
 	void Initialize();

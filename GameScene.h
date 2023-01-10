@@ -7,6 +7,7 @@
 #include "Key.h"// -> キーボード入力
 #include "Player.h"// -> プレイヤークラス
 #include "Stage.h"
+#include "Sprite.h"
 
 class GameScene : public BaseScene {
 	// --メンバ変数-- //
@@ -36,6 +37,10 @@ private:
 	// オブジェクト
 	Object3D* floor_[maxFloor_];// -> 床
 
+	int openOrCloseH_;
+	Sprite* openOrClose_;
+	bool isText_;
+
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
@@ -57,6 +62,9 @@ private:
 	// 当たり判定処理
 	void Collision();
 
+	void WallCol();// -> 壁とプレイヤーの当たり判定
 	void WallSlide(Line2D& wall);// -> 壁ずり処理
+
+	void DoorCol();
 
 };

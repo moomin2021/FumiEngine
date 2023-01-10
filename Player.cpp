@@ -6,6 +6,9 @@
 Player::Player() :
 #pragma region 初期化リスト
 	col_{},// -> 当たり判定用データ
+	oldCol_{},
+	ray_{},
+	rayDist_(0.0f),
 
 	key_(nullptr),// -> キーボード入力
 	mouse_(nullptr),// -> マウス
@@ -32,6 +35,7 @@ void Player::Initialize()
 {
 	col_ = { {-10.0f, 0.0f }, 1.0f };// -> 当たり判定用データ
 	oldCol_ = { {0.0f, 0.0f}, 1.0f };
+	rayDist_ = 8.0f;
 
 	key_ = Key::GetInstance();// -> キーボード入力インスタンス取得
 	mouse_ = Mouse::GetInstance();// -> マウス入力インスタンス取得
@@ -46,8 +50,8 @@ void Player::Initialize()
 
 	reticleH_ = LoadTexture("Resources/reticle.png");
 	reticle_ = new Sprite();
-	reticle_->position.x = WinAPI::GetWidth() / 2.0f;
-	reticle_->position.y = WinAPI::GetHeight() / 2.0f;
+	reticle_->position.x = WinAPI::GetWidth() / 2.0f - 50.0f;
+	reticle_->position.y = WinAPI::GetHeight() / 2.0f - 50.0f;
 }
 
 void Player::Update()
@@ -63,6 +67,17 @@ void Player::Update()
 	col_.p.y = camera_->eye_.z;
 
 	reticle_->Update();
+
+	ray_.sP.x = camera_->eye_.x;
+	ray_.sP.y = camera_->eye_.y;
+	ray_.sP.z = camera_->eye_.z;
+
+	Vector3 vec{};
+	vec.x = camera_->target_.x - camera_->eye_.x;
+	vec.y = camera_->target_.y - camera_->eye_.y;
+	vec.z = camera_->target_.z - camera_->eye_.z;
+
+	ray_.eP = ray_.sP + vec.normalize() * rayDist_;
 }
 
 void Player::Draw()

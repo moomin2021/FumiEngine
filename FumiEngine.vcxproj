@@ -136,7 +136,9 @@
   <ItemGroup>
     <ClCompile Include="BillBoard.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
+    <ClCompile Include="Easing.cpp" />
     <ClCompile Include="FumiEngine.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Key.cpp" />
@@ -161,7 +163,9 @@
     <ClInclude Include="BillBoard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColType.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="DX12Cmd.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Key.h" />

@@ -13,6 +13,9 @@ public:
 	Circle2D col_;// -> 当たり判定用データ
 	Circle2D oldCol_;
 
+	Line3D ray_;
+	float rayDist_;
+
 private:
 	Key* key_;// -> キーボード入力
 	Mouse* mouse_;// -> マウス入力
