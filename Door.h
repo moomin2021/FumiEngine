@@ -2,12 +2,14 @@
 #include "Object3D.h"
 #include "Model.h"
 #include "ColType.h"
+#include <memory>
 
 class Door
 {
 	// メンバ変数
 public:
-	Object3D object_;// -> オブジェクト
+	std::unique_ptr<Object3D> object_;
+	//Object3D object_;// -> オブジェクト
 	Vector3 oldPos_;
 
 	Line2D col2D_;// -> 2D用当たり判定
@@ -28,7 +30,7 @@ public:
 	void Update();// -----> 更新処理
 	void Draw();// -------> 描画処理
 
-	void SetModel(Model* model) { object_.SetModel(model); }
-	void SetCamera(Camera* camera) { object_.SetCamera(camera); }
+	void SetModel(Model* model) { object_->SetModel(model); }
+	void SetCamera(Camera* camera) { object_->SetCamera(camera); }
 };
 

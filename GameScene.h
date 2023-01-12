@@ -25,17 +25,9 @@ private:
 
 	// ステージ
 	Stage* stage_;
-
-	// モデル
-	Model* blackFloorM_;// -> 黒色の床
-	Model* whiteFloorM_;// -> 白色の床
-	Model* wallM_;// -> 壁
 	
 	// 各オブジェクトの数
 	static const size_t maxFloor_ = 169;
-
-	// オブジェクト
-	Object3D* floor_[maxFloor_];// -> 床
 
 	int openOrCloseH_;
 	Sprite* openOrClose_;

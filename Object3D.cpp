@@ -26,9 +26,6 @@ Object3D::Object3D() :
 	// 定数バッファ
 	objectBuff_(nullptr),// -> オブジェクト
 
-	// 透視投影行列
-	matProjection_{},
-
 	// カメラ
 	camera_(nullptr),
 
@@ -38,6 +35,12 @@ Object3D::Object3D() :
 {
 	// 初期化処理
 	Initialize();
+
+	// 関数実行の成否を判別用の変数
+	HRESULT result;
+
+	result = objectBuff_->Map(0, nullptr, (void**)&objectMap);
+	assert(SUCCEEDED(result));
 }
 
 Object3D* Object3D::CreateObject3D()
@@ -68,19 +71,8 @@ void Object3D::Draw()
 		matWorld *= matRot;// -> ワールド行列に回転を反映
 		matWorld *= matTrans;// -> ワールド行列に平行移動を反映
 
-		// 関数実行の成否を判別用の変数
-		HRESULT result;
-
-		// マッピング
-		ObjectBuff* objectMap = nullptr;
-		result = objectBuff_->Map(0, nullptr, (void**)&objectMap);
-		assert(SUCCEEDED(result));
-
 		// 定数バッファへデータ転送
-		objectMap->mat = matWorld * camera_->GetMatView() * matProjection_;
-
-		// マッピング終了処理
-		objectBuff_->Unmap(0, nullptr);
+		objectMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();
 	}
 
 	// オブジェクトの描画処理
@@ -91,21 +83,23 @@ void Object3D::Draw()
 		// --ハンドルを指定された分まで進める-- //
 		srvGpuHandle.ptr += model_->textureHandle_;
 
+		ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
+
 		// --定数バッファビュー（CBV）の設定コマンド-- //
-		DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(0, objectBuff_->GetGPUVirtualAddress());
-		DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(1, model_->materialBuff_->GetGPUVirtualAddress());
+		cmdList->SetGraphicsRootConstantBufferView(0, objectBuff_->GetGPUVirtualAddress());
+		cmdList->SetGraphicsRootConstantBufferView(1, model_->materialBuff_->GetGPUVirtualAddress());
 
 		// --指定されたSRVをルートパラメータ1番に設定-- //
-		DX12Cmd::GetCmdList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+		cmdList->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
 
 		// --頂点バッファビューの設定コマンド-- //
-		DX12Cmd::GetCmdList()->IASetVertexBuffers(0, 1, &model_->vbView_);
+		cmdList->IASetVertexBuffers(0, 1, &model_->vbView_);
 
 		// --インデックスバッファビューの設定コマンド-- //
-		DX12Cmd::GetCmdList()->IASetIndexBuffer(&model_->ibView_);
+		cmdList->IASetIndexBuffer(&model_->ibView_);
 
 		//// --描画コマンド-- //
-		DX12Cmd::GetCmdList()->DrawIndexedInstanced(static_cast<UINT>(model_->indexes_.size()), 1, 0, 0, 0);
+		cmdList->DrawIndexedInstanced(static_cast<UINT>(model_->indexes_.size()), 1, 0, 0, 0);
 	}
 }
 
@@ -153,11 +147,4 @@ void Object3D::Initialize()
 			IID_PPV_ARGS(&objectBuff_));
 		assert(SUCCEEDED(result));
 	}
-
-	// --透視投影行列の計算-- //
-	matProjection_ = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
-		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f// ------------------------> 前端、奥端
-	);
 }

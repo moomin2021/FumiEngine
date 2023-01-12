@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Key.h"
 #include "Sprite.h"
+#include <memory>
 
 class TitleScene : public BaseScene {
 	// --メンバ変数-- //
@@ -14,13 +15,11 @@ private:
 	// キーボード入力
 	Key* key_;
 
-	// プレイヤーモデル
-	Model* player_;
+	std::unique_ptr<Sprite> titleS_;
+	int titleImage_;
 
-	// オブジェクト
-	Object3D* object_;
-
-	Sprite* sprite_;
+	std::unique_ptr<Sprite> spaceStartText_;
+	int spaceStartTextH_;
 
 	// カメラ
 	Camera* camera_;

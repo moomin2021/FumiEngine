@@ -12,6 +12,8 @@ public:
 private:
 	XMMATRIX matView_;// -> ビュー変換行列
 
+	XMMATRIX matProjection_;
+
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -26,5 +28,7 @@ public:
 #pragma region ゲッター
 	// ビュー行列の取得
 	const XMMATRIX& GetMatView() { return matView_; }
+
+	const XMMATRIX& GetMatProjection() { return matProjection_; }
 #pragma endregion
 };

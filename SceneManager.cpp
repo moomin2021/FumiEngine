@@ -2,6 +2,8 @@
 #include "GameScene.h"
 #include "TitleScene.h"
 
+BaseScene* SceneManager::nowScene_ = nullptr;
+
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
 {

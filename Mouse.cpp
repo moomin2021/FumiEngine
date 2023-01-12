@@ -68,6 +68,9 @@ void Mouse::Initialize(WinAPI* win)
 
 void Mouse::Update()
 {
+	// マウスデバイス制御開始
+	device_->Acquire();
+
 	// --前フレームのマウスの入力状態を保存-- //
 	oldMouse_ = nowMouse_;
 

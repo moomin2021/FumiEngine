@@ -100,15 +100,7 @@ GameScene::GameScene() :
 
 	player_(nullptr),// -> プレイヤー
 
-	stage_(nullptr),// -> ステージ
-
-	// モデル
-	blackFloorM_(nullptr),// -> 黒色の床
-	whiteFloorM_(nullptr),// -> 白色の床
-	wallM_(nullptr),// -> 壁
-
-	// オブジェクト
-	floor_{}// -> 床
+	stage_(nullptr)// -> ステージ
 {
 
 }
@@ -118,10 +110,6 @@ GameScene::~GameScene() {
 	delete camera_;
 	delete player_;
 	delete stage_;
-	delete blackFloorM_;
-	delete whiteFloorM_;
-	delete wallM_;
-	for (size_t i = 0; i < maxFloor_; i++) delete floor_[i];
 	delete openOrClose_;
 }
 
@@ -130,31 +118,10 @@ void GameScene::Initialize() {
 	// キーボード入力
 	key_ = Key::GetInstance();
 
-	// モデル
-	blackFloorM_ = Model::CreateModel("blackFloor");// -> 黒色の床
-	whiteFloorM_ = Model::CreateModel("whiteFloor");// -> 白色の床
-	wallM_ = Model::CreateModel("wall");// -> 壁
-
 	// カメラ
 	camera_ = new Camera();
-	camera_->eye_ = { -10.0f, 5.0f, 0.0f };
+	camera_->eye_ = { 195.0f, 5.0f, -480.0f };
 	camera_->target_ = { 0.0f, 5.0f, 10.0f };
-
-	// オブジェクト
-	for (size_t i = 0; i < maxFloor_; i++) {
-		floor_[i] = Object3D::CreateObject3D();
-		floor_[i]->scale_ = { 10.0f, 10.0f, 10.0f };
-		floor_[i]->position_ = { 5.0f + (10.0f * (i % 13)), 0.0f, -5.0f + (-10.0f * (i / 13)) };
-		floor_[i]->SetCamera(camera_);
-		if ((i / 13) % 2 == 0 ) {
-			if (i % 2 == 0) floor_[i]->SetModel(blackFloorM_);
-			if (i % 2 == 1) floor_[i]->SetModel(whiteFloorM_);
-		}
-		else {
-			if (i % 2 == 1) floor_[i]->SetModel(whiteFloorM_);
-			if (i % 2 == 0) floor_[i]->SetModel(blackFloorM_);
-		}
-	}
 
 	// プレイヤー初期化処理
 	player_ = new Player();
@@ -193,11 +160,45 @@ void GameScene::Draw() {
 
 	// モデル描画前処理
 	Object3D::PreDraw();
+	for (size_t i = 0; i < stage_->wallCount_;i++) {
+		Vector3 len;
+		len.x = stage_->walls_[i]->object_->position_.x - camera_->eye_.x;
+		len.y = stage_->walls_[i]->object_->position_.y - camera_->eye_.y;
+		len.z = stage_->walls_[i]->object_->position_.z - camera_->eye_.z;
+		if (len.length() < 100.0f) {
+			stage_->walls_[i]->Draw();
+		}
+	}
 
-	// プレイヤーモデル描画
-	for (size_t i = 0; i < maxFloor_; i++) floor_[i]->Draw();
+	for (size_t i = 0; i < stage_->doorCount_; i++) {
+		Vector3 len;
+		len.x = stage_->doors_[i]->object_->position_.x - camera_->eye_.x;
+		len.y = stage_->doors_[i]->object_->position_.y - camera_->eye_.y;
+		len.z = stage_->doors_[i]->object_->position_.z - camera_->eye_.z;
+		if (len.length() < 100.0f) {
+			stage_->doors_[i]->Draw();
+		}
+	}
 
-	stage_->Draw();
+	for (size_t i = 0; i < stage_->floors_.size() - 1; i++) {
+		Vector3 len;
+		len.x = stage_->floors_[i]->position_.x - camera_->eye_.x;
+		len.y = stage_->floors_[i]->position_.y - camera_->eye_.y;
+		len.z = stage_->floors_[i]->position_.z - camera_->eye_.z;
+		if (len.length() < 100.0f) {
+			stage_->floors_[i]->Draw();
+		}
+	}
+
+	for (size_t i = 0; i < stage_->ceiling_.size() - 1; i++) {
+		Vector3 len;
+		len.x = stage_->ceiling_[i]->position_.x - camera_->eye_.x;
+		len.y = stage_->ceiling_[i]->position_.y - camera_->eye_.y;
+		len.z = stage_->ceiling_[i]->position_.z - camera_->eye_.z;
+		if (len.length() < 100.0f) {
+			stage_->ceiling_[i]->Draw();
+		}
+	}
 
 	// プレイヤー描画処理
 	player_->Draw();
@@ -223,9 +224,9 @@ void GameScene::WallCol()
 		float minDist = 1000.0f;
 		size_t num = 0;
 		size_t index = 0;
-		for (size_t i = 0; i < stage_->wallsCol2D_.size(); i++) {
+		for (size_t i = 0; i < stage_->wallCount_; i++) {
 			float dist = 0.0f;
-			if (CirLineCol(player_->col_, stage_->wallsCol2D_[i], dist)) {
+			if (CirLineCol(player_->col_, stage_->walls_[i]->col2D_, dist)) {
 				if (dist < minDist) {
 					index = i;
 					minDist = dist;
@@ -235,9 +236,9 @@ void GameScene::WallCol()
 			}
 		}
 
-		for (size_t i = 0; i < stage_->doors_.size(); i++) {
+		for (size_t i = 0; i < stage_->doorCount_; i++) {
 			float dist = 0.0f;
-			if (CirLineCol(player_->col_, stage_->doors_[i].col2D_, dist)) {
+			if (CirLineCol(player_->col_, stage_->doors_[i]->col2D_, dist)) {
 				if (dist < minDist) {
 					index = i;
 					minDist = dist;
@@ -248,8 +249,8 @@ void GameScene::WallCol()
 		}
 
 		if (isCol_) {
-			if (num == 0) WallSlide(stage_->wallsCol2D_[index]);
-			if (num == 1) WallSlide(stage_->doors_[index].col2D_);
+			if (num == 0) WallSlide(stage_->walls_[index]->col2D_);
+			if (num == 1) WallSlide(stage_->doors_[index]->col2D_);
 		}
 	}
 }
@@ -282,9 +283,9 @@ void GameScene::DoorCol() {
 	float minDist = 1000.0f;
 	isText_ = false;
 
-	for (size_t i = 0; i < stage_->wallsCol3D_.size(); i++) {
+	for (size_t i = 0; i < stage_->wallCount_; i++) {
 		float dist = 0.0f;
-		if (RayBoardCol(player_->ray_, stage_->wallsCol3D_[i], dist)) {
+		if (RayBoardCol(player_->ray_, stage_->walls_[i]->col3D_, dist)) {
 			if (dist < minDist) {
 				index = i;
 				minDist = dist;
@@ -294,9 +295,9 @@ void GameScene::DoorCol() {
 		}
 	}
 
-	for (size_t i = 0; i < stage_->doors_.size(); i++) {
+	for (size_t i = 0; i < stage_->doorCount_; i++) {
 		float dist = 0.0f;
-		if (RayBoardCol(player_->ray_, stage_->doors_[i].col3D_, dist)) {
+		if (RayBoardCol(player_->ray_, stage_->doors_[i]->col3D_, dist)) {
 			if (dist < minDist) {
 				index = i;
 				minDist = dist;
@@ -307,16 +308,16 @@ void GameScene::DoorCol() {
 	}
 
 	if (num == 1) {
-		if (stage_->doors_[index].isMove_ == false) {
+		if (stage_->doors_[index]->isMove_ == false) {
 			if (key_->TriggerKey(DIK_F)) {
-				stage_->doors_[index].isMove_ = true;
+				stage_->doors_[index]->isMove_ = true;
 
 				Vector3 pos{};
-				pos.x = stage_->doors_[index].object_.position_.x;
-				pos.y = stage_->doors_[index].object_.position_.y;
-				pos.z = stage_->doors_[index].object_.position_.z;
+				pos.x = stage_->doors_[index]->object_->position_.x;
+				pos.y = stage_->doors_[index]->object_->position_.y;
+				pos.z = stage_->doors_[index]->object_->position_.z;
 
-				stage_->doors_[index].oldPos_ = pos;
+				stage_->doors_[index]->oldPos_ = pos;
 			}
 
 			isText_ = isCol;

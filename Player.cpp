@@ -46,7 +46,7 @@ void Player::Initialize()
 
 	cameraSens_ = 0.05f;// -> カメラ感度
 
-	moveSpeed_ = 0.4f;// -> 移動速度
+	moveSpeed_ = 0.6f;// -> 移動速度
 
 	reticleH_ = LoadTexture("Resources/reticle.png");
 	reticle_ = new Sprite();
@@ -62,6 +62,8 @@ void Player::Update()
 	EyeMove();
 
 	Move();
+
+	//if (key_->PushKey(DIK_SPACE)) camera_->eye_.y += 0.2f;
 
 	col_.p.x = camera_->eye_.x;
 	col_.p.y = camera_->eye_.z;

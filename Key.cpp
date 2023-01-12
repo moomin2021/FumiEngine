@@ -61,6 +61,8 @@ void Key::Update() {
 	// 前フレームのキーの状態を保存
 	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
 
+	device_->Acquire();
+
 	// 全キーの入力状態を取得する
 	device_->GetDeviceState(sizeof(keys_), keys_);
 }

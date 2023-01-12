@@ -1,21 +1,17 @@
 #include "TitleScene.h"
 #include "FumiEngine.h"
+#include "SceneManager.h"
 
 TitleScene::TitleScene() :
 	key_(nullptr),
-	player_(nullptr),
-	object_(nullptr),
-	camera_(nullptr),
-	sprite_(nullptr)
+	titleS_(nullptr),
+	camera_(nullptr)
 {
 }
 
 TitleScene::~TitleScene()
 {
-	delete player_;
-	delete object_;
 	delete camera_;
-	delete sprite_;
 }
 
 void TitleScene::Initialize()
@@ -27,32 +23,35 @@ void TitleScene::Initialize()
 	camera_ = new Camera();
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 
-	// プレイヤーモデル
-	player_ = player_->CreateModel("player_rest");
+	titleS_ = std::make_unique<Sprite>();
+	titleS_->scale = { 19.20f, 10.80f };
 
-	// オブジェクト
-	object_ = Object3D::CreateObject3D();
-	object_->SetCamera(camera_);
-	object_->SetModel(player_);
+	titleImage_ = LoadTexture("Resources/title.png");
+
+	spaceStartText_ = std::make_unique<Sprite>();
+	spaceStartText_->scale = { 19.20f, 10.80f };
+
+	spaceStartTextH_ = LoadTexture("Resources/spaceStartText.png");
 }
 
 void TitleScene::Update()
 {
-	camera_->eye_.x += key_->PushKey(DIK_D) - key_->PushKey(DIK_A);
-	camera_->eye_.z += key_->PushKey(DIK_W) - key_->PushKey(DIK_S);
-
 	// カメラの更新
 	camera_->Update();
 
-	// オブジェクト更新
-	object_->rotation_.y += 0.1f;
+	titleS_->Update();
+
+	spaceStartText_->Update();
+
+	if (key_->TriggerKey(DIK_SPACE)) {
+		SceneManager::ChangeScene(SCENE::GAME);
+	}
 }
 
 void TitleScene::Draw()
 {
-	// モデル描画前処理
-	Object3D::PreDraw();
+	Sprite::PreDraw();
 
-	// プレイヤーモデル描画
-	object_->Draw();
+	titleS_->Draw(titleImage_);
+	spaceStartText_->Draw(spaceStartTextH_);
 }

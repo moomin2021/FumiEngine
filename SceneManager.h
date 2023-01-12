@@ -17,7 +17,7 @@ private:
 	Key* key_;
 
 	// 現在のシーン
-	BaseScene* nowScene_;
+	static BaseScene* nowScene_;
 
 	// --メンバ関数-- //
 public:
@@ -30,15 +30,15 @@ public:
 	// 描画処理
 	void Draw();
 
+	// シーン切り替え
+	static void ChangeScene(int changeSceneNum);
+
 private:
 	// コンストラクタ
 	SceneManager();
 
 	// デストラクタ
 	~SceneManager();
-
-	// シーン切り替え
-	void ChangeScene(int changeSceneNum);
 
 	// --禁止-- //
 public:

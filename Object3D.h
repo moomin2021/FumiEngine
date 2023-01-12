@@ -45,8 +45,7 @@ private:// メンバ変数
 	ComPtr<ID3D12Resource> objectBuff_;// ---> オブジェクト
 	ComPtr<ID3D12Resource> materialBuff_;// -> マテリアル
 
-	// 透視投影行列
-	XMMATRIX matProjection_;
+	ObjectBuff* objectMap;
 
 	// カメラ
 	Camera* camera_;
