@@ -142,6 +142,7 @@
     <ClCompile Include="FumiEngine.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object3D.cpp" />
@@ -163,9 +164,11 @@
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="Float2.h" />
     <ClInclude Include="Float3.h" />
+    <ClInclude Include="fMath.h" />
     <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object3D.h" />
