@@ -138,6 +138,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
     <ClCompile Include="Float2.cpp" />
+    <ClCompile Include="Float3.cpp" />
     <ClCompile Include="FumiEngine.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Key.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="Float2.h" />
+    <ClInclude Include="Float3.h" />
     <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Key.h" />

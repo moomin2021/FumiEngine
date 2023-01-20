@@ -5,8 +5,8 @@ struct Float2
 	float y;// -> y成分
 
 	// コンストラクタ
-	Float2();// -----------------> 零ベクトルとして生成
-	Float2(float x, float y);// -> x成分、y成分を指定しての生成
+	Float2();// -----------------> 引数なし
+	Float2(float x, float y);// -> 引数あり
 
 	// 単項演算子オーバーロード
 	Float2 operator+() const;
