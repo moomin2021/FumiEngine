@@ -30,6 +30,7 @@ Stage::~Stage() {
 	delete doorM_;
 	delete floorM_;
 	delete ceilingM_;
+	delete magatamaM_;
 }
 
 void Stage::Initialize() {
@@ -40,6 +41,7 @@ void Stage::Initialize() {
 	doorM_ = Model::CreateModel("door");// -> ƒhƒA
 	floorM_ = Model::CreateModel("floor");// -> °
 	ceilingM_ = Model::CreateModel("ceiling");// -> “Vˆä
+	magatamaM_ = Model::CreateModel("magatama");
 
 	// CSV“Ç‚Ýž‚Ý
 	LoadStage("csv/areaStart.csv", areaStart_.at(0));
@@ -49,7 +51,7 @@ void Stage::Initialize() {
 	LoadStage("csv/area3Way_1.csv", area3Way_.at(1));
 	LoadStage("csv/area3Way_1.csv", area3Way_.at(2));
 	LoadStage("csv/area2Way_1.csv", area2Way_.at(0));
-	LoadStage("csv/area2Way_1.csv", area2Way_.at(1));
+	LoadStage("csv/area2Way_2.csv", area2Way_.at(1));
 	LoadStage("csv/area2Way_1.csv", area2Way_.at(2));
 	LoadStage("csv/area2Way_1.csv", area2Way_.at(3));
 
@@ -173,7 +175,7 @@ void Stage::Update()
 }
 
 void Stage::Draw() {
-
+	magatama_->Draw();
 }
 
 void Stage::LoadStage(string path, Area& copyArea) {
@@ -292,6 +294,18 @@ void Stage::GeneArea(int areaNum, Vector2 areaPos)
 				}
 
 				doorCount_ += 2;
+			}
+
+			else if (area[i][j] == 4) {
+				magatama_ = std::make_unique<Object3D>();
+				magatama_->scale_ = { 5.0f, 5.0f, 5.0f };
+				magatama_->position_ = { j * 5.0f + areaPos.x, 5.0f, i * -5.0f - areaPos.y };
+				magatama_->SetCamera(camera_);
+				magatama_->SetModel(magatamaM_);
+
+				magatamaCol_.p.x = magatama_->position_.x;
+				magatamaCol_.p.y = magatama_->position_.z;
+				magatamaCol_.r = 1.0f;
 			}
 		}
 	}

@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (winAPI->IsEndMessage() == true) break;
+		if (key->TriggerKey(DIK_ESCAPE)) break;
 
 		// キーボード入力更新処理
 		key->Update();

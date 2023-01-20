@@ -33,6 +33,9 @@ private:
 	Sprite* openOrClose_;
 	bool isText_;
 
+	std::unique_ptr<Sprite> hintText_;
+	int hintTextH_;
+
 	// --メンバ関数-- //
 public:
 	// コンストラクタ

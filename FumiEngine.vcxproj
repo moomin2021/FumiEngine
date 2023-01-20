@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="BillBoard.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
     <ClCompile Include="Easing.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BillBoard.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ClearScene.h" />
     <ClInclude Include="ColType.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="DX12Cmd.h" />

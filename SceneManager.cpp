@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "ClearScene.h"
 
 BaseScene* SceneManager::nowScene_ = nullptr;
 
@@ -44,6 +45,10 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = new GameScene();
 		nowScene_->Initialize();
 		break;
+	case SCENE::CLEAR:
+		nowScene_ = new ClearScene();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
@@ -52,6 +57,7 @@ void SceneManager::Update() {
 
 	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE::TITLE);
 	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE::GAME);
+	if (key_->TriggerKey(DIK_3)) ChangeScene(SCENE::CLEAR);
 
 	nowScene_->Update();
 }
