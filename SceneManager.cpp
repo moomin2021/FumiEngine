@@ -1,6 +1,4 @@
 #include "SceneManager.h"
-#include "GameScene.h"
-#include "TitleScene.h"
 #include "Scene1.h"
 
 // インスタンス取得
@@ -36,7 +34,7 @@ void SceneManager::ChangeScene(int changeSceneNum)
 	switch (changeSceneNum)
 	{
 	case SCENE::SCENE1:
-		nowScene_ = new TitleScene();
+		nowScene_ = new Scene1();
 		nowScene_->Initialize();
 		break;
 	}
