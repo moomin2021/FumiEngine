@@ -5,19 +5,12 @@
 #include "Camera.h"
 #include "Key.h"
 
-class TitleScene : public BaseScene {
+class TemplateScene : public BaseScene
+{
 	// --メンバ変数-- //
-public:
-
 private:
 	// キーボード入力
 	Key* key_;
-
-	// プレイヤーモデル
-	Model* player_;
-
-	// オブジェクト
-	Object3D* object_;
 
 	// カメラ
 	Camera* camera_;
@@ -25,10 +18,10 @@ private:
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
-	TitleScene();
+	TemplateScene();
 
 	// デストラクタ
-	~TitleScene();
+	~TemplateScene();
 
 	// 初期化処理
 	void Initialize();
@@ -38,7 +31,5 @@ public:
 
 	// 描画処理
 	void Draw();
-
-private:
-
 };
+

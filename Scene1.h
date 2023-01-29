@@ -1,31 +1,33 @@
 #pragma once
 #include "BaseScene.h"
-#include "Sprite.h"// -> スプライト
-#include "Model.h"// -> モデルクラス
-#include "Camera.h"
+#include "Model.h"
 #include "Object3D.h"
+#include "Camera.h"
 #include "Key.h"
 
-class GameScene : public BaseScene {
+class Scene1 : public BaseScene
+{
 	// --メンバ変数-- //
-public:
-
 private:
+	// キーボード入力
 	Key* key_;
 
-	Model* player_;
-	
-	Object3D* object_[10];
-
+	// カメラ
 	Camera* camera_;
+
+	// モデル
+	Model* sphereM_;
+
+	// オブジェクト
+	Object3D* sphereObj_;
 
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
-	GameScene();
+	Scene1();
 
 	// デストラクタ
-	~GameScene();
+	~Scene1();
 
 	// 初期化処理
 	void Initialize();
@@ -35,7 +37,5 @@ public:
 
 	// 描画処理
 	void Draw();
-
-private:
-
 };
+

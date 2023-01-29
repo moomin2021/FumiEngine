@@ -4,8 +4,7 @@
 
 // ƒV[ƒ“—ñ‹“Œ^
 enum SCENE {
-	TITLE,
-	GAME
+	SCENE1,
 };
 
 class SceneManager {

@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "Scene1.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -16,7 +17,7 @@ SceneManager::SceneManager() {
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = new TitleScene();
+	nowScene_ = new Scene1();
 	nowScene_->Initialize();
 }
 
@@ -34,12 +35,8 @@ void SceneManager::ChangeScene(int changeSceneNum)
 
 	switch (changeSceneNum)
 	{
-	case SCENE::TITLE:
+	case SCENE::SCENE1:
 		nowScene_ = new TitleScene();
-		nowScene_->Initialize();
-		break;
-	case SCENE::GAME:
-		nowScene_ = new GameScene();
 		nowScene_->Initialize();
 		break;
 	}
@@ -48,8 +45,7 @@ void SceneManager::ChangeScene(int changeSceneNum)
 // 更新処理
 void SceneManager::Update() {
 
-	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE::TITLE);
-	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE::GAME);
+	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE::SCENE1);
 
 	nowScene_->Update();
 }
