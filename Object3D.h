@@ -1,26 +1,12 @@
 #pragma once
-// Direct3D 12 用
 #include <d3d12.h>
 #pragma comment(lib, "d3d12.lib")
-
-// 数学関数
-#include <DirectXMath.h>
-using namespace DirectX;
-
-//　ComPtr用
 #include <wrl.h>
 using namespace Microsoft::WRL;
-
-#include "fMath.h"
-
-// シーケンスコンテナの一種
 #include <vector>
-
-// カメラクラス
-#include "Camera.h"
-
-// モデルクラス
 #include "Model.h"
+#include "Camera.h"
+#include "fMath.h"
 
 // 定数バッファ構造体(オブジェクト)
 struct ObjectBuff {
