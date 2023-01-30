@@ -60,6 +60,18 @@ public:// メンバ関数
 
 	// モデルを設定
 	void SetModel(Model* model) { model_ = model; };
+
+	// 各要素変更
+	void SetPos(const XMFLOAT3& position);
+	void SetRot(const XMFLOAT3& rotation);
+	void SetScale(const XMFLOAT3& scale);
+#pragma endregion
+
+#pragma region ゲッター
+	// 各要素取得
+	inline XMFLOAT3& GetPos() { return position_; }
+	inline XMFLOAT3& GetRot() { return rotation_; }
+	inline XMFLOAT3& GetScale() { return scale_; }
 #pragma endregion
 
 private:// メンバ関数

@@ -114,6 +114,21 @@ void Object3D::PreDraw() {
 	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 }
 
+void Object3D::SetPos(const XMFLOAT3& position)
+{
+	position_ = position;
+}
+
+void Object3D::SetRot(const XMFLOAT3& rotation)
+{
+	rotation_ = rotation;
+}
+
+void Object3D::SetScale(const XMFLOAT3& scale)
+{
+	scale_ = scale;
+}
+
 void Object3D::Initialize()
 {
 	// ŠÖ”Às‚Ì¬”Û‚ğ”»•Ê—p‚Ì•Ï”
