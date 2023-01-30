@@ -29,71 +29,97 @@ struct ObjectBuff {
 };
 
 class Object3D {
-private:// メンバ変数
-	Float3 position_;// -> 座標
-	Float3 rotation_;// -> 回転角
-	Float3 scale_;// ----> スケール
+private:// -----メンバ変数----- //
+	Float3 position_;// ------------------> 座標
+	Float3 rotation_;// ------------------> 回転角
+	Float3 scale_;// ---------------------> スケール
+	Matrix4 matWorld_;// -----------------> ワールド座標
+	ComPtr<ID3D12Resource> constBuff_;// -> 定数バッファ
+	Model* model_;// ---------------------> モデル
+	bool dirty;// ------------------------> ダーティフラグ
 
-	// 定数バッファ
-	static D3D12_HEAP_PROPERTIES heapProp_;
-	static D3D12_RESOURCE_DESC resdesc_;
-	ComPtr<ID3D12Resource> constBuff_;
-
-	// ワールド座標
-	Matrix4 matWorld_;
-
-	// カメラ
-	static Camera* camera_;
-
-	// モデル
-	Model* model_;
-
-	static ID3D12Device* device_;// -> デバイス
+private:// -----静的メンバ変数----- //
+	static ID3D12Device* device_;// ---------------> デバイス
 	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
+	static D3D12_HEAP_PROPERTIES heapProp_;// -----> ヒープ設定
+	static D3D12_RESOURCE_DESC resdesc_;// --------> リソース設定
+	static Camera* camera_;// ---------------------> カメラ
 
-	// ダーティフラグ
-	bool dirty;
-
-public:// メンバ関数
-	// [Object3D]インスタンス作成
-	static Object3D* CreateObject3D(Model* model = nullptr);
-
-	// オブジェクト3D全体の初期化
-	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
-
-	// 描画処理
-	void Draw();
-
-	// 描画前処理
-	static void PreDraw();
-
-	// カメラセット
-	static inline void SetCamera(Camera* camera) { camera_ = camera; }
-
-#pragma region セッター
-	// モデルを設定
-	void SetModel(Model* model) { model_ = model; };
-
-	// 各要素変更
-	void SetPos(const Float3& position);
-	void SetRot(const Float3& rotation);
-	void SetScale(const Float3& scale);
-#pragma endregion
-
-#pragma region ゲッター
-	// 各要素取得
-	inline const Float3& GetPos() { return position_; }
-	inline const Float3& GetRot() { return rotation_; }
-	inline const Float3& GetScale() { return scale_; }
-#pragma endregion
-
-private:// メンバ関数
-	// コンストラクタ
+private:// -----メンバ関数----- //
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Object3D();
 
-	// 定数バッファ生成
+	/// <summary>
+	/// 定数バッファ生成
+	/// </summary>
 	void GenerateConstBuffer();
 
-	// 定数バッファ更新
+	/// <summary>
+	/// 定数バッファ更新
+	/// </summary>
 	void TransferConstBuffer();
+
+public:// -----静的メンバ関数----- //
+	/// <summary>
+	/// [Object3D]インスタンス作成
+	/// </summary>
+	static Object3D* CreateObject3D(Model* model = nullptr);
+
+	/// <summary>
+	/// オブジェクト3D全体の初期化
+	/// </summary>
+	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
+
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	static void PreDraw();
+
+	/// <summary>
+	/// カメラ設定
+	/// </summary>
+	static inline void SetCamera(Camera* camera) { camera_ = camera; }
+
+public:// -----メンバ関数----- //
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
+
+	/// <summary>
+	/// 座標設定
+	/// </summary>
+	void SetPos(const Float3& position);
+
+	/// <summary>
+	/// 回転角設定[度数法]
+	/// </summary>
+	void SetRot(const Float3& rotation);
+
+	/// <summary>
+	/// 拡縮設定
+	/// </summary>
+	void SetScale(const Float3& scale);
+
+	/// <summary>
+	/// モデル設定
+	/// </summary>
+	void SetModel(Model* model) { model_ = model; };
+
+	/// <summary>
+	/// 座標取得
+	/// </summary>
+	inline const Float3& GetPos() { return position_; }
+
+	/// <summary>
+	/// 回転角取得[度数法]
+	/// </summary>
+	inline const Float3& GetRot() { return rotation_; }
+
+	/// <summary>
+	/// 拡縮取得
+	/// </summary>
+	inline const Float3& GetScale() { return scale_; }
 };
