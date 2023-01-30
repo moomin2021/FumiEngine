@@ -27,23 +27,13 @@ struct ObjectBuff {
 };
 
 class Object3D {
-public:// メンバ変数
+private:// メンバ変数
 	XMFLOAT3 position_;// -> 座標
 	XMFLOAT3 rotation_;// -> 回転角
 	XMFLOAT3 scale_;// ----> スケール
 
-private:// メンバ変数
-	// 頂点データ関連
-	D3D12_VERTEX_BUFFER_VIEW vbView_;// -----> 頂点バッファービュー
-	ComPtr<ID3D12Resource> vertexBuff_;// ---> 頂点バッファ
-
-	// インデックスデータ関連
-	D3D12_INDEX_BUFFER_VIEW ibView_;// ---> インデックスバッファビュー
-	ComPtr<ID3D12Resource> indexBuff_;// -> インデックスバッファ
-
 	// 定数バッファ
 	ComPtr<ID3D12Resource> objectBuff_;// ---> オブジェクト
-	ComPtr<ID3D12Resource> materialBuff_;// -> マテリアル
 
 	// 透視投影行列
 	XMMATRIX matProjection_;

@@ -15,14 +15,6 @@ Object3D::Object3D() :
 	rotation_{0.0f, 0.0f, 0.0f},// -> 回転角
 	scale_{1.0f, 1.0f, 1.0f},// ----> スケール
 
-	// 頂点データ関連
-	vbView_{},// ------------> 頂点バッファビュー
-	vertexBuff_(nullptr),// -> 頂点バッファ
-
-	// インデックスデータ
-	ibView_{},// -----------> インデックスバッファビュー
-	indexBuff_(nullptr),// -> インデックスバッファ
-
 	// 定数バッファ
 	objectBuff_(nullptr),// -> オブジェクト
 
