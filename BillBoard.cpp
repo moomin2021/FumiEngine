@@ -45,50 +45,50 @@ BillBoard::BillBoard() :
 #pragma region 定数バッファ初期化処理
 	// 関数が成功したかどうかを判別する用変数
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
-	HRESULT result;
-
-	// 定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp{};
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	// 定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resdesc{};
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// 定数バッファの生成
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuff_));
-	assert(SUCCEEDED(result));
-
-	// 定数バッファのマッピング
-	ObjectBuff* constMap;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	assert(SUCCEEDED(result));
-
-	// マッピング終了
-	constBuff_->Unmap(0, nullptr);
-#pragma endregion
-
-	// --透視投影行列の計算-- //
-	matProjection_ = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
-		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f// ------------------------> 前端、奥端
-	);
-
-	// 四角形の頂点データとインデックスデータを作成
-	CreateSquare();
+//	HRESULT result;
+//
+//	// 定数バッファのヒープ設定
+//	D3D12_HEAP_PROPERTIES heapProp{};
+//	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+//
+//	// 定数バッファのリソース設定
+//	D3D12_RESOURCE_DESC resdesc{};
+//	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+//	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
+//	resdesc.Height = 1;
+//	resdesc.DepthOrArraySize = 1;
+//	resdesc.MipLevels = 1;
+//	resdesc.SampleDesc.Count = 1;
+//	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+//
+//	// 定数バッファの生成
+//	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+//		&heapProp,
+//		D3D12_HEAP_FLAG_NONE,
+//		&resdesc,
+//		D3D12_RESOURCE_STATE_GENERIC_READ,
+//		nullptr,
+//		IID_PPV_ARGS(&constBuff_));
+//	assert(SUCCEEDED(result));
+//
+//	// 定数バッファのマッピング
+//	ObjectBuff* constMap;
+//	result = constBuff_->Map(0, nullptr, (void**)&constMap);
+//	assert(SUCCEEDED(result));
+//
+//	// マッピング終了
+//	constBuff_->Unmap(0, nullptr);
+//#pragma endregion
+//
+//	// --透視投影行列の計算-- //
+//	matProjection_ = XMMatrixPerspectiveFovLH(
+//		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
+//		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
+//		0.1f, 1000.0f// ------------------------> 前端、奥端
+//	);
+//
+//	// 四角形の頂点データとインデックスデータを作成
+//	CreateSquare();
 }
 
 void BillBoard::Update(Camera* camera, BillBoardType type)
@@ -198,15 +198,15 @@ void BillBoard::Update(Camera* camera, BillBoardType type)
 	matWorld *= matTrans;// -> ワールド行列に平行移動を反映
 
 	// --マッピング-- //
-	ObjectBuff* constMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	assert(SUCCEEDED(result));
+	//ObjectBuff* constMap = nullptr;
+	//result = constBuff_->Map(0, nullptr, (void**)&constMap);
+	//assert(SUCCEEDED(result));
 
 	// --定数バッファへデータ転送-- //
 	//constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> 行列
 
 	// --繋がりを解除-- //
-	constBuff_->Unmap(0, nullptr);
+	//constBuff_->Unmap(0, nullptr);
 }
 
 void BillBoard::Draw(int textureHandle)
@@ -235,16 +235,16 @@ void BillBoard::Draw(int textureHandle)
 
 void BillBoard::PreDraw()
 {
-	// パイプラインステートの設定
-	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
-	// ルートシグネチャの設定
-	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
-	// プリミティブ形状を設定
-	DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//// パイプラインステートの設定
+	//DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
+	//// ルートシグネチャの設定
+	//DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
+	//// プリミティブ形状を設定
+	//DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// --デスクリプタヒープの配列をセットするコマンド-- //
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
-	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
+	//// --デスクリプタヒープの配列をセットするコマンド-- //
+	//ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
+	//DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 }
 
 void BillBoard::CreateSquare()

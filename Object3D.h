@@ -8,13 +8,15 @@ using namespace Microsoft::WRL;
 #include "Camera.h"
 #include "fMath.h"
 
-// 定数バッファ構造体(オブジェクト)
-struct ObjectBuff {
-	// 行列
-	Matrix4 mat;
-};
-
 class Object3D {
+public:// -----サブクラス----- //
+	// 定数バッファ構造体(オブジェクト)
+	struct ObjectBuff {
+		Matrix4 viewProj;// -> ビュープロジェクション
+		Matrix4 world;// ----> ワールド行列
+		Float3 cameraPos;// -> カメラ座標(ワールド座標)
+	};
+
 private:// -----メンバ変数----- //
 	Float3 position_;// ------------------> 座標
 	Float3 rotation_;// ------------------> 回転角

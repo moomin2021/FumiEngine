@@ -66,12 +66,14 @@ void Object3D::TransferConstBuffer() {
 	HRESULT result;
 
 	// マッピング
-	ObjectBuff* objectMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void**)&objectMap);
+	ObjectBuff* constMap = nullptr;
+	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	assert(SUCCEEDED(result));
 
 	// 定数バッファへデータ転送
-	objectMap->mat = matWorld_ * camera_->GetMatView() * camera_->GetMatProjection();
+	constMap->viewProj = camera_->GetMatView() * camera_->GetMatProjection();
+	constMap->world = matWorld_;
+	constMap->cameraPos = camera_->eye_;
 
 	// マッピング終了処理
 	constBuff_->Unmap(0, nullptr);
