@@ -20,6 +20,8 @@ Object3D::Object3D() :
 	rotation_{ 0.0f, 0.0f, 0.0f },// -> 回転角
 	scale_{ 1.0f, 1.0f, 1.0f },// ----> スケール
 
+	matWorld_{},
+
 	// 定数バッファ
 	constBuff_(nullptr),// -> オブジェクト
 
@@ -27,7 +29,9 @@ Object3D::Object3D() :
 	camera_(nullptr),
 
 	// モデル
-	model_(nullptr)
+	model_(nullptr),
+
+	dirty(true)
 #pragma endregion
 {
 	// 定数バッファ生成
@@ -63,35 +67,7 @@ void Object3D::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList*
 void Object3D::Draw()
 {
 	// オブジェクトの更新処理
-	{
-		Matrix4 matScale, matRot, matTrans;
-		matScale = Matrix4Scale(scale_);
-		matRot = Matrix4Identity();
-		matRot *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
-		matRot *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
-		matRot *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
-		matTrans = Matrix4Translate(position_);
-
-		// --ワールド行列の合成-- //
-		Matrix4 matWorld = Matrix4Identity();// -> 変形のリセット
-		matWorld *= matScale;// -> ワールド行列にスケーリングを反映
-		matWorld *= matRot;// -> ワールド行列に回転を反映
-		matWorld *= matTrans;// -> ワールド行列に平行移動を反映
-
-		// 関数実行の成否を判別用の変数
-		HRESULT result;
-
-		// マッピング
-		ObjectBuff* objectMap = nullptr;
-		result = constBuff_->Map(0, nullptr, (void**)&objectMap);
-		assert(SUCCEEDED(result));
-
-		// 定数バッファへデータ転送
-		objectMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();
-
-		// マッピング終了処理
-		constBuff_->Unmap(0, nullptr);
-	}
+	TransferConstBuffer();
 
 	// オブジェクトの描画処理
 	{
@@ -135,16 +111,19 @@ void Object3D::PreDraw() {
 void Object3D::SetPos(const Float3& position)
 {
 	position_ = position;
+	dirty = true;
 }
 
 void Object3D::SetRot(const Float3& rotation)
 {
 	rotation_ = rotation;
+	dirty = true;
 }
 
 void Object3D::SetScale(const Float3& scale)
 {
 	scale_ = scale;
+	dirty = true;
 }
 
 void Object3D::GenerateConstBuffer() {
@@ -160,4 +139,38 @@ void Object3D::GenerateConstBuffer() {
 		nullptr,
 		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
+}
+
+void Object3D::TransferConstBuffer() {
+	if (dirty) {
+		Matrix4 matScale, matRot, matTrans;
+		matScale = Matrix4Scale(scale_);
+		matRot = Matrix4Identity();
+		matRot *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
+		matRot *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
+		matRot *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
+		matTrans = Matrix4Translate(position_);
+
+		// --ワールド行列の合成-- //
+		matWorld_ = Matrix4Identity();// -> 変形のリセット
+		matWorld_ *= matScale;// -> ワールド行列にスケーリングを反映
+		matWorld_ *= matRot;// -> ワールド行列に回転を反映
+		matWorld_ *= matTrans;// -> ワールド行列に平行移動を反映
+
+		dirty = false;
+	}
+
+	// 関数実行の成否を判別用の変数
+	HRESULT result;
+
+	// マッピング
+	ObjectBuff* objectMap = nullptr;
+	result = constBuff_->Map(0, nullptr, (void**)&objectMap);
+	assert(SUCCEEDED(result));
+
+	// 定数バッファへデータ転送
+	objectMap->mat = matWorld_ * camera_->GetMatView() * camera_->GetMatProjection();
+
+	// マッピング終了処理
+	constBuff_->Unmap(0, nullptr);
 }

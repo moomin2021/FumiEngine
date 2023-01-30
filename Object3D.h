@@ -39,6 +39,9 @@ private:// メンバ変数
 	static D3D12_RESOURCE_DESC resdesc_;
 	ComPtr<ID3D12Resource> constBuff_;
 
+	// ワールド座標
+	Matrix4 matWorld_;
+
 	// カメラ
 	Camera* camera_;
 
@@ -47,6 +50,9 @@ private:// メンバ変数
 
 	static ID3D12Device* device_;// -> デバイス
 	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
+
+	// ダーティフラグ
+	bool dirty;
 
 public:// メンバ関数
 	// [Object3D]インスタンス作成
@@ -87,4 +93,7 @@ private:// メンバ関数
 
 	// 定数バッファ生成
 	void GenerateConstBuffer();
+
+	// 定数バッファ更新
+	void TransferConstBuffer();
 };
