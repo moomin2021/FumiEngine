@@ -17,9 +17,10 @@ private:
 
 	// モデル
 	Model* sphereM_;
+	Model* cubeM_;
 
 	// オブジェクト
-	Object3D* sphereObj_[2];
+	Object3D* object_[2];
 
 	// --メンバ関数-- //
 public:

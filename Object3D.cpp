@@ -36,10 +36,12 @@ Object3D::Object3D() :
 	GenerateConstBuffer();
 }
 
-Object3D* Object3D::CreateObject3D()
+Object3D* Object3D::CreateObject3D(Model* model)
 {
 	// インスタンス生成
 	Object3D* object = new Object3D();
+
+	object->SetModel(model);
 
 	// 生成したインスタンスを返す
 	return object;

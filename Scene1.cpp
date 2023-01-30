@@ -4,7 +4,7 @@ Scene1::Scene1() :
 	key_(nullptr),
 	camera_(nullptr),
 	sphereM_(nullptr),
-	sphereObj_{}
+	object_{}
 {
 }
 
@@ -12,8 +12,9 @@ Scene1::~Scene1()
 {
 	delete camera_;
 	delete sphereM_;
-	delete sphereObj_[0];
-	delete sphereObj_[1];
+	delete cubeM_;
+	delete object_[0];
+	delete object_[1];
 }
 
 void Scene1::Initialize()
@@ -27,15 +28,14 @@ void Scene1::Initialize()
 
 	// モデル
 	sphereM_ = Model::CreateModel("sphere");
+	cubeM_ = Model::CreateModel("cube");
 
 	// オブジェクト
-	sphereObj_[0] = Object3D::CreateObject3D();
-	sphereObj_[0]->SetPos({ 3.0f, 0.0f, 0.0f });
-	sphereObj_[0]->SetModel(sphereM_);
+	object_[0] = Object3D::CreateObject3D(sphereM_);
+	object_[0]->SetPos({ 3.0f, 0.0f, 0.0f });
 
-	sphereObj_[1] = Object3D::CreateObject3D();
-	sphereObj_[1]->SetPos({ -3.0f, 0.0f, 0.0f });
-	sphereObj_[1]->SetModel(sphereM_);
+	object_[1] = Object3D::CreateObject3D(sphereM_);
+	object_[1]->SetPos({ -3.0f, 0.0f, 0.0f });
 
 	// カメラを設定
 	Object3D::SetCamera(camera_);
@@ -53,11 +53,19 @@ void Scene1::Update()
 		camera_->eye_.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
 	}
 
+	if (key_->TriggerKey(DIK_E)) {
+		object_[0]->SetModel(cubeM_);
+	}
+
+	if (key_->TriggerKey(DIK_Q)) {
+		object_[0]->SetModel(sphereM_);
+	}
+
 	static float rota = 0.0f;
 	rota += 1.0f;
 
-	sphereObj_[0]->SetRot({ 0.0f, rota, 0.0f });
-	sphereObj_[1]->SetRot({0.0f, rota, 0.0f});
+	object_[0]->SetRot({ 0.0f, rota, 0.0f });
+	object_[1]->SetRot({0.0f, rota, 0.0f});
 
 	// カメラの更新
 	camera_->Update();
@@ -67,6 +75,6 @@ void Scene1::Draw()
 {
 	Object3D::PreDraw();
 
-	sphereObj_[0]->Draw();
-	sphereObj_[1]->Draw();
+	object_[0]->Draw();
+	object_[1]->Draw();
 }

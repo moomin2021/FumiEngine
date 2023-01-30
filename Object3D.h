@@ -56,7 +56,7 @@ private:// メンバ変数
 
 public:// メンバ関数
 	// [Object3D]インスタンス作成
-	static Object3D* CreateObject3D();
+	static Object3D* CreateObject3D(Model* model = nullptr);
 
 	// オブジェクト3D全体の初期化
 	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
