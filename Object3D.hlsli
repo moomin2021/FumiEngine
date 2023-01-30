@@ -13,6 +13,55 @@ cbuffer MaterialData : register(b1)
     float m_alpha : packoffset(c2.w); // ---> アルファ
 }
 
+static const int DIRLIGHT_NUM = 3;
+static const int POINTLIGHT_NUM = 3;
+static const int SPOTLIGHT_NUM = 3;
+static const int CIRCLESHADOW_NUM = 1;
+
+struct DirLight
+{
+    float3 lightv; // -> ライトへの方向の単位ベクトル
+    float3 lightcolor; // -> ライトの色(RGB)
+    uint active;
+};
+
+struct PointLight
+{
+    float3 lightpos; // -> ライト座標
+    float3 lightcolor; // -> ライトの色(RGB)
+    float3 lightatten; // -> ライト距離減衰係数
+    uint active;
+};
+
+struct SpotLight
+{
+    float3 lightv; // -> ライトの光線方向の逆ベクトル
+    float3 lightpos; // -> ライト座標
+    float3 lightcolor; // -> ライトの色(RGB)
+    float3 lightatten; // -> ライト距離減衰係数
+    float2 lightfactoranglecos; // -> ライト減衰角度のコサイン
+    uint active;
+};
+
+struct CircleShadow
+{
+    float3 dir; // -> 投影方向逆ベクトル(単位ベクトル)
+    float3 casterPos; // -> キャスター座標
+    float distanceCasterLight; // -> キャスターとライトの距離
+    float3 atten; // -> 距離減衰係数
+    float2 factorAngleCos; // -> 減衰角度のコサイン
+    uint active;
+};
+
+cbuffer cbuff2 : register(b2)
+{
+    float3 ambientColor;
+    DirLight dirLights[DIRLIGHT_NUM];
+    PointLight pointLights[POINTLIGHT_NUM];
+    SpotLight spotLights[SPOTLIGHT_NUM];
+    CircleShadow circleShadows[CIRCLESHADOW_NUM];
+}
+
 // --頂点シェーダーの出力構造体-- //
 // --頂点シェーダーからピクセルシェーダーへのやり取りに使用する-- //
 struct VSOutput

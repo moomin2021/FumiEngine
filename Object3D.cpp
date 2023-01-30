@@ -9,6 +9,7 @@ ID3D12GraphicsCommandList* Object3D::cmdList_ = nullptr;// -> コマンドリスト
 D3D12_HEAP_PROPERTIES Object3D::heapProp_ = {};// ----------> ヒープ設定
 D3D12_RESOURCE_DESC Object3D::resdesc_ = {};// -------------> リソース設定
 Camera* Object3D::camera_ = nullptr;// ---------------------> カメラ
+LightGroup* Object3D::lightGroup_ = nullptr;// -------------> ライト
 
 Object3D::Object3D() :
 #pragma region 初期化リスト
@@ -133,6 +134,9 @@ void Object3D::Draw()
 
 	// --定数バッファビュー（CBV）の設定コマンド-- //
 	cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+
+	// ライトの描画
+	lightGroup_->Draw();
 
 	// モデルの情報を元に描画
 	model_->Draw();

@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Object3D.h"
 #include "Camera.h"
+#include "LightGroup.h"
 #include "Key.h"
 
 class Scene1 : public BaseScene
@@ -15,12 +16,16 @@ private:
 	// カメラ
 	Camera* camera_;
 
+	// ライト
+	LightGroup* lightGroup_;
+
 	// モデル
 	Model* sphereM_;
 	Model* cubeM_;
+	Model* floorM_;
 
 	// オブジェクト
-	Object3D* object_[2];
+	Object3D* object_[3];
 
 	// --メンバ関数-- //
 public:

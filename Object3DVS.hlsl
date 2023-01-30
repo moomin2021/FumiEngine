@@ -1,16 +1,5 @@
 #include "Object3D.hlsli"
 
-//VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
-//{
-//	// ピクセルシェーダーに渡す値
-//    VSOutput output;
-	
-//    output.svPos = mul(mat, pos);
-//    output.normal = normal;
-//    output.uv = uv;
-//    return output;
-//}
-
 VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 {
 	// 法線にワールド行列によるスケーリング・回転を適用

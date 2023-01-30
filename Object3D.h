@@ -7,6 +7,7 @@ using namespace Microsoft::WRL;
 #include "Model.h"
 #include "Camera.h"
 #include "fMath.h"
+#include "LightGroup.h"
 
 class Object3D {
 public:// -----サブクラス----- //
@@ -32,6 +33,7 @@ private:// -----静的メンバ変数----- //
 	static D3D12_HEAP_PROPERTIES heapProp_;// -----> ヒープ設定
 	static D3D12_RESOURCE_DESC resdesc_;// --------> リソース設定
 	static Camera* camera_;// ---------------------> カメラ
+	static LightGroup* lightGroup_;// -------------> ライト
 
 private:// -----メンバ関数----- //
 	/// <summary>
@@ -68,7 +70,12 @@ public:// -----静的メンバ関数----- //
 	/// <summary>
 	/// カメラ設定
 	/// </summary>
-	static inline void SetCamera(Camera* camera) { camera_ = camera; }
+	static void SetCamera(Camera* camera) { camera_ = camera; }
+
+	/// <summary>
+	/// ライト設定
+	/// </summary>
+	static void SetLightGroup(LightGroup* lightGroup) { lightGroup_ = lightGroup; }
 
 public:// -----メンバ関数----- //
 	/// <summary>
