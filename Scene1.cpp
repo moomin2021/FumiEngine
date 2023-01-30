@@ -31,25 +31,36 @@ void Scene1::Initialize()
 	// オブジェクト
 	sphereObj_[0] = Object3D::CreateObject3D();
 	sphereObj_[0]->SetPos({ 3.0f, 0.0f, 0.0f });
-	sphereObj_[0]->SetCamera(camera_);
 	sphereObj_[0]->SetModel(sphereM_);
 
 	sphereObj_[1] = Object3D::CreateObject3D();
-	sphereObj_[0]->SetPos({ -3.0f, 0.0f, 0.0f });
-	sphereObj_[1]->SetCamera(camera_);
+	sphereObj_[1]->SetPos({ -3.0f, 0.0f, 0.0f });
 	sphereObj_[1]->SetModel(sphereM_);
+
+	// カメラを設定
+	Object3D::SetCamera(camera_);
 }
 
 void Scene1::Update()
 {
-	// カメラの更新
-	camera_->Update();
+	if (key_->TriggerKey(DIK_0)) {
+		int num = 0;
+	}
+
+	// カメラ移動
+	{
+		camera_->eye_.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
+		camera_->eye_.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+	}
 
 	static float rota = 0.0f;
 	rota += 1.0f;
 
 	sphereObj_[0]->SetRot({ 0.0f, rota, 0.0f });
 	sphereObj_[1]->SetRot({0.0f, rota, 0.0f});
+
+	// カメラの更新
+	camera_->Update();
 }
 
 void Scene1::Draw()

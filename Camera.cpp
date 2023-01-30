@@ -27,11 +27,11 @@ Camera::Camera() :
 
 void Camera::Update() {
 	// --ÉrÉÖÅ[ïœä∑çsóÒ-- //
-	static XMFLOAT3 eye = { eye_.x, eye_.y , eye_.z };
-	static XMFLOAT3 target = { target_.x, target_.y , target_.z };
-	static XMFLOAT3 up = { up_.x, up_.y , up_.z };
+	XMFLOAT3 eye = { eye_.x, eye_.y , eye_.z };
+	XMFLOAT3 target = { target_.x, target_.y , target_.z };
+	XMFLOAT3 up = { up_.x, up_.y , up_.z };
 
-	static XMMATRIX mat =
+	XMMATRIX mat =
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 	for (size_t i = 0; i < 4; i++) {

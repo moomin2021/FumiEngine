@@ -13,6 +13,7 @@ D3D12_HEAP_PROPERTIES Object3D::heapProp_ = {};
 D3D12_RESOURCE_DESC Object3D::resdesc_ = {};
 ID3D12Device* Object3D::device_;
 ID3D12GraphicsCommandList* Object3D::cmdList_= nullptr;
+Camera* Object3D::camera_ = nullptr;
 
 Object3D::Object3D() :
 #pragma region 初期化リスト
@@ -24,9 +25,6 @@ Object3D::Object3D() :
 
 	// 定数バッファ
 	constBuff_(nullptr),// -> オブジェクト
-
-	// カメラ
-	camera_(nullptr),
 
 	// モデル
 	model_(nullptr),
@@ -163,13 +161,15 @@ void Object3D::TransferConstBuffer() {
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
+	Camera* camera = camera_;
+
 	// マッピング
 	ObjectBuff* objectMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&objectMap);
 	assert(SUCCEEDED(result));
 
 	// 定数バッファへデータ転送
-	objectMap->mat = matWorld_ * camera_->GetMatView() * camera_->GetMatProjection();
+	objectMap->mat = matWorld_ * camera->GetMatView() * camera->GetMatProjection();
 
 	// マッピング終了処理
 	constBuff_->Unmap(0, nullptr);

@@ -43,7 +43,7 @@ private:// メンバ変数
 	Matrix4 matWorld_;
 
 	// カメラ
-	Camera* camera_;
+	static Camera* camera_;
 
 	// モデル
 	Model* model_;
@@ -67,10 +67,10 @@ public:// メンバ関数
 	// 描画前処理
 	static void PreDraw();
 
-#pragma region セッター
-	// カメラを設定
-	void SetCamera(Camera* camera) { camera_ = camera; }
+	// カメラセット
+	static inline void SetCamera(Camera* camera) { camera_ = camera; }
 
+#pragma region セッター
 	// モデルを設定
 	void SetModel(Model* model) { model_ = model; };
 
