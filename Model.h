@@ -68,9 +68,17 @@ public:// メンバ変数
 	// テクスチャハンドル
 	int textureHandle_;
 
+	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
+
 public:// メンバ関数
 	// [Model]インスタンス作成
 	static Model* CreateModel(std::string fileName);
+
+	// 初期化処理
+	static void Initialize(ID3D12GraphicsCommandList* cmdList);
+
+	// 描画処理
+	void Draw();
 
 private:// メンバ関数
 	// モデル読み込み

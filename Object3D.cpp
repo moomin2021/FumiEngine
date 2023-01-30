@@ -51,6 +51,8 @@ void Object3D::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList*
 	device_ = device;// -> デバイス
 	cmdList_ = cmdList;// -> コマンドリスト
 
+	Model::Initialize(cmdList);
+
 	// 定数バッファのヒープ設定
 	heapProp_.Type = D3D12_HEAP_TYPE_UPLOAD;
 
@@ -71,27 +73,10 @@ void Object3D::Draw()
 
 	// オブジェクトの描画処理
 	{
-		// --SRVヒープのハンドルを取得-- //
-		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
-		// --ハンドルを指定された分まで進める-- //
-		srvGpuHandle.ptr += model_->textureHandle_;
-
 		// --定数バッファビュー（CBV）の設定コマンド-- //
 		cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
-		cmdList_->SetGraphicsRootConstantBufferView(1, model_->materialBuff_->GetGPUVirtualAddress());
-
-		// --指定されたSRVをルートパラメータ1番に設定-- //
-		cmdList_->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
-
-		// --頂点バッファビューの設定コマンド-- //
-		cmdList_->IASetVertexBuffers(0, 1, &model_->vbView_);
-
-		// --インデックスバッファビューの設定コマンド-- //
-		cmdList_->IASetIndexBuffer(&model_->ibView_);
-
-		//// --描画コマンド-- //
-		cmdList_->DrawIndexedInstanced(static_cast<UINT>(model_->indexes_.size()), 1, 0, 0, 0);
+		
+		model_->Draw();
 	}
 }
 
