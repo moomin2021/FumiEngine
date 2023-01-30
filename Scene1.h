@@ -19,7 +19,7 @@ private:
 	Model* sphereM_;
 
 	// オブジェクト
-	Object3D* sphereObj_;
+	Object3D* sphereObj_[2];
 
 	// --メンバ関数-- //
 public:

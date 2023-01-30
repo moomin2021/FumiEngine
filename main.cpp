@@ -4,6 +4,7 @@
 #include "Texture.h"// -> Texture
 #include "Key.h"// -> キーボード入力
 #include "Mouse.h"// -> マウスキーボード入力
+#include "Object3D.h"// -> オブジェクト3Dクラス
 #pragma endregion
 
 #include "SceneManager.h"
@@ -30,6 +31,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// マウス入力
 	Mouse* mouse = Mouse::GetInstance();
 	mouse->Initialize(winAPI);
+
+	// オブジェクト3Dを静的初期化
+	Object3D::StaticInitialize(dx12->GetDevice(), dx12->GetCmdList());
 
 	// --シーン管理クラス-- //
 	SceneManager* sceneM = SceneManager::GetInstance();

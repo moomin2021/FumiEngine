@@ -35,7 +35,9 @@ private:// メンバ変数
 	Float3 scale_;// ----> スケール
 
 	// 定数バッファ
-	ComPtr<ID3D12Resource> objectBuff_;// ---> オブジェクト
+	static D3D12_HEAP_PROPERTIES heapProp_;
+	static D3D12_RESOURCE_DESC resdesc_;
+	ComPtr<ID3D12Resource> constBuff_;
 
 	// カメラ
 	Camera* camera_;
@@ -43,9 +45,15 @@ private:// メンバ変数
 	// モデル
 	Model* model_;
 
+	static ID3D12Device* device_;// -> デバイス
+	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
+
 public:// メンバ関数
 	// [Object3D]インスタンス作成
 	static Object3D* CreateObject3D();
+
+	// オブジェクト3D全体の初期化
+	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 
 	// 描画処理
 	void Draw();
@@ -77,6 +85,6 @@ private:// メンバ関数
 	// コンストラクタ
 	Object3D();
 
-	// 初期化処理
-	void Initialize();
+	// 定数バッファ生成
+	void GenerateConstBuffer();
 };
