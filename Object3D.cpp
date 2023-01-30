@@ -12,7 +12,7 @@
 D3D12_HEAP_PROPERTIES Object3D::heapProp_ = {};
 D3D12_RESOURCE_DESC Object3D::resdesc_ = {};
 ID3D12Device* Object3D::device_;
-ID3D12GraphicsCommandList* Object3D::cmdList_= nullptr;
+ID3D12GraphicsCommandList* Object3D::cmdList_ = nullptr;
 Camera* Object3D::camera_ = nullptr;
 
 Object3D::Object3D() :
@@ -71,13 +71,11 @@ void Object3D::Draw()
 	// オブジェクトの更新処理
 	TransferConstBuffer();
 
-	// オブジェクトの描画処理
-	{
-		// --定数バッファビュー（CBV）の設定コマンド-- //
-		cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
-		
-		model_->Draw();
-	}
+	// --定数バッファビュー（CBV）の設定コマンド-- //
+	cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+
+	// モデルの情報を元に描画
+	model_->Draw();
 }
 
 void Object3D::PreDraw() {
