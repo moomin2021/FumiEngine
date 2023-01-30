@@ -42,17 +42,16 @@ void Object3D::Draw()
 {
 	// オブジェクトの更新処理
 	{
-		// --スケール、回転、平行移動行列の計算-- //
-		XMMATRIX matScale, matRot, matTrans;
-		matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
-		matRot = XMMatrixIdentity();
-		matRot *= XMMatrixRotationZ(Util::Degree2Radian(rotation_.z));
-		matRot *= XMMatrixRotationX(Util::Degree2Radian(rotation_.x));
-		matRot *= XMMatrixRotationY(Util::Degree2Radian(rotation_.y));
-		matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
+		Matrix4 matScale, matRot, matTrans;
+		matScale = Matrix4Scale(scale_);
+		matRot = Matrix4Identity();
+		matRot *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
+		matRot *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
+		matRot *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
+		matTrans = Matrix4Translate(position_);
 
 		// --ワールド行列の合成-- //
-		XMMATRIX matWorld = XMMatrixIdentity();// -> 変形のリセット
+		Matrix4 matWorld = Matrix4Identity();// -> 変形のリセット
 		matWorld *= matScale;// -> ワールド行列にスケーリングを反映
 		matWorld *= matRot;// -> ワールド行列に回転を反映
 		matWorld *= matTrans;// -> ワールド行列に平行移動を反映
@@ -111,17 +110,17 @@ void Object3D::PreDraw() {
 	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 }
 
-void Object3D::SetPos(const XMFLOAT3& position)
+void Object3D::SetPos(const Float3& position)
 {
 	position_ = position;
 }
 
-void Object3D::SetRot(const XMFLOAT3& rotation)
+void Object3D::SetRot(const Float3& rotation)
 {
 	rotation_ = rotation;
 }
 
-void Object3D::SetScale(const XMFLOAT3& scale)
+void Object3D::SetScale(const Float3& scale)
 {
 	scale_ = scale;
 }

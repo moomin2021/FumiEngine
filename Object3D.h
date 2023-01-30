@@ -11,6 +11,8 @@ using namespace DirectX;
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
+#include "fMath.h"
+
 // シーケンスコンテナの一種
 #include <vector>
 
@@ -23,14 +25,14 @@ using namespace Microsoft::WRL;
 // 定数バッファ構造体(オブジェクト)
 struct ObjectBuff {
 	// 行列
-	XMMATRIX mat;
+	Matrix4 mat;
 };
 
 class Object3D {
 private:// メンバ変数
-	XMFLOAT3 position_;// -> 座標
-	XMFLOAT3 rotation_;// -> 回転角
-	XMFLOAT3 scale_;// ----> スケール
+	Float3 position_;// -> 座標
+	Float3 rotation_;// -> 回転角
+	Float3 scale_;// ----> スケール
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> objectBuff_;// ---> オブジェクト
@@ -59,16 +61,16 @@ public:// メンバ関数
 	void SetModel(Model* model) { model_ = model; };
 
 	// 各要素変更
-	void SetPos(const XMFLOAT3& position);
-	void SetRot(const XMFLOAT3& rotation);
-	void SetScale(const XMFLOAT3& scale);
+	void SetPos(const Float3& position);
+	void SetRot(const Float3& rotation);
+	void SetScale(const Float3& scale);
 #pragma endregion
 
 #pragma region ゲッター
 	// 各要素取得
-	inline const XMFLOAT3& GetPos() { return position_; }
-	inline const XMFLOAT3& GetRot() { return rotation_; }
-	inline const XMFLOAT3& GetScale() { return scale_; }
+	inline const Float3& GetPos() { return position_; }
+	inline const Float3& GetRot() { return rotation_; }
+	inline const Float3& GetScale() { return scale_; }
 #pragma endregion
 
 private:// メンバ関数
