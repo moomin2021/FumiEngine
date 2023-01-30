@@ -35,9 +35,6 @@ private:// メンバ変数
 	// 定数バッファ
 	ComPtr<ID3D12Resource> objectBuff_;// ---> オブジェクト
 
-	// 透視投影行列
-	XMMATRIX matProjection_;
-
 	// カメラ
 	Camera* camera_;
 
@@ -69,9 +66,9 @@ public:// メンバ関数
 
 #pragma region ゲッター
 	// 各要素取得
-	inline XMFLOAT3& GetPos() { return position_; }
-	inline XMFLOAT3& GetRot() { return rotation_; }
-	inline XMFLOAT3& GetScale() { return scale_; }
+	inline const XMFLOAT3& GetPos() { return position_; }
+	inline const XMFLOAT3& GetRot() { return rotation_; }
+	inline const XMFLOAT3& GetScale() { return scale_; }
 #pragma endregion
 
 private:// メンバ関数

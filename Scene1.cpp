@@ -37,6 +37,11 @@ void Scene1::Update()
 {
 	// ƒJƒƒ‰‚ÌXV
 	camera_->Update();
+
+	static float rota = 0.0f;
+	rota += 1.0f;
+
+	sphereObj_->SetRot({ 0.0f, rota, 0.0f });
 }
 
 void Scene1::Draw()

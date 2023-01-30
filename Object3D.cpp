@@ -18,9 +18,6 @@ Object3D::Object3D() :
 	// 定数バッファ
 	objectBuff_(nullptr),// -> オブジェクト
 
-	// 透視投影行列
-	matProjection_{},
-
 	// カメラ
 	camera_(nullptr),
 
@@ -69,7 +66,7 @@ void Object3D::Draw()
 		assert(SUCCEEDED(result));
 
 		// 定数バッファへデータ転送
-		objectMap->mat = matWorld * camera_->GetMatView() * matProjection_;
+		objectMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();
 
 		// マッピング終了処理
 		objectBuff_->Unmap(0, nullptr);
@@ -160,11 +157,4 @@ void Object3D::Initialize()
 			IID_PPV_ARGS(&objectBuff_));
 		assert(SUCCEEDED(result));
 	}
-
-	// --透視投影行列の計算-- //
-	matProjection_ = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
-		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f// ------------------------> 前端、奥端
-	);
 }
