@@ -49,7 +49,7 @@ void Scene1::Initialize()
 	// ƒ‰ƒCƒg¶¬
 	lightGroup_ = LightGroup::Create();
 
-	lightGroup_->SetDirLightActive(0, false);
+	lightGroup_->SetDirLightActive(0, true);
 	lightGroup_->SetDirLightActive(1, false);
 	lightGroup_->SetDirLightActive(2, false);
 	lightGroup_->SetPointLightActive(0, true);

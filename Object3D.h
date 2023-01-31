@@ -16,12 +16,15 @@ public:// -----サブクラス----- //
 		Matrix4 viewProj;// -> ビュープロジェクション
 		Matrix4 world;// ----> ワールド行列
 		Float3 cameraPos;// -> カメラ座標(ワールド座標)
+		float pad1;// -------> パディング
+		Float4 color;// -----> 色(RGBA)
 	};
 
 private:// -----メンバ変数----- //
 	Float3 position_;// ------------------> 座標
 	Float3 rotation_;// ------------------> 回転角
 	Float3 scale_;// ---------------------> スケール
+	Float4 color_;// ---------------------> 色(RGBA)
 	Matrix4 matWorld_;// -----------------> ワールド座標
 	ComPtr<ID3D12Resource> constBuff_;// -> 定数バッファ
 	Model* model_;// ---------------------> モデル
@@ -97,6 +100,11 @@ public:// -----メンバ関数----- //
 	/// 拡縮設定
 	/// </summary>
 	void SetScale(const Float3& scale);
+
+	/// <summary>
+	/// 色(RGBA)設定
+	/// </summary>
+	void SetColor(const Float4& color);
 
 	/// <summary>
 	/// モデル設定

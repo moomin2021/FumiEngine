@@ -13,13 +13,14 @@ LightGroup* Object3D::lightGroup_ = nullptr;// -------------> ライト
 
 Object3D::Object3D() :
 #pragma region 初期化リスト
-	position_{0.0f, 0.0f, 0.0f},// -> 座標
-	rotation_{0.0f, 0.0f, 0.0f},// -> 回転角
-	scale_{1.0f, 1.0f, 1.0f},// ----> スケール
-	matWorld_{},// -----------------> ワールド座標
-	constBuff_(nullptr),// ---------> 定数バッファ
-	model_(nullptr),// -------------> モデル
-	dirty(true)// ------------------> ダーティフラグ
+	position_{0.0f, 0.0f, 0.0f},// ----> 座標
+	rotation_{0.0f, 0.0f, 0.0f},// ----> 回転角
+	scale_{1.0f, 1.0f, 1.0f},// -------> スケール
+	color_{1.0f, 1.0f, 1.0f, 1.0f},// -> 色(RGBA)
+	matWorld_{},// --------------------> ワールド座標
+	constBuff_(nullptr),// ------------> 定数バッファ
+	model_(nullptr),// ----------------> モデル
+	dirty(true)// ---------------------> ダーティフラグ
 #pragma endregion
 {
 	// 定数バッファ生成
@@ -75,6 +76,7 @@ void Object3D::TransferConstBuffer() {
 	constMap->viewProj = camera_->GetMatView() * camera_->GetMatProjection();
 	constMap->world = matWorld_;
 	constMap->cameraPos = camera_->eye_;
+	constMap->color = color_;
 
 	// マッピング終了処理
 	constBuff_->Unmap(0, nullptr);
@@ -158,4 +160,8 @@ void Object3D::SetScale(const Float3& scale)
 {
 	scale_ = scale;// -> 拡縮設定
 	dirty = true;// -> ダーティーフラグを[ON]にする
+}
+
+void Object3D::SetColor(const Float4& color) {
+	color_ = color;// -> 色(RGBA)設定
 }

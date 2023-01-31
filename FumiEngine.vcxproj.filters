@@ -135,6 +135,9 @@
     <ClCompile Include="LightGroup.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
+    <ClCompile Include="Float4.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="CircleShadow.h">
       <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Float4.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

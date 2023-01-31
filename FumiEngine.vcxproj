@@ -139,6 +139,7 @@
     <ClCompile Include="DX12Cmd.cpp" />
     <ClCompile Include="Float2.cpp" />
     <ClCompile Include="Float3.cpp" />
+    <ClCompile Include="Float4.cpp" />
     <ClCompile Include="FumiEngine.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LightGroup.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="Float2.h" />
     <ClInclude Include="Float3.h" />
+    <ClInclude Include="Float4.h" />
     <ClInclude Include="fMath.h" />
     <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="Key.h" />
