@@ -105,7 +105,7 @@ void Model::LoadModel(std::string name)
 			line_stream >> texcoord.y;
 
 			// V方向反転
-			texcoord.y = 1.0 - texcoord.y;
+			texcoord.y = 1.0f - texcoord.y;
 
 			// テクスチャ座標データ追加
 			texcoords.emplace_back(texcoord);

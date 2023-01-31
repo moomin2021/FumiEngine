@@ -116,36 +116,31 @@ float4 main(VSOutput input) : SV_TARGET
         }
     }
     
-    // 丸影
-    for (i = 0; i < CIRCLESHADOW_NUM; i++)
+    if (circleShadows[0].active)
     {
-        if (circleShadows[i].active)
-        {
             //オブジェクト表面からキャスターへのベクトル
-            float3 casterv = circleShadows[i].casterPos - input.worldPos.xyz;
+        float3 casterv = circleShadows[0].casterPos - input.worldPos.xyz;
             //投影方向での距離
-            float d = dot(casterv, circleShadows[i].dir);
+        float d = dot(casterv, circleShadows[0].dir);
             //距離減衰係数
-            float atten = saturate(1.0f / (circleShadows[i].atten.x + circleShadows[i].atten.y * d + circleShadows[i].atten.z * d * d));
+        float atten = saturate(1.0f / (circleShadows[0].atten.x + circleShadows[0].atten.y * d + circleShadows[0].atten.z * d * d));
             //距離がマイナスなら0にする
-            atten *= step(0, d);
+        atten *= step(0, d);
             //仮想ライトの座標
-            float3 lightpos = circleShadows[i].casterPos + circleShadows[i].dir * circleShadows[i].distanceCasterLight;
+        float3 lightpos = circleShadows[0].casterPos + circleShadows[0].dir * circleShadows[0].distanceCasterLight;
             //オブジェクト表面からライトへのベクトル（単位ベクトル）
-            float3 lightv = normalize(lightpos - input.worldPos.xyz);
+        float3 lightv = normalize(lightpos - input.worldPos.xyz);
             //角度減衰
-            float cos = dot(lightv, circleShadows[i].dir);
+        float cos = dot(lightv, circleShadows[0].dir);
             //減衰開始各おから、減衰終了角度にかけて減衰
             //減衰開始角度の内側は1倍、減衰終了角度の外側は0倍の輝度
-            float angleatten =
-            smoothstep(circleShadows[i].factorAngleCos.y,
-            circleShadows[i].factorAngleCos.x, cos);
+        float angleatten =
+            smoothstep(circleShadows[0].factorAngleCos.y,
+            circleShadows[0].factorAngleCos.x, cos);
             //角度減衰を乗算
-            atten *= angleatten;
+        atten *= angleatten;
             //すべて減算する
-            shadecolor.rgb -= atten;
-        }
-
+        shadecolor.rgb -= atten;
     }
 
     // シェーディングによる色で描画

@@ -9,8 +9,7 @@ using namespace Microsoft::WRL;
 // WinAPI
 #include "WinAPI.h"
 
-// Vector2
-#include "Vector2.h"
+#include "fMath.h"
 
 enum MouseButton {
 	M_LEFT,
@@ -64,7 +63,7 @@ public:
 	bool TriggerMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80) && !(oldMouse_.rgbButtons[button] == (0x80)); }
 
 	// --マウスの位置-- //
-	Vector2 MousePos() { return Vector2(p_.x, p_.y); }
+	Vector2 MousePos() { return Vector2((float)p_.x, (float)p_.y); }
 
 	// --マウスの移動量-- //
 	Vector2 GetMouseVelosity() { return Vector2((float)nowMouse_.lX, (float)nowMouse_.lY); }

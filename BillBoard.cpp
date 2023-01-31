@@ -179,10 +179,6 @@ void BillBoard::Update(Camera* camera, BillBoardType type)
 	// 転置により逆行列(逆回転)を計算 //
 	//matView = XMMatrixTranspose(matCameraRot);
 
-	// 関数が成功したかどうかを判別する用変数
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
-	HRESULT result;
-
 	// --スケール、回転、平行移動行列の計算-- //
 	XMMATRIX matScale, matRot, matTrans;
 	matScale = XMMatrixScaling(scale_.x, scale_.y, 1.0f);
@@ -249,9 +245,6 @@ void BillBoard::PreDraw()
 
 void BillBoard::CreateSquare()
 {
-	// 関数が成功したかどうかを判別する用変数
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
-	HRESULT result;
 
 #pragma region 頂点データ作成
 	// 立方体頂点データ

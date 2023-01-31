@@ -135,6 +135,9 @@
     <ClCompile Include="LightGroup.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="CircleShadow.h">
       <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene2.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

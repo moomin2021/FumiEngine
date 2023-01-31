@@ -31,8 +31,10 @@ void Camera::Update() {
 	XMFLOAT3 target = { target_.x, target_.y , target_.z };
 	XMFLOAT3 up = { up_.x, up_.y , up_.z };
 
-	XMMATRIX mat =
-		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	//XMMATRIX mat = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	XMMATRIX mat = XMMatrixLookAtLH(XMVECTOR({eye_.x, eye_.y , eye_.z, 0.0f}),
+		XMVECTOR({ target_.x, target_.y , target_.z, 0.0f }),
+		XMVECTOR({ up_.x, up_.y , up_.z, 0.0f }));
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {

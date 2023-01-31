@@ -53,12 +53,21 @@ void Scene1::Initialize()
 	lightGroup_->SetDirLightActive(1, false);
 	lightGroup_->SetDirLightActive(2, false);
 	lightGroup_->SetPointLightActive(0, true);
-	lightGroup_->SetPointLightActive(1, false);
+	lightGroup_->SetPointLightActive(1, true);
 	lightGroup_->SetPointLightActive(2, false);
-	lightGroup_->SetSpotLightActive(0, false);
+	lightGroup_->SetSpotLightActive(0, true);
 	lightGroup_->SetSpotLightActive(1, false);
 	lightGroup_->SetSpotLightActive(2, false);
-	lightGroup_->SetCircleShadowActive(0, false);
+	lightGroup_->SetCircleShadowActive(0, true);
+
+	lightGroup_->SetCircleShadowCasterPos(0, XMFLOAT3({ -3.0f, 1.0f, 0.0f }));
+	lightGroup_->SetCircleShadowDir(0, XMVECTOR({ 0.0f, -1.0f, 0.0f }));
+	lightGroup_->SetCircleShadowAtten(0, XMFLOAT3({ 0.5f, 0.6f, 0.0f }));
+	lightGroup_->SetCircleShadowFactorAngle(0, XMFLOAT2({ 0.0f, 0.5f }));
+
+	lightGroup_->SetSpotLightDir(0, XMVECTOR({ 0.0f, -1.0f, 0.0f }));
+	lightGroup_->SetSpotLightAtten(0, XMFLOAT3({ 0.0f, 0.0f, 0.0f }));
+	lightGroup_->SetSpotLightFactorAngle(0, XMFLOAT2({ 20.0f, 30.0f }));
 
 	// ƒJƒƒ‰‚ðÝ’è
 	Object3D::SetCamera(camera_);
@@ -72,6 +81,9 @@ void Scene1::Update()
 	if (key_->TriggerKey(DIK_0)) {
 		int num = 0;
 	}
+
+	static int count = 0;
+	count++;
 
 	// ƒJƒƒ‰ˆÚ“®
 	{
@@ -87,12 +99,19 @@ void Scene1::Update()
 		object_[0]->SetModel(sphereM_);
 	}
 
-	static Float3 pos = { 0.0f, 0.5f, 0.0f };
+	static Float3 pos0 = { 0.0f, 0.5f, 0.0f };
+	static Float3 pos1 = { 0.0f, 0.5f, 0.0f };
+	static Float3 pos2 = { 0.0f, 5.0f, -2.0f };
 
-	pos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
-	pos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
+	pos0.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
+	pos0.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
 
-	lightGroup_->SetPointLightPos(0, XMFLOAT3({ pos.x, pos.y, pos.z }));
+	pos1.x = sinf(count * 0.1f) * 3.0f;
+	pos2.x = sinf(count * 0.1f) * 4.0f;
+
+	lightGroup_->SetPointLightPos(0, XMFLOAT3({ pos0.x, pos0.y, pos0.z }));
+	lightGroup_->SetPointLightPos(1, XMFLOAT3({ pos1.x, pos1.y, pos1.z }));
+	lightGroup_->SetSpotLightPos(0, XMFLOAT3({ pos2.x, pos2.y, pos2.z }));
 
 	static float rota = 0.0f;
 	rota += 1.0f;
