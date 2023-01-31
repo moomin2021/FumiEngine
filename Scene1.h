@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "LightGroup.h"
 #include "Key.h"
+#include "CollisionPrimitive.h"
 
 class Scene1 : public BaseScene
 {
@@ -21,11 +22,19 @@ private:
 
 	// モデル
 	Model* sphereM_;
-	Model* cubeM_;
 	Model* floorM_;
 
 	// オブジェクト
-	Object3D* object_[3];
+	Object3D* object_[2];
+
+	// 当たり判定 球
+	Sphere sphereC_;
+
+	// 当たり判定 平面
+	Plane planeC_;
+
+	// カウント
+	int count_;
 
 	// --メンバ関数-- //
 public:

@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="BillBoard.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
     <ClCompile Include="Float2.cpp" />
     <ClCompile Include="Float3.cpp" />
@@ -164,6 +165,8 @@
     <ClInclude Include="BillBoard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleShadow.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DX12Cmd.h" />
     <ClInclude Include="Float2.h" />
