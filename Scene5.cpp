@@ -1,52 +1,55 @@
-#include "Scene2.h"
+#include "Scene5.h"
 #include "Collision.h"
 #include <sstream>
 #include <iomanip>
 
-Scene2::Scene2() :
+Scene5::Scene5() :
 	key_(nullptr),
 	camera_(nullptr),
 	lightGroup_(nullptr),
 	sphereM_(nullptr),
-	triangleM_(nullptr),
+	rayM_(nullptr),
 	object_{},
+	rayC_{},
 	sphereC_{},
-	triangleC_{},
 	count_(0)
 {
 }
 
-Scene2::~Scene2()
+Scene5::~Scene5()
 {
 	delete camera_;
 	delete lightGroup_;
 	delete sphereM_;
-	delete triangleM_;
+	delete rayM_;
 	delete object_[0];
 	delete object_[1];
+	delete object_[2];
 }
 
-void Scene2::Initialize()
+void Scene5::Initialize()
 {
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
 
 	// カメラ
 	camera_ = new Camera();
-	camera_->eye_ = { 0.0f, 20.0f, -30.0f };
+	camera_->eye_ = { 0.0f, 10.0f, -10.0f };
 
 	// モデル
 	sphereM_ = Model::CreateModel("sphere");
-	triangleM_ = Model::CreateModel("triangle");
+	rayM_ = Model::CreateModel("ray");
 
 	// オブジェクト
 	object_[0] = Object3D::CreateObject3D(sphereM_);
-	object_[0]->SetPos({ 0.0f, 0.0f, 0.0f });
+	object_[0]->SetPos({ 0.0f, 5.0f, 0.0f });
 
-	object_[1] = Object3D::CreateObject3D(triangleM_);
-	object_[1]->SetPos({ 0.0f, 0.0f, 0.0f });
-	object_[1]->SetRot({ 0.0f, 90.0f, 0.0f });
-	object_[1]->SetScale({ 5.0f, 1.0f, 5.0f });
+	object_[1] = Object3D::CreateObject3D(rayM_);
+	object_[1]->SetPos({ 0.0f, 5.0f, 0.0f });
+	object_[1]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	object_[2] = Object3D::CreateObject3D(sphereM_);
+	object_[2]->SetPos({ 0.0f, 0.0f, 0.0f });
 
 	// ライト生成
 	lightGroup_ = LightGroup::Create();
@@ -61,18 +64,16 @@ void Scene2::Initialize()
 	// ライトを設定
 	Object3D::SetLightGroup(lightGroup_);
 
+	// レイの初期値を設定
+	rayC_.start = XMVectorSet(0.0f, 5.0f, 0.0f, 1.0f);// -> 原点やや上
+	rayC_.dir = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);// -> 下向き
+
 	// 球の初期値を設定
 	sphereC_.center = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);// -> 中心点座標
 	sphereC_.radius = 1.0f;// -> 半径
-
-	// 三角形の初期値を設定
-	triangleC_.p0 = XMVectorSet(-5.0f, 0.0f, -5.0f, 1.0f);// -> 左手前
-	triangleC_.p1 = XMVectorSet(-5.0f, 0.0f, 5.0f, 1.0f);// -> 左奥
-	triangleC_.p2 = XMVectorSet(5.0f, 0.0f, -5.0f, 1.0f);// -> 右手前
-	triangleC_.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);// -> 上向き
 }
 
-void Scene2::Update()
+void Scene5::Update()
 {
 	if (key_->TriggerKey(DIK_0)) {
 		int num = 0;
@@ -89,21 +90,26 @@ void Scene2::Update()
 
 	// 球移動
 	{
-		Float3 defaPos = { 0.0f, 0.0f, 0.0f };
-		defaPos.x += sinf((float)count_ * 0.05f) * 7.0f;
-		defaPos.z += sinf((float)count_ * 0.05f) * 7.0f;
+		Float3 defaPos = { 0.0f, 5.0f, 0.0f };
+		defaPos.x += sinf((float)count_ * 0.05f) * 3.0f;
+		defaPos.z += sinf((float)count_ * 0.05f) * 3.0f;
 
-		sphereC_.center.m128_f32[0] = defaPos.x;
-		sphereC_.center.m128_f32[2] = defaPos.z;
+		rayC_.start.m128_f32[0] = defaPos.x;
+		rayC_.start.m128_f32[2] = defaPos.z;
 
 		object_[0]->SetPos(defaPos);
+		object_[1]->SetPos(defaPos);
 
-		if (Collision::CheckSphere2Triangle(sphereC_, triangleC_)) {
+		float distance = 0.0f;
+
+		if (Collision::CheckRay2Sphere(rayC_, sphereC_, &distance)) {
 			object_[0]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 		}
 		else {
 			object_[0]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		}
+
+		object_[1]->SetScale({ 1.0f, distance / 2.0f, 1.0f });
 	}
 
 	// カメラの更新
@@ -113,7 +119,7 @@ void Scene2::Update()
 	lightGroup_->Update();
 }
 
-void Scene2::Draw()
+void Scene5::Draw()
 {
 	Object3D::PreDraw();
 

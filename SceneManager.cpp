@@ -3,6 +3,7 @@
 #include "Scene2.h"
 #include "Scene3.h"
 #include "Scene4.h"
+#include "Scene5.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -52,6 +53,10 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = new Scene4();
 		nowScene_->Initialize();
 		break;
+	case SCENE::SCENE5:
+		nowScene_ = new Scene5();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
@@ -62,6 +67,7 @@ void SceneManager::Update() {
 	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE::SCENE2);
 	if (key_->TriggerKey(DIK_3)) ChangeScene(SCENE::SCENE3);
 	if (key_->TriggerKey(DIK_4)) ChangeScene(SCENE::SCENE4);
+	if (key_->TriggerKey(DIK_5)) ChangeScene(SCENE::SCENE5);
 
 	nowScene_->Update();
 }
