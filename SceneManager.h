@@ -6,6 +6,8 @@
 enum SCENE {
 	SCENE1,
 	SCENE2,
+	SCENE3,
+	SCENE4,
 };
 
 class SceneManager {

@@ -26,4 +26,15 @@ public:
 
 	// 法線ベクトル
 	DirectX::XMVECTOR normal;
+
+	// 法線の計算
+	void ComputeNormal();
+};
+
+struct Ray {
+	// 始点座標
+	DirectX::XMVECTOR start = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	// 方向
+	DirectX::XMVECTOR dir = { 1.0f, 0.0f, 0.0f, 0.0f };
 };
