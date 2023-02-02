@@ -189,7 +189,7 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	// •Óp2_p0‚É‚Â‚¢‚Ä
 	XMVECTOR pt_p2 = triangle.p2 - interPlane;
 	XMVECTOR p2_p0 = triangle.p0 - triangle.p2;
-	m = XMVector3Cross(pt_p0, p2_p0);
+	m = XMVector3Cross(pt_p2, p2_p0);
 
 	// •Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
 	if (XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
