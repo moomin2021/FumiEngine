@@ -60,7 +60,7 @@ private:
 	static PipelineSet object3DPipeline_;
 
 	// --ビルボード用のパイプライン-- //
-	static PipelineSet billBoardPipeline_;
+	//static PipelineSet billBoardPipeline_;
 
 #pragma endregion
 
@@ -98,7 +98,7 @@ public:
 	static PipelineSet GetObject3DPipeline() { return object3DPipeline_; }
 
 	// --ビルボード用のパイプラインを取得
-	static PipelineSet GetBillBoardPipeline() { return billBoardPipeline_; }
+	//static PipelineSet GetBillBoardPipeline() { return billBoardPipeline_; }
 #pragma endregion
 
 private:

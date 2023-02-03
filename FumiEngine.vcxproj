@@ -139,10 +139,14 @@
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
+    <ClCompile Include="Float2.cpp" />
+    <ClCompile Include="Float3.cpp" />
+    <ClCompile Include="Float4.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="FumiEngine.cpp" />
-    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="LightGroup.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object3D.cpp" />
@@ -152,7 +156,6 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -164,24 +167,33 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BillBoard.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CircleShadow.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="ColType.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="DX12Cmd.h" />
+    <ClInclude Include="Float2.h" />
+    <ClInclude Include="Float3.h" />
+    <ClInclude Include="Float4.h" />
+    <ClInclude Include="fMath.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="FumiEngine.h" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="LightGroup.h" />
+    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Scene1.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
@@ -226,12 +238,16 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Object3DVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

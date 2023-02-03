@@ -52,11 +52,25 @@
     <Filter Include="ソース ファイル\Input">
       <UniqueIdentifier>{cc76c0bd-bcad-4392-b9d3-df19d9b1df45}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{fd965ca7-6810-4941-a58c-75c258464d8e}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Player">
       <UniqueIdentifier>{c10ce134-8896-4c5a-94bf-dd89ffac1dd5}</UniqueIdentifier>
+=======
+    <Filter Include="ヘッダー ファイル\Math">
+      <UniqueIdentifier>{f7b16b9e-7bd1-493c-8d07-f8cf1e585257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Math">
+      <UniqueIdentifier>{d313dea4-3484-42fe-881b-fec1a756fb48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Light">
+      <UniqueIdentifier>{7c7aa276-0949-458b-bfc1-31546fa5934a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Light">
+      <UniqueIdentifier>{560ddf20-a918-4225-abc8-7bc978465162}</UniqueIdentifier>
+>>>>>>> master
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,12 +101,6 @@
     <ClCompile Include="Util.cpp">
       <Filter>ソース ファイル\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>ソース ファイル\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>ソース ファイル\Util</Filter>
-    </ClCompile>
     <ClCompile Include="Key.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
@@ -100,12 +108,6 @@
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Object3D.cpp">
@@ -117,6 +119,7 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
@@ -135,6 +138,35 @@
     <ClCompile Include="ClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+=======
+    <ClCompile Include="Vector3.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Float2.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Float3.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TemplateScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LightGroup.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Float4.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -161,12 +193,6 @@
     <ClInclude Include="Util.h">
       <Filter>ヘッダー ファイル\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>ヘッダー ファイル\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>ヘッダー ファイル\Util</Filter>
-    </ClInclude>
     <ClInclude Include="Key.h">
       <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
@@ -179,12 +205,6 @@
     <ClInclude Include="BaseScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Object3D.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
@@ -194,6 +214,7 @@
     <ClInclude Include="Mouse.h">
       <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
@@ -215,6 +236,50 @@
     <ClInclude Include="ClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="Vector2.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Float2.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Float3.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="fMath.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LightGroup.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleShadow.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Float4.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <None Include="Sprite.hlsli">

@@ -1,12 +1,10 @@
 #pragma once
 
-class Vector2
+struct Vector2
 {
-public:
 	float x;// -> x成分
 	float y;// -> y成分
 
-public:
 	// コンストラクタ
 	Vector2();// -----------------> 零ベクトルとして生成
 	Vector2(float x, float y);// -> x成分、y成分を指定しての生成

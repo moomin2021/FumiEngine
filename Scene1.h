@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD:GameScene.h
 #include "BaseScene.h"// -> ベースシーンクラス
 #include "Sprite.h"// -> スプライト
 #include "Model.h"// -> モデルクラス
@@ -8,11 +9,18 @@
 #include "Player.h"// -> プレイヤークラス
 #include "Stage.h"
 #include "Sprite.h"
+=======
+#include "BaseScene.h"
+#include "Model.h"
+#include "Object3D.h"
+#include "Camera.h"
+#include "LightGroup.h"
+#include "Key.h"
+>>>>>>> master:Scene1.h
 
-class GameScene : public BaseScene {
+class Scene1 : public BaseScene
+{
 	// --メンバ変数-- //
-public:
-
 private:
 	// キーボード入力
 	Key* key_;
@@ -20,6 +28,7 @@ private:
 	// カメラ
 	Camera* camera_;
 
+<<<<<<< HEAD:GameScene.h
 	// プレイヤー
 	Player* player_;
 
@@ -35,14 +44,26 @@ private:
 
 	std::unique_ptr<Sprite> hintText_;
 	int hintTextH_;
+=======
+	// ライト
+	LightGroup* lightGroup_;
+
+	// モデル
+	Model* sphereM_;
+	Model* cubeM_;
+	Model* floorM_;
+
+	// オブジェクト
+	Object3D* object_[3];
+>>>>>>> master:Scene1.h
 
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
-	GameScene();
+	Scene1();
 
 	// デストラクタ
-	~GameScene();
+	~Scene1();
 
 	// 初期化処理
 	void Initialize();
@@ -52,7 +73,9 @@ public:
 
 	// 描画処理
 	void Draw();
+};
 
+<<<<<<< HEAD:GameScene.h
 private:
 	// 当たり判定処理
 	void Collision();
@@ -63,3 +86,5 @@ private:
 	void DoorCol();
 
 };
+=======
+>>>>>>> master:Scene1.h

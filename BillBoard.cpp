@@ -45,136 +45,136 @@ BillBoard::BillBoard() :
 #pragma region 定数バッファ初期化処理
 	// 関数が成功したかどうかを判別する用変数
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
-	HRESULT result;
-
-	// 定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp{};
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	// 定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resdesc{};
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// 定数バッファの生成
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuff_));
-	assert(SUCCEEDED(result));
-
-	// 定数バッファのマッピング
-	ObjectBuff* constMap;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	assert(SUCCEEDED(result));
-
-	// マッピング終了
-	constBuff_->Unmap(0, nullptr);
-#pragma endregion
-
-	// --透視投影行列の計算-- //
-	matProjection_ = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
-		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f// ------------------------> 前端、奥端
-	);
-
-	// 四角形の頂点データとインデックスデータを作成
-	CreateSquare();
+//	HRESULT result;
+//
+//	// 定数バッファのヒープ設定
+//	D3D12_HEAP_PROPERTIES heapProp{};
+//	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+//
+//	// 定数バッファのリソース設定
+//	D3D12_RESOURCE_DESC resdesc{};
+//	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+//	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
+//	resdesc.Height = 1;
+//	resdesc.DepthOrArraySize = 1;
+//	resdesc.MipLevels = 1;
+//	resdesc.SampleDesc.Count = 1;
+//	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+//
+//	// 定数バッファの生成
+//	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+//		&heapProp,
+//		D3D12_HEAP_FLAG_NONE,
+//		&resdesc,
+//		D3D12_RESOURCE_STATE_GENERIC_READ,
+//		nullptr,
+//		IID_PPV_ARGS(&constBuff_));
+//	assert(SUCCEEDED(result));
+//
+//	// 定数バッファのマッピング
+//	ObjectBuff* constMap;
+//	result = constBuff_->Map(0, nullptr, (void**)&constMap);
+//	assert(SUCCEEDED(result));
+//
+//	// マッピング終了
+//	constBuff_->Unmap(0, nullptr);
+//#pragma endregion
+//
+//	// --透視投影行列の計算-- //
+//	matProjection_ = XMMatrixPerspectiveFovLH(
+//		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
+//		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
+//		0.1f, 1000.0f// ------------------------> 前端、奥端
+//	);
+//
+//	// 四角形の頂点データとインデックスデータを作成
+//	CreateSquare();
 }
 
 void BillBoard::Update(Camera* camera, BillBoardType type)
 {
 	// 視点座標
-	XMVECTOR eyePos = XMLoadFloat3(&camera->eye_);
+	//XMVECTOR eyePos = XMLoadFloat3(&camera->eye_);
 
-	// 注視点座標
-	XMVECTOR targetPos = XMLoadFloat3(&camera->target_);
+	//// 注視点座標
+	//XMVECTOR targetPos = XMLoadFloat3(&camera->target_);
 
-	// 上方向
-	XMVECTOR upVec = XMLoadFloat3(&camera->up_);
+	//// 上方向
+	//XMVECTOR upVec = XMLoadFloat3(&camera->up_);
 
-	// カメラZ軸
-	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPos, eyePos);
+	//// カメラZ軸
+	//XMVECTOR cameraAxisZ = XMVectorSubtract(targetPos, eyePos);
 
-	// 0ベクトルだと向きが定まらないので除外 //
-	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
-	assert(!XMVector3IsInfinite(cameraAxisZ));
-	assert(!XMVector3Equal(upVec, XMVectorZero()));
-	assert(!XMVector3IsInfinite(upVec));
+	//// 0ベクトルだと向きが定まらないので除外 //
+	//assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
+	//assert(!XMVector3IsInfinite(cameraAxisZ));
+	//assert(!XMVector3Equal(upVec, XMVectorZero()));
+	//assert(!XMVector3IsInfinite(upVec));
 
-	// ベクトルを正規化 //
-	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
+	//// ベクトルを正規化 //
+	//cameraAxisZ = XMVector3Normalize(cameraAxisZ);
 
-	// カメラのX軸(右方向) //
-	XMVECTOR cameraAxisX;
+	//// カメラのX軸(右方向) //
+	//XMVECTOR cameraAxisX;
 
-	// X軸は上方向→Z軸の外積で求まる //
-	cameraAxisX = XMVector3Cross(upVec, cameraAxisZ);
+	//// X軸は上方向→Z軸の外積で求まる //
+	//cameraAxisX = XMVector3Cross(upVec, cameraAxisZ);
 
-	// ベクトルを正規化 //
-	cameraAxisX = XMVector3Normalize(cameraAxisX);
+	//// ベクトルを正規化 //
+	//cameraAxisX = XMVector3Normalize(cameraAxisX);
 
-	// カメラのY軸(上方向) //
-	XMVECTOR cameraAxisY;
+	//// カメラのY軸(上方向) //
+	//XMVECTOR cameraAxisY;
 
-	// Y軸はZ軸→X軸の外積で求まる //
-	cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
+	//// Y軸はZ軸→X軸の外積で求まる //
+	//cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
 
-	// カメラ回転行列 //
-	XMMATRIX matCameraRot;
+	//// カメラ回転行列 //
+	//XMMATRIX matCameraRot;
 
-	// カメラ座標系→ワールド座標系の変換行列 //
-	matCameraRot.r[0] = cameraAxisX;
-	matCameraRot.r[1] = cameraAxisY;
-	matCameraRot.r[2] = cameraAxisZ;
-	matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
+	//// カメラ座標系→ワールド座標系の変換行列 //
+	//matCameraRot.r[0] = cameraAxisX;
+	//matCameraRot.r[1] = cameraAxisY;
+	//matCameraRot.r[2] = cameraAxisZ;
+	//matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
 
-	XMMATRIX matBillboard;
+	//XMMATRIX matBillboard;
 
-	if (type == BILLBOARDX) {
+	//if (type == BILLBOARDX) {
 
-	}
+	//}
 
-	else if (type == BILLBOARDY) {
-		// カメラX軸、Y軸、Z軸 //
-		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+	//else if (type == BILLBOARDY) {
+	//	// カメラX軸、Y軸、Z軸 //
+	//	XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
 
-		// X軸は共通 //
-		ybillCameraAxisX = cameraAxisX;
+	//	// X軸は共通 //
+	//	ybillCameraAxisX = cameraAxisX;
 
-		// Y軸はワールド座標系のY軸 //
-		ybillCameraAxisY = XMVector3Normalize(upVec);
+	//	// Y軸はワールド座標系のY軸 //
+	//	ybillCameraAxisY = XMVector3Normalize(upVec);
 
-		// Z軸はX軸→Y軸の外積で求まる //
-		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
+	//	// Z軸はX軸→Y軸の外積で求まる //
+	//	ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
 
-		// Y軸回りのビルボード行列 //
-		matBillboard.r[0] = ybillCameraAxisX;
-		matBillboard.r[1] = ybillCameraAxisY;
-		matBillboard.r[2] = ybillCameraAxisZ;
-		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
-	}
+	//	// Y軸回りのビルボード行列 //
+	//	matBillboard.r[0] = ybillCameraAxisX;
+	//	matBillboard.r[1] = ybillCameraAxisY;
+	//	matBillboard.r[2] = ybillCameraAxisZ;
+	//	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+	//}
 
-	else if (type == BILLBOARDZ) {
+	//else if (type == BILLBOARDZ) {
 
-	}
+	//}
 
-	else if (type == BILLBOARDALL) {
-		// 全方向ビルボード行列の計算 //
-		matBillboard.r[0] = cameraAxisX;
-		matBillboard.r[1] = cameraAxisY;
-		matBillboard.r[2] = cameraAxisZ;
-		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
-	}
+	//else if (type == BILLBOARDALL) {
+	//	// 全方向ビルボード行列の計算 //
+	//	matBillboard.r[0] = cameraAxisX;
+	//	matBillboard.r[1] = cameraAxisY;
+	//	matBillboard.r[2] = cameraAxisZ;
+	//	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+	//}
 
 	// 転置により逆行列(逆回転)を計算 //
 	//matView = XMMatrixTranspose(matCameraRot);
@@ -192,21 +192,21 @@ void BillBoard::Update(Camera* camera, BillBoardType type)
 
 	// --ワールド行列の合成-- //
 	XMMATRIX matWorld = XMMatrixIdentity();// -> 変形のリセット
-	matWorld *= matBillboard;
+	//matWorld *= matBillboard;
 	matWorld *= matScale;// -> ワールド行列にスケーリングを反映
 	matWorld *= matRot;// -> ワールド行列に回転を反映
 	matWorld *= matTrans;// -> ワールド行列に平行移動を反映
 
 	// --マッピング-- //
-	ObjectBuff* constMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	assert(SUCCEEDED(result));
+	//ObjectBuff* constMap = nullptr;
+	//result = constBuff_->Map(0, nullptr, (void**)&constMap);
+	//assert(SUCCEEDED(result));
 
 	// --定数バッファへデータ転送-- //
-	constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> 行列
+	//constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> 行列
 
 	// --繋がりを解除-- //
-	constBuff_->Unmap(0, nullptr);
+	//constBuff_->Unmap(0, nullptr);
 }
 
 void BillBoard::Draw(int textureHandle)
@@ -235,16 +235,16 @@ void BillBoard::Draw(int textureHandle)
 
 void BillBoard::PreDraw()
 {
-	// パイプラインステートの設定
-	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
-	// ルートシグネチャの設定
-	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
-	// プリミティブ形状を設定
-	DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//// パイプラインステートの設定
+	//DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
+	//// ルートシグネチャの設定
+	//DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
+	//// プリミティブ形状を設定
+	//DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// --デスクリプタヒープの配列をセットするコマンド-- //
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
-	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
+	//// --デスクリプタヒープの配列をセットするコマンド-- //
+	//ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
+	//DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 }
 
 void BillBoard::CreateSquare()

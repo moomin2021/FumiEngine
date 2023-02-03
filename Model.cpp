@@ -1,5 +1,7 @@
 #include "Model.h"
 
+#include "Texture.h"
+
 // --モデル読み込みのため-- //
 #include <fstream>
 #include <sstream>
@@ -9,6 +11,8 @@ using namespace std;
 #include "DX12Cmd.h"
 
 #include "FumiEngine.h"
+
+ID3D12GraphicsCommandList* Model::cmdList_ = nullptr;// -> コマンドリスト
 
 Model* Model::CreateModel(std::string fileName) {
 	Model* model = new Model();
@@ -20,6 +24,33 @@ Model* Model::CreateModel(std::string fileName) {
 	model->CreateMaterialBuff();// -> マテリアルバッファ
 
 	return model;
+}
+
+void Model::Initialize(ID3D12GraphicsCommandList* cmdList) {
+	cmdList_ = cmdList;
+}
+
+void Model::Draw() {
+	// --SRVヒープのハンドルを取得-- //
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	// --ハンドルを指定された分まで進める-- //
+	srvGpuHandle.ptr += textureHandle_;
+
+	// --定数バッファビュー（CBV）の設定コマンド-- //
+	cmdList_->SetGraphicsRootConstantBufferView(1, materialBuff_->GetGPUVirtualAddress());
+
+	// --指定されたSRVをルートパラメータ1番に設定-- //
+	cmdList_->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+
+	// --頂点バッファビューの設定コマンド-- //
+	cmdList_->IASetVertexBuffers(0, 1, &vbView_);
+
+	// --インデックスバッファビューの設定コマンド-- //
+	cmdList_->IASetIndexBuffer(&ibView_);
+
+	//// --描画コマンド-- //
+	cmdList_->DrawIndexedInstanced(static_cast<UINT>(indexes_.size()), 1, 0, 0, 0);
 }
 
 void Model::LoadModel(std::string name)

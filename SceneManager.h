@@ -4,9 +4,13 @@
 
 // ƒV[ƒ“—ñ‹“Œ^
 enum SCENE {
+<<<<<<< HEAD
 	TITLE,
 	GAME,
 	CLEAR
+=======
+	SCENE1,
+>>>>>>> master
 };
 
 class SceneManager {

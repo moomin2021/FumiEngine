@@ -7,30 +7,32 @@
 #include "Sprite.h"
 #include <memory>
 
-class TitleScene : public BaseScene {
+class TemplateScene : public BaseScene
+{
 	// --メンバ変数-- //
-public:
-
 private:
 	// キーボード入力
 	Key* key_;
 
+<<<<<<< HEAD:TitleScene.h
 	std::unique_ptr<Sprite> titleS_;
 	int titleImage_;
 
 	std::unique_ptr<Sprite> spaceStartText_;
 	int spaceStartTextH_;
 
+=======
+>>>>>>> master:TemplateScene.h
 	// カメラ
 	Camera* camera_;
 
 	// --メンバ関数-- //
 public:
 	// コンストラクタ
-	TitleScene();
+	TemplateScene();
 
 	// デストラクタ
-	~TitleScene();
+	~TemplateScene();
 
 	// 初期化処理
 	void Initialize();
@@ -40,7 +42,5 @@ public:
 
 	// 描画処理
 	void Draw();
-
-private:
-
 };
+

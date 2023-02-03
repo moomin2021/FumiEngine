@@ -19,7 +19,7 @@ ComPtr<ID3D12GraphicsCommandList> DX12Cmd::commandList = nullptr;
 // --スプライト用のパイプライン-- //
 PipelineSet DX12Cmd::spritePipeline_ = { nullptr, nullptr };
 PipelineSet DX12Cmd::object3DPipeline_ = { nullptr, nullptr };
-PipelineSet DX12Cmd::billBoardPipeline_ = { nullptr, nullptr };
+//PipelineSet DX12Cmd::billBoardPipeline_ = { nullptr, nullptr };
 
 // --コンストラクタ-- //
 DX12Cmd::DX12Cmd() :
@@ -368,7 +368,7 @@ void DX12Cmd::Initialize(WinAPI* win) {
 	object3DPipeline_ = CreateObject3DPipeline();
 
 	// --ビルボード用のパイプラインを生成-- //
-	billBoardPipeline_ = CreateBillBoardPipeline();
+	//billBoardPipeline_ = CreateBillBoardPipeline();
 }
 
 void DX12Cmd::InitializeFixFPS()

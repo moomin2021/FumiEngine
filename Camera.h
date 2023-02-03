@@ -2,15 +2,17 @@
 // --数学関数-- //
 #include <DirectXMath.h>
 using namespace DirectX;
+#include "fMath.h"
 
 class Camera {
 public:
-	XMFLOAT3 eye_;// ----> カメラの位置
-	XMFLOAT3 target_;// -> カメラの注視点
-	XMFLOAT3 up_;// -----> カメラの上方向ベクトル
+	Float3 eye_;// ----> カメラの位置
+	Float3 target_;// -> カメラの注視点
+	Float3 up_;// -----> カメラの上方向ベクトル
 
 private:
-	XMMATRIX matView_;// -> ビュー変換行列
+	Matrix4 matView_;// -> ビュー変換行列
+	Matrix4 matProjection_;// -> 透視投影行列
 
 	XMMATRIX matProjection_;
 
@@ -27,8 +29,7 @@ public:
 
 #pragma region ゲッター
 	// ビュー行列の取得
-	const XMMATRIX& GetMatView() { return matView_; }
-
-	const XMMATRIX& GetMatProjection() { return matProjection_; }
+	inline const Matrix4& GetMatView() { return matView_; }
+	inline const Matrix4& GetMatProjection() { return matProjection_; }
 #pragma endregion
 };
