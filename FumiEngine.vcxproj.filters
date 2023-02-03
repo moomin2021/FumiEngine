@@ -135,6 +135,7 @@
     <ClCompile Include="Wall.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -167,6 +168,8 @@
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
 >>>>>>> master
+=======
+>>>>>>> parent of fcb6802 (終了)
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinAPI.h">
@@ -233,6 +236,7 @@
     <ClInclude Include="Wall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
@@ -280,6 +284,8 @@
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
 >>>>>>> master
+=======
+>>>>>>> parent of fcb6802 (終了)
   </ItemGroup>
   <ItemGroup>
     <None Include="Sprite.hlsli">

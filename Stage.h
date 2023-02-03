@@ -30,9 +30,6 @@ public:
 
 	std::vector<std::unique_ptr<Object3D>> ceiling_;
 
-	std::unique_ptr<Object3D> magatama_;
-	Circle2D magatamaCol_;
-
 	//std::array<Area, 4> area_;
 
 	std::array<Area, 1> areaStart_;
@@ -47,7 +44,6 @@ private:
 	Model* doorM_;// -> ƒhƒAƒ‚ƒfƒ‹
 	Model* floorM_;
 	Model* ceilingM_;
-	Model* magatamaM_;
 
 	Camera* camera_;
 

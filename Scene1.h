@@ -42,6 +42,7 @@ private:
 	Sprite* openOrClose_;
 	bool isText_;
 
+<<<<<<< HEAD:Scene1.h
 	std::unique_ptr<Sprite> hintText_;
 	int hintTextH_;
 =======
@@ -57,6 +58,8 @@ private:
 	Object3D* object_[3];
 >>>>>>> master:Scene1.h
 
+=======
+>>>>>>> parent of fcb6802 (邨ゆｺ�):GameScene.h
 	// --メンバ関数-- //
 public:
 	// コンストラクタ

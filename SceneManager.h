@@ -6,11 +6,15 @@
 enum SCENE {
 <<<<<<< HEAD
 	TITLE,
+<<<<<<< HEAD
 	GAME,
 	CLEAR
 =======
 	SCENE1,
 >>>>>>> master
+=======
+	GAME
+>>>>>>> parent of fcb6802 (終了)
 };
 
 class SceneManager {

@@ -32,10 +32,6 @@ void TitleScene::Initialize()
 	spaceStartText_->scale = { 19.20f, 10.80f };
 
 	spaceStartTextH_ = LoadTexture("Resources/spaceStartText.png");
-
-	titleS_->Update();
-
-	spaceStartText_->Update();
 }
 
 void TitleScene::Update()

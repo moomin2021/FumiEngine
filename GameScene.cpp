@@ -1,6 +1,5 @@
 #include "GameScene.h"
 #include "FumiEngine.h"
-#include "SceneManager.h"
 
 bool calcSegmentIntersectPos(Line2D line1, Line2D line2, Vector2* intersect) {
 	Vector2 vec1 = line1.eP - line1.sP;
@@ -20,14 +19,6 @@ bool calcSegmentIntersectPos(Line2D line1, Line2D line2, Vector2* intersect) {
 
 	*intersect = line1.sP + t1 * vec1;
 	return true;
-}
-
-bool CircleCol(Circle2D cir1, Circle2D cir2) {
-	float a = cir1.p.x - cir2.p.x;
-	float b = cir1.p.y - cir2.p.y;
-	float c = sqrt(a * a + b * b);
-	if (c <= cir1.r + cir2.r) return true;
-	return false;
 }
 
 bool RayBoardCol(Line3D line, Board board, float &minDist) {
@@ -129,7 +120,7 @@ void GameScene::Initialize() {
 
 	// カメラ
 	camera_ = new Camera();
-	camera_->eye_ = { 195.0f,5.0f, -480.0f };
+	camera_->eye_ = { 195.0f, 5.0f, -480.0f };
 	camera_->target_ = { 0.0f, 5.0f, 10.0f };
 
 	// プレイヤー初期化処理
@@ -144,16 +135,10 @@ void GameScene::Initialize() {
 	openOrClose_ = new Sprite();
 	openOrClose_->position.x = WinAPI::GetWidth() / 2.0f - 75.0f;
 	openOrClose_->position.y = WinAPI::GetHeight() / 2.0f + 100.0f;
-	openOrClose_->scale = { 1.5f, 1.5f };
+	openOrClose_->scale = { 1.5f, 0.8f };
 	openOrClose_->Update();
 
-	openOrCloseH_ = LoadTexture("Resources/openOrClose1.png");
-
-	hintText_ = std::make_unique<Sprite>();
-	hintText_->scale = { 19.20f, 10.80f };
-	hintText_->Update();
-
-	hintTextH_ = LoadTexture("Resources/hintText.png");
+	openOrCloseH_ = LoadTexture("Resources/openOrClose.png");
 }
 
 // 更新処理
@@ -168,10 +153,6 @@ void GameScene::Update() {
 
 	// カメラの更新
 	camera_->Update();
-
-	if (CircleCol(player_->col_, stage_->magatamaCol_)) {
-		SceneManager::ChangeScene(SCENE::CLEAR);
-	}
 }
 
 // 描画処理
@@ -218,15 +199,12 @@ void GameScene::Draw() {
 			stage_->ceiling_[i]->Draw();
 		}
 	}
-	stage_->Draw();
 
 	// プレイヤー描画処理
 	player_->Draw();
 
 	Sprite::PreDraw();
 	if (isText_) openOrClose_->Draw(openOrCloseH_);
-	hintText_->Draw(hintTextH_);
-
 }
 
 void GameScene::Collision() {
