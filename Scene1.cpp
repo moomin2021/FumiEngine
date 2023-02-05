@@ -31,15 +31,15 @@ void Scene1::Initialize()
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 
 	// モデル
-	sphereM_ = Model::CreateModel("sphere");
+	//sphereM_ = Model::CreateModel("sphere");
 	cubeM_ = Model::CreateModel("cube");
 	floorM_ = Model::CreateModel("floor");
 
 	// オブジェクト
-	object_[0] = Object3D::CreateObject3D(sphereM_);
+	object_[0] = Object3D::CreateObject3D(cubeM_);
 	object_[0]->SetPos({ 3.0f, 1.0f, 0.0f });
 
-	object_[1] = Object3D::CreateObject3D(sphereM_);
+	object_[1] = Object3D::CreateObject3D(cubeM_);
 	object_[1]->SetPos({ -3.0f, 1.0f, 0.0f });
 
 	object_[2] = Object3D::CreateObject3D(floorM_);
