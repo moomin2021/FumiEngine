@@ -24,7 +24,7 @@ PipelineSet CreateSpritePipeline() {
 
 	// --頂点シェーダの読み込みとコンパイル-- //
 	result = D3DCompileFromFile(
-		L"SpriteVS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -49,7 +49,7 @@ PipelineSet CreateSpritePipeline() {
 
 	// --ピクセルシェーダの読み込みとコンパイル-- //
 	result = D3DCompileFromFile(
-		L"SpritePS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/SpritePS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -257,7 +257,7 @@ PipelineSet CreateObject3DPipeline()
 
 	// --頂点シェーダの読み込みとコンパイル-- //
 	result = D3DCompileFromFile(
-		L"Object3DVS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/Object3DVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -282,7 +282,7 @@ PipelineSet CreateObject3DPipeline()
 
 	// --ピクセルシェーダの読み込みとコンパイル-- //
 	result = D3DCompileFromFile(
-		L"Object3DPS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/Object3DPS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定

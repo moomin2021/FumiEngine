@@ -229,36 +229,24 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sprite.hlsli">
+    <None Include="Resources\Shaders\Object3D.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Object3D.hlsli">
-      <Filter>シェーダーファイル</Filter>
-    </None>
-    <None Include="BillBoard.hlsli">
+    <None Include="Resources\Shaders\Sprite.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="SpriteVS.hlsl">
+    <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="SpritePS.hlsl">
+    <FxCompile Include="Resources\Shaders\Object3DVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Object3DVS.hlsl">
+    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Object3DPS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="BillBoardGS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="BillBoardVS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="BillBoardPS.hlsl">
+    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
