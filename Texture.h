@@ -15,6 +15,8 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 #include <array>
+#include <map>
+#include <string>
 
 class Texture {
 	///  --メンバ変数-- ///
@@ -23,7 +25,10 @@ public:
 	static UINT imageCount_;
 
 	// テクスチャバッファ
-	static std::array<ComPtr<ID3D12Resource>, 2056> texBuff_;
+	static std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
+
+	// テクスチャハンドル
+	static std::map<const std::string, UINT> texHandle_;
 
 	// --SRVヒープの先頭ハンドルを取得-- //
 	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;

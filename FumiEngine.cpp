@@ -3,6 +3,10 @@
 #include "Texture.h"
 
 int LoadTexture(const std::string fileName) {
+	// 既に読み込んだ物だったら
+	if (Texture::texBuff_.find(fileName) != Texture::texBuff_.end()) {
+		return Texture::texHandle_[fileName];
+	}
 
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
@@ -81,11 +85,18 @@ int LoadTexture(const std::string fileName) {
 		assert(SUCCEEDED(result));
 	}
 
+	// --CBV, SRV, UAVの1個分のサイズを取得-- //
+	UINT descriptorSize = DX12Cmd::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	// --ハンドルを1つ進める-- //
+	Texture::srvHandle_.ptr += descriptorSize;
+
 	// --画像カウンタインクリメント-- //
 	Texture::imageCount_++;
 
 	// 設定を保存
-	Texture::texBuff_[Texture::imageCount_] = texBuff;
+	Texture::texBuff_.emplace(fileName, texBuff);
+	Texture::texHandle_.emplace(fileName, descriptorSize * Texture::imageCount_);
 
 	// --シェーダリソースビュー設定-- //
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
@@ -94,14 +105,8 @@ int LoadTexture(const std::string fileName) {
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
-	// --CBV, SRV, UAVの1個分のサイズを取得-- //
-	UINT descriptorSize = DX12Cmd::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-	// --ハンドルを1つ進める-- //
-	Texture::srvHandle_.ptr += descriptorSize;
-
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	DX12Cmd::GetDevice()->CreateShaderResourceView(Texture::texBuff_[Texture::imageCount_].Get(), &srvDesc, Texture::srvHandle_);
+	DX12Cmd::GetDevice()->CreateShaderResourceView(Texture::texBuff_[fileName].Get(), &srvDesc, Texture::srvHandle_);
 
 	// --ハンドルを返す-- //
 	return descriptorSize * Texture::imageCount_;

@@ -12,7 +12,10 @@ UINT Texture::imageCount_ = 0;
 ComPtr<ID3D12DescriptorHeap> Texture::srvHeap_ = nullptr;
 
 // テクスチャバッファ
-std::array<ComPtr<ID3D12Resource>, 2056> Texture::texBuff_ = {};
+std::map<const std::string, ComPtr<ID3D12Resource>> Texture::texBuff_ = {};
+
+// テクスチャハンドル
+std::map<const std::string, UINT> Texture::texHandle_ = {};
 
 // --インスタンス読み込み-- //
 Texture* Texture::GetInstance() {
@@ -96,9 +99,6 @@ void Texture::Initialize(ID3D12Device* device) {
 	);
 	assert(SUCCEEDED(result));
 
-	// 設定を保存
-	texBuff_[imageCount_] = texBuff;
-
 #pragma endregion
 	/// --END-- ///
 
@@ -122,8 +122,12 @@ void Texture::Initialize(ID3D12Device* device) {
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
+	// 設定を保存
+	texBuff_.emplace("white", texBuff);
+	texHandle_.emplace("white", 0);
+
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	device->CreateShaderResourceView(texBuff_[imageCount_].Get(), &srvDesc, srvHandle_);
+	device->CreateShaderResourceView(texBuff_["white"].Get(), &srvDesc, srvHandle_);
 }
 
 // --SRVヒープ参照-- //
