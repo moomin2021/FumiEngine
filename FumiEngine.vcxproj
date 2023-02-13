@@ -140,7 +140,6 @@
     <ClCompile Include="Float2.cpp" />
     <ClCompile Include="Float3.cpp" />
     <ClCompile Include="Float4.cpp" />
-    <ClCompile Include="FumiEngine.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="Float3.h" />
     <ClInclude Include="Float4.h" />
     <ClInclude Include="fMath.h" />
-    <ClInclude Include="FumiEngine.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="Matrix4.h" />
