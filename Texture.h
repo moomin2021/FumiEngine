@@ -62,3 +62,5 @@ private:
 
 	/// --ƒƒ“ƒoŠÖ”END-- ///
 };
+
+int LoadTexture(const std::string fileName);

@@ -10,8 +10,6 @@ using namespace std;
 // --DirextX12-- //
 #include "DX12Cmd.h"
 
-#include "FumiEngine.h"
-
 ID3D12GraphicsCommandList* Model::cmdList_ = nullptr;// -> コマンドリスト
 
 Model* Model::CreateModel(std::string fileName) {
