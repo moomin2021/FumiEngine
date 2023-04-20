@@ -144,6 +144,7 @@
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="oldModel.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Pipeline.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="oldModel.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Pipeline.h" />
