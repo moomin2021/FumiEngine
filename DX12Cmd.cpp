@@ -450,8 +450,8 @@ void DX12Cmd::PreDraw() {
 
 		// --ビューポート設定コマンド-- //
 	D3D12_VIEWPORT viewport{};
-	viewport.Width = WinAPI::GetWidth();
-	viewport.Height = WinAPI::GetHeight();
+	viewport.Width = static_cast<FLOAT>(WinAPI::GetWidth());
+	viewport.Height = static_cast<FLOAT>(WinAPI::GetHeight());
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
