@@ -33,18 +33,18 @@ void Scene1::Initialize()
 	// モデル
 	//sphereM_ = Model::CreateModel("sphere");
 	cubeM_ = Model::CreateModel("cube");
-	floorM_ = Model::CreateModel("floor");
+	//floorM_ = Model::CreateModel("floor");
 
-	// オブジェクト
+	//// オブジェクト
 	object_[0] = Object3D::CreateObject3D(cubeM_);
 	object_[0]->SetPos({ 3.0f, 1.0f, 0.0f });
 
 	object_[1] = Object3D::CreateObject3D(cubeM_);
 	object_[1]->SetPos({ -3.0f, 1.0f, 0.0f });
 
-	object_[2] = Object3D::CreateObject3D(floorM_);
+	object_[2] = Object3D::CreateObject3D(cubeM_);
 	object_[2]->SetPos({ 0.0f, 0.0f, 0.0f });
-	object_[2]->SetScale({ 10.0f, 10.0f, 10.0f });
+	//object_[2]->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	// ライト生成
 	lightGroup_ = LightGroup::Create();
