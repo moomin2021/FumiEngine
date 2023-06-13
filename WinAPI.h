@@ -1,7 +1,6 @@
 #pragma once
 #include <Windows.h>
 #include <stdint.h>
-#include <memory>
 
 class WinAPI {
 #pragma region ƒƒ“ƒo•Ï”
