@@ -40,7 +40,7 @@ void Mouse::Initialize(WinAPI* win)
 	// DirectInputデバイス生成
 	ComPtr<IDirectInput8> directInput = nullptr;
 	result = DirectInput8Create(
-		win->GetWNDCLASSEX().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		win->GetWinClass().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr
 	);
 	assert(SUCCEEDED(result));
@@ -76,5 +76,5 @@ void Mouse::Update()
 
 	// --マウスの座標を取得-- //
 	GetCursorPos(&p_);
-	ScreenToClient(FindWindowW(win_->GetWNDCLASSEX().lpszClassName, nullptr), &p_);
+	ScreenToClient(FindWindowW(win_->GetWinClass().lpszClassName, nullptr), &p_);
 }

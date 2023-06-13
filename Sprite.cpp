@@ -12,6 +12,8 @@
 // --便利系関数-- //
 #include "Util.h"
 
+#include <memory>
+
 // --コンストラクタ-- //
 Sprite::Sprite() : vbView{}, ibView{}, constBuff(nullptr), constMap(nullptr), vertBuff(nullptr), vertMap(nullptr),
 position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
@@ -174,8 +176,13 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 	// --スプライトの色を変える-- //
 	constMap->color = color;
 
+	WinAPI* winAPI = WinAPI::GetInstance();
+
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, (float)WinAPI::GetWidth(), (float)WinAPI::GetHeight(), 0.0f, 0.0f, 1.0f);
+		0.0f,
+		static_cast<float>(winAPI->GetWidth()),
+		static_cast<float>(winAPI->GetHeight()),
+		0.0f, 0.0f, 1.0f);
 
 	// --行列初期化-- //
 	constMap->mat = XMMatrixIdentity();

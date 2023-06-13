@@ -15,7 +15,7 @@ Camera::Camera() :
 	// --透視投影行列の計算-- //
 	static XMMATRIX mat = XMMatrixPerspectiveFovLH(
 		Util::Degree2Radian(45.0f),// -----------> 上下画角45度
-		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
+		(float)WinAPI::GetInstance()->GetWidth() / WinAPI::GetInstance()->GetHeight(),// -> アスペクト比（画面横幅/画面縦幅）
 		0.1f, 1000.0f);// ------------------------> 前端、奥端
 
 	for (size_t i = 0; i < 4; i++) {

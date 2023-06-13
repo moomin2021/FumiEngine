@@ -13,8 +13,8 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --WinAPIクラス-- //
-	WinAPI* winAPI = WinAPI::GetInstance();// -> インスタンス取得
-	winAPI->Initialize();// -> 初期化処理
+	WinAPI* winAPI = WinAPI::GetInstance();
+	winAPI->Initialize(1280, 720);// -> 初期化処理
 
 	// --DirectX12クラス-- //
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
@@ -61,9 +61,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// --描画後処理-- //
 		dx12->PostDraw();
 	}
-
-	// --ウィンドウクラス登録解除-- //
-	winAPI->WinClassUnregister();
 
 	return 0;
 }

@@ -1,5 +1,6 @@
 #include "DX12Cmd.h"
 #include <thread>
+#include <memory>
 
 // --インスタンス読み込み-- //
 DX12Cmd* DX12Cmd::GetInstance() {
@@ -406,6 +407,9 @@ void DX12Cmd::UpdateFixFPS()
 
 // --描画前処理-- //
 void DX12Cmd::PreDraw() {
+
+	WinAPI* winAPI = WinAPI::GetInstance();
+
 	/// --1.リソースバリアで書き込み可能に変更-- ///
 #pragma region
 	// --バックバッファの番号を取得(2つなので0番か1番)-- //
@@ -450,8 +454,8 @@ void DX12Cmd::PreDraw() {
 
 		// --ビューポート設定コマンド-- //
 	D3D12_VIEWPORT viewport{};
-	viewport.Width = static_cast<FLOAT>(WinAPI::GetWidth());
-	viewport.Height = static_cast<FLOAT>(WinAPI::GetHeight());
+	viewport.Width = static_cast<FLOAT>(winAPI->GetWidth());
+	viewport.Height = static_cast<FLOAT>(winAPI->GetHeight());
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -469,9 +473,9 @@ void DX12Cmd::PreDraw() {
 		// --シザー矩形-- //
 	D3D12_RECT scissorRect{};
 	scissorRect.left = 0; // 切り抜き座標左
-	scissorRect.right = scissorRect.left + WinAPI::GetWidth(); // 切り抜き座標右
+	scissorRect.right = scissorRect.left + winAPI->GetWidth(); // 切り抜き座標右
 	scissorRect.top = 0; // 切り抜き座標上
-	scissorRect.bottom = scissorRect.top + WinAPI::GetHeight(); // 切り抜き座標下
+	scissorRect.bottom = scissorRect.top + winAPI->GetHeight(); // 切り抜き座標下
 
 	// --シザー矩形設定コマンドを、コマンドリストに積む-- //
 	commandList->RSSetScissorRects(1, &scissorRect);

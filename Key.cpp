@@ -28,7 +28,7 @@ void Key::Initialize(WinAPI * win) {
 
 	ComPtr<IDirectInput8> directInput = nullptr;
 	result = DirectInput8Create(
-		win->GetWNDCLASSEX().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		win->GetWinClass().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr
 	);
 	assert(SUCCEEDED(result));

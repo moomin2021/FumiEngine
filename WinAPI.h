@@ -1,60 +1,88 @@
 #pragma once
-// --WindowsAPI-- //
 #include <Windows.h>
+#include <stdint.h>
+#include <memory>
 
 class WinAPI {
 #pragma region メンバ変数
-public:
-
 private:
-	// --ウィンドウサイズ-- //
-	static const int winWidth_;// --> 横幅
-	static const int winHeight_;// -> 縦幅
+	// ウィンドウサイズ
+	uint16_t winWidth_;	// 横幅
+	uint16_t winHeight_;	// 縦幅
 
-	WNDCLASSEX winClass_;// -> ウィンドウクラス
-	RECT winRect_;// -> ウィンドウサイズ
-	HWND hwnd_;// -> ウィンドウハンドル(オブジェクト)
-	MSG msg_;// -> メッセージ
-
+	WNDCLASSEX	winClass_;	// ウィンドウクラス
+	RECT		winRect_;	// ウィンドウサイズ
+	HWND		hwnd_;		// ウィンドウハンドル(オブジェクト)
+	MSG			msg_;		// メッセージ
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	// --インスタンス読み込み-- //
+	/// <summary>
+	/// インスタンス取得
+	/// </summary>
+	/// <returns> インスタンス </returns>
 	static WinAPI* GetInstance();
 
-	// --初期化処理-- //
-	void Initialize();
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Initialize(uint16_t winWidth, uint16_t winHeight);
 
-	// --終了メッセージがきているか参照-- //
+	/// <summary>
+	/// ウィンドウを閉じるメッセージが来ているか
+	/// </summary>
+	/// <returns> 真偽結果 </returns>
 	bool IsEndMessage();
 
-	// --ウィンドウクラス登録解除-- //
-	void WinClassUnregister();
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~WinAPI();
 
-#pragma region ゲッター
-	// --ウィンドゥクラスを取得-- //
-	WNDCLASSEX GetWNDCLASSEX() { return winClass_; }
+#pragma region ゲッター関数
+	/// <summary>
+	/// ウィンドウサイズの横幅を取得
+	/// </summary>
+	/// <returns> ウィンドウサイズの横幅 </returns>
+	inline const uint16_t& GetWidth() { return winWidth_; }
 
-	// --ウィンドウハンドル(オブジェクト)を取得-- //
-	HWND GetHWND() { return hwnd_; }
+	/// <summary>
+	/// ウィンドウサイズの縦幅を取得
+	/// </summary>
+	/// <returns> ウィンドウサイズの縦幅 </returns>
+	inline const uint16_t& GetHeight() { return winHeight_; }
 
-	// --ウィンドウの横サイズを取得-- //
-	static int GetWidth() { return winWidth_; }
+	/// <summary>
+	/// ウィンドウクラスを取得
+	/// </summary>
+	/// <returns> ウィンドウクラス </returns>
+	inline const WNDCLASSEX& GetWinClass() { return winClass_; }
 
-	// --ウィンドウの縦サイズを取得-- //
-	static int GetHeight() { return winHeight_; }
+	/// <summary>
+	/// ウィンドウハンドルを取得
+	/// </summary>
+	/// <returns> ウィンドウハンドル </returns>
+	inline const HWND& GetHWND() { return hwnd_; }
+
 #pragma endregion
 
 private:
-	// --コンストラクタ-- //
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	WinAPI();
 
-	// --デストラクタ-- //
-	~WinAPI();
+	/// <summary>
+	/// ウィンドウオブジェクト作成
+	/// </summary>
+	void CreateWindowObj();
+
 #pragma endregion
 
-	// --禁止-- //
-	WinAPI(const WinAPI&) = delete;// --------------> コピーコンストラクタ禁止
-	WinAPI& operator = (const WinAPI&) = delete;// -> コピー代入演算子禁止
+#pragma region 特殊関数
+	// 禁止
+	WinAPI(const WinAPI&) = delete;				// コピーコンストラクタ禁止
+	WinAPI& operator = (const WinAPI&) = delete;// コピー代入演算子禁止
+#pragma endregion
 };
