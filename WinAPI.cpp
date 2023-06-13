@@ -78,11 +78,6 @@ bool WinAPI::IsEndMessage()
 	return false;
 }
 
-WinAPI::~WinAPI() {
-	// ウィンドウクラス登録解除
-	UnregisterClass(winClass_.lpszClassName, winClass_.hInstance);
-}
-
 WinAPI::WinAPI() :
 #pragma region 初期化リスト
 	// ウィンドウサイズ
@@ -95,6 +90,11 @@ WinAPI::WinAPI() :
 	msg_{}		// メッセージ
 #pragma endregion
 {}
+
+WinAPI::~WinAPI() {
+	// ウィンドウクラス登録解除
+	UnregisterClass(winClass_.lpszClassName, winClass_.hInstance);
+}
 
 void WinAPI::CreateWindowObj()
 {

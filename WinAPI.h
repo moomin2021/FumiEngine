@@ -34,11 +34,6 @@ public:
 	/// <returns> 真偽結果 </returns>
 	bool IsEndMessage();
 
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~WinAPI();
-
 #pragma region ゲッター関数
 	/// <summary>
 	/// ウィンドウサイズの横幅を取得
@@ -71,6 +66,11 @@ private:
 	/// コンストラクタ
 	/// </summary>
 	WinAPI();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~WinAPI();
 
 	/// <summary>
 	/// ウィンドウオブジェクト作成
