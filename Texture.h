@@ -62,6 +62,11 @@ private:
 	/// </summary>
 	Texture();
 
+	/// <summary>
+	/// SRV用でスクリプタヒープ生成
+	/// </summary>
+	void CreateDescriptorHeap();
+
 #pragma endregion
 
 #pragma region 特殊関数
