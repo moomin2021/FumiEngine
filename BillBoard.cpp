@@ -211,26 +211,29 @@ void BillBoard::Update(Camera* camera, BillBoardType type)
 
 void BillBoard::Draw(int textureHandle)
 {
-	// --SRVヒープのハンドルを取得-- //
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// SRVヒープのハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	// --ハンドルを指定された分まで進める-- //
+	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle;
 
-	// --指定されたSRVをルートパラメータ1番に設定-- //
-	DX12Cmd::GetCmdList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	// 指定されたSRVをルートパラメータ1番に設定
+	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-	// --頂点バッファビューの設定コマンド-- //
-	DX12Cmd::GetCmdList()->IASetVertexBuffers(0, 1, &vbView_);
+	// 頂点バッファビューの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &vbView_);
 
-	// --インデックスバッファビューの設定コマンド-- //
-	DX12Cmd::GetCmdList()->IASetIndexBuffer(&ibView_);
+	// インデックスバッファビューの設定コマンド
+	cmdList->IASetIndexBuffer(&ibView_);
 
-	// --定数バッファビュー（CBV）の設定コマンド-- //
-	DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+	// 定数バッファビュー（CBV）の設定コマンド
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
 
-	//// --描画コマンド-- //
-	DX12Cmd::GetCmdList()->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
 }
 
 void BillBoard::PreDraw()
@@ -318,8 +321,10 @@ void BillBoard::CreateSquare()
 
 void BillBoard::CreateBuffer()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 関数が成功したかどうかを判別する用変数
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成
 	HRESULT result;
 
 #pragma region 頂点バッファ作成
@@ -341,7 +346,7 @@ void BillBoard::CreateBuffer()
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --頂点バッファの生成-- //
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, // リソース設定
@@ -384,7 +389,7 @@ void BillBoard::CreateBuffer()
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --インデックスバッファの生成-- //
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp,// -> ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,// -> リソース設定

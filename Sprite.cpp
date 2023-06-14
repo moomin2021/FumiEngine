@@ -18,8 +18,10 @@
 Sprite::Sprite() : vbView{}, ibView{}, constBuff(nullptr), constMap(nullptr), vertBuff(nullptr), vertMap(nullptr),
 position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 {
-	// --関数が成功したかどうかを判別する用変数-- //
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
 	// --頂点データ-- //
@@ -56,7 +58,7 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --頂点バッファの生成-- //
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapVSProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, // リソース設定
@@ -116,7 +118,7 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 
 	// --インデックスバッファの生成-- //
 	//ID3D12Resource* indexBuff = nullptr;
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapVSProp,// -> ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,// -> リソース設定
@@ -160,7 +162,7 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --定数バッファの生成
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resdesc,
@@ -226,42 +228,50 @@ void Sprite::Update() {
 
 // --描画処理-- //
 void Sprite::Draw(int textureHandle) {
-	// --SRVヒープのハンドルを取得-- //
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// SRVヒープのハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	// --ハンドルを指定された分まで進める-- //
+	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle;
 
-	// --指定されたSRVをルートパラメータ1番に設定-- //
-	DX12Cmd::GetCmdList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	// 指定されたSRVをルートパラメータ1番に設定
+	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-	// --頂点バッファビューの設定コマンド-- //
-	DX12Cmd::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
+	// 頂点バッファビューの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
-	// --定数バッファビュー（CBV）の設定コマンド-- //
-	DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	// 定数バッファビュー（CBV）の設定コマンド
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	// --インデックスバッファビューの設定コマンド-- //
-	DX12Cmd::GetCmdList()->IASetIndexBuffer(&ibView);
+	// インデックスバッファビューの設定コマンド
+	cmdList->IASetIndexBuffer(&ibView);
 
-	//// --描画コマンド-- //
-	DX12Cmd::GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
 // --描画前処理-- //
 void Sprite::PreDraw()
 {
-	// --コマンドリスト取得-- //
-	//ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetCmdList();
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// パイプライン取得
+	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineSprite();
 
 	// パイプラインステートの設定
-	DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetSpritePipeline().pipelineState.Get());
-	// ルートシグネチャの設定
-	DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetSpritePipeline().rootSignature.Get());
-	// プリミティブ形状を設定
-	DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	cmdList->SetPipelineState(pipeline.pipelineState.Get());
 
-	// --デスクリプタヒープの配列をセットするコマンド-- //
+	// ルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(pipeline.rootSignature.Get());
+
+	// プリミティブ形状を設定
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// デスクリプタヒープの配列をセットするコマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
-	DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
+	cmdList->SetDescriptorHeaps(1, ppHeaps);
 }

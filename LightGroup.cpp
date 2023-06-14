@@ -30,6 +30,9 @@ LightGroup* LightGroup::Create()
 
 void LightGroup::Initialize()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 標準のライトの設定
 	DefaultLightSetting();
 
@@ -42,7 +45,7 @@ void LightGroup::Initialize()
 
 	// 定数バッファの生成
 	HRESULT result;
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
@@ -299,6 +302,9 @@ void LightGroup::Update()
 
 void LightGroup::Draw()
 {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
 	// 定数バッファビューをセット
-	DX12Cmd::GetCmdList()->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
 }

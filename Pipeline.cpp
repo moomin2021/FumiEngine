@@ -8,6 +8,9 @@
 
 // --スプライト用パイプライン生成-- //
 PipelineSet CreateSpritePipeline() {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
@@ -222,7 +225,7 @@ PipelineSet CreateSpritePipeline() {
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = DX12Cmd::GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&pipelineSet.rootSignature));
 	assert(SUCCEEDED(result));
 
@@ -230,7 +233,7 @@ PipelineSet CreateSpritePipeline() {
 	pipelineDesc.pRootSignature = pipelineSet.rootSignature.Get();
 
 	// --パイプランステートの生成-- //
-	result = DX12Cmd::GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineSet.pipelineState));
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineSet.pipelineState));
 	assert(SUCCEEDED(result));
 
 #pragma endregion
@@ -241,6 +244,9 @@ PipelineSet CreateSpritePipeline() {
 }
 PipelineSet CreateObject3DPipeline()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// --関数が成功したかどうかを判別する用変数-- //
 	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
 	HRESULT result;
@@ -475,7 +481,7 @@ PipelineSet CreateObject3DPipeline()
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = DX12Cmd::GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&pipelineSet.rootSignature));
 	assert(SUCCEEDED(result));
 
@@ -483,7 +489,7 @@ PipelineSet CreateObject3DPipeline()
 	pipelineDesc.pRootSignature = pipelineSet.rootSignature.Get();
 
 	// --パイプランステートの生成-- //
-	result = DX12Cmd::GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineSet.pipelineState));
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineSet.pipelineState));
 	assert(SUCCEEDED(result));
 
 #pragma endregion

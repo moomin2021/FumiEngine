@@ -134,6 +134,9 @@ void Texture::Initialize(ID3D12Device* device) {
 ID3D12DescriptorHeap* Texture::GetSRVHeap() { return srvHeap_.Get(); }
 
 int LoadTexture(const std::string fileName) {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 既に読み込んだ物だったら
 	if (Texture::texBuff_.find(fileName) != Texture::texBuff_.end()) {
 		return Texture::texHandle_[fileName];
@@ -190,7 +193,7 @@ int LoadTexture(const std::string fileName) {
 
 	// --テクスチャバッファの生成-- //
 	ComPtr<ID3D12Resource> texBuff = nullptr;
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -217,7 +220,7 @@ int LoadTexture(const std::string fileName) {
 	}
 
 	// --CBV, SRV, UAVの1個分のサイズを取得-- //
-	UINT descriptorSize = DX12Cmd::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT descriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	// --ハンドルを1つ進める-- //
 	Texture::srvHandle_.ptr += descriptorSize;
@@ -237,7 +240,7 @@ int LoadTexture(const std::string fileName) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	DX12Cmd::GetDevice()->CreateShaderResourceView(Texture::texBuff_[fileName].Get(), &srvDesc, Texture::srvHandle_);
+	device->CreateShaderResourceView(Texture::texBuff_[fileName].Get(), &srvDesc, Texture::srvHandle_);
 
 	// --ハンドルを返す-- //
 	return descriptorSize * Texture::imageCount_;

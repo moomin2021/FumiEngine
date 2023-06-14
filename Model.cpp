@@ -231,6 +231,9 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 
 void Model::CreateVertexBuff()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
@@ -252,7 +255,7 @@ void Model::CreateVertexBuff()
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --頂点バッファの生成-- //
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, // リソース設定
@@ -283,6 +286,9 @@ void Model::CreateVertexBuff()
 
 void Model::CreateIndexBuff()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
@@ -304,7 +310,7 @@ void Model::CreateIndexBuff()
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// --インデックスバッファの生成-- //
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp,// -> ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,// -> リソース設定
@@ -335,6 +341,9 @@ void Model::CreateIndexBuff()
 
 void Model::CreateMaterialBuff()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
@@ -353,7 +362,7 @@ void Model::CreateMaterialBuff()
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 定数バッファの生成
-	result = DX12Cmd::GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resdesc,

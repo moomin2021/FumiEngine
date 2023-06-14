@@ -115,11 +115,13 @@ void Object3D::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList*
 }
 
 void Object3D::PreDraw() {
+	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineObject3D();
+
 	// パイプラインステートの設定
-	cmdList_->SetPipelineState(DX12Cmd::GetObject3DPipeline().pipelineState.Get());
+	cmdList_->SetPipelineState(pipeline.pipelineState.Get());
 	
 	// ルートシグネチャの設定
-	cmdList_->SetGraphicsRootSignature(DX12Cmd::GetObject3DPipeline().rootSignature.Get());
+	cmdList_->SetGraphicsRootSignature(pipeline.rootSignature.Get());
 	
 	// プリミティブ形状を設定
 	cmdList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

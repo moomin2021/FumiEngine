@@ -7,7 +7,7 @@ class WinAPI {
 private:
 	// ウィンドウサイズ
 	uint16_t winWidth_;	// 横幅
-	uint16_t winHeight_;	// 縦幅
+	uint16_t winHeight_;// 縦幅
 
 	WNDCLASSEX	winClass_;	// ウィンドウクラス
 	RECT		winRect_;	// ウィンドウサイズ

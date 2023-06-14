@@ -12,13 +12,13 @@
 // --Windowsアプリでのエントリーポイント(main関数)-- //
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
-	// --WinAPIクラス-- //
+	// WinAPIの初期化
 	WinAPI* winAPI = WinAPI::GetInstance();
 	winAPI->Initialize(1280, 720);// -> 初期化処理
 
-	// --DirectX12クラス-- //
+	// DirectX12の初期化
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
-	dx12->Initialize(winAPI);// -> 初期化処理
+	dx12->Initialize();// -> 初期化処理
 
 	// --テクスチャクラス-- //
 	Texture* texture = Texture::GetInstance();// -> インスタンス取得
