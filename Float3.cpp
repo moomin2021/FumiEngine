@@ -1,22 +1,22 @@
-#include "Float3.h"
+#include "float3.h"
 
 // 引数なしのコンストラクタ
-Float3::Float3() : x(0.0f), y(0.0f), z(0.0f) {}
+float3::float3() : x(0.0f), y(0.0f), z(0.0f) {}
 
 // 引数ありのコンストラクタ
-Float3::Float3(float x, float y, float z) : x(x), y(y), z(z) {}
+float3::float3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-Float3 Float3::operator+() const
+float3 float3::operator+() const
 {
 	return *this;
 }
 
-Float3 Float3::operator-() const
+float3 float3::operator-() const
 {
-	return Float3(-x, -y, -z);
+	return float3(-x, -y, -z);
 }
 
-Float3& Float3::operator+=(const Float3& f)
+float3& float3::operator+=(const float3& f)
 {
 	x += f.x;
 	y += f.y;
@@ -24,7 +24,7 @@ Float3& Float3::operator+=(const Float3& f)
 	return *this;
 }
 
-Float3& Float3::operator-=(const Float3& f)
+float3& float3::operator-=(const float3& f)
 {
 	x -= f.x;
 	y -= f.y;
@@ -32,7 +32,7 @@ Float3& Float3::operator-=(const Float3& f)
 	return *this;
 }
 
-Float3& Float3::operator*=(float s)
+float3& float3::operator*=(float s)
 {
 	x *= s;
 	y *= s;
@@ -40,7 +40,7 @@ Float3& Float3::operator*=(float s)
 	return *this;
 }
 
-Float3& Float3::operator/=(float s)
+float3& float3::operator/=(float s)
 {
 	x /= s;
 	y /= s;
@@ -48,31 +48,31 @@ Float3& Float3::operator/=(float s)
 	return *this;
 }
 
-const Float3 operator+(const Float3& f1, const Float3& f2)
+const float3 operator+(const float3& f1, const float3& f2)
 {
-	Float3 tmp(f1);
+	float3 tmp(f1);
 	return tmp += f2;
 }
 
-const Float3 operator-(const Float3& f1, const Float3& f2)
+const float3 operator-(const float3& f1, const float3& f2)
 {
-	Float3 tmp(f1);
+	float3 tmp(f1);
 	return tmp += f2;
 }
 
-const Float3 operator*(const Float3& f, float s)
+const float3 operator*(const float3& f, float s)
 {
-	Float3 tmp(f);
+	float3 tmp(f);
 	return tmp *= s;
 }
 
-const Float3 operator*(float s, const Float3& f)
+const float3 operator*(float s, const float3& f)
 {
 	return f * s;
 }
 
-const Float3 operator/(const Float3& f, float s)
+const float3 operator/(const float3& f, float s)
 {
-	Float3 tmp(f);
+	float3 tmp(f);
 	return tmp /= s;
 }

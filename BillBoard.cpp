@@ -215,7 +215,7 @@ void BillBoard::Draw(int textureHandle)
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
 	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle;

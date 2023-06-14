@@ -2,9 +2,11 @@
 #include "BaseScene.h"
 #include "Model.h"
 #include "Object3D.h"
+#include "Sprite.h"
 #include "Camera.h"
 #include "LightGroup.h"
 #include "Key.h"
+#include <vector>
 
 class Scene1 : public BaseScene
 {
@@ -20,12 +22,16 @@ private:
 	LightGroup* lightGroup_;
 
 	// モデル
-	Model* sphereM_;
-	Model* cubeM_;
-	Model* floorM_;
+	Model* mCube_;
 
 	// オブジェクト
-	Object3D* object_[3];
+	std::vector<Object3D*> oCube_;
+
+	// テクスチャハンドル
+	uint16_t haeHandle_;
+
+	// スプライト
+	Sprite* sHae_;
 
 	// --メンバ関数-- //
 public:

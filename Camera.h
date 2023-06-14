@@ -1,14 +1,11 @@
 #pragma once
-// --数学関数-- //
-#include <DirectXMath.h>
-using namespace DirectX;
 #include "fMath.h"
 
 class Camera {
 public:
-	Float3 eye_;// ----> カメラの位置
-	Float3 target_;// -> カメラの注視点
-	Float3 up_;// -----> カメラの上方向ベクトル
+	float3 eye_;// ----> カメラの位置
+	float3 target_;// -> カメラの注視点
+	float3 up_;// -----> カメラの上方向ベクトル
 
 private:
 	Matrix4 matView_;// -> ビュー変換行列

@@ -1,11 +1,10 @@
 #include "Scene1.h"
+#include "Texture.h"
 
 Scene1::Scene1() :
 	key_(nullptr),
 	camera_(nullptr),
-	lightGroup_(nullptr),
-	sphereM_(nullptr),
-	object_{}
+	lightGroup_(nullptr)
 {
 }
 
@@ -13,12 +12,9 @@ Scene1::~Scene1()
 {
 	delete camera_;
 	delete lightGroup_;
-	delete sphereM_;
-	delete cubeM_;
-	delete floorM_;
-	delete object_[0];
-	delete object_[1];
-	delete object_[2];
+	delete mCube_;
+	for (auto& object : oCube_) delete object;
+	delete sHae_;
 }
 
 void Scene1::Initialize()
@@ -31,20 +27,25 @@ void Scene1::Initialize()
 	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 
 	// モデル
-	//sphereM_ = Model::CreateModel("sphere");
-	cubeM_ = Model::CreateModel("cube");
-	//floorM_ = Model::CreateModel("floor");
+	mCube_ = Model::CreateModel("cube");
 
-	//// オブジェクト
-	object_[0] = Object3D::CreateObject3D(cubeM_);
-	object_[0]->SetPos({ 3.0f, 1.0f, 0.0f });
+	// オブジェクト
+	oCube_.resize(3);
 
-	object_[1] = Object3D::CreateObject3D(cubeM_);
-	object_[1]->SetPos({ -3.0f, 1.0f, 0.0f });
+	oCube_[0] = Object3D::CreateObject3D(mCube_);
+	oCube_[0]->SetPos({ 3.0f, 1.0f, 0.0f });
 
-	object_[2] = Object3D::CreateObject3D(cubeM_);
-	object_[2]->SetPos({ 0.0f, 0.0f, 0.0f });
-	//object_[2]->SetScale({ 10.0f, 10.0f, 10.0f });
+	oCube_[1] = Object3D::CreateObject3D(mCube_);
+	oCube_[1]->SetPos({ -3.0f, 1.0f, 0.0f });
+
+	oCube_[2] = Object3D::CreateObject3D(mCube_);
+	oCube_[2]->SetPos({ 0.0f, 0.0f, 0.0f });
+
+	// テクスチャハンドル
+	haeHandle_ = LoadTexture("Resources/hae.png");
+
+	// スプライト
+	sHae_ = new Sprite();
 
 	// ライト生成
 	lightGroup_ = LightGroup::Create();
@@ -79,15 +80,7 @@ void Scene1::Update()
 		camera_->eye_.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
 	}
 
-	if (key_->TriggerKey(DIK_E)) {
-		object_[0]->SetModel(cubeM_);
-	}
-
-	if (key_->TriggerKey(DIK_Q)) {
-		object_[0]->SetModel(sphereM_);
-	}
-
-	static Float3 pos = { 0.0f, 0.5f, 0.0f };
+	static float3 pos = { 0.0f, 0.5f, 0.0f };
 
 	pos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
 	pos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
@@ -97,8 +90,10 @@ void Scene1::Update()
 	static float rota = 0.0f;
 	rota += 1.0f;
 
-	object_[0]->SetRot({ 0.0f, rota, 0.0f });
-	object_[1]->SetRot({0.0f, rota, 0.0f});
+	oCube_[0]->SetRot({ 0.0f, rota, 0.0f });
+	oCube_[1]->SetRot({0.0f, rota, 0.0f});
+
+	sHae_->Update();
 
 	// カメラの更新
 	camera_->Update();
@@ -111,5 +106,9 @@ void Scene1::Draw()
 {
 	Object3D::PreDraw();
 
-	for (auto& object : object_) object->Draw();
+	for (auto& object : oCube_) object->Draw();
+
+	Sprite::PreDraw();
+
+	sHae_->Draw(haeHandle_);
 }

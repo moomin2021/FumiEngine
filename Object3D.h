@@ -6,8 +6,9 @@ using namespace Microsoft::WRL;
 #include <vector>
 #include "Model.h"
 #include "Camera.h"
-#include "fMath.h"
 #include "LightGroup.h"
+#include "float3.h"
+#include "float4.h"
 
 class Object3D {
 public:// -----サブクラス----- //
@@ -15,16 +16,16 @@ public:// -----サブクラス----- //
 	struct ObjectBuff {
 		Matrix4 viewProj;// -> ビュープロジェクション
 		Matrix4 world;// ----> ワールド行列
-		Float3 cameraPos;// -> カメラ座標(ワールド座標)
+		float3 cameraPos;// -> カメラ座標(ワールド座標)
 		float pad1;// -------> パディング
-		Float4 color;// -----> 色(RGBA)
+		float4 color;// -----> 色(RGBA)
 	};
 
 private:// -----メンバ変数----- //
-	Float3 position_;// ------------------> 座標
-	Float3 rotation_;// ------------------> 回転角
-	Float3 scale_;// ---------------------> スケール
-	Float4 color_;// ---------------------> 色(RGBA)
+	float3 position_;// ------------------> 座標
+	float3 rotation_;// ------------------> 回転角
+	float3 scale_;// ---------------------> スケール
+	float4 color_;// ---------------------> 色(RGBA)
 	Matrix4 matWorld_;// -----------------> ワールド座標
 	ComPtr<ID3D12Resource> constBuff_;// -> 定数バッファ
 	Model* model_;// ---------------------> モデル
@@ -89,22 +90,22 @@ public:// -----メンバ関数----- //
 	/// <summary>
 	/// 座標設定
 	/// </summary>
-	void SetPos(const Float3& position);
+	void SetPos(const float3& position);
 
 	/// <summary>
 	/// 回転角設定[度数法]
 	/// </summary>
-	void SetRot(const Float3& rotation);
+	void SetRot(const float3& rotation);
 
 	/// <summary>
 	/// 拡縮設定
 	/// </summary>
-	void SetScale(const Float3& scale);
+	void SetScale(const float3& scale);
 
 	/// <summary>
 	/// 色(RGBA)設定
 	/// </summary>
-	void SetColor(const Float4& color);
+	void SetColor(const float4& color);
 
 	/// <summary>
 	/// モデル設定
@@ -114,15 +115,15 @@ public:// -----メンバ関数----- //
 	/// <summary>
 	/// 座標取得
 	/// </summary>
-	inline const Float3& GetPos() { return position_; }
+	inline const float3& GetPos() { return position_; }
 
 	/// <summary>
 	/// 回転角取得[度数法]
 	/// </summary>
-	inline const Float3& GetRot() { return rotation_; }
+	inline const float3& GetRot() { return rotation_; }
 
 	/// <summary>
 	/// 拡縮取得
 	/// </summary>
-	inline const Float3& GetScale() { return scale_; }
+	inline const float3& GetScale() { return scale_; }
 };

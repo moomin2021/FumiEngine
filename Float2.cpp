@@ -1,25 +1,25 @@
-#include "Float2.h"
+#include "float2.h"
 
 // 引数無しのコンストラクタ
-Float2::Float2() : x(0.0f), y(0.0f) {}
+float2::float2() : x(0.0f), y(0.0f) {}
 
 // 引数ありのコンストラクタ
-Float2::Float2(float x, float y) : x(x), y(y) {}
+float2::float2(float x, float y) : x(x), y(y) {}
 
 // 単項演算子+を使えるようにする
-Float2 Float2::operator+() const
+float2 float2::operator+() const
 {
     return *this;
 }
 
 // 単項演算子-を使えるようにする
-Float2 Float2::operator-() const
+float2 float2::operator-() const
 {
-    return Float2(-x, -y);
+    return float2(-x, -y);
 }
 
 // +=を使用できるようにする
-Float2& Float2::operator+=(const Float2& f)
+float2& float2::operator+=(const float2& f)
 {
     x += f.x;
     y += f.y;
@@ -27,7 +27,7 @@ Float2& Float2::operator+=(const Float2& f)
 }
 
 // -=を使用できるようにする
-Float2& Float2::operator-=(const Float2& f)
+float2& float2::operator-=(const float2& f)
 {
     x -= f.x;
     y -= f.y;
@@ -35,7 +35,7 @@ Float2& Float2::operator-=(const Float2& f)
 }
 
 // ベクトルをs倍にする
-Float2& Float2::operator*=(float s)
+float2& float2::operator*=(float s)
 {
     x *= s;
     y *= s;
@@ -43,38 +43,38 @@ Float2& Float2::operator*=(float s)
 }
 
 // ベクトルを1/s倍にする
-Float2& Float2::operator/=(float s)
+float2& float2::operator/=(float s)
 {
     x /= s;
     y /= s;
     return *this;
 }
 
-const Float2 operator+(const Float2& f1, const Float2& f2)
+const float2 operator+(const float2& f1, const float2& f2)
 {
-    Float2 tmp(f1);
+    float2 tmp(f1);
     return tmp += f2;
 }
 
-const Float2 operator-(const Float2& f1, const Float2& f2)
+const float2 operator-(const float2& f1, const float2& f2)
 {
-    Float2 tmp(f1);
+    float2 tmp(f1);
     return tmp -= f2;
 }
 
-const Float2 operator*(const Float2& f, float s)
+const float2 operator*(const float2& f, float s)
 {
-    Float2 tmp(f);
+    float2 tmp(f);
     return tmp *= s;
 }
 
-const Float2 operator*(float s, const Float2& f)
+const float2 operator*(float s, const float2& f)
 {
     return f * s;
 }
 
-const Float2 operator/(const Float2& f, float s)
+const float2 operator/(const float2& f, float s)
 {
-    Float2 tmp(f);
+    float2 tmp(f);
     return tmp /= s;
 }

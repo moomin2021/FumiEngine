@@ -86,9 +86,9 @@
     <ClCompile Include="BillBoard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DX12Cmd.cpp" />
-    <ClCompile Include="Float2.cpp" />
-    <ClCompile Include="Float3.cpp" />
-    <ClCompile Include="Float4.cpp" />
+    <ClCompile Include="float2.cpp" />
+    <ClCompile Include="float3.cpp" />
+    <ClCompile Include="float4.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -114,9 +114,9 @@
     <ClInclude Include="CircleShadow.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DX12Cmd.h" />
-    <ClInclude Include="Float2.h" />
-    <ClInclude Include="Float3.h" />
-    <ClInclude Include="Float4.h" />
+    <ClInclude Include="float2.h" />
+    <ClInclude Include="float3.h" />
+    <ClInclude Include="float4.h" />
     <ClInclude Include="fMath.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="LightGroup.h" />

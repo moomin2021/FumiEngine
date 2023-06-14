@@ -127,7 +127,7 @@ void Object3D::PreDraw() {
 	cmdList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetInstance()->GetSRVHeap() };
 	cmdList_->SetDescriptorHeaps(1, ppHeaps);
 }
 
@@ -146,24 +146,24 @@ void Object3D::Draw()
 	model_->Draw();
 }
 
-void Object3D::SetPos(const Float3& position)
+void Object3D::SetPos(const float3& position)
 {
 	position_ = position;// -> 座標設定
 	dirty = true;// -> ダーティーフラグを[ON]にする
 }
 
-void Object3D::SetRot(const Float3& rotation)
+void Object3D::SetRot(const float3& rotation)
 {
 	rotation_ = rotation;// -> 回転角設定
 	dirty = true;// -> ダーティーフラグを[ON]にする
 }
 
-void Object3D::SetScale(const Float3& scale)
+void Object3D::SetScale(const float3& scale)
 {
 	scale_ = scale;// -> 拡縮設定
 	dirty = true;// -> ダーティーフラグを[ON]にする
 }
 
-void Object3D::SetColor(const Float4& color) {
+void Object3D::SetColor(const float4& color) {
 	color_ = color;// -> 色(RGBA)設定
 }

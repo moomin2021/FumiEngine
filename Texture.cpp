@@ -1,61 +1,39 @@
 #include "Texture.h"
-
 #include "DX12Cmd.h"
+#include "float4.h"
+#include "Util.h"
 
-// --SRVヒープの先頭ハンドルを取得-- //
-D3D12_CPU_DESCRIPTOR_HANDLE Texture::srvHandle_ = {};
+#include <vector>
 
-// --読み込む画像が何枚目か-- //
-UINT Texture::imageCount_ = 0;
+using namespace DirectX;
 
-// --SRV用デスクリプタヒープ-- //
-ComPtr<ID3D12DescriptorHeap> Texture::srvHeap_ = nullptr;
-
-// テクスチャバッファ
-std::map<const std::string, ComPtr<ID3D12Resource>> Texture::texBuff_ = {};
-
-// テクスチャハンドル
-std::map<const std::string, UINT> Texture::texHandle_ = {};
-
-// --インスタンス読み込み-- //
 Texture* Texture::GetInstance() {
-	// --インスタンス生成-- //
+	// インスタンス生成
 	static Texture instance;
 
-	// --インスタンスを返す-- //
+	// インスタンスを返す
 	return &instance;
 }
 
-// --コンストラクタ-- //
-Texture::Texture() 
-#pragma region 初期化リスト
-	//device_(nullptr)
-#pragma endregion
-{
+void Texture::Initialize() {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-}
-
-// --デストラクタ-- //
-Texture::~Texture() {}
-
-// --初期化処理-- //
-void Texture::Initialize(ID3D12Device* device) {
-	// --DirectXクラスのデバイス取得-- //
-	//this->device_ = device;
-
-	// --関数が成功したかどうかを判別する用変数-- //
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
-	/// --初期の真っ白なテクスチャを作成-- ///
-#pragma region
+#pragma region 真っ白な画像を作成
 
-	// --自作画像データ-- //
-	const size_t textureWidth = 256;
-	const size_t textureHeight = 256;
-	const size_t imageDataCount = textureWidth * textureHeight;
-	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
+	// 画像のサイズ
+	const uint32_t textureWidth = 256;	// 横幅
+	const uint32_t textureHeight = 256;	// 縦幅
+	const uint32_t imageDataCount = textureWidth * textureHeight;// 全体のピクセル
 
+	// 1ピクセルの色
+	std::vector<float4> imageData;
+	imageData.resize(imageDataCount);
+
+	// 画像を真っ白に
 	for (size_t i = 0; i < imageDataCount; i++) {
 		imageData[i].x = 1.0f;
 		imageData[i].y = 1.0f;
@@ -63,7 +41,7 @@ void Texture::Initialize(ID3D12Device* device) {
 		imageData[i].w = 1.0f;
 	}
 
-	// --ヒープ設定-- //
+	// ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
@@ -93,14 +71,13 @@ void Texture::Initialize(ID3D12Device* device) {
 	result = texBuff->WriteToSubresource(
 		0,
 		nullptr,
-		imageData,
-		sizeof(XMFLOAT4) * textureWidth,
-		sizeof(XMFLOAT4) * imageDataCount
+		imageData.data(),
+		sizeof(float4) * textureWidth,
+		sizeof(float4) * imageDataCount
 	);
 	assert(SUCCEEDED(result));
 
 #pragma endregion
-	/// --END-- ///
 
 	// --デスクリプタヒープの設定-- //
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
@@ -126,43 +103,36 @@ void Texture::Initialize(ID3D12Device* device) {
 	texBuff_.emplace("white", texBuff);
 	texHandle_.emplace("white", 0);
 
-	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
+	// ハンドルの指す①にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff_["white"].Get(), &srvDesc, srvHandle_);
 }
 
-// --SRVヒープ参照-- //
-ID3D12DescriptorHeap* Texture::GetSRVHeap() { return srvHeap_.Get(); }
-
-int LoadTexture(const std::string fileName) {
+int Texture::LoadTexture(const std::string fileName)
+{
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
 	// 既に読み込んだ物だったら
-	if (Texture::texBuff_.find(fileName) != Texture::texBuff_.end()) {
-		return Texture::texHandle_[fileName];
+	if (texBuff_.find(fileName) != texBuff_.end()) {
+		return texHandle_[fileName];
 	}
 
-	// --関数が成功したかどうかを判別する用変数-- //
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	// ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, fileName.c_str(), -1, wfilepath, _countof(wfilepath));
-
-	// --WICテクスチャのロード-- //
+	// WICテクスチャのロード
 	result = LoadFromWICFile(
-		wfilepath,
+		Util::StringToWideChar(fileName).data(),
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg
 	);
 
 	ScratchImage mipChain{};
 
-	// --ミップマップ生成-- //
+	// ミップマップ生成
 	result = GenerateMipMaps(
 		scratchImg.GetImages(),
 		scratchImg.GetImageCount(),
@@ -172,26 +142,26 @@ int LoadTexture(const std::string fileName) {
 		mipChain
 	);
 
-	// --読み込んだディフューズテクスチャをSRGBとして扱う-- //
+	// 読み込んだディフューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
 
-	// --ヒープ設定-- //
+	// ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
 
-	// --リソース設定-- //
+	// リソース設定
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = metadata.format;
 	textureResourceDesc.Width = metadata.width;
-	textureResourceDesc.Height = (UINT)metadata.height;
-	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
+	textureResourceDesc.Height = static_cast<uint32_t>(metadata.height);
+	textureResourceDesc.DepthOrArraySize = static_cast<uint32_t>(metadata.arraySize);
+	textureResourceDesc.MipLevels = static_cast<uint16_t>(metadata.mipLevels);
 	textureResourceDesc.SampleDesc.Count = 1;
 
-	// --テクスチャバッファの生成-- //
+	// テクスチャバッファの生成
 	ComPtr<ID3D12Resource> texBuff = nullptr;
 	result = device->CreateCommittedResource(
 		&textureHeapProp,
@@ -202,7 +172,7 @@ int LoadTexture(const std::string fileName) {
 		IID_PPV_ARGS(&texBuff)
 	);
 
-	// --全ミップマップについて-- //
+	// 全ミップマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
 		// ミップマップレベルを指定してイメージを取得
@@ -210,29 +180,29 @@ int LoadTexture(const std::string fileName) {
 
 		// テクスチャバッファにデータ転送
 		result = texBuff->WriteToSubresource(
-			(UINT)i,
-			nullptr,// --------------> 全領域へコピー
-			img->pixels,// ----------> 元データアドレス
-			(UINT)img->rowPitch,// --> 1ラインサイズ
-			(UINT)img->slicePitch// -> 1枚サイズ
+			static_cast<uint32_t>(i),
+			nullptr,								// 全領域へコピー
+			img->pixels,							// 元データアドレス
+			static_cast<uint32_t>(img->rowPitch),	// 1ラインサイズ
+			static_cast<uint32_t>(img->slicePitch)	// 1枚サイズ
 		);
 		assert(SUCCEEDED(result));
 	}
 
-	// --CBV, SRV, UAVの1個分のサイズを取得-- //
+	// CBV, SRV, UAVの1個分のサイズを取得
 	UINT descriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	// --ハンドルを1つ進める-- //
-	Texture::srvHandle_.ptr += descriptorSize;
+	// ハンドルを1つ進める
+	srvHandle_.ptr += descriptorSize;
 
-	// --画像カウンタインクリメント-- //
-	Texture::imageCount_++;
+	// カウンターを進める
+	loadCounter_++;
 
 	// 設定を保存
-	Texture::texBuff_.emplace(fileName, texBuff);
-	Texture::texHandle_.emplace(fileName, descriptorSize * Texture::imageCount_);
+	texBuff_.emplace(fileName, texBuff);
+	texHandle_.emplace(fileName, descriptorSize * loadCounter_);
 
-	// --シェーダリソースビュー設定-- //
+	// シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = textureResourceDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -240,8 +210,15 @@ int LoadTexture(const std::string fileName) {
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	// --ハンドルの指す①にシェーダーリソースビュー作成-- //
-	device->CreateShaderResourceView(Texture::texBuff_[fileName].Get(), &srvDesc, Texture::srvHandle_);
+	device->CreateShaderResourceView(texBuff_[fileName].Get(), &srvDesc, srvHandle_);
 
 	// --ハンドルを返す-- //
-	return descriptorSize * Texture::imageCount_;
+	return descriptorSize * loadCounter_;
+}
+
+Texture::Texture() {}
+
+int LoadTexture(const std::string fileName) {
+	// 画像読み込み
+	return Texture::GetInstance()->LoadTexture(fileName);
 }

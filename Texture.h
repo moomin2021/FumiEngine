@@ -1,66 +1,79 @@
 #pragma once
-// --Direct3D 12 用-- //
 #include <d3d12.h>
+#include <DirectXTex.h>
+#include <wrl.h>
+#include <string>
+#include <map>
+
 #pragma comment(lib, "d3d12.lib")
 
-// --数学関数-- //
-#include <DirectXMath.h>
-using namespace DirectX;
-
-// --DirectXTex-- //
-#include <DirectXteX.h>
-
- // --ComPtr用-- //
-#include <wrl.h>
 using namespace Microsoft::WRL;
 
-#include <array>
-#include <map>
-#include <string>
-
 class Texture {
-	///  --メンバ変数-- ///
-public:
-	// --読み込む画像が何枚目か-- //
-	static UINT imageCount_;
+#pragma region メンバ変数
+private:
+	// 読み込んだ回数
+	uint16_t loadCounter_;
 
 	// テクスチャバッファ
-	static std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
+	std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
 
 	// テクスチャハンドル
-	static std::map<const std::string, UINT> texHandle_;
+	std::map<const std::string, uint16_t> texHandle_;
 
-	// --SRVヒープの先頭ハンドルを取得-- //
-	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
+	// SRV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-private:
-	// --SRV用デスクリプタヒープ-- //
-	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	// SRVヒープのハンドル
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
+#pragma endregion
 
-	/// --メンバ変数END-- ///
-	///---------------- ///
-	/// --メンバ関数-- ///
+#pragma region メンバ関数
 public:
-	// --インスタンス読み込み-- //
+	/// <summary>
+	/// インスタンス取得
+	/// </summary>
+	/// <returns> インスタンス </returns>
 	static Texture* GetInstance();
 
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	/// <param name="device_"> デバイス </param>
-	void Initialize(ID3D12Device* device);
+	void Initialize();
 
-	// --SRVヒープ参照-- //
-	static ID3D12DescriptorHeap* GetSRVHeap();
+	/// <summary>
+	/// テクスチャを読み込み、ハンドルを取得する
+	/// </summary>
+	/// <param name="fileName"> 画像ファイル名 </param>
+	/// <returns> 読み込んだ画像のハンドル </returns>
+	int LoadTexture(const std::string fileName);
+
+#pragma region ゲッター関数
+	/// <summary>
+	/// SRVデスクリプタヒープの取得
+	/// </summary>
+	/// <returns> SRVデスクリプタヒープ </returns>
+	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
+#pragma endregion
 
 private:
-	// --コンストラクタ-- //
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Texture();
 
-	// --デストラクタ-- //
-	~Texture();
+#pragma endregion
 
-	/// --メンバ関数END-- ///
+#pragma region 特殊関数
+	// 禁止
+	Texture(const Texture&) = delete;				// コピーコンストラクタ禁止
+	Texture& operator = (const Texture&) = delete;	// コピー代入演算子禁止
+#pragma endregion
 };
 
+/// <summary>
+/// テクスチャを読み込み、ハンドルを取得する
+/// </summary>
+/// <param name="fileName"> 画像ファイル名 </param>
+/// <returns> 読み込んだ画像のハンドル </returns>
 int LoadTexture(const std::string fileName);

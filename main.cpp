@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --テクスチャクラス-- //
 	Texture* texture = Texture::GetInstance();// -> インスタンス取得
-	texture->Initialize(dx12->GetDevice());// -> 初期化処理
+	texture->Initialize();// -> 初期化処理
 
 	// --キーボードクラス-- //
 	Key* key = Key::GetInstance();

@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <string>
 
 namespace Util {
 
@@ -39,5 +41,12 @@ namespace Util {
 	/// <param name="degree"> “x”–@‚Ì’l </param>
 	/// <returns></returns>
 	float Degree2Radian(float degree);
+
+	/// <summary>
+	/// std::string‚©‚çWideChar‚É•ÏŠ·
+	/// </summary>
+	/// <param name="str"></param>
+	/// <returns></returns>
+	std::vector<wchar_t> StringToWideChar(const std::string& str);
 
 } // namespace MathUtility

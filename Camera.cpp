@@ -2,6 +2,9 @@
 #include "Util.h"
 #include "WinAPI.h"
 
+#include <DirectXMath.h>
+using namespace DirectX;
+
 Camera::Camera() :
 #pragma region 初期化リスト
 	eye_{ 0.0f, 0.0f, 0.0f },// ----> カメラの座標

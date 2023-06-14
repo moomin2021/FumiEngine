@@ -30,7 +30,7 @@ void Model::Initialize(ID3D12GraphicsCommandList* cmdList) {
 
 void Model::Draw() {
 	// --SRVヒープのハンドルを取得-- //
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
 	// --ハンドルを指定された分まで進める-- //
 	srvGpuHandle.ptr += textureHandle_;

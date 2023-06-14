@@ -232,7 +232,7 @@ void Sprite::Draw(int textureHandle) {
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
 	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle;
@@ -272,6 +272,6 @@ void Sprite::PreDraw()
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetInstance()->GetSRVHeap() };
 	cmdList->SetDescriptorHeaps(1, ppHeaps);
 }
