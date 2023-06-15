@@ -14,7 +14,6 @@ Scene1::~Scene1()
 	delete lightGroup_;
 	delete mCube_;
 	for (auto& object : oCube_) delete object;
-	delete sHae_;
 }
 
 void Scene1::Initialize()
@@ -45,7 +44,7 @@ void Scene1::Initialize()
 	haeHandle_ = LoadTexture("Resources/hae.png");
 
 	// スプライト
-	sHae_ = new Sprite();
+	sHae_ = std::make_unique<Sprite>();
 
 	// ライト生成
 	lightGroup_ = LightGroup::Create();
@@ -93,8 +92,6 @@ void Scene1::Update()
 	oCube_[0]->SetRot({ 0.0f, rota, 0.0f });
 	oCube_[1]->SetRot({0.0f, rota, 0.0f});
 
-	sHae_->Update();
-
 	// カメラの更新
 	camera_->Update();
 
@@ -110,5 +107,5 @@ void Scene1::Draw()
 
 	Sprite::PreDraw();
 
-	sHae_->Draw(haeHandle_);
+	sHae_->Draw();
 }

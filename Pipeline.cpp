@@ -85,7 +85,7 @@ PipelineSet CreateSpritePipeline() {
 		{
 			"POSITION",// -> セマンティック名
 			0,// -> 同じセマンティック名が複数あるときに使うインデックス（0でよい）
-			DXGI_FORMAT_R32G32B32_FLOAT,// -> 要素数とビット数を表す（XYZの3つでfloat型なのでR32G32B32_FLOAT）
+			DXGI_FORMAT_R32G32_FLOAT,// -> 要素数とビット数を表す（XYZの3つでfloat型なのでR32G32B32_FLOAT）
 			0,// -> 入力スロットインデックス（0でよい）
 			D3D12_APPEND_ALIGNED_ELEMENT,// -> データのオフセット値（D3D12_APPEND_ALIGNED_ELEMENTだと自動設定）
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,// -> 入力データの種別（標準はD3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA）

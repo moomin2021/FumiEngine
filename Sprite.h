@@ -1,100 +1,107 @@
 #pragma once
-// --Direct3D 12 用-- //
+#include "float2.h"
+#include "float3.h"
+#include "float4.h"
+#include "Matrix4.h"
+
 #include <d3d12.h>
+#include <wrl.h>
+#include <vector>
+
 #pragma comment(lib, "d3d12.lib")
 
-// --数学関数-- //
-#include <DirectXMath.h>
-using namespace DirectX;
-
-// --ComPtr用-- //
-#include <wrl.h>
 using namespace Microsoft::WRL;
 
-// --頂点データ-- //
-struct Vertices2D {
-	// --XYZ座標-- //
-	XMFLOAT3 pos;
-
-	// --uv座標-- //
-	XMFLOAT2 uv;
+// 頂点データ
+struct Vertex {
+	float2 pos;	// 座標(XYZ)
+	float2 uv;	// UV座標(XY)
 };
 
-// --定数バッファ用データ構造体（行列と色）-- //
+// 定数バッファ用データ構造体
 struct ConstBufferData {
-	// --色（RBGA）-- //
-	XMFLOAT4 color;
-
-	// --行列-- //
-	XMMATRIX mat;
+	Matrix4 mat;	// 行列
+	float4 color;	// 色(RGBA)
 };
 
 class Sprite {
-	/// --メンバ変数-- ///
-public:
-	// --Z軸回りの回転角-- //
-	float rotation;
-
-	// --座標-- //
-	XMFLOAT2 position;
-
-	// --ワールド行列-- //
-	XMMATRIX matWorld;
-
-	// --射影変換行列-- //
-	XMMATRIX matProjection;
-
-	// --色（RBGA）-- //
-	XMFLOAT4 color;
-
-	// --スケール-- //
-	XMFLOAT2 scale;
-
+#pragma region メンバ変数
 private:
-	// --頂点データ-- //
-	Vertices2D vertices[4];
+	// スプライトデータ
+	float2 position_;	// 座標
+	float rotation_;	// 回転
+	float2 scale_;		// 拡縮
+	float4 color_;		// 色(RGBA)
 
-	// --インデックスデータ-- //
-	uint16_t indices[6];
+	// スプライトデータを変更したかどうか
+	bool hasChanget_;
 
-	// --頂点バッファビュー-- //
-	D3D12_VERTEX_BUFFER_VIEW vbView;
+	// 行列
+	Matrix4 matWorld_;		// ワールド行列
+	Matrix4 matProjection_;	// 射影変換行列
 
-	// --頂点バッファ-- //
-	ComPtr<ID3D12Resource> vertBuff;
+	// 定数バッファ
+	ComPtr<ID3D12Resource> constBuff_;	// 定数バッファ
+	ConstBufferData* constMap_;			// マッピング処理用
 
-	// --頂点バッファマッピング処理用-- //
-	Vertices2D* vertMap;
+	// 頂点データ
+	std::vector<Vertex> vertex_;		// 頂点データ
+	ComPtr<ID3D12Resource> vertexBuff_;		// 頂点バッファ
+	Vertex* vertexMap_;						// マッピング処理用
+	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// 頂点バッファビュー
 
-	// --インデックスバッファ-- //
-	ComPtr<ID3D12Resource> indexBuff;
+	// インデックスデータ
+	std::vector<uint16_t> index_;	// インデックスデータ
+	ComPtr<ID3D12Resource> indexBuff_;	// インデックスバッファ
+	D3D12_INDEX_BUFFER_VIEW indexView_;	// インデックスバッファビュー
+#pragma endregion
 
-	// --インデックスバッファビュー-- //
-	D3D12_INDEX_BUFFER_VIEW ibView;
-
-	// --定数バッファ-- //
-	ComPtr<ID3D12Resource> constBuff;
-
-	// --定数バッファマッピング処理用-- //
-	ConstBufferData* constMap;
-
-	/// --メンバ変数END-- ///
-	/// --------------- ///
-	/// --メンバ関数-- ///
+#pragma region メンバ関数
 public:
-	// --コンストラクタ-- //
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Sprite();
 
-	// --更新処理-- //
-	void Update();
-
-	// --描画処理-- //
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void Draw(int textureHandle = 0);
 
-	// --描画前処理-- //
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
 	static void PreDraw();
 
 private:
+	/// <summary>
+	/// スプライトデータの更新
+	/// </summary>
+	void UpdateData();
 
-	/// --メンバ関数END-- ///
+#pragma region セッター関数
+public:
+
+	/// <summary>
+	/// 座標(XY)を設定
+	/// </summary>
+	inline void SetPosition(const float2& position) { position_ = position, hasChanget_ = true; }
+
+	/// <summary>
+	/// 回転(Z)を設定
+	/// </summary>
+	inline void SetRotation(float rotation) { rotation_ = rotation, hasChanget_ = true; }
+
+	/// <summary>
+	/// 拡縮(XY)を設定
+	/// </summary>
+	inline void SetScale(const float2& scale) { scale_ = scale, hasChanget_ = true; }
+
+	/// <summary>
+	/// 色(RGBA)を設定
+	/// </summary>
+	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
+#pragma endregion
+
+#pragma endregion
 };

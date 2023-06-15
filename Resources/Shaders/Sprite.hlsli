@@ -1,10 +1,10 @@
 cbuffer ConstBufferData : register(b0)
 {
+    // --行列-- //
+    matrix mat;
+    
 	// --色（RBGA）-- //
     float4 color;
-
-	// --行列-- //
-    matrix mat;
 }
 
 // --頂点ッシェーダーの出力構造体-- //

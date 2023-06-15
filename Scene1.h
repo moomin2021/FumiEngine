@@ -7,6 +7,7 @@
 #include "LightGroup.h"
 #include "Key.h"
 #include <vector>
+#include <memory>
 
 class Scene1 : public BaseScene
 {
@@ -31,7 +32,7 @@ private:
 	uint16_t haeHandle_;
 
 	// スプライト
-	Sprite* sHae_;
+	std::unique_ptr<Sprite> sHae_;
 
 	// --メンバ関数-- //
 public:

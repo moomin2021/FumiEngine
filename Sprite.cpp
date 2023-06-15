@@ -1,53 +1,76 @@
 #include "Sprite.h"
-
-// --WinAPIクラス-- //
-#include "WinAPI.h"
-
-// --DirextX12-- //
 #include "DX12Cmd.h"
-
-// --テクスチャクラス-- //
+#include "WinAPI.h"
 #include "Texture.h"
-
-// --便利系関数-- //
 #include "Util.h"
 
-#include <memory>
+#include <DirectXMath.h>
 
-// --コンストラクタ-- //
-Sprite::Sprite() : vbView{}, ibView{}, constBuff(nullptr), constMap(nullptr), vertBuff(nullptr), vertMap(nullptr),
-position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
+using namespace DirectX;
+
+Sprite::Sprite() :
+#pragma region 初期化リスト
+	// スプライトデータ
+	position_{ 0.0f, 0.0f },			// 座標
+	rotation_(0.0f),					// 回転
+	scale_{ 1.0f, 1.0f },				// 拡縮
+	color_{ 1.0f, 1.0f, 1.0f, 1.0f },	// 色(RGBA)
+
+	// スプライトデータを変更したかどうか
+	hasChanget_(true),
+
+	// 行列
+	matWorld_{},		// ワールド行列
+	matProjection_{},	// 射影変換行列
+
+	// 定数バッファ
+	constBuff_(nullptr),// 定数バッファ
+	constMap_(nullptr),	// マッピング処理用
+
+	// 頂点データ
+	vertex_(4),
+	vertexBuff_(nullptr),	// 頂点バッファ
+	vertexMap_(nullptr),	// マッピング処理用
+	vertexView_{},			// 頂点バッファビュー
+
+	// インデックスデータ
+	index_(6),
+	indexBuff_(nullptr),// インデックスバッファ
+	indexView_{}		// インデックスバッファビュー
+#pragma endregion
 {
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
+	// インスタンス取得
+	WinAPI* winAPI = WinAPI::GetInstance();
+
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
-	// --頂点データ-- //
-	vertices[0] = { {   0.0f, 100.0f * scale.y, 0.0f }, {0.0f, 1.0f} };// -> 左下
-	vertices[1] = { {   0.0f,   0.0f, 0.0f }, {0.0f, 0.0f} };// -> 左上
-	vertices[2] = { { 100.0f * scale.x, 100.0f * scale.y, 0.0f }, {1.0f, 1.0f} };// -> 右下
-	vertices[3] = { { 100.0f * scale.x,   0.0f, 0.0f }, {1.0f, 0.0f} };// -> 右上
+	// 頂点データ
+	vertex_[0] = { {   0.0f				, 100.0f * scale_.y	}, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { {   0.0f				,   0.0f			}, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { 100.0f * scale_.x	, 100.0f * scale_.y	}, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { 100.0f * scale_.x	,   0.0f			}, {1.0f, 0.0f} };// 右上
 
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-	indices[3] = 1;
-	indices[4] = 2;
-	indices[5] = 3;
+	// インデックスデータ
+	index_[0] = 0;
+	index_[1] = 1;
+	index_[2] = 2;
+	index_[3] = 1;
+	index_[4] = 2;
+	index_[5] = 3;
 
-	// --頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+#pragma region 頂点バッファ確保
+	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
+	UINT sizeVB = static_cast<UINT>(sizeof(vertex_[0]) * vertex_.size());
 
-	/// --頂点バッファの確保-- ///
-#pragma region
+	// 頂点バッファの設定
+	D3D12_HEAP_PROPERTIES heapVSProp{};			// ヒープ設定
+	heapVSProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// --頂点バッファの設定-- //
-	D3D12_HEAP_PROPERTIES heapVSProp{}; // ヒープ設定
-	heapVSProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
-
-	// --リソース設定-- //
+	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
@@ -57,101 +80,97 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// --頂点バッファの生成-- //
+	// 頂点バッファの生成
 	result = device->CreateCommittedResource(
-		&heapVSProp, // ヒープ設定
+		&heapVSProp,// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
+		&resDesc,	// リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&vertexBuff_));
 	assert(SUCCEEDED(result));
-
 #pragma endregion
-	/// --END-- ///
 
-		/// --頂点バッファへのデータ転送-- ///
-#pragma region
-
-	// --GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得-- //
-	//Vertices* vertMap = nullptr;
-
-	// --Map処理でメインメモリとGPUのメモリを紐づける-- //
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+#pragma region 頂点バッファへのデータ伝送
+	// Map処理でメインメモリとGPUのメモリを紐づける
+	result = vertexBuff_->Map(0, nullptr, (void**)&vertexMap_);
 	assert(SUCCEEDED(result));
 
-	// --全頂点に対して-- //
-	for (int i = 0; i < _countof(vertices); i++)
+	// 全頂点に対して
+	for (size_t i = 0; i < vertex_.size(); i++)
 	{
-		vertMap[i] = vertices[i]; // 座標をコピー
+		// 座標をコピー
+		vertexMap_[i] = vertex_[i];
 	}
-
 #pragma endregion
-	/// --END-- ///
 
-	/// --頂点バッファビューの作成-- ///
-#pragma region
+#pragma region 頂点バッファビュー作成
 
-	// --GPU仮想アドレス-- //
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	// GPU仮想アドレス
+	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();
 
-	// --頂点バッファのサイズ-- //
-	vbView.SizeInBytes = sizeVB;
+	// 頂点バッファのサイズ
+	vertexView_.SizeInBytes = sizeVB;
 
-	// --頂点1つ分のデータサイズ-- //
-	vbView.StrideInBytes = sizeof(vertices[0]);
-
+	// 頂点1つ分のデータサイズ
+	vertexView_.StrideInBytes = sizeof(vertex_[0]);
 #pragma endregion
-	/// --END-- ///
 
-	// --インデックスデータ全体サイズ-- //
-	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+#pragma region インデックスバッファ確保
+	// インデックスデータ全体のサイズ = インデックスデータ一つ分のサイズ * インデックスデータの要素数
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * index_.size());
 
-	// --リリース設定-- //
+	// リリース設定
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeIB; // -> インデックス情報が入る分のサイズ
+	resDesc.Width = sizeIB; // インデックス情報が入る分のサイズ
 	resDesc.Height = 1;
 	resDesc.DepthOrArraySize = 1;
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// --インデックスバッファの生成-- //
-	//ID3D12Resource* indexBuff = nullptr;
+	// インデックスバッファの生成
 	result = device->CreateCommittedResource(
-		&heapVSProp,// -> ヒープ設定
+		&heapVSProp,// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc,// -> リソース設定
+		&resDesc,	// リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&indexBuff)
+		IID_PPV_ARGS(&indexBuff_)
 	);
+#pragma endregion
 
-	// --インデックスバッファをマッピング-- //
+#pragma region インデックスバッファへのデータ転送
+	// マッピング用
 	uint16_t* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 
-	// --全インデックスに対して-- //
-	for (int i = 0; i < _countof(indices); i++) {
-		indexMap[i] = indices[i];
+	// 全インデックスに対して
+	for (int i = 0; i < index_.size(); i++) {
+		indexMap[i] = index_[i];
 	}
 
-	// --マッピング解除-- //
-	indexBuff->Unmap(0, nullptr);
+	// マッピング解除
+	indexBuff_->Unmap(0, nullptr);
+#pragma endregion
 
-	// --インデックスバッファビューの作成-- //
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
+#pragma region インデックスバッファビューの作成
+	// GPU仮想アドレス
+	indexView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 
-	/// --定数バッファ-- ///
-#pragma region
+	// フォーマット指定
+	indexView_.Format = DXGI_FORMAT_R16_UINT;
 
-	// --定数バッファのヒープ設定
+	// インデックスデータ1つ分のサイズ
+	indexView_.SizeInBytes = sizeIB;
+#pragma endregion
+
+#pragma region 定数バッファ生成
+	// 定数バッファのヒープ設定
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 
-	// --定数バッファのリソース設定
+	// 定数バッファのリソース設定
 	D3D12_RESOURCE_DESC resdesc{};
 	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resdesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;
@@ -161,78 +180,49 @@ position{0.0f, 0.0f}, color {1.0f, 1.0f, 1.0f, 1.0f}, scale{ 1.0f, 1.0f }
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// --定数バッファの生成
+	// 定数バッファの生成
 	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuff));
+		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
+#pragma endregion
 
-	// --定数バッファのマッピング
-	result = constBuff->Map(0, nullptr, (void**)&constMap);
+#pragma region 定数バッファへのデータ転送
+	// 定数バッファのマッピング
+	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
 	assert(SUCCEEDED(result));
+#pragma endregion
 
-	// --スプライトの色を変える-- //
-	constMap->color = color;
-
-	WinAPI* winAPI = WinAPI::GetInstance();
-
-	matProjection = XMMatrixOrthographicOffCenterLH(
+	// 射影変換行列初期化
+	XMMATRIX mat = XMMatrixOrthographicOffCenterLH(
 		0.0f,
 		static_cast<float>(winAPI->GetWidth()),
 		static_cast<float>(winAPI->GetHeight()),
 		0.0f, 0.0f, 1.0f);
 
-	// --行列初期化-- //
-	constMap->mat = XMMatrixIdentity();
-
-#pragma endregion
-
-}
-
-// --更新処理-- //
-void Sprite::Update() {
-	// --ワールド行列更新-- //
-	matWorld = XMMatrixIdentity();
-
-	// --Z軸回転-- //
-	matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
-
-	// --平行移動-- //
-	matWorld *= XMMatrixTranslation(position.x, position.y, 0.0f);
-
-	// --定数バッファの転送-- //
-
-	// --行列計算-- //
-	constMap->mat = matWorld * matProjection;
-
-	// --色適用-- //
-	constMap->color = color;
-
-	// --頂点バッファ転送-- //
-	// --頂点データ-- //
-	vertices[0] = { {   0.0f, 100.0f * scale.y, 0.0f }, {0.0f, 1.0f} };// -> 左下
-	vertices[1] = { {   0.0f,   0.0f, 0.0f }, {0.0f, 0.0f} };// -> 左上
-	vertices[2] = { { 100.0f * scale.x, 100.0f * scale.y, 0.0f }, {1.0f, 1.0f} };// -> 右下
-	vertices[3] = { { 100.0f * scale.x,   0.0f, 0.0f }, {1.0f, 0.0f} };// -> 右上
-
-	// --全頂点に対して-- //
-	for (int i = 0; i < _countof(vertices); i++)
-	{
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			matProjection_.m[i][j] = mat.r[i].m128_f32[j];
+		}
 	}
 }
 
-// --描画処理-- //
 void Sprite::Draw(int textureHandle) {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
+	// インスタンス取得
+	Texture* tex = Texture::GetInstance();
+
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	// スプライトデータの更新処理
+	UpdateData();
 
 	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle;
@@ -240,20 +230,19 @@ void Sprite::Draw(int textureHandle) {
 	// 指定されたSRVをルートパラメータ1番に設定
 	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-	// 頂点バッファビューの設定コマンド
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
-
 	// 定数バッファビュー（CBV）の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+
+	// 頂点バッファビューの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &vertexView_);
 
 	// インデックスバッファビューの設定コマンド
-	cmdList->IASetIndexBuffer(&ibView);
+	cmdList->IASetIndexBuffer(&indexView_);
 
 	// 描画コマンド
-	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced(static_cast<UINT>(index_.size()), 1, 0, 0, 0);
 }
 
-// --描画前処理-- //
 void Sprite::PreDraw()
 {
 	// コマンドリスト取得
@@ -274,4 +263,47 @@ void Sprite::PreDraw()
 	// デスクリプタヒープの配列をセットするコマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetInstance()->GetSRVHeap() };
 	cmdList->SetDescriptorHeaps(1, ppHeaps);
+}
+
+void Sprite::UpdateData()
+{
+	// スプライトデータの変更がされていなかったら処理を飛ばす
+	if (hasChanget_ == false) return;
+
+#pragma region ワールド行列計算
+	// 行列初期化
+	matWorld_ = Matrix4Identity();
+
+	// Z軸回転
+	matWorld_ *= Matrix4RotateZ(Util::Degree2Radian(rotation_));
+
+	// 平行移動
+	matWorld_ *= Matrix4Translate({position_.x, position_.y, 0.0f});
+#pragma endregion
+
+#pragma region 定数バッファの転送
+	// 行列計算
+	constMap_->mat = matWorld_ * matProjection_;
+
+	// 色(RGBA)
+	constMap_->color = color_;
+#pragma endregion
+
+#pragma region 頂点座標変更(画像のサイズを変更)
+	// 頂点データ
+	vertex_[0] = { {   0.0f				, 100.0f * scale_.y	}, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { {   0.0f				,   0.0f			}, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { 100.0f * scale_.x	, 100.0f * scale_.y	}, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { 100.0f * scale_.x	,   0.0f,			}, {1.0f, 0.0f} };// 右上
+
+	// 全頂点に対して
+	for (size_t i = 0; i < vertex_.size(); i++)
+	{
+		// 座標をコピー
+		vertexMap_[i] = vertex_[i];
+	}
+#pragma endregion
+
+	// 変更したのでフラグを[OFF]にする
+	hasChanget_ = false;
 }
