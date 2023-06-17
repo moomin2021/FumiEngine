@@ -251,6 +251,9 @@ void Sprite::PreDraw()
 	// パイプライン取得
 	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineSprite();
 
+	// SRVヒープ取得
+	ID3D12DescriptorHeap* srvHeap = Texture::GetInstance()->GetSRVHeap();
+
 	// パイプラインステートの設定
 	cmdList->SetPipelineState(pipeline.pipelineState.Get());
 
@@ -261,7 +264,7 @@ void Sprite::PreDraw()
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetInstance()->GetSRVHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
 	cmdList->SetDescriptorHeaps(1, ppHeaps);
 }
 

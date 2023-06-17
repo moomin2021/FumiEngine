@@ -32,9 +32,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Mouse* mouse = Mouse::GetInstance();
 	mouse->Initialize(winAPI);
 
-	// オブジェクト3Dを静的初期化
-	Object3D::StaticInitialize(dx12->GetDevice(), dx12->GetCmdList());
-
 	// --シーン管理クラス-- //
 	SceneManager* sceneM = SceneManager::GetInstance();
 

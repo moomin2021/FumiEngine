@@ -1,129 +1,122 @@
 #pragma once
-#include <d3d12.h>
-#pragma comment(lib, "d3d12.lib")
-#include <wrl.h>
-using namespace Microsoft::WRL;
-#include <vector>
+//#include <d3d12.h>
+//#pragma comment(lib, "d3d12.lib")
+//#include <wrl.h>
+//using namespace Microsoft::WRL;
+//#include <vector>
+//#include "Model.h"
+//#include "Camera.h"
+//#include "LightGroup.h"
+//#include "float3.h"
+//#include "float4.h"
+#include "Matrix4.h"
+#include "float4.h"
+#include "float3.h"
 #include "Model.h"
 #include "Camera.h"
 #include "LightGroup.h"
-#include "float3.h"
-#include "float4.h"
 
 class Object3D {
-public:// -----サブクラス----- //
-	// 定数バッファ構造体(オブジェクト)
-	struct ObjectBuff {
-		Matrix4 viewProj;// -> ビュープロジェクション
-		Matrix4 world;// ----> ワールド行列
-		float3 cameraPos;// -> カメラ座標(ワールド座標)
-		float pad1;// -------> パディング
-		float4 color;// -----> 色(RGBA)
+	// 定数バッファ用データ構造体
+	struct ConstBufferData {
+		Matrix4 viewProj;	// ビュープロジェクション
+		Matrix4 world;		// ワールド行列
+		float3 cameraPos;	// カメラ座標(ワールド座標)
+		float pad1;			// パディング
+		float4 color;		// 色(RGBA)
 	};
 
-private:// -----メンバ変数----- //
-	float3 position_;// ------------------> 座標
-	float3 rotation_;// ------------------> 回転角
-	float3 scale_;// ---------------------> スケール
-	float4 color_;// ---------------------> 色(RGBA)
-	Matrix4 matWorld_;// -----------------> ワールド座標
-	ComPtr<ID3D12Resource> constBuff_;// -> 定数バッファ
-	Model* model_;// ---------------------> モデル
-	bool dirty;// ------------------------> ダーティフラグ
+#pragma region メンバ変数
+private:
+	// オブジェクトデータ
+	float3 position_;	// 位置(XYZ)
+	float3 rotation_;	// 回転(XYZ)
+	float3 scale_;		// 拡縮(XYZ)
+	float4 color_;		// 色(RGBA)
 
-private:// -----静的メンバ変数----- //
-	static ID3D12Device* device_;// ---------------> デバイス
-	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
-	static D3D12_HEAP_PROPERTIES heapProp_;// -----> ヒープ設定
-	static D3D12_RESOURCE_DESC resdesc_;// --------> リソース設定
-	static Camera* camera_;// ---------------------> カメラ
-	static LightGroup* lightGroup_;// -------------> ライト
+	// オブジェクトデータを変更したかどうか
+	bool hasChanget_;
 
-private:// -----メンバ関数----- //
+	// ワールド行列
+	Matrix4 matWorld_;
+
+	// 定数バッファ
+	ComPtr<ID3D12Resource>	constBuff_;	// 定数バッファ
+	ConstBufferData*		constMap_;	// マッピング処理用
+
+	// モデル
+	Model* model_;
+
+	// 静的メンバ変数
+	static Camera*		sCamera_;		// カメラ
+	static LightGroup*	sLightGroup_;	// ライト
+#pragma endregion
+
+#pragma region メンバ関数
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Object3D();
+	Object3D(Model* model);
 
-	/// <summary>
-	/// 定数バッファ生成
-	/// </summary>
-	void GenerateConstBuffer();
-
-	/// <summary>
-	/// 定数バッファ更新
-	/// </summary>
-	void TransferConstBuffer();
-
-public:// -----静的メンバ関数----- //
-	/// <summary>
-	/// [Object3D]インスタンス作成
-	/// </summary>
-	static Object3D* CreateObject3D(Model* model = nullptr);
-
-	/// <summary>
-	/// オブジェクト3D全体の初期化
-	/// </summary>
-	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	static void PreDraw();
-
-	/// <summary>
-	/// カメラ設定
-	/// </summary>
-	static void SetCamera(Camera* camera) { camera_ = camera; }
-
-	/// <summary>
-	/// ライト設定
-	/// </summary>
-	static void SetLightGroup(LightGroup* lightGroup) { lightGroup_ = lightGroup; }
-
-public:// -----メンバ関数----- //
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// 座標設定
+	/// 描画前処理
 	/// </summary>
-	void SetPos(const float3& position);
+	static void PreDraw();
+
+#pragma region セッター関数
+	/// <summary>
+	/// 座標(XYZ)を設定
+	/// </summary>
+	/// <param name="position"> 座標(XYZ) </param>
+	inline void SetPosition(const float3& position) { position_ = position, hasChanget_ = true; }
 
 	/// <summary>
-	/// 回転角設定[度数法]
+	/// 回転(XYZ)を設定
 	/// </summary>
-	void SetRot(const float3& rotation);
+	/// <param name="rotation"> 回転(XYZ) </param>
+	inline void SetRotation(const float3& rotation) { rotation_ = rotation, hasChanget_ = true; }
 
 	/// <summary>
-	/// 拡縮設定
+	/// 拡縮(XYZ)を設定
 	/// </summary>
-	void SetScale(const float3& scale);
+	/// <param name="scale"> 拡縮(XYZ) </param>
+	inline void SetScale(const float3& scale) { scale_ = scale, hasChanget_ = true; }
 
 	/// <summary>
-	/// 色(RGBA)設定
+	/// 色(RGBA)を設定
 	/// </summary>
-	void SetColor(const float4& color);
+	/// <param name="color"> 色(RGBA) </param>
+	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
 
 	/// <summary>
-	/// モデル設定
+	/// モデルを設定
 	/// </summary>
-	void SetModel(Model* model) { model_ = model; };
+	/// <param name="model"> モデル </param>
+	inline void SetModel(Model* model) { model_ = model; }
 
 	/// <summary>
-	/// 座標取得
+	/// カメラを設定
 	/// </summary>
-	inline const float3& GetPos() { return position_; }
+	/// <param name="camera"> カメラ </param>
+	static inline void SetCamera(Camera* camera) { sCamera_ = camera; }
 
 	/// <summary>
-	/// 回転角取得[度数法]
+	/// ライトグループを設定
 	/// </summary>
-	inline const float3& GetRot() { return rotation_; }
+	/// <param name="lightGroup"> ライトグループ </param>
+	static inline void SetLightGroup(LightGroup* lightGroup) { sLightGroup_ = lightGroup; }
+#pragma endregion
 
+private:
 	/// <summary>
-	/// 拡縮取得
+	/// オブジェクトデータの更新
 	/// </summary>
-	inline const float3& GetScale() { return scale_; }
+	void UpdateData();
+#pragma endregion
 };

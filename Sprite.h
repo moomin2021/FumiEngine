@@ -12,19 +12,19 @@
 
 using namespace Microsoft::WRL;
 
-// 頂点データ
-struct Vertex {
-	float2 pos;	// 座標(XYZ)
-	float2 uv;	// UV座標(XY)
-};
-
-// 定数バッファ用データ構造体
-struct ConstBufferData {
-	Matrix4 mat;	// 行列
-	float4 color;	// 色(RGBA)
-};
-
 class Sprite {
+	// 頂点データ
+	struct Vertex {
+		float2 pos;	// 座標(XYZ)
+		float2 uv;	// UV座標(XY)
+	};
+
+	// 定数バッファ用データ構造体
+	struct ConstBufferData {
+		Matrix4 mat;	// 行列
+		float4 color;	// 色(RGBA)
+	};
+
 #pragma region メンバ変数
 private:
 	// スプライトデータ
@@ -85,21 +85,25 @@ public:
 	/// <summary>
 	/// 座標(XY)を設定
 	/// </summary>
+	/// <param name="position"> 座標(XY) </param>
 	inline void SetPosition(const float2& position) { position_ = position, hasChanget_ = true; }
 
 	/// <summary>
 	/// 回転(Z)を設定
 	/// </summary>
+	/// <param name="rotation"> 回転(Z) </param>
 	inline void SetRotation(float rotation) { rotation_ = rotation, hasChanget_ = true; }
 
 	/// <summary>
 	/// 拡縮(XY)を設定
 	/// </summary>
+	/// <param name="scale"> 拡縮(XY) </param>
 	inline void SetScale(const float2& scale) { scale_ = scale, hasChanget_ = true; }
 
 	/// <summary>
 	/// 色(RGBA)を設定
 	/// </summary>
+	/// <param name="color"> 色(RGBA) </param>
 	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
 #pragma endregion
 

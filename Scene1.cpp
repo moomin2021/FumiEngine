@@ -13,7 +13,6 @@ Scene1::~Scene1()
 	delete camera_;
 	delete lightGroup_;
 	delete mCube_;
-	for (auto& object : oCube_) delete object;
 }
 
 void Scene1::Initialize()
@@ -31,14 +30,14 @@ void Scene1::Initialize()
 	// オブジェクト
 	oCube_.resize(3);
 
-	oCube_[0] = Object3D::CreateObject3D(mCube_);
-	oCube_[0]->SetPos({ 3.0f, 1.0f, 0.0f });
+	oCube_[0] = std::make_unique<Object3D>(mCube_);
+	oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
 
-	oCube_[1] = Object3D::CreateObject3D(mCube_);
-	oCube_[1]->SetPos({ -3.0f, 1.0f, 0.0f });
+	oCube_[1] = std::make_unique<Object3D>(mCube_);
+	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
-	oCube_[2] = Object3D::CreateObject3D(mCube_);
-	oCube_[2]->SetPos({ 0.0f, 0.0f, 0.0f });
+	oCube_[2] = std::make_unique<Object3D>(mCube_);
+	oCube_[2]->SetPosition({ 0.0f, 0.0f, 0.0f });
 
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
@@ -89,8 +88,8 @@ void Scene1::Update()
 	static float rota = 0.0f;
 	rota += 1.0f;
 
-	oCube_[0]->SetRot({ 0.0f, rota, 0.0f });
-	oCube_[1]->SetRot({0.0f, rota, 0.0f});
+	oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
+	oCube_[1]->SetRotation({0.0f, rota, 0.0f});
 
 	// カメラの更新
 	camera_->Update();

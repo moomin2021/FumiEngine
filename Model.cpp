@@ -16,6 +16,8 @@ Model* Model::CreateModel(std::string fileName) {
 	Model* model = new Model();
 	model->LoadModel(fileName);
 
+	cmdList_ = DX12Cmd::GetInstance()->GetCmdList();
+
 	// 定数バッファ作成
 	model->CreateVertexBuff();// ---> 頂点バッファ
 	model->CreateIndexBuff();// ----> インデックスバッファ

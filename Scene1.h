@@ -26,7 +26,7 @@ private:
 	Model* mCube_;
 
 	// オブジェクト
-	std::vector<Object3D*> oCube_;
+	std::vector<std::unique_ptr<Object3D>> oCube_;
 
 	// テクスチャハンドル
 	uint16_t haeHandle_;
