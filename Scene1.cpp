@@ -3,14 +3,12 @@
 
 Scene1::Scene1() :
 	key_(nullptr),
-	camera_(nullptr),
 	lightGroup_(nullptr)
 {
 }
 
 Scene1::~Scene1()
 {
-	delete camera_;
 	delete lightGroup_;
 	delete mCube_;
 }
@@ -21,8 +19,8 @@ void Scene1::Initialize()
 	key_ = Key::GetInstance();
 
 	// カメラ
-	camera_ = new Camera();
-	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
+	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
 
 	// モデル
 	mCube_ = Model::CreateModel("cube");
@@ -60,7 +58,7 @@ void Scene1::Initialize()
 	lightGroup_->SetCircleShadowActive(0, false);
 
 	// カメラを設定
-	Object3D::SetCamera(camera_);
+	Object3D::SetCamera(camera_.get());
 
 	// ライトを設定
 	Object3D::SetLightGroup(lightGroup_);
@@ -74,8 +72,12 @@ void Scene1::Update()
 
 	// カメラ移動
 	{
-		camera_->eye_.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
-		camera_->eye_.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+		static float3 eye = { 0.0f, 10.0f, -30.0f };
+
+		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
+		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+
+		camera_->SetEye(eye);
 	}
 
 	static float3 pos = { 0.0f, 0.5f, 0.0f };

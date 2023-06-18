@@ -74,6 +74,20 @@ void Object3D::Draw() {
 	// オブジェクトデータの更新
 	UpdateData();
 
+#pragma region 定数バッファへのデータ転送
+	// ビュープロジェクション転送
+	constMap_->viewProj = sCamera_->GetMatView() * sCamera_->GetMatProjection();
+
+	// ワールド行列転送
+	constMap_->world = matWorld_;
+
+	// カメラの位置座標(XYZ)転送
+	constMap_->cameraPos = sCamera_->GetEye();
+
+	// 色(RGBA)転送
+	constMap_->color = color_;
+#pragma endregion
+
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
 
@@ -126,20 +140,6 @@ void Object3D::UpdateData() {
 
 	// ワールド行列に平行移動を反映
 	matWorld_ *= Matrix4Translate(position_);
-#pragma endregion
-
-#pragma region 定数バッファへのデータ転送
-	// ビュープロジェクション転送
-	constMap_->viewProj = sCamera_->GetMatView() * sCamera_->GetMatProjection();
-
-	// ワールド行列転送
-	constMap_->world = matWorld_;
-
-	// カメラの位置座標(XYZ)転送
-	constMap_->cameraPos = sCamera_->eye_;
-
-	// 色(RGBA)転送
-	constMap_->color = color_;
 #pragma endregion
 
 	// 変更したのでフラグを[OFF]にする

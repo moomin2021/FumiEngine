@@ -18,7 +18,7 @@ void TemplateScene::Initialize()
 
 	// ƒJƒƒ‰
 	camera_ = new Camera();
-	camera_->eye_ = { 0.0f, 10.0f, -30.0f };
+	//camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 }
 
 void TemplateScene::Update()

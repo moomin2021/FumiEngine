@@ -17,7 +17,7 @@ private:
 	Key* key_;
 
 	// ƒJƒƒ‰
-	Camera* camera_;
+	std::unique_ptr<Camera> camera_;
 
 	// ƒ‰ƒCƒg
 	LightGroup* lightGroup_;
