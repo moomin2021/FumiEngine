@@ -22,7 +22,7 @@ public:// サブクラス
 		XMFLOAT3 atten;
 		float pad3;
 		XMFLOAT2 factorAngleCos;
-		unsigned int active;
+		uint32_t active;
 		float pad4;
 	};
 

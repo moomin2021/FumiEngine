@@ -141,8 +141,8 @@ void DX12Cmd::PostDraw()
 		assert(SUCCEEDED(result));
 
 		// コマンドリストの実行
-		ID3D12CommandList* commandLists[] = { cmdList_.Get() };
-		cmdQueue_->ExecuteCommandLists(1, commandLists);
+		std::vector<ID3D12CommandList*> commandLists = { cmdList_.Get() };
+		cmdQueue_->ExecuteCommandLists(1, commandLists.data());
 
 		// 画面に表示するバッファをフリップ(裏表の入替え)
 		result = swapChain_->Present(1, 0);
@@ -262,7 +262,7 @@ void DX12Cmd::CreateDevice()
 	HRESULT result;
 
 	// 対応レベルの配列
-	D3D_FEATURE_LEVEL levels[] = {
+	std::vector<D3D_FEATURE_LEVEL> levels = {
 		D3D_FEATURE_LEVEL_12_1,
 		D3D_FEATURE_LEVEL_12_0,
 		D3D_FEATURE_LEVEL_11_1,
@@ -273,7 +273,7 @@ void DX12Cmd::CreateDevice()
 	D3D_FEATURE_LEVEL featureLevel;
 	// ※これは普通、1ゲームに1つしか作らない
 
-	for (size_t i = 0; i < _countof(levels); i++) {
+	for (size_t i = 0; i < levels.size(); i++) {
 		// 採用したアダプターでデバイスを生成
 		result = D3D12CreateDevice(tmpAdapter_.Get(), levels[i],
 			IID_PPV_ARGS(&device_));
@@ -298,17 +298,17 @@ void DX12Cmd::ErrorSet()
 	}
 
 	// 抑制するエラー
-	D3D12_MESSAGE_ID denyIds[] = {
+	std::vector<D3D12_MESSAGE_ID> denyIds = {
 		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE
 	};
 
 	// 抑制される表示レベル
-	D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+	std::vector<D3D12_MESSAGE_SEVERITY> severities = { D3D12_MESSAGE_SEVERITY_INFO };
 	D3D12_INFO_QUEUE_FILTER filter{};
-	filter.DenyList.NumIDs = _countof(denyIds);
-	filter.DenyList.pIDList = denyIds;
-	filter.DenyList.NumSeverities = _countof(severities);
-	filter.DenyList.pSeverityList = severities;
+	filter.DenyList.NumIDs = static_cast<UINT>(denyIds.size());
+	filter.DenyList.pIDList = denyIds.data();
+	filter.DenyList.NumSeverities = static_cast<UINT>(severities.size());
+	filter.DenyList.pSeverityList = severities.data();
 
 	// 指定したエラーの表示を抑制する
 	infoQueue->PushStorageFilter(&filter);

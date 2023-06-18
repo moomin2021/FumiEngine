@@ -46,7 +46,7 @@ public:
 	/// </summary>
 	/// <param name="fileName"> 画像ファイル名 </param>
 	/// <returns> 読み込んだ画像のハンドル </returns>
-	int LoadTexture(const std::string fileName);
+	uint16_t LoadTexture(const std::string fileName);
 
 #pragma region ゲッター関数
 	/// <summary>
@@ -81,4 +81,4 @@ private:
 /// </summary>
 /// <param name="fileName"> 画像ファイル名 </param>
 /// <returns> 読み込んだ画像のハンドル </returns>
-int LoadTexture(const std::string fileName);
+uint16_t LoadTexture(const std::string fileName);

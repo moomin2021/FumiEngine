@@ -284,7 +284,7 @@ void Model::CreateVertexBuff()
 	assert(SUCCEEDED(result));
 
 	// 全頂点に対して
-	for (int i = 0; i < vertex_.size(); i++)
+	for (size_t i = 0; i < vertex_.size(); i++)
 	{
 		vertMap[i] = vertex_[i]; // 座標をコピー
 	}

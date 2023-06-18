@@ -23,7 +23,7 @@ void Texture::Initialize() {
 	LoadTexture("Resources/debug.png");
 }
 
-int Texture::LoadTexture(const std::string fileName)
+uint16_t Texture::LoadTexture(const std::string fileName)
 {
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
@@ -156,7 +156,7 @@ void Texture::CreateDescriptorHeap()
 	srvHandle_ = srvHeap_->GetCPUDescriptorHandleForHeapStart();
 }
 
-int LoadTexture(const std::string fileName) {
+uint16_t LoadTexture(const std::string fileName) {
 	// 画像読み込み
 	return Texture::GetInstance()->LoadTexture(fileName);
 }

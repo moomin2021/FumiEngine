@@ -99,9 +99,9 @@ float3 Matrix4Transform(const float3& v, const Matrix4& m) {
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2) {
 	Matrix4 result{ 0 };
 
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			for (int k = 0; k < 4; k++) {
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			for (size_t k = 0; k < 4; k++) {
 				result.m[i][j] += m1.m[i][k] * m2.m[k][j];
 			}
 		}

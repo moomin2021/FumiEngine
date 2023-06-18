@@ -66,7 +66,7 @@ private:
 	ComPtr<ID3D12Resource> materialBuff_;	// マテリアルバッファ
 
 	// テクスチャハンドル
-	int textureHandle_;
+	uint16_t textureHandle_;
 #pragma endregion
 
 #pragma region メンバ関数

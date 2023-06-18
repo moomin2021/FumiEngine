@@ -69,10 +69,6 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	if (key_->TriggerKey(DIK_0)) {
-		int num = 0;
-	}
-
 	// ƒJƒƒ‰ˆÚ“®
 	{
 		static float3 eye = { 0.0f, 10.0f, -30.0f };

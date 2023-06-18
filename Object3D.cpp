@@ -118,8 +118,8 @@ void Object3D::PreDraw() {
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	cmdList->SetDescriptorHeaps(1, ppHeaps);
+	std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
+	cmdList->SetDescriptorHeaps(1, ppHeaps.data());
 }
 
 void Object3D::UpdateData() {
