@@ -13,24 +13,17 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// WinAPIの初期化
-	WinAPI* winAPI = WinAPI::GetInstance();
-	winAPI->Initialize(1280, 720);// -> 初期化処理
+	WinAPI::GetInstance()->Initialize(1280, 720);
 
 	// DirectX12の初期化
-	DX12Cmd* dx12 = DX12Cmd::GetInstance();/// -> インスタンス取得
-	dx12->Initialize();// -> 初期化処理
+	DX12Cmd::GetInstance()->Initialize();
 
 	// --テクスチャクラス-- //
-	Texture* texture = Texture::GetInstance();// -> インスタンス取得
-	texture->Initialize();// -> 初期化処理
-
-	// --キーボードクラス-- //
-	Key* key = Key::GetInstance();
-	key->Initialize(winAPI);
+	Texture::GetInstance()->Initialize();
 
 	// マウス入力
 	Mouse* mouse = Mouse::GetInstance();
-	mouse->Initialize(winAPI);
+	mouse->Initialize(WinAPI::GetInstance());
 
 	// --シーン管理クラス-- //
 	SceneManager* sceneM = SceneManager::GetInstance();
@@ -38,10 +31,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
-		if (winAPI->IsEndMessage() == true) break;
+		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
 
 		// キーボード入力更新処理
-		key->Update();
+		Key::GetInstance()->Update();
 
 		// マウス入力更新処理
 		mouse->Update();
@@ -50,13 +43,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		sceneM->Update();
 
 		// --描画前処理-- //
-		dx12->PreDraw();
+		DX12Cmd::GetInstance()->PreDraw();
 
 		// シーン管理クラス描画処理
 		sceneM->Draw();
 
 		// --描画後処理-- //
-		dx12->PostDraw();
+		DX12Cmd::GetInstance()->PostDraw();
 	}
 
 	return 0;

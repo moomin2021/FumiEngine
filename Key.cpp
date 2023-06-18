@@ -1,27 +1,39 @@
 #include "Key.h"
+#include "WinAPI.h"
 #include <cassert>
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
 Key* Key::GetInstance() {
 	// インスタンス生成
-	static Key key;
+	static Key inst;
 
-	// --インスタンスを返す-- //
-	return &key;
+	// インスタンスを返す
+	return &inst;
 }
 
-Key::~Key() {
-	// キーボードデバイスの制御制御
-	device_->Unacquire();
+void Key::Update() {
+	// 前フレームのキーの状態を保存
+	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
 
-	// キーボードデバイスの解放
-	device_->Release();
+	// 全キーの入力状態を取得する
+	device_->GetDeviceState(static_cast<DWORD>(keys_.size()), keys_.data());
 }
 
-void Key::Initialize(WinAPI * win) {
-	// --関数が成功したかどうかを判別する用変数-- //
-	// ※DirectXの関数は、HRESULT型で成功したかどうかを返すものが多いのでこの変数を作成 //
+Key::Key() :
+#pragma region 初期化リスト
+	// 入力情報
+	keys_(256),		// 現在のキーボードの情報
+	oldKeys_(256),	// 前フレームのキーボードの情報
+
+	// デバイス
+	device_(nullptr)
+#pragma endregion
+{
+	// インスタンス取得
+	WinAPI* win = WinAPI::GetInstance();
+
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
 #pragma region DirectInputの初期化
@@ -34,7 +46,7 @@ void Key::Initialize(WinAPI * win) {
 	assert(SUCCEEDED(result));
 
 #pragma endregion
-	
+
 #pragma region デバイスの生成
 
 	// デバイスの生成
@@ -57,10 +69,10 @@ void Key::Initialize(WinAPI * win) {
 #pragma endregion
 }
 
-void Key::Update() {
-	// 前フレームのキーの状態を保存
-	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
+Key::~Key() {
+	// キーボードデバイスの制御制御
+	device_->Unacquire();
 
-	// 全キーの入力状態を取得する
-	device_->GetDeviceState(sizeof(keys_), keys_);
+	// キーボードデバイスの解放
+	device_->Release();
 }
