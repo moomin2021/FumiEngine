@@ -4,35 +4,47 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#include "WinAPI.h"
+
 Mouse* Mouse::GetInstance()
 {
-	// 関数内static変数として宣言
-	static Mouse instance;
-	return &instance;
+	// インスタンス生成
+	static Mouse inst;
+
+	// インスタンスを返す
+	return &inst;
+}
+
+void Mouse::Update() {
+	// インスタンス取得
+	WinAPI* win = WinAPI::GetInstance();
+
+	// 前フレームのマウスの入力状態を保存
+	oldMouse_ = nowMouse_;
+
+	// マウスの入力状態を取得
+	device_->GetDeviceState(sizeof(DIMOUSESTATE), &nowMouse_);
+
+	// マウスの座標を取得
+	GetCursorPos(&p_);
+	ScreenToClient(FindWindowW(win->GetWinClass().lpszClassName, nullptr), &p_);
 }
 
 Mouse::Mouse() :
 #pragma region 初期化リスト
-	device_(nullptr),// -> デバイス
-	nowMouse_{},// -> 現在のマウスの状態
-	oldMouse_{}// -> 前フレームのマウスの状態
+	// デバイス
+	device_(nullptr),
+
+	// マウスデータ
+	nowMouse_{},// 現在のマウスの入力状態
+	oldMouse_{},// 前フレームのマウスの入力状態
+	
+	// マウスカーソル座標
+	p_{}
 #pragma endregion
 {
-
-}
-
-Mouse::~Mouse()
-{
-	// デバイス制御
-	device_->Unacquire();
-
-	// デバイスの解放
-	device_->Release();
-}
-
-void Mouse::Initialize(WinAPI* win)
-{
-	win_ = win;
+	// インスタンス取得
+	WinAPI* win = WinAPI::GetInstance();
 
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
@@ -66,15 +78,11 @@ void Mouse::Initialize(WinAPI* win)
 	directInput->Release();
 }
 
-void Mouse::Update()
+Mouse::~Mouse()
 {
-	// --前フレームのマウスの入力状態を保存-- //
-	oldMouse_ = nowMouse_;
+	// デバイス制御
+	device_->Unacquire();
 
-	// --マウスの入力状態を取得-- //
-	device_->GetDeviceState(sizeof(DIMOUSESTATE), &nowMouse_);
-
-	// --マウスの座標を取得-- //
-	GetCursorPos(&p_);
-	ScreenToClient(FindWindowW(win_->GetWinClass().lpszClassName, nullptr), &p_);
+	// デバイスの解放
+	device_->Release();
 }

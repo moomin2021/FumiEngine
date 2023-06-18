@@ -15,26 +15,21 @@ SceneManager::SceneManager() {
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = new Scene1();
+	nowScene_ = std::make_unique<Scene1>();
 	nowScene_->Initialize();
 }
 
 // デストラクタ
 SceneManager::~SceneManager() {
-	delete nowScene_;
+	
 }
 
 void SceneManager::ChangeScene(int changeSceneNum)
 {
-	// 現在のシーンを解放処理
-	if (nowScene_ != nullptr) {
-		delete nowScene_;
-	}
-
 	switch (changeSceneNum)
 	{
 	case SCENE::SCENE1:
-		nowScene_ = new Scene1();
+		nowScene_ = std::make_unique<Scene1>();
 		nowScene_->Initialize();
 		break;
 	}

@@ -2,6 +2,8 @@
 #include "BaseScene.h"// -> 各シーンのベース
 #include "Key.h"// -> キーボード入力
 
+#include <memory>
+
 // シーン列挙型
 enum SCENE {
 	SCENE1,
@@ -16,7 +18,7 @@ private:
 	Key* key_;
 
 	// 現在のシーン
-	BaseScene* nowScene_;
+	std::unique_ptr<BaseScene> nowScene_;
 
 	// --メンバ関数-- //
 public:

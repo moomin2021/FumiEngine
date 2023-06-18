@@ -21,13 +21,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --テクスチャクラス-- //
 	Texture::GetInstance()->Initialize();
 
-	// マウス入力
-	Mouse* mouse = Mouse::GetInstance();
-	mouse->Initialize(WinAPI::GetInstance());
-
-	// --シーン管理クラス-- //
-	SceneManager* sceneM = SceneManager::GetInstance();
-
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
@@ -37,16 +30,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Key::GetInstance()->Update();
 
 		// マウス入力更新処理
-		mouse->Update();
+		Mouse::GetInstance()->Update();
 
 		// シーン管理クラス更新処理
-		sceneM->Update();
+		SceneManager::GetInstance()->Update();
 
 		// --描画前処理-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
 		// シーン管理クラス描画処理
-		sceneM->Draw();
+		SceneManager::GetInstance()->Draw();
 
 		// --描画後処理-- //
 		DX12Cmd::GetInstance()->PostDraw();

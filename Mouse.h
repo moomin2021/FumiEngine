@@ -6,9 +6,6 @@
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
-// WinAPI
-#include "WinAPI.h"
-
 // Vector2
 #include "Vector2.h"
 
@@ -19,34 +16,30 @@ enum MouseButton {
 };
 
 class Mouse {
-	// メンバ変数
-public:
-
+#pragma region メンバ変数
 private:
 	// デバイス
 	ComPtr<IDirectInputDevice8> device_;
 
-	// 現在のマウスの入力状態
-	DIMOUSESTATE nowMouse_;
-
-	// 前フレームのマウスの入力状態
-	DIMOUSESTATE oldMouse_;
+	// マウスデータ
+	DIMOUSESTATE nowMouse_;// 現在のマウスの入力状態
+	DIMOUSESTATE oldMouse_;// 前フレームのマウスの入力状態
 
 	// マウスカーソル座標
 	POINT p_;
+#pragma endregion
 
-	// WinAPI
-	WinAPI* win_;
-
-	// メンバ関数
+#pragma region メンバ関数
 public:
-	// インスタンス読み込み
+	/// <summary>
+	/// インスタンス取得
+	/// </summary>
+	/// <returns> インスタンス </returns>
 	static Mouse* GetInstance();
 
-	// 初期化処理
-	void Initialize(WinAPI* win);
-
-	// 更新処理
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 
 	/// <summary>
@@ -63,17 +56,33 @@ public:
 	/// <returns></returns>
 	bool TriggerMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80) && !(oldMouse_.rgbButtons[button] == (0x80)); }
 
-	// --マウスの位置-- //
+	/// <summary>
+	/// マウスの位置座標
+	/// </summary>
+	/// <returns> マウスの位置座標 </returns>
 	Vector2 MousePos() { return Vector2(static_cast<float>(p_.x), static_cast<float>(p_.y)); }
 
-	// --マウスの移動量-- //
+	/// <summary>
+	/// マウスの移動量
+	/// </summary>
+	/// <returns> マウスの移動量 </returns>
 	Vector2 GetMouseVelosity() { return Vector2((float)nowMouse_.lX, (float)nowMouse_.lY); }
 
 private:
-	// コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Mouse();
 
-	// デストラクタ
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~Mouse();
+#pragma endregion
 
+#pragma region 特殊関数
+	// 禁止
+	Mouse(const Mouse&) = delete;				// コピーコンストラクタ禁止
+	Mouse& operator = (const Mouse&) = delete;	// コピー代入演算子禁止
+#pragma endregion
 };
