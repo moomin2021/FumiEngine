@@ -1,14 +1,3 @@
-#pragma once
-//#include <d3d12.h>
-//#pragma comment(lib, "d3d12.lib")
-//#include <wrl.h>
-//using namespace Microsoft::WRL;
-//#include <vector>
-//#include "Model.h"
-//#include "Camera.h"
-//#include "LightGroup.h"
-//#include "float3.h"
-//#include "float4.h"
 #include "Matrix4.h"
 #include "float4.h"
 #include "float3.h"
