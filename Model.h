@@ -1,98 +1,114 @@
 #pragma once
-// Direct3D 12 用
+#include "float3.h"
+#include "float2.h"
+
+#include <string>
+#include <vector>
 #include <d3d12.h>
-#pragma comment(lib, "d3d12.lib")
-
-// 数学関数
-#include <DirectXMath.h>
-using namespace DirectX;
-
-//　ComPtr用
 #include <wrl.h>
+
 using namespace Microsoft::WRL;
 
-// シーケンスコンテナの一種
-#include <vector>
-
-// 文字列クラス
-#include <string>
-
-// 頂点データ
-struct Vertex3D {
-	XMFLOAT3 pos;// ----> 座標
-	XMFLOAT3 normal;// -> 法線
-	XMFLOAT2 uv;// -----> UV座標
-};
-
-// 定数バッファ構造体(マテリアル)
-struct MaterialBuff {
-	XMFLOAT3 ambient;// -> アンビエント係数
-	float pad1;// -> パディング
-	XMFLOAT3 diffuse;// -> ディフェーズ係数
-	float pad2;// -> パディング
-	XMFLOAT3 specular;// -> スペキュラー係数
-	float alpha;// -> アルファ
-};
-
-// マテリアル構造体
-struct Material {
-	std::string name;// -> マテリアル名
-	XMFLOAT3 ambient;// -> アンビエント影響度
-	XMFLOAT3 diffuse;// -> ディフューズ影響度
-	XMFLOAT3 specular;// -> スペキュラー影響度
-	float alpha;// -> アルファ
-	std::string textureFilename;// -> テクスチャファイル名
-
-	// コンストラクタ
-	Material() {
-		ambient = { 0.3f, 0.3f, 0.3f };
-		diffuse = { 0.0f, 0.0f, 0.0f };
-		specular = { 0.0f, 0.0f, 0.0f };
-		alpha = 1.0f;
-	}
-};
+#pragma comment(lib, "d3d12.lib")
 
 class Model {
-public:// メンバ変数
-	std::vector<Vertex3D> vertexes_;// ----> 頂点データ
-	D3D12_VERTEX_BUFFER_VIEW vbView_;// ---> 頂点バッファービュー
-	ComPtr<ID3D12Resource> vertexBuff_;// -> 頂点バッファ
+	// 頂点データ
+	struct Vertex {
+		float3 pos;		// 座標(XYZ)
+		float3 normal;	// 法線(XYZ)
+		float2 uv;		// UV座標(XY)
+	};
 
-	std::vector<uint16_t> indexes_;// ----> インデックスデータ
-	D3D12_INDEX_BUFFER_VIEW ibView_;// ---> インデックスバッファビュー
-	ComPtr<ID3D12Resource> indexBuff_;// -> インデックスバッファ
+	// マテリアルデータ
+	struct Material {
+		std::string name;	// マテリアル名
+		float3 ambient;		// アンビエント影響度
+		float3 diffuse;		// ディフューズ影響度
+		float3 specular;	// スペキュラー影響度
+		float alpha;		// アルファ
 
-	Material material_;// -------------------> マテリアルデータ
-	ComPtr<ID3D12Resource> materialBuff_;// -> マテリアルバッファ
+		// テクスチャファイル名
+		std::string textureFilename;
+
+		// コンストラクタ
+		Material() {
+			ambient = { 0.3f, 0.3f, 0.3f };
+			diffuse = { 0.0f, 0.0f, 0.0f };
+			specular = { 0.0f, 0.0f, 0.0f };
+			alpha = 1.0f;
+		}
+	};
+
+	// 定数バッファ用マテリアルデータ
+	struct MaterialBuffer {
+		float3 ambient;	// アンビエント係数
+		float pad1;		// パディング
+		float3 diffuse;	// ディフェーズ係数
+		float pad2;		// パディング
+		float3 specular;// スペキュラー係数
+		float alpha;	// アルファ
+	};
+
+#pragma region メンバ変数
+private:
+	// 頂点データ
+	std::vector<Vertex> vertex_;			// 頂点データ
+	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// 頂点バッファービュー
+	ComPtr<ID3D12Resource> vertexBuff_;		// 頂点バッファ
+
+	// インデックスデータ
+	std::vector<uint16_t> index_;		// インデックスデータ
+	D3D12_INDEX_BUFFER_VIEW indexView_;	// インデックスバッファビュー
+	ComPtr<ID3D12Resource> indexBuff_;	// インデックスバッファ
+
+	// マテリアルデータ
+	Material material_;						// マテリアルデータ
+	ComPtr<ID3D12Resource> materialBuff_;	// マテリアルバッファ
 
 	// テクスチャハンドル
 	int textureHandle_;
+#pragma endregion
 
-	static ID3D12GraphicsCommandList* cmdList_;// -> コマンドリスト
+#pragma region メンバ関数
+public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="fileName"> モデルファイル名 </param>
+	Model(std::string fileName);
 
-public:// メンバ関数
-	// [Model]インスタンス作成
-	static Model* CreateModel(std::string fileName);
-
-	// 初期化処理
-	static void Initialize(ID3D12GraphicsCommandList* cmdList);
-
-	// 描画処理
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void Draw();
 
-private:// メンバ関数
-	// モデル読み込み
+private:
+	/// <summary>
+	/// モデル読み込み
+	/// </summary>
+	/// <param name="name"> ファイル名 </param>
 	void LoadModel(std::string name);
 
-	// マテリアル読み込み
+	/// <summary>
+	/// マテリアル読み込み
+	/// </summary>
+	/// <param name="directoryPath"> ファイル名 </param>
+	/// <param name="fileName"> ファイル名 </param>
 	void LoadMaterial(const std::string& directoryPath, const std::string& fileName);
 
-	// 頂点バッファを作成
+	/// <summary>
+	/// 頂点バッファ作成
+	/// </summary>
 	void CreateVertexBuff();
 
-	// インデックスバッファを作成
+	/// <summary>
+	/// インデックスバッファ作成
+	/// </summary>
 	void CreateIndexBuff();
 
-	// マテリアルバッファ作成
+	/// <summary>
+	/// マテリアルバッファ作成
+	/// </summary>
 	void CreateMaterialBuff();
+#pragma endregion
 };

@@ -23,7 +23,7 @@ private:
 	LightGroup* lightGroup_;
 
 	// モデル
-	Model* mCube_;
+	std::unique_ptr<Model> mCube_;
 
 	// オブジェクト
 	std::vector<std::unique_ptr<Object3D>> oCube_;

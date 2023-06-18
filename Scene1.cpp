@@ -1,6 +1,10 @@
 #include "Scene1.h"
 #include "Texture.h"
 
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
 Scene1::Scene1() :
 	key_(nullptr),
 	lightGroup_(nullptr)
@@ -10,7 +14,6 @@ Scene1::Scene1() :
 Scene1::~Scene1()
 {
 	delete lightGroup_;
-	delete mCube_;
 }
 
 void Scene1::Initialize()
@@ -23,18 +26,18 @@ void Scene1::Initialize()
 	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
 
 	// モデル
-	mCube_ = Model::CreateModel("cube");
+	mCube_ = std::make_unique<Model>("cube");
 
 	// オブジェクト
 	oCube_.resize(3);
 
-	oCube_[0] = std::make_unique<Object3D>(mCube_);
+	oCube_[0] = std::make_unique<Object3D>(mCube_.get());
 	oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
 
-	oCube_[1] = std::make_unique<Object3D>(mCube_);
+	oCube_[1] = std::make_unique<Object3D>(mCube_.get());
 	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
-	oCube_[2] = std::make_unique<Object3D>(mCube_);
+	oCube_[2] = std::make_unique<Object3D>(mCube_.get());
 	oCube_[2]->SetPosition({ 0.0f, 0.0f, 0.0f });
 
 	// テクスチャハンドル

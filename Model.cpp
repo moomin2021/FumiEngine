@@ -1,59 +1,71 @@
 #include "Model.h"
-
 #include "Texture.h"
-
-// --モデル読み込みのため-- //
-#include <fstream>
-#include <sstream>
-using namespace std;
-
-// --DirextX12-- //
 #include "DX12Cmd.h"
 
-ID3D12GraphicsCommandList* Model::cmdList_ = nullptr;// -> コマンドリスト
+#include <fstream>
+#include <sstream>
 
-Model* Model::CreateModel(std::string fileName) {
-	Model* model = new Model();
-	model->LoadModel(fileName);
+using namespace std;
 
-	cmdList_ = DX12Cmd::GetInstance()->GetCmdList();
+Model::Model(string fileName) :
+#pragma region 初期化リスト
+	// 頂点データ
+	vertex_{},				// 頂点データ
+	vertexView_{},			// 頂点バッファービュー
+	vertexBuff_(nullptr),	// 頂点バッファ
+	
+	// インデックスデータ
+	index_{},			// インデックスデータ
+	indexView_{},		// インデックスバッファビュー
+	indexBuff_(nullptr),// インデックスバッファ
+	
+	// マテリアルデータ
+	material_{},			// マテリアルデータ
+	materialBuff_(nullptr),	// マテリアルバッファ
 
-	// 定数バッファ作成
-	model->CreateVertexBuff();// ---> 頂点バッファ
-	model->CreateIndexBuff();// ----> インデックスバッファ
-	model->CreateMaterialBuff();// -> マテリアルバッファ
+	// テクスチャハンドル
+	textureHandle_(0)
+#pragma endregion
+{
+	// モデル読み込み
+	LoadModel(fileName);
 
-	return model;
-}
-
-void Model::Initialize(ID3D12GraphicsCommandList* cmdList) {
-	cmdList_ = cmdList;
+	// 各バッファ作成
+	CreateVertexBuff();		// 頂点バッファ
+	CreateIndexBuff();		// インデックスバッファ
+	CreateMaterialBuff();	// マテリアルバッファ
 }
 
 void Model::Draw() {
-	// --SRVヒープのハンドルを取得-- //
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// --ハンドルを指定された分まで進める-- //
+	// インスタンス取得
+	Texture* tex = Texture::GetInstance();
+
+	// SRVヒープのハンドルを取得
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += textureHandle_;
 
-	// --定数バッファビュー（CBV）の設定コマンド-- //
-	cmdList_->SetGraphicsRootConstantBufferView(1, materialBuff_->GetGPUVirtualAddress());
+	// 定数バッファビュー（CBV）の設定コマンド
+	cmdList->SetGraphicsRootConstantBufferView(1, materialBuff_->GetGPUVirtualAddress());
 
-	// --指定されたSRVをルートパラメータ1番に設定-- //
-	cmdList_->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+	// 指定されたSRVをルートパラメータ1番に設定
+	cmdList->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
 
-	// --頂点バッファビューの設定コマンド-- //
-	cmdList_->IASetVertexBuffers(0, 1, &vbView_);
+	// 頂点バッファビューの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &vertexView_);
 
-	// --インデックスバッファビューの設定コマンド-- //
-	cmdList_->IASetIndexBuffer(&ibView_);
+	// インデックスバッファビューの設定コマンド
+	cmdList->IASetIndexBuffer(&indexView_);
 
-	//// --描画コマンド-- //
-	cmdList_->DrawIndexedInstanced(static_cast<UINT>(indexes_.size()), 1, 0, 0, 0);
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced(static_cast<UINT>(index_.size()), 1, 0, 0, 0);
 }
 
-void Model::LoadModel(std::string name)
+void Model::LoadModel(string name)
 {
 	// ファイルストリーム
 	std::ifstream file;
@@ -67,16 +79,13 @@ void Model::LoadModel(std::string name)
 	// ファイルオープン失敗をチェック
 	assert(!file.fail());
 
-	vector<XMFLOAT3> positions;// -> 頂点座標
-	vector<XMFLOAT3> normals;// ---> 法線ベクトル
-	vector<XMFLOAT2> texcoords;// -> テクスチャUV
-
-	size_t num = 0;
+	vector<float3> positions;	// 頂点座標
+	vector<float3> normals;		// 法線ベクトル
+	vector<float2> texcoords;	// テクスチャUV
 
 	// 1行ずつ読み込む
 	string line;
 	while (getline(file, line)) {
-		num++;
 
 		// 1行分の文字列をストリームに変換して解析しやすくする
 		std::istringstream line_stream(line);
@@ -88,7 +97,7 @@ void Model::LoadModel(std::string name)
 		// 先頭文字列が[v]なら頂点座標
 		if (key == "v") {
 			// X, Y, Z座標読み込み
-			XMFLOAT3 position{};
+			float3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
@@ -100,7 +109,7 @@ void Model::LoadModel(std::string name)
 		// 先頭文字列が[vt]ならテクスチャ
 		if (key == "vt") {
 			// U, V成分読み込み
-			XMFLOAT2 texcoord{};
+			float2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
 
@@ -114,7 +123,7 @@ void Model::LoadModel(std::string name)
 		// 先頭文字列が[vn]なら法線ベクトル
 		if (key == "vn") {
 			// X, Y, Z成分読み込み
-			XMFLOAT3 normal{};
+			float3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;
@@ -138,14 +147,14 @@ void Model::LoadModel(std::string name)
 				index_stream >> indexNormal;
 
 				// 頂点データの追加
-				Vertex3D vertex{};
+				Vertex vertex{};
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
-				vertexes_.emplace_back(vertex);
+				vertex_.emplace_back(vertex);
 
 				// 頂点インデックスに追加
-				indexes_.emplace_back((unsigned short)indexes_.size());
+				index_.emplace_back(static_cast<unsigned short>(index_.size()));
 			}
 		}
 
@@ -159,13 +168,11 @@ void Model::LoadModel(std::string name)
 		}
 	}
 
-	num = num;
-
 	// ファイルを閉じる
 	file.close();
 }
 
-void Model::LoadMaterial(const std::string& directoryPath, const std::string& fileName) {
+void Model::LoadMaterial(const string& directoryPath, const string& fileName) {
 	// ファイルストリーム
 	ifstream file;
 
@@ -240,13 +247,13 @@ void Model::CreateVertexBuff()
 	HRESULT result;
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertexes_[0]) * vertexes_.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(vertex_[0]) * vertex_.size());
 
-	// --頂点バッファの設定-- //
-	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+	// 頂点バッファの設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// --リソース設定-- //
+	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
@@ -256,7 +263,7 @@ void Model::CreateVertexBuff()
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// --頂点バッファの生成-- //
+	// 頂点バッファの生成
 	result = device->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -266,23 +273,23 @@ void Model::CreateVertexBuff()
 		IID_PPV_ARGS(&vertexBuff_));
 	assert(SUCCEEDED(result));
 
-	// --頂点バッファビューの作成-- //
-	vbView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// -> GPU仮想アドレス
-	vbView_.SizeInBytes = sizeVB;// -> 頂点バッファのサイズ
-	vbView_.StrideInBytes = sizeof(vertexes_[0]);// -> 頂点1つ分のデータサイズ
+	// 頂点バッファビューの作成
+	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// GPU仮想アドレス
+	vertexView_.SizeInBytes = sizeVB;				// 頂点バッファのサイズ
+	vertexView_.StrideInBytes = sizeof(vertex_[0]);	// 頂点1つ分のデータサイズ
 
-	// --Map処理でメインメモリとGPUのメモリを紐づける-- //
-	Vertex3D* vertMap = nullptr;
+	// Map処理でメインメモリとGPUのメモリを紐づける
+	Vertex* vertMap = nullptr;
 	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 
-	// --全頂点に対して-- //
-	for (int i = 0; i < vertexes_.size(); i++)
+	// 全頂点に対して
+	for (int i = 0; i < vertex_.size(); i++)
 	{
-		vertMap[i] = vertexes_[i]; // 座標をコピー
+		vertMap[i] = vertex_[i]; // 座標をコピー
 	}
 
-	// --繋がりを解除-- //
+	// 繋がりを解除
 	vertexBuff_->Unmap(0, nullptr);
 }
 
@@ -294,14 +301,14 @@ void Model::CreateIndexBuff()
 	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
-	// --インデックスデータ全体のサイズ-- //
-	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexes_.size());
+	// インデックスデータ全体のサイズ
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * index_.size());
 
-	// --頂点バッファの設定-- //
-	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+	// 頂点バッファの設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// --リソース設定-- //
+	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = sizeIB; // 頂点データ全体のサイズ
@@ -311,30 +318,30 @@ void Model::CreateIndexBuff()
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// --インデックスバッファの生成-- //
+	// インデックスバッファの生成
 	result = device->CreateCommittedResource(
-		&heapProp,// -> ヒープ設定
+		&heapProp,// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc,// -> リソース設定
+		&resDesc,// リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&indexBuff_)
 	);
 
-	// --インデックスバッファビュー作成-- //
-	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
-	ibView_.Format = DXGI_FORMAT_R16_UINT;
-	ibView_.SizeInBytes = sizeIB;
+	// インデックスバッファビュー作成
+	indexView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
+	indexView_.Format = DXGI_FORMAT_R16_UINT;
+	indexView_.SizeInBytes = sizeIB;
 
-	// --インデックスバッファをマッピング-- //
+	// インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	assert(SUCCEEDED(result));
 
 	// --全インデックスに対して-- //
-	for (size_t i = 0; i < indexes_.size(); i++)
+	for (size_t i = 0; i < index_.size(); i++)
 	{
-		indexMap[i] = indexes_[i];
+		indexMap[i] = index_[i];
 	}
 
 	// --マッピング解除-- //
@@ -356,7 +363,7 @@ void Model::CreateMaterialBuff()
 	// 定数バッファのリソース設定
 	D3D12_RESOURCE_DESC resdesc{};
 	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(MaterialBuff) + 0xff) & ~0xff;
+	resdesc.Width = (sizeof(MaterialBuffer) + 0xff) & ~0xff;
 	resdesc.Height = 1;
 	resdesc.DepthOrArraySize = 1;
 	resdesc.MipLevels = 1;
@@ -374,7 +381,7 @@ void Model::CreateMaterialBuff()
 	assert(SUCCEEDED(result));
 
 	// マテリアル定数バッファのマッピング
-	MaterialBuff* materialMap;
+	MaterialBuffer* materialMap;
 	result = materialBuff_->Map(0, nullptr, (void**)&materialMap);
 	assert(SUCCEEDED(result));
 	materialMap->ambient = material_.ambient;
