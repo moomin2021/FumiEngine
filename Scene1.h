@@ -20,7 +20,7 @@ private:
 	std::unique_ptr<Camera> camera_;
 
 	// ƒ‰ƒCƒg
-	LightGroup* lightGroup_;
+	std::unique_ptr<LightGroup> lightGroup_;
 
 	// ƒ‚ƒfƒ‹
 	std::unique_ptr<Model> mCube_;

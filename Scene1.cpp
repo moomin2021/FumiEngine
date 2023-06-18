@@ -6,14 +6,13 @@
 using namespace DirectX;
 
 Scene1::Scene1() :
-	key_(nullptr),
-	lightGroup_(nullptr)
+	key_(nullptr)
 {
 }
 
 Scene1::~Scene1()
 {
-	delete lightGroup_;
+	
 }
 
 void Scene1::Initialize()
@@ -47,7 +46,7 @@ void Scene1::Initialize()
 	sHae_ = std::make_unique<Sprite>();
 
 	// ライト生成
-	lightGroup_ = LightGroup::Create();
+	lightGroup_ = std::make_unique<LightGroup>();
 
 	lightGroup_->SetDirLightActive(0, true);
 	lightGroup_->SetDirLightActive(1, false);
@@ -64,7 +63,7 @@ void Scene1::Initialize()
 	Object3D::SetCamera(camera_.get());
 
 	// ライトを設定
-	Object3D::SetLightGroup(lightGroup_);
+	Object3D::SetLightGroup(lightGroup_.get());
 }
 
 void Scene1::Update()

@@ -40,10 +40,6 @@ public:// サブクラス
 		CircleShadow::ConstBufferData circleShadows[CircleShadowNum];
 	};
 
-private:// 静的メンバ変数
-	// デバイス
-	static ID3D12Device* device;
-
 private:// メンバ変数
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
@@ -61,17 +57,7 @@ private:// メンバ変数
 	bool dirty = false;
 
 public:// 静的メンバ関数
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	/// <param name="device"> デバイス </param>
-	static void StaticInitialize(ID3D12Device* device);
-
-	/// <summary>
-	/// インスタンス生成
-	/// </summary>
-	/// <returns></returns>
-	static LightGroup* Create();
+	LightGroup();
 
 private:// メンバ関数
 	/// <summary>
