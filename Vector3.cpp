@@ -85,6 +85,16 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
+Vector3 Vector3Normalize(const Vector3& vec)
+{
+	float len = vec.length();
+	if (len != 0)
+	{
+		return vec / len;
+	}
+	return vec;
+}
+
 // 2項演算子オーバーロード
 // ※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備している
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)

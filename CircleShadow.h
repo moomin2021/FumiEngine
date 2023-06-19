@@ -1,59 +1,120 @@
 #pragma once
-#include <DirectXMath.h>
 
 class CircleShadow {
-private:// エイリアス
-	// Microsoft::WRL::を省略
-	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public:// サブクラス
+#pragma region 構想体
+public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		XMVECTOR dir;
-		XMFLOAT3 casterPos;
-		float distanceCasterLight;
-		XMFLOAT3 atten;
-		float pad3;
-		XMFLOAT2 factorAngleCos;
-		uint32_t active;
-		float pad4;
+		Vector3 dir;				// 方向
+		float3 casterPos;			// キャスター座標
+		float distCasterLight;	// キャスターとライトの距離
+		float3 atten;				// 距離減衰係数
+		float pad3;// パディング
+		float2 factorAngleCos;		// 減衰角度
+		bool active;				// 有効フラグ
+		float pad4;// パディング
 	};
+#pragma endregion
 
-public:// メンバ関数
-	inline void SetDir(const XMVECTOR& dir) { this->dir = DirectX::XMVector3Normalize(dir); }
-	inline const XMVECTOR& GetDir() { return dir; }
-	inline void SetCasterPos(const XMFLOAT3& casterPos) { this->casterPos = casterPos; }
-	inline const XMFLOAT3& GetCasterPos() { return casterPos; }
-	inline void SetDistanceCasterLight(float distanceCasterLight) { this->distanceCasterLight = distanceCasterLight; }
-	inline float GetDistanceCasterLight() { return distanceCasterLight; }
-	inline void SetAtten(const XMFLOAT3& atten) { this->atten = atten; }
-	inline const XMFLOAT3& GetAtten() { return atten; }
-	inline void SetFactorAngle(const XMFLOAT2& factorAngle) {
-		this->factorAngleCos.x = cosf(DirectX::XMConvertToRadians(factorAngle.x));
-		this->factorAngleCos.y = cosf(DirectX::XMConvertToRadians(factorAngle.y));
-	}
-	inline const XMFLOAT2& GetFactorAngleCos() { return factorAngleCos; }
-	inline void SetActive(bool active) { this->active = active; }
-	inline bool IsActive() { return active; }
+#pragma region メンバ変数
+private:
+	// 方向(XYZ)
+	Vector3 dir_ = { 1.0f, 0.0f, 0.0f };
 
-private:// メンバ変数
-	// 方向(単位ベクトル)
-	XMVECTOR dir = { 1.0f, 0.0f, 0.0f, 0.0f };
+	// キャスター座標(XYZ)
+	float3 casterPos_ = { 0.0f, 0.0f, 0.0f };
+
 	// キャスターとライトの距離
-	float distanceCasterLight = 100.0f;
-	// キャスター座標
-	XMFLOAT3 casterPos = { 0.0f, 0.0f, 0.0f };
-	// 距離減衰係数
-	XMFLOAT3 atten = { 0.5f, 0.6f, 0.0f };
-	// 減衰角度
-	XMFLOAT2 factorAngleCos = { 0.2f, 0.5f };
+	float distCasterLight_ = 100.0f;
+
+	// 距離減衰係数(XYZ)
+	float3 atten_ = { 0.5f, 0.6f, 0.0f };
+
+	// 減衰角度(開始角度、終了角度)
+	float2 factorAngleCos_ = { 0.2f, 0.5f };
+
 	// 有効フラグ
-	bool active = false;
+	bool active_ = true;
+#pragma endregion
+
+#pragma region セッター関数
+public:
+	/// <summary>
+	/// 方向(XYZ)を設定
+	/// </summary>
+	/// <param name="dir"> 方向(XYZ) </param>
+	inline void SetDir(const Vector3& dir) { dir_ = Vector3Normalize(dir); }
+
+	/// <summary>
+	/// キャスター座標(XYZ)を設定
+	/// </summary>
+	/// <param name="casterPos"> キャスター座標(XYZ) </param>
+	inline void SetCasterPos(const float3& casterPos) { casterPos_ = casterPos; }
+
+	/// <summary>
+	/// キャスターとライトの距離を設定
+	/// </summary>
+	/// <param name="distCasterLight"> キャスターとライトの距離 </param>
+	inline void SetDistCasterLight(float distCasterLight) { distCasterLight_ = distCasterLight; }
+
+	/// <summary>
+	/// 距離減衰係数(XYZ)を設定
+	/// </summary>
+	/// <param name="atten"></param>
+	inline void SetAtten(const float3& atten) { atten_ = atten; }
+
+	/// <summary>
+	/// 減衰角度(開始角度、終了角度)を設定
+	/// </summary>
+	/// <param name="factorAngle"> 減衰角度(開始角度, 終了角度) </param>
+	inline void SetFactorAngle(const float2& factorAngle) {
+		factorAngleCos_.x = cosf(Util::Degree2Radian(factorAngle.x));
+		factorAngleCos_.y = cosf(Util::Degree2Radian(factorAngle.y));
+	}
+
+	/// <summary>
+	/// 有効フラグを設定
+	/// </summary>
+	/// <param name="active"> 有効フラグ </param>
+	inline void SetActive(bool active) { active_ = active; }
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	/// <summary>
+	/// 方向(XYZ)を取得
+	/// </summary>
+	/// <returns></returns>
+	inline const Vector3& GetDir() { return dir_; }
+
+	/// <summary>
+	/// キャスターの座標(XYZ)を取得
+	/// </summary>
+	/// <returns> キャスターの座標(XYZ) </returns>
+	inline const float3& GetCasterPos() { return casterPos_; }
+
+	/// <summary>
+	/// キャスターとライトの距離を取得
+	/// </summary>
+	/// <returns> キャスターとライトの距離 </returns>
+	inline float GetDistCasterLight() { return distCasterLight_; }
+
+	/// <summary>
+	/// 距離減衰係数(XYZ)を取得
+	/// </summary>
+	/// <returns> 距離減衰係数(XYZ) </returns>
+	inline const float3& GetAtten() { return atten_; }
+
+	/// <summary>
+	/// 減衰角度(開始角度、終了角度)を取得
+	/// </summary>
+	/// <returns> 減衰角度(開始角度、終了角度) </returns>
+	inline const float2& GetFactorAngleCos() { return factorAngleCos_; }
+
+	/// <summary>
+	/// 有効フラグを取得
+	/// </summary>
+	/// <returns> 有効フラグ </returns>
+	inline bool GetActive() { return active_; }
+#pragma endregion
 };

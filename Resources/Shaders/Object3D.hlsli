@@ -14,9 +14,9 @@ cbuffer MaterialData : register(b1)
     float m_alpha : packoffset(c2.w); // ---> ƒAƒ‹ƒtƒ@
 }
 
-static const int DIRLIGHT_NUM = 3;
-static const int POINTLIGHT_NUM = 3;
-static const int SPOTLIGHT_NUM = 3;
+static const int DIRLIGHT_NUM = 1;
+static const int POINTLIGHT_NUM = 10;
+static const int SPOTLIGHT_NUM = 10;
 static const int CIRCLESHADOW_NUM = 1;
 
 struct DirLight

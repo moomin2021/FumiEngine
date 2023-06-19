@@ -1,135 +1,90 @@
 #pragma once
-#include <DirectXMath.h>
-#include "DX12Cmd.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "CircleShadow.h"
 
+#include <d3d12.h>
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
+
 class LightGroup {
-private:// エイリアス
-	// Microsoft::WRL::を省略
-	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+#pragma region 定数メンバ変数
+	// 各ライト上限
+	static const uint16_t DIR_LIGHT_LIMIT = 1;
+	static const uint16_t POINT_LIGHT_LIMIT = 10;
+	static const uint16_t SPOT_LIGHT_LIMIT = 10;
+	static const uint16_t CIRCLE_SHADOW_LIMIT = 1;
+#pragma endregion
 
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public:// 定数
-	static const uint16_t DirLightNum = 3;
-	static const uint16_t PointLightNum = 3;
-	static const uint16_t SpotLightNum = 3;
-	static const uint16_t CircleShadowNum = 1;
-
-public:// サブクラス
+#pragma region 構造体
+public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		// 環境光の色
-		XMFLOAT3 ambientColor;
+		float3 ambientColor;// 環境光の色
 		float pad1;
-		// 平行光源用
-		DirectionalLight::ConstBufferData dirLights[DirLightNum];
-		// 点光源用
-		PointLight::ConstBufferData pointLights[PointLightNum];
-		// スポットライト用
-		SpotLight::ConstBufferData spotLights[SpotLightNum];
-		// 丸影用
-		CircleShadow::ConstBufferData circleShadows[CircleShadowNum];
+		DirectionalLight::ConstBufferData dirLights[DIR_LIGHT_LIMIT];		// 平行光源用
+		PointLight::ConstBufferData pointLights[POINT_LIGHT_LIMIT];			// 点光源用
+		SpotLight::ConstBufferData spotLights[SPOT_LIGHT_LIMIT];			// スポットライト用
+		CircleShadow::ConstBufferData circleShadows[CIRCLE_SHADOW_LIMIT];	// 丸影用
 	};
+#pragma endregion
 
-private:// メンバ変数
+#pragma region メンバ変数
+private:
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
-	// 環境光の色
-	XMFLOAT3 ambientColor = { 1.0f, 1.0f, 1.0f };
-	// 平行光源の配列
-	DirectionalLight dirLights[DirLightNum];
-	// 点光源の配列
-	PointLight pointLights[PointLightNum];
-	// スポットライト用
-	SpotLight spotLights[SpotLightNum];
-	// 丸影の配列
-	CircleShadow circleShadows[CircleShadowNum];
-	// ダーティフラグ
-	bool dirty = false;
+	ComPtr<ID3D12Resource> constBuff_;// ライトデータ
 
-public:// 静的メンバ関数
+	// 環境光の色
+	float3 ambientColor_;
+	
+	// ライトデータ
+	std::vector<DirectionalLight*> dirLights_;	// 平行光源の配列
+	std::vector<PointLight*> pointLights_;		// 点光源の配列
+	std::vector<SpotLight*> spotLights_;			// スポットライト用
+	std::vector<CircleShadow*> circleShadows_;	// 丸影の配列
+
+	// ダーティフラグ
+	bool dirty_;
+#pragma endregion
+
+#pragma region メンバ関数
+public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	LightGroup();
 
-private:// メンバ関数
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
-
-	/// <summary>
-	/// 定数バッファ転送
-	/// </summary>
-	void TransferConstBuffer();
-
-	/// <summary>
-	/// 標準のライト設定
-	/// </summary>
-	void DefaultLightSetting();
-
-public:// メンバ関数
-
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画
+	/// ライト描画
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// 環境光のライト色をセット
+	/// 平行光源追加
 	/// </summary>
-	/// <param name="color"> ライト色 </param>
-	void SetAmbientColor(const XMFLOAT3& color);
+	void AddDirLight(DirectionalLight* light);
 
 	/// <summary>
-	/// 平行光源の有効フラグをセット
+	/// ポイントライト追加
 	/// </summary>
-	/// <param name="index"> ライト番号 </param>
-	/// <param name="active"> 有効フラグ </param>
-	void SetDirLightActive(uint16_t index, bool active);
+	void AddPointLight(PointLight* light);
 
 	/// <summary>
-	/// 平行光源のライト方向をセット
+	/// スポットライト追加
 	/// </summary>
-	/// <param name="index"> ライト番号 </param>
-	/// <param name="lightdir"> ライト方向 </param>
-	void SetDirLightDir(uint16_t index, const XMVECTOR& lightdir);
+	void AddSpotLight(SpotLight* light);
 
 	/// <summary>
-	/// 平行光源のライト色をセット
+	/// 丸影追加
 	/// </summary>
-	/// <param name="index"> ライト番号 </param>
-	/// <param name="lightcolor"> ライト色 </param>
-	void SetDirLightColor(uint16_t index, const XMFLOAT3& lightcolor);
+	void AddCircleShadow(CircleShadow* shadow);
 
-	void SetPointLightActive(uint16_t index, bool active);
-	void SetPointLightPos(uint16_t index, const XMFLOAT3& lightpos);
-	void SetPointLightColor(uint16_t index, const XMFLOAT3& lightcolor);
-	void SetPointLightAtten(uint16_t index, const XMFLOAT3& lightAtten);
-
-	void SetSpotLightActive(uint16_t index, bool active);
-	void SetSpotLightDir(uint16_t index, const XMVECTOR& lightdir);
-	void SetSpotLightPos(uint16_t index, const XMFLOAT3& lightpos);
-	void SetSpotLightColor(uint16_t index, const XMFLOAT3& lightcolor);
-	void SetSpotLightAtten(uint16_t index, const XMFLOAT3& lightAtten);
-	void SetSpotLightFactorAngle(uint16_t index, const XMFLOAT2& lightFactorAngle);
-
-	void SetCircleShadowActive(uint16_t index, bool active);
-	void SetCircleShadowCasterPos(uint16_t index, const XMFLOAT3& casterPos);
-	void SetCircleShadowDir(uint16_t index, const XMVECTOR& lightdir);
-	void SetCircleShadowDistanceCasterLight(uint16_t index, float distanceCasterLight);
-	void SetCircleShadowAtten(uint16_t index, const XMFLOAT3& lightAtten);
-	void SetCircleShadowFactorAngle(uint16_t index, const XMFLOAT2& lightFactorAngle);
+private:
+	/// <summary>
+	/// 定数バッファ転送
+	/// </summary>
+	void TransferConstBuffer();
+#pragma endregion
 };

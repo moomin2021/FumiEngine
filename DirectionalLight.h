@@ -1,41 +1,70 @@
 #pragma once
-#include <DirectXMath.h>
+#include "float3.h"
+#include "Vector3.h"
 
 class DirectionalLight {
-private:// エイリアス
-	// Microsoft::WRL::を省略
-	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public:// サブクラス
+#pragma region 構造体
+public:
 	// 定数バッファ用データ構造
 	struct ConstBufferData {
-		XMVECTOR lightv;// -> ライトへ方向を表す
-		XMFLOAT3 lightcolor;// -> ライトの色
-		bool active;// -> 有効フラグ
+		Vector3 lightVec;	// ライトへ方向を表す
+		float pad1;
+		float3 lightColor;	// ライトの色
+		bool active;		// 有効フラグ
 	};
+#pragma endregion
 
-private:// メンバ変数
+#pragma region メンバ変数
+private:
 	// ライト光線方向
-	XMVECTOR lightdir = { 1.0f, 0.0f, 0.0f, 0.0f };
+	Vector3 lightDir_ = { 0.0f, -1.0f, 0.0f };
 
 	// ライト色
-	XMFLOAT3 lightcolor = { 1.0f, 1.0f, 1.0f };
+	float3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
 	// 有効フラグ
-	bool active = false;
+	bool active_ = true;
+#pragma endregion
 
-public:// メンバ関数
-	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
-	inline const XMVECTOR& GetLightDir() { return lightdir; }
-	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; };
-	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
-	inline void SetActive(bool active) { this->active = active; }
-	inline bool IsActive() { return active; }
+#pragma region セッター関数
+public:
+	/// <summary>
+	/// ライトの向き(XYZ)を設定
+	/// </summary>
+	/// <param name="lightDir"> ライトの向き(XYZ) </param>
+	inline void SetLightDir(const Vector3& lightDir) { lightDir_ = Vector3Normalize(lightDir); }
+
+	/// <summary>
+	/// ライトの色(RGB)を設定
+	/// </summary>
+	/// <param name="color"> ライトの色(RGB) </param>
+	inline void SetLightColor(const float3& color) { lightColor_ = color; }
+
+	/// <summary>
+	/// ライトの有効フラグを設定
+	/// </summary>
+	/// <param name="active"> 有効フラグ </param>
+	inline void SetActive(bool active) { active_ = active; }
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	/// <summary>
+	/// ライトの方向(XYZ)を取得
+	/// </summary>
+	/// <returns> ライトの方向(XYZ) </returns>
+	inline const Vector3& GetLightDir() { return lightDir_; }
+
+	/// <summary>
+	/// ライトの色(RGB)を取得
+	/// </summary>
+	/// <returns> ライトの色(RGB) </returns>
+	inline const float3& GetLightColor() { return lightColor_; }
+
+	/// <summary>
+	/// 有効フラグを取得
+	/// </summary>
+	/// <returns> 有効フラグ </returns>
+	inline bool GetActive() { return active_; }
+#pragma endregion
 };

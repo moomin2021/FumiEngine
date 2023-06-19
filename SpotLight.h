@@ -1,66 +1,124 @@
 #pragma once
-#include <DirectXMath.h>
+#include "float2.h"
+#include "Util.h"
 
 class SpotLight {
-private:// エイリアス
-	// Microsoft::WRL::を省略
-	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public:// サブクラス
+#pragma region 構造体
+public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		XMVECTOR lightv;
-		XMFLOAT3 lightpos;
-		float pad1;
-		XMFLOAT3 lightcolor;
-		float pad2;
-		XMFLOAT3 lightatten;
-		float pad3;
-		XMFLOAT2 lightfactoranglecos;
-		unsigned int active;
-		float pad4;
+		Vector3 lightVec;			// ライトの方向(XYZ)
+		float3 lightPos;			// ライトの座標(XYZ)
+		float pad1;// パディング
+		float3 lightColor;			// ライトの色(RGB)
+		float pad2;// パディング
+		float3 lightAtten;			// ライトの距離減衰係数(XYZ)
+		float pad3;// パディング
+		float2 lightFactorAngleCos;	// ライトの減衰角度(開始角度, 終了角度)
+		bool active;				// 有効フラグ
+		float pad4;// パディング
 	};
+#pragma endregion
 
-public:// メンバ関数
-	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
-	inline const XMVECTOR& GetLightDir() { return lightdir; }
-	inline void SetLightPos(const XMFLOAT3& lightpos) { this->lightpos = lightpos; }
-	inline const XMFLOAT3& GetLightPos() { return lightpos; }
-	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; }
-	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
-	inline void SetLightAtten(const XMFLOAT3& lightAtten) { this->lightAtten = lightAtten; }
-	inline const XMFLOAT3& GetLightAtten() { return lightAtten; }
-	inline void SetLightFactorAngle(const XMFLOAT2& lightFactorAngle) { 
-		this->lightFactorAngleCos.x = cosf(DirectX::XMConvertToRadians(lightFactorAngle.x));
-		this->lightFactorAngleCos.y = cosf(DirectX::XMConvertToRadians(lightFactorAngle.y));
-	}
-	inline const XMFLOAT2& GetLightFactorAngleCos() { return lightFactorAngleCos; }
-	inline void SetActive(bool active) { this->active = active; }
-	inline bool IsActive() { return active; }
+#pragma region メンバ変数
+private:
+	// ライト方向(XYZ)
+	Vector3 lightDir_ = { 1.0f, 0.0f, 0.0f };
 
-private:// メンバ変数
-	// ライト方向(単位ベクトル)
-	XMVECTOR lightdir = { 1.0f, 0.0f, 0.0f, 0.0f };
-
-	// ライト座標(ワールド座標)
-	XMFLOAT3 lightpos = { 0.0f, 0.0f, 0.0f };
+	// ライト座標(XYZ)
+	float3 lightPos_ = { 0.0f, 0.0f, 0.0f };
 
 	// ライト色
-	XMFLOAT3 lightcolor = { 1.0f, 1.0f, 1.0f };
+	float3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
 	// ライト距離減衰係数
-	XMFLOAT3 lightAtten = { 1.0f, 1.0f, 1.0f };
+	float3 lightAtten_ = { 1.0f, 1.0f, 1.0f };
 
 	// ライト減衰角度(開始角度、終了角度)
-	XMFLOAT2 lightFactorAngleCos = { 0.5f, 0.2f };
+	float2 lightFactorAngleCos_ = { 0.5f, 0.2f };
 
 	// 有効フラグ
-	bool active = false;
+	bool active_ = true;
+#pragma endregion
+
+#pragma region セッター関数
+public:
+	/// <summary>
+	/// ライトの方向(XYZ)を設定
+	/// </summary>
+	/// <param name="lightDir"> ライトの方向(XYZ) </param>
+	inline void SetLightDir(const Vector3& lightDir) { lightDir_ = Vector3Normalize(lightDir); }
+
+	/// <summary>
+	/// ライトの座標(XYZ)を設定
+	/// </summary>
+	/// <param name="lightPos"> ライトの座標(XYZ) </param>
+	inline void SetLightPos(const float3& lightPos) { lightPos_ = lightPos; }
+
+	/// <summary>
+	/// ライトの色(RGB)を設定
+	/// </summary>
+	/// <param name="lightColor"> ライトの色(RGB) </param>
+	inline void SetLightColor(const float3& lightColor) { lightColor_ = lightColor; }
+
+	/// <summary>
+	/// ライトの距離減衰係数(XYZ)を設定
+	/// </summary>
+	/// <param name="lightAtten"> ライトの距離減衰係数(XYZ) </param>
+	inline void SetLightAtten(const float3& lightAtten) { lightAtten_ = lightAtten; }
+
+	/// <summary>
+	/// ライト減衰角度(開始角度、終了角度)を設定
+	/// </summary>
+	/// <param name="lightFactorAngle"> ライトの減衰角度(開始角度, 終了角度) </param>
+	inline void SetLightFactorAngle(const float2& lightFactorAngle) {
+		lightFactorAngleCos_.x = cosf(Util::Degree2Radian(lightFactorAngle.x));
+		lightFactorAngleCos_.y = cosf(Util::Degree2Radian(lightFactorAngle.y));
+	}
+
+	/// <summary>
+	/// ライト有効フラグを設定
+	/// </summary>
+	/// <param name="active"> ライト有効フラグ </param>
+	inline void SetActive(bool active) { active_ = active; }
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	/// <summary>
+	/// ライトの方向(XYZ)を取得
+	/// </summary>
+	/// <returns> ライトの方向(XYZ) </returns>
+	inline const Vector3& GetLightDir() { return lightDir_; }
+
+	/// <summary>
+	/// ライトの座標(XYZ)を取得
+	/// </summary>
+	/// <returns> ライトの座標(XYZ) </returns>
+	inline const float3& GetLightPos() { return lightPos_; }
+
+	/// <summary>
+	/// ライトの色(RGB)を取得
+	/// </summary>
+	/// <returns> ライトの色(RGB) </returns>
+	inline const float3& GetLightColor() { return lightColor_; }
+
+	/// <summary>
+	/// ライトの距離減衰係数(XYZ)を取得
+	/// </summary>
+	/// <returns> ライトの距離減衰係数(XYZ) </returns>
+	inline const float3& GetLightAtten() { return lightAtten_; }
+
+	/// <summary>
+	/// ライト減衰角度(開始角度、終了角度)を取得
+	/// </summary>
+	/// <returns> ライト減衰角度(開始角度、終了角度) </returns>
+	inline const float2& GetLightFactorAngle() { return lightFactorAngleCos_; }
+
+	/// <summary>
+	/// ライト有効フラグを取得
+	/// </summary>
+	/// <returns> ライト有効フラグ </returns>
+	inline bool GetActive() { return active_; }
+#pragma endregion
 };

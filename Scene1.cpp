@@ -1,5 +1,6 @@
 #include "Scene1.h"
 #include "Texture.h"
+#include "Vector3.h"
 
 #include <DirectXMath.h>
 
@@ -25,9 +26,13 @@ void Scene1::Initialize()
 	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
 
 	// モデル
+	mFloor_ = std::make_unique<Model>("floor");
 	mCube_ = std::make_unique<Model>("cube");
 
 	// オブジェクト
+	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
+	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+
 	oCube_.resize(3);
 
 	oCube_[0] = std::make_unique<Object3D>(mCube_.get());
@@ -37,7 +42,7 @@ void Scene1::Initialize()
 	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
 	oCube_[2] = std::make_unique<Object3D>(mCube_.get());
-	oCube_[2]->SetPosition({ 0.0f, 0.0f, 0.0f });
+	oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
 
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
@@ -47,17 +52,14 @@ void Scene1::Initialize()
 
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
+	dirLight_ = std::make_unique<DirectionalLight>();
+	pointLight_ = std::make_unique<PointLight>();
 
-	lightGroup_->SetDirLightActive(0, true);
-	lightGroup_->SetDirLightActive(1, false);
-	lightGroup_->SetDirLightActive(2, false);
-	lightGroup_->SetPointLightActive(0, true);
-	lightGroup_->SetPointLightActive(1, false);
-	lightGroup_->SetPointLightActive(2, false);
-	lightGroup_->SetSpotLightActive(0, false);
-	lightGroup_->SetSpotLightActive(1, false);
-	lightGroup_->SetSpotLightActive(2, false);
-	lightGroup_->SetCircleShadowActive(0, false);
+	dirLight_->SetLightColor({ 1.0f, 0.0f, 0.0f });
+	pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
+
+	//lightGroup_->AddDirLight(dirLight_.get());
+	lightGroup_->AddPointLight(pointLight_.get());
 
 	// カメラを設定
 	Object3D::SetCamera(camera_.get());
@@ -78,12 +80,12 @@ void Scene1::Update()
 		camera_->SetEye(eye);
 	}
 
-	static float3 pos = { 0.0f, 0.5f, 0.0f };
+	static float3 pointLightPos = { -4.0f, 1.0f, 0.0f };
 
-	pos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
-	pos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
+	pointLightPos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
+	pointLightPos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
 
-	lightGroup_->SetPointLightPos(0, XMFLOAT3({ pos.x, pos.y, pos.z }));
+	pointLight_->SetLightPos(pointLightPos);
 
 	static float rota = 0.0f;
 	rota += 1.0f;
@@ -93,15 +95,13 @@ void Scene1::Update()
 
 	// カメラの更新
 	camera_->Update();
-
-	// ライトの更新
-	lightGroup_->Update();
 }
 
 void Scene1::Draw()
 {
 	Object3D::PreDraw();
 
+	oFloor_->Draw();
 	for (auto& object : oCube_) object->Draw();
 
 	Sprite::PreDraw();

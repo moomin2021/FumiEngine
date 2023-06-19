@@ -21,11 +21,15 @@ private:
 
 	// ライト
 	std::unique_ptr<LightGroup> lightGroup_;
+	std::unique_ptr<DirectionalLight> dirLight_;
+	std::unique_ptr<PointLight> pointLight_;
 
 	// モデル
+	std::unique_ptr<Model> mFloor_;
 	std::unique_ptr<Model> mCube_;
 
 	// オブジェクト
+	std::unique_ptr<Object3D> oFloor_;
 	std::vector<std::unique_ptr<Object3D>> oCube_;
 
 	// テクスチャハンドル
