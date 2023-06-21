@@ -30,7 +30,7 @@ private:
 	// スプライトデータ
 	float2 position_;	// 座標(XY)
 	float rotation_;	// 回転(Z)
-	float2 scale_;		// 拡縮(XY)
+	float2 size_;		// サイズ(XY)
 	float4 color_;		// 色(RGBA)
 	float2 anchorPoint_;// アンカーポイント座標(XY)
 	bool isFlipX_;		// 左右反転
@@ -102,7 +102,7 @@ public:
 	/// 拡縮(XY)を設定
 	/// </summary>
 	/// <param name="scale"> 拡縮(XY) </param>
-	inline void SetScale(const float2& scale) { scale_ = scale, hasChanget_ = true; }
+	inline void SetSize(const float2& size) { size_ = size, hasChanget_ = true; }
 
 	/// <summary>
 	/// 色(RGBA)を設定

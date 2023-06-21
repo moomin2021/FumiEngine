@@ -13,7 +13,7 @@ Sprite::Sprite() :
 	// スプライトデータ
 	position_{ 0.0f, 0.0f },			// 座標
 	rotation_(0.0f),					// 回転
-	scale_{ 1.0f, 1.0f },				// 拡縮
+	size_{ 100.0f, 100.0f },			// サイズ
 	color_{ 1.0f, 1.0f, 1.0f, 1.0f },	// 色(RGBA)
 	anchorPoint_{0.0f, 0.0f},			// アンカーポイント(XY)
 	isFlipX_(false),					// 左右反転
@@ -52,10 +52,10 @@ Sprite::Sprite() :
 	HRESULT result;
 
 	// 頂点データ
-	vertex_[0] = { {   0.0f				, 100.0f * scale_.y	}, {0.0f, 1.0f} };// 左下
-	vertex_[1] = { {   0.0f				,   0.0f			}, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { 100.0f * scale_.x	, 100.0f * scale_.y	}, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { 100.0f * scale_.x	,   0.0f			}, {1.0f, 0.0f} };// 右上
+	vertex_[0] = { { 0.0f, 0.0f}, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { { 0.0f, 0.0f}, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { 0.0f, 0.0f}, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { 0.0f, 0.0f}, {1.0f, 0.0f} };// 右上
 
 	// インデックスデータ
 	index_[0] = 0;
@@ -297,10 +297,10 @@ void Sprite::UpdateData()
 
 #pragma region 頂点座標変更(画像のサイズを変更)
 	// 頂点データ
-	float left		= (0.0f - anchorPoint_.x) * scale_.x;
-	float right		= (1.0f - anchorPoint_.x) * scale_.x;
-	float top		= (0.0f - anchorPoint_.y) * scale_.y;
-	float bottom	= (1.0f - anchorPoint_.y) * scale_.y;
+	float left		= (0.0f - anchorPoint_.x);
+	float right		= (1.0f - anchorPoint_.x);
+	float top		= (0.0f - anchorPoint_.y);
+	float bottom	= (1.0f - anchorPoint_.y);
 
 	// 左右反転
 	if (isFlipX_) left = -left, right = -right;
@@ -308,10 +308,10 @@ void Sprite::UpdateData()
 	// 上下反転
 	if (isFlipY_) top = -top, bottom = -bottom;
 
-	vertex_[0] = { { left	* 100.0f, bottom	* 100.0f }, {0.0f, 1.0f} };// 左下
-	vertex_[1] = { { left	* 100.0f, top		* 100.0f }, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { right	* 100.0f, bottom	* 100.0f }, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { right	* 100.0f, top		* 100.0f }, {1.0f, 0.0f} };// 右上
+	vertex_[0] = { { left	* size_.x, bottom	* size_.y }, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { { left	* size_.x, top		* size_.y }, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { right	* size_.x, bottom	* size_.y }, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { right	* size_.x, top		* size_.y }, {1.0f, 0.0f} };// 右上
 
 	// 全頂点に対して
 	for (size_t i = 0; i < vertex_.size(); i++)
