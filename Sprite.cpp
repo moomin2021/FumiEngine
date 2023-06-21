@@ -15,6 +15,7 @@ Sprite::Sprite() :
 	rotation_(0.0f),					// 回転
 	scale_{ 1.0f, 1.0f },				// 拡縮
 	color_{ 1.0f, 1.0f, 1.0f, 1.0f },	// 色(RGBA)
+	anchorPoint_{0.0f, 0.0f},			// アンカーポイント(XY)
 
 	// スプライトデータを変更したかどうか
 	hasChanget_(true),
@@ -294,10 +295,15 @@ void Sprite::UpdateData()
 
 #pragma region 頂点座標変更(画像のサイズを変更)
 	// 頂点データ
-	vertex_[0] = { {   0.0f				, 100.0f * scale_.y	}, {0.0f, 1.0f} };// 左下
-	vertex_[1] = { {   0.0f				,   0.0f			}, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { 100.0f * scale_.x	, 100.0f * scale_.y	}, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { 100.0f * scale_.x	,   0.0f,			}, {1.0f, 0.0f} };// 右上
+	float left		= (0.0f - anchorPoint_.x) * scale_.x;
+	float right		= (1.0f - anchorPoint_.x) * scale_.x;
+	float top		= (0.0f - anchorPoint_.y) * scale_.y;
+	float bottom	= (1.0f - anchorPoint_.y) * scale_.y;
+
+	vertex_[0] = { { left	* 100.0f, bottom	* 100.0f }, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { { left	* 100.0f, top		* 100.0f }, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { right	* 100.0f, bottom	* 100.0f }, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { right	* 100.0f, top		* 100.0f }, {1.0f, 0.0f} };// 右上
 
 	// 全頂点に対して
 	for (size_t i = 0; i < vertex_.size(); i++)

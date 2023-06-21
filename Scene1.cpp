@@ -49,6 +49,8 @@ void Scene1::Initialize()
 
 	// スプライト
 	sHae_ = std::make_unique<Sprite>();
+	sHae_->SetAnchorPoint({ -0.0f, -1.0f });
+	sHae_->SetScale({ 2.0f, 2.0f });
 
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();

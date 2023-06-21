@@ -28,10 +28,11 @@ class Sprite {
 #pragma region メンバ変数
 private:
 	// スプライトデータ
-	float2 position_;	// 座標
-	float rotation_;	// 回転
-	float2 scale_;		// 拡縮
+	float2 position_;	// 座標(XY)
+	float rotation_;	// 回転(Z)
+	float2 scale_;		// 拡縮(XY)
 	float4 color_;		// 色(RGBA)
+	float2 anchorPoint_;// アンカーポイント座標(XY)
 
 	// スプライトデータを変更したかどうか
 	bool hasChanget_;
@@ -78,6 +79,7 @@ private:
 	/// スプライトデータの更新
 	/// </summary>
 	void UpdateData();
+#pragma endregion
 
 #pragma region セッター関数
 public:
@@ -105,7 +107,11 @@ public:
 	/// </summary>
 	/// <param name="color"> 色(RGBA) </param>
 	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
-#pragma endregion
 
+	/// <summary>
+	/// アンカーポイント(XY)を設定
+	/// </summary>
+	/// /// <param name="anchorPoint"> アンカーポイント(XY) </param>
+	inline void SetAnchorPoint(const float2& anchorPoint) { anchorPoint_ = anchorPoint, hasChanget_ = true; }
 #pragma endregion
 };
