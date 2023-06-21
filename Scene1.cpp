@@ -49,8 +49,9 @@ void Scene1::Initialize()
 
 	// スプライト
 	sHae_ = std::make_unique<Sprite>();
-	sHae_->SetAnchorPoint({ -0.0f, -1.0f });
-	sHae_->SetScale({ 2.0f, 2.0f });
+	sHae_->SetPosition({ 500.0f, 300.0f });
+	sHae_->SetAnchorPoint({ 0.5f,0.5f });
+	sHae_->SetScale({ 4.0f, 4.0f });
 
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
@@ -88,6 +89,12 @@ void Scene1::Update()
 	pointLightPos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
 
 	pointLight_->SetLightPos(pointLightPos);
+
+	if (key_->TriggerKey(DIK_O)) sHae_->SetFlipX(true);
+	if (key_->TriggerKey(DIK_P)) sHae_->SetFlipY(true);
+
+	if (key_->TriggerKey(DIK_K)) sHae_->SetFlipX(false);
+	if (key_->TriggerKey(DIK_L)) sHae_->SetFlipY(false);
 
 	static float rota = 0.0f;
 	rota += 1.0f;

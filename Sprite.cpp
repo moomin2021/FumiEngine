@@ -16,6 +16,8 @@ Sprite::Sprite() :
 	scale_{ 1.0f, 1.0f },				// 拡縮
 	color_{ 1.0f, 1.0f, 1.0f, 1.0f },	// 色(RGBA)
 	anchorPoint_{0.0f, 0.0f},			// アンカーポイント(XY)
+	isFlipX_(false),					// 左右反転
+	isFlipY_(false),					// 上下反転
 
 	// スプライトデータを変更したかどうか
 	hasChanget_(true),
@@ -299,6 +301,12 @@ void Sprite::UpdateData()
 	float right		= (1.0f - anchorPoint_.x) * scale_.x;
 	float top		= (0.0f - anchorPoint_.y) * scale_.y;
 	float bottom	= (1.0f - anchorPoint_.y) * scale_.y;
+
+	// 左右反転
+	if (isFlipX_) left = -left, right = -right;
+
+	// 上下反転
+	if (isFlipY_) top = -top, bottom = -bottom;
 
 	vertex_[0] = { { left	* 100.0f, bottom	* 100.0f }, {0.0f, 1.0f} };// 左下
 	vertex_[1] = { { left	* 100.0f, top		* 100.0f }, {0.0f, 0.0f} };// 左上

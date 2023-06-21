@@ -33,6 +33,8 @@ private:
 	float2 scale_;		// 拡縮(XY)
 	float4 color_;		// 色(RGBA)
 	float2 anchorPoint_;// アンカーポイント座標(XY)
+	bool isFlipX_;		// 左右反転
+	bool isFlipY_;		// 上下反転
 
 	// スプライトデータを変更したかどうか
 	bool hasChanget_;
@@ -113,5 +115,17 @@ public:
 	/// </summary>
 	/// /// <param name="anchorPoint"> アンカーポイント(XY) </param>
 	inline void SetAnchorPoint(const float2& anchorPoint) { anchorPoint_ = anchorPoint, hasChanget_ = true; }
+
+	/// <summary>
+	/// 左右反転を設定
+	/// </summary>
+	/// <param name="flag"> 左右反転フラグ </param>
+	inline void SetFlipX(bool flag) { isFlipX_ = flag, hasChanget_ = true; }
+
+	/// <summary>
+	/// 上下反転を設定
+	/// </summary>
+	/// <param name="flag"> 上下反転フラグ </param>
+	inline void SetFlipY(bool flag) { isFlipY_ = flag, hasChanget_ = true; }
 #pragma endregion
 };
