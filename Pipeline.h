@@ -20,3 +20,6 @@ PipelineSet CreateSpritePipeline();
 
 // オブジェクト3Dのパイプライン生成
 PipelineSet CreateObject3DPipeline();
+
+// テストポストエフェクト用パイプライン生成
+PipelineSet CreatePostEffectTestPipeline();

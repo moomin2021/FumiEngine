@@ -54,6 +54,9 @@ void DX12Cmd::Initialize()
 
 	// スプライト用パイプライン生成
 	pipelineSprite_ = CreateSpritePipeline();
+
+	// テストポストエフェクト用パイプライン生成
+	pieplinePostEffectTest_ = CreatePostEffectTestPipeline();
 }
 
 void DX12Cmd::PreDraw()

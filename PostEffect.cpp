@@ -234,7 +234,7 @@ void PostEffect::Draw()
 	Texture* tex = Texture::GetInstance();
 
 	// パイプライン取得
-	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineSprite();
+	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelinePostEffectTest();
 
 	// SRVヒープのハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
@@ -358,7 +358,8 @@ void PostEffect::UpdateData()
 
 #pragma region 定数バッファの転送
 	// 行列計算
-	constMap_->mat = matWorld_ * matProjection_;
+	//constMap_->mat = matWorld_ * matProjection_;
+	constMap_->mat = Matrix4Identity();
 
 	// 色(RGBA)
 	constMap_->color = color_;
@@ -377,10 +378,16 @@ void PostEffect::UpdateData()
 	// 上下反転
 	if (isFlipY_) top = -top, bottom = -bottom;
 
-	vertex_[0] = { { left * size_.x, bottom * size_.y }, {0.0f, 1.0f} };// 左下
-	vertex_[1] = { { left * size_.x, top * size_.y }, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { right * size_.x, bottom * size_.y }, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { right * size_.x, top * size_.y }, {1.0f, 0.0f} };// 右上
+	//vertex_[0] = { { left * size_.x, bottom * size_.y }, {0.0f, 1.0f} };// 左下
+	//vertex_[1] = { { left * size_.x, top * size_.y }, {0.0f, 0.0f} };// 左上
+	//vertex_[2] = { { right * size_.x, bottom * size_.y }, {1.0f, 1.0f} };// 右下
+	//vertex_[3] = { { right * size_.x, top * size_.y }, {1.0f, 0.0f} };// 右上
+
+	// 頂点データ
+	vertex_[0] = { { -0.5f, -0.5f }, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { { -0.5f, +0.5f }, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { +0.5f, -0.5f }, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { +0.5f, +0.5f }, {1.0f, 0.0f} };// 右上
 
 	// 全頂点に対して
 	for (size_t i = 0; i < vertex_.size(); i++)
@@ -403,10 +410,10 @@ void PostEffect::CreateVertexBuff()
 	HRESULT result;
 
 	// 頂点データ
-	vertex_[0] = { { 0.0f, 0.0f}, {0.0f, 1.0f} };// 左下
-	vertex_[1] = { { 0.0f, 0.0f}, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { 0.0f, 0.0f}, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { 0.0f, 0.0f}, {1.0f, 0.0f} };// 右上
+	vertex_[0] = { { -0.5f, -0.5f }, {0.0f, 1.0f} };// 左下
+	vertex_[1] = { { -0.5f, +0.5f }, {0.0f, 0.0f} };// 左上
+	vertex_[2] = { { +0.5f, -0.5f }, {1.0f, 1.0f} };// 右下
+	vertex_[3] = { { +0.5f, +0.5f }, {1.0f, 0.0f} };// 右上
 
 #pragma region 頂点バッファ確保
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数

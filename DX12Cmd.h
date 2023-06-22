@@ -47,8 +47,9 @@ private:
 	std::chrono::steady_clock::time_point reference_;
 
 	// パイプライン
-	PipelineSet pipelineObj3D_;	// オブジェクト3D用
-	PipelineSet pipelineSprite_;// スプライト用
+	PipelineSet pipelineObj3D_;			// オブジェクト3D用
+	PipelineSet pipelineSprite_;		// スプライト用
+	PipelineSet pieplinePostEffectTest_;// テストポストエフェクト用
 #pragma endregion
 
 #pragma region メンバ関数
@@ -98,6 +99,12 @@ public:
 	/// </summary>
 	/// <returns> パイプライン </returns>
 	PipelineSet GetPipelineSprite() { return pipelineSprite_; }
+
+	/// <summary>
+	/// テストポストエフェクト用パイプラインを返す
+	/// </summary>
+	/// <returns> パイプライン </returns>
+	PipelineSet GetPipelinePostEffectTest() { return pieplinePostEffectTest_; }
 #pragma endregion
 
 private:
