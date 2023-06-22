@@ -63,6 +63,18 @@ private:
 
 	// SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV_;
+
+	// 深度バッファ
+	ComPtr<ID3D12Resource> depthBuff_;
+
+	// RTV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapRTV_;
+
+	// DSV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapDSV_;
+
+	// 画面クリアカラー
+	static const std::vector<float> clearColor_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -76,6 +88,16 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	void PreDraw();
+
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
+	void PostDraw();
 
 private:
 	/// <summary>

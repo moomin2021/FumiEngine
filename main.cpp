@@ -38,6 +38,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
+		postEffect->PreDraw();
+
+		SceneManager::GetInstance()->Draw();
+
+		postEffect->PostDraw();
+
 		// --描画前処理-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
