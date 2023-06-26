@@ -96,6 +96,8 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Pipeline.cpp" />
+    <ClCompile Include="PipelineManager.cpp" />
+    <ClCompile Include="PipelineObj.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -126,6 +128,8 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="PipelineManager.h" />
+    <ClInclude Include="PipelineObj.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Scene1.h" />

@@ -1,6 +1,7 @@
 #include "Scene1.h"
 #include "Texture.h"
 #include "Vector3.h"
+#include "PipelineManager.h"
 
 #include <DirectXMath.h>
 
@@ -100,12 +101,12 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	Object3D::PreDraw();
+	PipelineManager::GetInstance()->PreDraw("Object3D");
 
 	oFloor_->Draw();
 	for (auto& object : oCube_) object->Draw();
 
-	Sprite::PreDraw();
+	PipelineManager::GetInstance()->PreDraw("Sprite");
 
 	sHae_->Draw();
 }

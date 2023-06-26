@@ -50,10 +50,10 @@ void Model::Draw() {
 	srvGpuHandle.ptr += textureHandle_;
 
 	// 定数バッファビュー（CBV）の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(1, materialBuff_->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(2, materialBuff_->GetGPUVirtualAddress());
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vertexView_);

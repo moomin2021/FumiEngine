@@ -6,6 +6,7 @@
 #include "Mouse.h"// -> マウスキーボード入力
 #include "Object3D.h"// -> オブジェクト3Dクラス
 #include "PostEffect.h"
+#include "PipelineManager.h"
 #pragma endregion
 
 #include "SceneManager.h"

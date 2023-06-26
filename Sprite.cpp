@@ -231,10 +231,10 @@ void Sprite::Draw(int textureHandle) {
 	srvGpuHandle.ptr += textureHandle;
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 
 	// 定数バッファビュー（CBV）の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vertexView_);

@@ -89,7 +89,7 @@ void Object3D::Draw() {
 #pragma endregion
 
 	// 定数バッファビュー（CBV）の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());
 
 	// ライトの描画
 	sLightGroup_->Draw();
