@@ -92,6 +92,7 @@ void PipelineObj::CreatePipeline() {
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+	blenddesc = pipelineDesc.BlendState.RenderTarget[1];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
 
 	// アルファ値共通設定
@@ -113,8 +114,9 @@ void PipelineObj::CreatePipeline() {
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	// その他の設定
-	pipelineDesc.NumRenderTargets = 1;								// 描画対象は1つ
+	pipelineDesc.NumRenderTargets = 2;								// 描画対象は2つ
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;	// 0~255指定のRGBA
+	pipelineDesc.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;	// 0~255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1;								// 1ピクセルにつき1回サンプリング
 
 	// テクスチャサンプラーの設定

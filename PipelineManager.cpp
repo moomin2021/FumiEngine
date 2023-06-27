@@ -56,13 +56,13 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Sprite"]->CreateRootParams(2);
 	pipelineObj_["Sprite"]->CreatePipeline();
 
-	AddPipeline("PostEffectTest");
-	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestPS.hlsl", PS);
-	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestVS.hlsl", VS);
-	pipelineObj_["PostEffectTest"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["PostEffectTest"]->CreateRootParams(2);
-	pipelineObj_["PostEffectTest"]->CreatePipeline();
+	//AddPipeline("PostEffectTest");
+	//pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestPS.hlsl", PS);
+	//pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestVS.hlsl", VS);
+	//pipelineObj_["PostEffectTest"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	//pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	//pipelineObj_["PostEffectTest"]->CreateRootParams(2);
+	//pipelineObj_["PostEffectTest"]->CreatePipeline();
 }
 
 void PipelineManager::AddPipeline(std::string pipelineName)

@@ -3,6 +3,7 @@
 #include "float3.h"
 #include "float4.h"
 #include "Matrix4.h"
+#include "Key.h"
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -27,6 +28,9 @@ class PostEffect {
 
 #pragma region メンバ変数
 private:
+	// キーボードインスタンス
+	Key* key_;
+
 	// スプライトデータ
 	float2 position_;	// 座標(XY)
 	float rotation_;	// 回転(Z)
@@ -59,7 +63,7 @@ private:
 	D3D12_INDEX_BUFFER_VIEW indexView_;	// インデックスバッファビュー
 
 	// テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff_;
+	std::vector<ComPtr<ID3D12Resource>> texBuff_;
 
 	// SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV_;

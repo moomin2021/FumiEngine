@@ -45,7 +45,7 @@ PostEffect::PostEffect() :
 	indexView_{},		// インデックスバッファビュー
 
 	// テクスチャバッファ
-	texBuff_(nullptr),
+	texBuff_(2),
 	
 	// SRV用デスクリプタヒープ
 	descHeapSRV_(nullptr),
@@ -60,6 +60,8 @@ PostEffect::PostEffect() :
 	descHeapDSV_(nullptr)
 #pragma endregion
 {
+	key_ = Key::GetInstance();
+
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
@@ -107,40 +109,42 @@ PostEffect::PostEffect() :
 		CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor_.data());
 
 	// テクスチャバッファの生成
-	result = device->CreateCommittedResource(
-		&texHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&textureDesc,
-		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-		&texClearValue,
-		IID_PPV_ARGS(&texBuff_));
-	assert(SUCCEEDED(result));
-
-	// イメージデータ
-	{
-		// 画素数
-		const UINT pixelCount = static_cast<UINT>(winWidth * winHeight);
-
-		// 画像一行分のデータサイズ
-		const UINT rowPitch = sizeof(UINT) * static_cast<UINT>(winWidth);
-
-		const UINT depthPitch = rowPitch * static_cast<UINT>(winHeight);
-
-		// 画像イメージ
-		std::vector<UINT> img(pixelCount);
-		for (size_t i = 0; i < pixelCount; i++) { img[i] = 0xff0000ff; }
-
-		// テクスチャバッファにデータ転送
-		result = texBuff_->WriteToSubresource(
-			0, nullptr, img.data(), rowPitch, depthPitch);
+	for (size_t i = 0; i < 2; i++) {
+		result = device->CreateCommittedResource(
+			&texHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&textureDesc,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			&texClearValue,
+			IID_PPV_ARGS(&texBuff_[i]));
 		assert(SUCCEEDED(result));
+
+		// イメージデータ
+		{
+			// 画素数
+			const UINT pixelCount = static_cast<UINT>(winWidth * winHeight);
+
+			// 画像一行分のデータサイズ
+			const UINT rowPitch = sizeof(UINT) * static_cast<UINT>(winWidth);
+
+			const UINT depthPitch = rowPitch * static_cast<UINT>(winHeight);
+
+			// 画像イメージ
+			std::vector<UINT> img(pixelCount);
+			for (size_t j = 0; j < pixelCount; j++) { img[j] = 0xff0000ff; }
+
+			// テクスチャバッファにデータ転送
+			result = texBuff_[i]->WriteToSubresource(
+				0, nullptr, img.data(), rowPitch, depthPitch);
+			assert(SUCCEEDED(result));
+		}
 	}
 	
 	// SRV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
 	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 1;
+	srvDescHeapDesc.NumDescriptors = 2;
 
 	// SRV用デスクリプタヒープを生成
 	result = device->CreateDescriptorHeap(
@@ -156,13 +160,19 @@ PostEffect::PostEffect() :
 	srvDesc.Texture3D.MipLevels = 1;
 
 	// デスクリプタヒープにSRV作成
-	device->CreateShaderResourceView(texBuff_.Get(),// ビューと関連付けるバッファ
-		&srvDesc, descHeapSRV_->GetCPUDescriptorHandleForHeapStart());
+	for (size_t i = 0; i < 2; i++) {
+		CD3DX12_CPU_DESCRIPTOR_HANDLE descHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeapSRV_->GetCPUDescriptorHandleForHeapStart(), static_cast<INT>(i),
+			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+
+		device->CreateShaderResourceView(texBuff_[i].Get(),// ビューと関連付けるバッファ
+			&srvDesc, descHandle);
+	}
 
 	// RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtvDescHeapDesc.NumDescriptors = 1;
+	rtvDescHeapDesc.NumDescriptors = 2;
 
 	// RTV用デスクリプタヒープを生成
 	result = device->CreateDescriptorHeap(
@@ -177,9 +187,12 @@ PostEffect::PostEffect() :
 	renderTargetViewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 	// デスクリプタヒープにRTV作成
-	device->CreateRenderTargetView(
-		texBuff_.Get(), &renderTargetViewDesc,
-		descHeapRTV_->GetCPUDescriptorHandleForHeapStart());
+	for (size_t i = 0; i < 2; i++) {
+		device->CreateRenderTargetView(
+			texBuff_[i].Get(), nullptr,
+			CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapRTV_->GetCPUDescriptorHandleForHeapStart(), static_cast<INT>(i),
+				device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)));
+	}
 
 	// 深度バッファリソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc =
@@ -227,6 +240,9 @@ PostEffect::PostEffect() :
 
 void PostEffect::Draw()
 {
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
@@ -259,7 +275,16 @@ void PostEffect::Draw()
 	//srvGpuHandle.ptr += textureHandle;
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV_->GetGPUDescriptorHandleForHeapStart());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE descHandle0 = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		descHeapSRV_->GetGPUDescriptorHandleForHeapStart(), 0,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	cmdList->SetGraphicsRootDescriptorTable(1, descHandle0);
+
+	// 指定されたSRVをルートパラメータ2番に設定
+	CD3DX12_GPU_DESCRIPTOR_HANDLE descHandle1 = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		descHeapSRV_->GetGPUDescriptorHandleForHeapStart(), 1,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	cmdList->SetGraphicsRootDescriptorTable(2, descHandle1);
 
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
@@ -279,47 +304,64 @@ void PostEffect::PreDraw()
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// ウィンドウサイズを取得
 	float winWidth = static_cast<float>(WinAPI::GetInstance()->GetWidth());
 	float winHeight = static_cast<float>(WinAPI::GetInstance()->GetHeight());
 
-	CD3DX12_RESOURCE_BARRIER resourceBarrier =
-		CD3DX12_RESOURCE_BARRIER::Transition(texBuff_.Get(),
-			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			D3D12_RESOURCE_STATE_RENDER_TARGET);
+	for (size_t i = 0; i < 2; i++) {
+		CD3DX12_RESOURCE_BARRIER resourceBarrier =
+			CD3DX12_RESOURCE_BARRIER::Transition(texBuff_[i].Get(),
+				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+				D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	// リソースバリアを変更(シェーダーリソース->描画可能)
-	cmdList->ResourceBarrier(1, &resourceBarrier);
+		// リソースバリアを変更(シェーダーリソース->描画可能)
+		cmdList->ResourceBarrier(1, &resourceBarrier);
+	}
 
 	// レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvH =
-		descHeapRTV_->GetCPUDescriptorHandleForHeapStart();
+	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> rtvHs(2);
+
+	for (size_t i = 0; i < 2; i++) {
+		CD3DX12_CPU_DESCRIPTOR_HANDLE descHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeapRTV_->GetCPUDescriptorHandleForHeapStart(), static_cast<INT>(i),
+			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+		rtvHs[i] = descHandle;
+	}
 
 	// 深度ステンシルビュー用デスクリプタヒープのハンドル取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH =
 		descHeapDSV_->GetCPUDescriptorHandleForHeapStart();
 
 	// レンダーターゲットをセット
-	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
+	cmdList->OMSetRenderTargets(2, rtvHs.data(), false, &dsvH);
 
 	// ビューポート設定
-	CD3DX12_VIEWPORT viewPort =
-		CD3DX12_VIEWPORT(0.0f, 0.0f, winWidth, winHeight);
+	std::vector<CD3DX12_VIEWPORT> viewPorts(2);
 
-	cmdList->RSSetViewports(1, &viewPort);
+	for (size_t i = 0; i < 2; i++) {
+		viewPorts[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, winWidth, winHeight);
+	}
+
+	cmdList->RSSetViewports(1, viewPorts.data());
 
 	// シザリング矩形の設定
-	CD3DX12_RECT rect =
-		CD3DX12_RECT(
-			0, 0,
-			static_cast<LONG>(winWidth), 
-			static_cast<LONG>(winHeight));
+	std::vector<CD3DX12_RECT> rects(2);
+
+	for (size_t i = 0; i < 2; i++) {
+		rects[i] = CD3DX12_RECT(0, 0, static_cast<LONG>(winWidth), static_cast<LONG>(winHeight));
+	}
 
 	cmdList->RSSetScissorRects(
-		1, &rect);
+		2, rects.data());
 
 	// 全画面クリア
-	cmdList->ClearRenderTargetView(rtvH, clearColor_.data(), 0, nullptr);
+	for (size_t i = 0; i < 2; i++) {
+		cmdList->ClearRenderTargetView(rtvHs[i], clearColor_.data(), 0, nullptr);
+	}
 
 	// 深度バッファのクリア
 	cmdList->ClearDepthStencilView(
@@ -332,12 +374,14 @@ void PostEffect::PostDraw()
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
 	// リソースバリアを変更(描画可能->シェーダーリソース)
-	CD3DX12_RESOURCE_BARRIER resourceBarrier =
-		CD3DX12_RESOURCE_BARRIER::Transition(texBuff_.Get(),
-			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+	for (size_t i = 0; i < 2; i++) {
+		CD3DX12_RESOURCE_BARRIER resourceBarrier =
+			CD3DX12_RESOURCE_BARRIER::Transition(texBuff_[i].Get(),
+				D3D12_RESOURCE_STATE_RENDER_TARGET,
+				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
-	cmdList->ResourceBarrier(1, &resourceBarrier);
+		cmdList->ResourceBarrier(1, &resourceBarrier);
+	}
 }
 
 void PostEffect::UpdateData()
