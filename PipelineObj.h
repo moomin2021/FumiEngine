@@ -32,12 +32,9 @@ private:
 
 	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_;
-#pragma endregion
 
-#pragma region クラス間共通メンバ変数
-private:
-	// デスクリプタレンジの設定
-	static CD3DX12_DESCRIPTOR_RANGE descRangeSRV_;
+	// デスクリプタレンジ
+	std::vector <CD3DX12_DESCRIPTOR_RANGE> descRangeSRV_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -65,10 +62,15 @@ public:
 	/// <summary>
 	/// ルートパラメータ作成
 	/// </summary>
-	/// <param name="addValue"> 作成するルートパラメータの数 </param>
-	void CreateRootParams(uint16_t addValue);
+	/// <param name="texRegisterNum"> テクスチャレジスタ数 </param>
+	/// <param name="constBuffNum"> 定数バッファの数 </param>
+	void CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum);
 
-	void CreatePipeline();
+	/// <summary>
+	/// パイプライン作成
+	/// </summary>
+	/// <param name="renderTargetNum"> レンダーターゲットの数 </param>
+	void CreatePipeline(uint16_t renderTargetNum);
 
 private:
 	/// <summary>

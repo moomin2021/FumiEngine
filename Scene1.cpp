@@ -108,5 +108,5 @@ void Scene1::Draw()
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
 
-	sHae_->Draw();
+	//sHae_->Draw();
 }

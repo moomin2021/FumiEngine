@@ -13,7 +13,7 @@ PipelineManager* PipelineManager::GetInstance()
 	return &inst;
 }
 
-void PipelineManager::PreDraw(std::string pipelineName)
+void PipelineManager::PreDraw(std::string pipelineName, bool isDescHeap)
 {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
@@ -34,8 +34,10 @@ void PipelineManager::PreDraw(std::string pipelineName)
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// デスクリプタヒープの配列をセットするコマンド
-	std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
-	cmdList->SetDescriptorHeaps(1, ppHeaps.data());
+	if (isDescHeap) {
+		std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
+		cmdList->SetDescriptorHeaps(1, ppHeaps.data());
+	}
 }
 
 PipelineManager::PipelineManager() {
@@ -45,24 +47,24 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineObj_["Object3D"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineObj_["Object3D"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["Object3D"]->CreateRootParams(4);
-	pipelineObj_["Object3D"]->CreatePipeline();
+	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
+	pipelineObj_["Object3D"]->CreatePipeline(2);
 
 	AddPipeline("Sprite");
 	pipelineObj_["Sprite"]->LoadShader("Resources/Shaders/SpritePS.hlsl", PS);
 	pipelineObj_["Sprite"]->LoadShader("Resources/Shaders/SpriteVS.hlsl", VS);
 	pipelineObj_["Sprite"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Sprite"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["Sprite"]->CreateRootParams(2);
-	pipelineObj_["Sprite"]->CreatePipeline();
+	pipelineObj_["Sprite"]->CreateRootParams(1, 1);
+	pipelineObj_["Sprite"]->CreatePipeline(1);
 
-	//AddPipeline("PostEffectTest");
-	//pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestPS.hlsl", PS);
-	//pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestVS.hlsl", VS);
-	//pipelineObj_["PostEffectTest"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
-	//pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	//pipelineObj_["PostEffectTest"]->CreateRootParams(2);
-	//pipelineObj_["PostEffectTest"]->CreatePipeline();
+	AddPipeline("PostEffectTest");
+	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestPS.hlsl", PS);
+	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestVS.hlsl", VS);
+	pipelineObj_["PostEffectTest"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["PostEffectTest"]->CreateRootParams(2, 1);
+	pipelineObj_["PostEffectTest"]->CreatePipeline(2);
 }
 
 void PipelineManager::AddPipeline(std::string pipelineName)
