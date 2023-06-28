@@ -22,13 +22,16 @@ void Scene1::Initialize()
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
 
-	//// カメラ
-	//camera_ = std::make_unique<Camera>();
-	//camera_->SetEye({ 0.0f, 10.0f, -30.0f });
+	// 生成
+	loadBle_ = std::make_unique<LoadBlender>();
+
+	// カメラ
+	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
 
 	//// モデル
 	//mFloor_ = std::make_unique<Model>("floor");
-	//mCube_ = std::make_unique<Model>("cube");
+	mCube_ = std::make_unique<Model>("cube");
 
 	//// オブジェクト
 	//oFloor_ = std::make_unique<Object3D>(mFloor_.get());
@@ -42,8 +45,8 @@ void Scene1::Initialize()
 	//oCube_[1] = std::make_unique<Object3D>(mCube_.get());
 	//oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
-	//oCube_[2] = std::make_unique<Object3D>(mCube_.get());
-	//oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
+	oCube_ = std::make_unique<Object3D>(mCube_.get());
+	oCube_->SetPosition({ 0.0f, 1.0f, 0.0f });
 
 	//// テクスチャハンドル
 	//haeHandle_ = LoadTexture("Resources/hae.png");
@@ -52,22 +55,19 @@ void Scene1::Initialize()
 	//sHae_ = std::make_unique<Sprite>();
 	//sHae_->SetPosition({ 0.0f, 0.0f });
 
-	//// ライト生成
-	//lightGroup_ = std::make_unique<LightGroup>();
-	//dirLight_ = std::make_unique<DirectionalLight>();
-	//pointLight_ = std::make_unique<PointLight>();
+	// ライト生成
+	lightGroup_ = std::make_unique<LightGroup>();
+	dirLight_ = std::make_unique<DirectionalLight>();
 
-	//dirLight_->SetLightColor({ 1.0f, 0.0f, 0.0f });
-	//pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
+	dirLight_->SetLightColor({ 1.0f, 0.0f, 0.0f });
 
-	////lightGroup_->AddDirLight(dirLight_.get());
-	//lightGroup_->AddPointLight(pointLight_.get());
+	lightGroup_->AddDirLight(dirLight_.get());
 
-	//// カメラを設定
-	//Object3D::SetCamera(camera_.get());
+	// カメラを設定
+	Object3D::SetCamera(camera_.get());
 
-	//// ライトを設定
-	//Object3D::SetLightGroup(lightGroup_.get());
+	// ライトを設定
+	Object3D::SetLightGroup(lightGroup_.get());
 }
 
 void Scene1::Update()
@@ -101,9 +101,11 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	//PipelineManager::GetInstance()->PreDraw("Object3D");
+	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	//oFloor_->Draw();
+	loadBle_->Draw();
+
+	oCube_->Draw();
 	//for (auto& object : oCube_) object->Draw();
 
 	//PipelineManager::GetInstance()->PreDraw("Sprite");

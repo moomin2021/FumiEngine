@@ -1,7 +1,6 @@
 #pragma once
+#include "LoadBlender.h"
 #include "BaseScene.h"
-#include "Model.h"
-#include "Object3D.h"
 #include "Sprite.h"
 #include "Camera.h"
 #include "LightGroup.h"
@@ -15,6 +14,20 @@ class Scene1 : public BaseScene
 private:
 	// キーボード入力
 	Key* key_;
+
+	// ブレンダーから読み込んだシーン
+	std::unique_ptr<LoadBlender> loadBle_;
+
+	// カメラ
+	std::unique_ptr<Camera> camera_;
+
+	// ライトグループ
+	std::unique_ptr<LightGroup> lightGroup_;
+	std::unique_ptr<DirectionalLight> dirLight_;
+
+	std::unique_ptr<Model> mCube_;
+
+	std::unique_ptr<Object3D> oCube_;
 
 	// --メンバ関数-- //
 public:
