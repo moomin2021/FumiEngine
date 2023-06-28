@@ -23,8 +23,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --テクスチャクラス-- //
 	Texture::GetInstance()->Initialize();
 
-	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
-
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
@@ -39,19 +37,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
-		postEffect->PreDraw();
-
-		SceneManager::GetInstance()->Draw();
-
-		postEffect->PostDraw();
-
 		// --描画前処理-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
-		postEffect->Draw();
-
 		// シーン管理クラス描画処理
-		//SceneManager::GetInstance()->Draw();
+		SceneManager::GetInstance()->Draw();
 
 		// --描画後処理-- //
 		DX12Cmd::GetInstance()->PostDraw();
