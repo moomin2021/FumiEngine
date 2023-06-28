@@ -57,11 +57,11 @@ void Scene1::Initialize()
 	dirLight_ = std::make_unique<DirectionalLight>();
 	pointLight_ = std::make_unique<PointLight>();
 
-	dirLight_->SetLightColor({ 1.0f, 0.0f, 0.0f });
+	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
 	pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
 
-	//lightGroup_->AddDirLight(dirLight_.get());
-	lightGroup_->AddPointLight(pointLight_.get());
+	lightGroup_->AddDirLight(dirLight_.get());
+	//lightGroup_->AddPointLight(pointLight_.get());
 
 	// ƒJƒƒ‰‚ðÝ’è
 	Object3D::SetCamera(camera_.get());
@@ -108,5 +108,5 @@ void Scene1::Draw()
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
 
-	sHae_->Draw();
+	//sHae_->Draw();
 }
