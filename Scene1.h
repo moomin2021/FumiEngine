@@ -1,7 +1,6 @@
 #pragma once
+#include "LoadBlender.h"
 #include "BaseScene.h"
-#include "Model.h"
-#include "Object3D.h"
 #include "Sprite.h"
 #include "Camera.h"
 #include "LightGroup.h"
@@ -18,6 +17,8 @@ private:
 
 	// ƒJƒƒ‰
 	std::unique_ptr<Camera> camera_;
+
+	std::unique_ptr<LoadBlender> loadBle_;
 
 	// ƒ‰ƒCƒg
 	std::unique_ptr<LightGroup> lightGroup_;

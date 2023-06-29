@@ -18,6 +18,8 @@ Object3D::Object3D(Model* model) :
 	// オブジェクトデータを変更したかどうか
 	hasChanget_(true),
 
+	isActive_(true),
+
 	// ワールド行列
 	matWorld_{},
 
@@ -68,6 +70,8 @@ Object3D::Object3D(Model* model) :
 }
 
 void Object3D::Draw() {
+	if (isActive_ == false) return;
+
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 

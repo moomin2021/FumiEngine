@@ -22,6 +22,8 @@ void Scene1::Initialize()
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
 
+	loadBle_ = std::make_unique<LoadBlender>();
+
 	// カメラ
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
@@ -103,8 +105,9 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	oFloor_->Draw();
-	for (auto& object : oCube_) object->Draw();
+	loadBle_->Draw();
+	//oFloor_->Draw();
+	//for (auto& object : oCube_) object->Draw();
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
 

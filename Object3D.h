@@ -26,6 +26,8 @@ private:
 	// オブジェクトデータを変更したかどうか
 	bool hasChanget_;
 
+	bool isActive_;
+
 	// ワールド行列
 	Matrix4 matWorld_;
 
@@ -88,6 +90,12 @@ public:
 	/// </summary>
 	/// <param name="model"> モデル </param>
 	inline void SetModel(Model* model) { model_ = model; }
+
+	/// <summary>
+	/// 有効フラグ設定
+	/// </summary>
+	/// <param name="flag"> 有効フラグ </param>
+	inline void SetActive(bool flag) { isActive_ = flag; }
 
 	/// <summary>
 	/// カメラを設定

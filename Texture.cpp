@@ -58,6 +58,11 @@ uint16_t Texture::LoadTexture(const std::string fileName)
 		mipChain
 	);
 
+	if (SUCCEEDED(result)) {
+		scratchImg = std::move(mipChain);
+		metadata = scratchImg.GetMetadata();
+	}
+
 	// 読み込んだディフューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
 

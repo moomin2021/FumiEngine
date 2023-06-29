@@ -14,6 +14,7 @@ class LoadBlender
 		// オブジェクト1個分のデータ
 		struct ObjectData {
 			// ファイル名
+			int isActive;
 			std::string fileName;
 			float3 translation;
 			float3 rotation;
