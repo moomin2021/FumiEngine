@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"// -> 各シーンのベース
 #include "Key.h"// -> キーボード入力
+#include "PostEffect.h"
 
 #include <memory>
 
@@ -19,6 +20,13 @@ private:
 
 	// 現在のシーン
 	std::unique_ptr<BaseScene> nowScene_;
+
+	// ポストエフェクト
+	std::unique_ptr<PostEffect> highLumiPostEffect_;
+	std::unique_ptr<PostEffect> bloomPostEffect_;
+
+	// 現在のポストエフェクト
+	std::unique_ptr<PostEffect> nowPostEffect_;
 
 	// --メンバ関数-- //
 public:

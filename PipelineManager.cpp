@@ -65,6 +65,22 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["PostEffectTest"]->CreateRootParams(2, 1);
 	pipelineObj_["PostEffectTest"]->CreatePipeline(2);
+
+	AddPipeline("HighLumi");
+	pipelineObj_["HighLumi"]->LoadShader("Resources/Shaders/HighLumiPS.hlsl", PS);
+	pipelineObj_["HighLumi"]->LoadShader("Resources/Shaders/HighLumiVS.hlsl", VS);
+	pipelineObj_["HighLumi"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["HighLumi"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["HighLumi"]->CreateRootParams(2, 1);
+	pipelineObj_["HighLumi"]->CreatePipeline(2);
+
+	AddPipeline("Bloom");
+	pipelineObj_["Bloom"]->LoadShader("Resources/Shaders/BloomPS.hlsl", PS);
+	pipelineObj_["Bloom"]->LoadShader("Resources/Shaders/BloomVS.hlsl", VS);
+	pipelineObj_["Bloom"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Bloom"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Bloom"]->CreateRootParams(2, 1);
+	pipelineObj_["Bloom"]->CreatePipeline(1);
 }
 
 void PipelineManager::AddPipeline(std::string pipelineName)

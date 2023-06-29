@@ -194,7 +194,7 @@ public:
 	/// <summary>
 	/// •`‰æˆ—
 	/// </summary>
-	void Draw();
+	void Draw(bool isDescHeap = true);
 
 	/// <summary>
 	/// •`‰æ‘Oˆ—

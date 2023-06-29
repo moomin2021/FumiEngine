@@ -75,7 +75,7 @@ PostEffect::PostEffect() :
 	CreateDSVDescHeap();
 }
 
-void PostEffect::Draw()
+void PostEffect::Draw(bool isDescHeap)
 {
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
@@ -83,30 +83,17 @@ void PostEffect::Draw()
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// インスタンス取得
-	Texture* tex = Texture::GetInstance();
-
 	// パイプライン取得
 	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelinePostEffectTest();
 
 	// スプライトデータの更新処理
 	UpdateData();
 
-	//// パイプラインステートの設定
-	//cmdList->SetPipelineState(pipeline.pipelineState.Get());
-
-	//// ルートシグネチャの設定
-	//cmdList->SetGraphicsRootSignature(pipeline.rootSignature.Get());
-
-	//// プリミティブ形状を設定
-	//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	// デスクリプタヒープの配列をセットするコマンド
-	std::vector<ID3D12DescriptorHeap*> ppHeaps = { descHeapSRV_.Get()};
-	cmdList->SetDescriptorHeaps(1, ppHeaps.data());
-
-	// ハンドルを指定された分まで進める
-	//srvGpuHandle.ptr += textureHandle;
+	if (isDescHeap) {
+		std::vector<ID3D12DescriptorHeap*> ppHeaps = { descHeapSRV_.Get() };
+		cmdList->SetDescriptorHeaps(1, ppHeaps.data());
+	}
 
 	// 指定されたSRVをルートパラメータ1番に設定
 	CD3DX12_GPU_DESCRIPTOR_HANDLE descHandle0 = CD3DX12_GPU_DESCRIPTOR_HANDLE(

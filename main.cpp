@@ -5,8 +5,6 @@
 #include "Key.h"// -> キーボード入力
 #include "Mouse.h"// -> マウスキーボード入力
 #include "Object3D.h"// -> オブジェクト3Dクラス
-#include "PostEffect.h"
-#include "PipelineManager.h"
 #pragma endregion
 
 #include "SceneManager.h"
@@ -23,10 +21,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --テクスチャクラス-- //
 	Texture::GetInstance()->Initialize();
 
-	PipelineManager::GetInstance();
-
-	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
-
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
@@ -41,24 +35,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
-		postEffect->PreDraw();
-
-		SceneManager::GetInstance()->Draw();
-
-		postEffect->PostDraw();
-
-		// --描画前処理-- //
-		DX12Cmd::GetInstance()->PreDraw();
-
-		PipelineManager::GetInstance()->PreDraw("PostEffectTest", false);
-
-		postEffect->Draw();
-
 		// シーン管理クラス描画処理
-		//SceneManager::GetInstance()->Draw();
-
-		// --描画後処理-- //
-		DX12Cmd::GetInstance()->PostDraw();
+		SceneManager::GetInstance()->Draw();
 	}
 
 	return 0;
