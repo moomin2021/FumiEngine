@@ -58,13 +58,13 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Sprite"]->CreateRootParams(1, 1);
 	pipelineObj_["Sprite"]->CreatePipeline(1);
 
-	AddPipeline("PostEffectTest");
-	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestPS.hlsl", PS);
-	pipelineObj_["PostEffectTest"]->LoadShader("Resources/Shaders/PostEffectTestVS.hlsl", VS);
-	pipelineObj_["PostEffectTest"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["PostEffectTest"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineObj_["PostEffectTest"]->CreateRootParams(2, 1);
-	pipelineObj_["PostEffectTest"]->CreatePipeline(2);
+	AddPipeline("Gaussian");
+	pipelineObj_["Gaussian"]->LoadShader("Resources/Shaders/GaussianPS.hlsl", PS);
+	pipelineObj_["Gaussian"]->LoadShader("Resources/Shaders/GaussianVS.hlsl", VS);
+	pipelineObj_["Gaussian"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Gaussian"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Gaussian"]->CreateRootParams(2, 1);
+	pipelineObj_["Gaussian"]->CreatePipeline(2);
 
 	AddPipeline("HighLumi");
 	pipelineObj_["HighLumi"]->LoadShader("Resources/Shaders/HighLumiPS.hlsl", PS);

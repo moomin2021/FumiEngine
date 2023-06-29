@@ -10,6 +10,12 @@ enum SCENE {
 	SCENE1,
 };
 
+enum PostEffectType {
+	NORMAL,
+	BLUR,
+	BLOOM
+};
+
 class SceneManager {
 	// --メンバ変数-- //
 public:
@@ -22,11 +28,15 @@ private:
 	std::unique_ptr<BaseScene> nowScene_;
 
 	// ポストエフェクト
+	std::unique_ptr<PostEffect> gaussianPostEffect_;
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
 	std::unique_ptr<PostEffect> bloomPostEffect_;
 
 	// 現在のポストエフェクト
 	std::unique_ptr<PostEffect> nowPostEffect_;
+
+	// ポストエフェクトの種類
+	PostEffectType postEffectType_;
 
 	// --メンバ関数-- //
 public:

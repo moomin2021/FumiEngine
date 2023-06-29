@@ -20,6 +20,7 @@ SceneManager::SceneManager() {
 	nowScene_ = std::make_unique<Scene1>();
 	nowScene_->Initialize();
 
+	gaussianPostEffect_ = std::make_unique<PostEffect>();
 	highLumiPostEffect_ = std::make_unique<PostEffect>();
 	bloomPostEffect_ = std::make_unique<PostEffect>();
 
@@ -47,7 +48,9 @@ void SceneManager::ChangeScene(int changeSceneNum)
 // XVˆ—
 void SceneManager::Update() {
 
-	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE::SCENE1);
+	if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
+	if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
+	if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
 	nowScene_->Update();
 }
@@ -55,26 +58,56 @@ void SceneManager::Update() {
 // •`‰æˆ—
 void SceneManager::Draw()
 {
-	highLumiPostEffect_->PreDraw();
+	if (PostEffectType::NORMAL == postEffectType_) {
+		// --•`‰æ‘Oˆ—-- //
+		DX12Cmd::GetInstance()->PreDraw();
 
-	nowScene_->Draw();
+		nowScene_->Draw();
 
-	highLumiPostEffect_->PostDraw();
+		// --•`‰æŒãˆ—-- //
+		DX12Cmd::GetInstance()->PostDraw();
+	}
 
-	bloomPostEffect_->PreDraw();
+	else if (PostEffectType::BLUR == postEffectType_) {
+		gaussianPostEffect_->PreDraw();
 
-	PipelineManager::GetInstance()->PreDraw("HighLumi");
-	highLumiPostEffect_->Draw();
+		nowScene_->Draw();
 
-	bloomPostEffect_->PostDraw();
+		gaussianPostEffect_->PostDraw();
 
-	// --•`‰æ‘Oˆ—-- //
-	DX12Cmd::GetInstance()->PreDraw();
+		// --•`‰æ‘Oˆ—-- //
+		DX12Cmd::GetInstance()->PreDraw();
 
-	PipelineManager::GetInstance()->PreDraw("Bloom");
+		PipelineManager::GetInstance()->PreDraw("Gaussian");
 
-	bloomPostEffect_->Draw();
+		gaussianPostEffect_->Draw();
 
-	// --•`‰æŒãˆ—-- //
-	DX12Cmd::GetInstance()->PostDraw();
+		// --•`‰æŒãˆ—-- //
+		DX12Cmd::GetInstance()->PostDraw();
+	}
+
+	else if (PostEffectType::BLOOM == postEffectType_) {
+		highLumiPostEffect_->PreDraw();
+
+		nowScene_->Draw();
+
+		highLumiPostEffect_->PostDraw();
+
+		bloomPostEffect_->PreDraw();
+
+		PipelineManager::GetInstance()->PreDraw("HighLumi");
+		highLumiPostEffect_->Draw();
+
+		bloomPostEffect_->PostDraw();
+
+		// --•`‰æ‘Oˆ—-- //
+		DX12Cmd::GetInstance()->PreDraw();
+
+		PipelineManager::GetInstance()->PreDraw("Bloom");
+
+		bloomPostEffect_->Draw();
+
+		// --•`‰æŒãˆ—-- //
+		DX12Cmd::GetInstance()->PostDraw();
+	}
 }
