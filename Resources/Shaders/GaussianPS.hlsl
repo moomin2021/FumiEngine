@@ -19,7 +19,7 @@ float4 main(VSOutput input) : SV_TARGET
     {
         for (float px = -_Sigma * 2; px <= _Sigma * 2; px += _StepWidth)
         {
-            float2 pickUV = input.uv + float2(px, py);
+            float2 pickUV = clamp(input.uv + float2(px, py), 0.01, 0.99);
             float weight = Gaussian(input.uv, pickUV, _Sigma);
 
             // Gaussianで取得した「重み」を色にかける

@@ -12,7 +12,23 @@ SceneManager* SceneManager::GetInstance()
 }
 
 // コンストラクタ
-SceneManager::SceneManager() {
+SceneManager::SceneManager() :
+#pragma region 初期化リスト
+	// キーボード入力クラス
+	key_(nullptr),
+
+	// 現在のシーン
+	nowScene_(nullptr),
+
+	// ポストエフェクト
+	gaussianPostEffect_(nullptr),
+	highLumiPostEffect_(nullptr),
+	bloomPostEffect_(nullptr),
+
+	// ポストエフェクトの種類
+	postEffectType_(PostEffectType::NORMAL)
+#pragma endregion
+{
 	// インスタンス取得
 	key_ = Key::GetInstance();
 
@@ -23,8 +39,6 @@ SceneManager::SceneManager() {
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
 	highLumiPostEffect_ = std::make_unique<PostEffect>();
 	bloomPostEffect_ = std::make_unique<PostEffect>();
-
-	//nowPostEffect_ = std::move(postEffect_);
 
 	PipelineManager::GetInstance();
 }

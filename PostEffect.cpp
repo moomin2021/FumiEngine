@@ -9,7 +9,7 @@
 
 using namespace DirectX;
 
-const std::vector<float> PostEffect::clearColor_ = { 0.25f, 0.5f, 0.1f, 0.0f };
+const std::vector<float> PostEffect::clearColor_ = { 0.1f, 0.25, 0.5f, 0.0f };
 
 PostEffect::PostEffect() :
 #pragma region ‰Šú‰»ƒŠƒXƒg

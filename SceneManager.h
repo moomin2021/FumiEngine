@@ -32,9 +32,6 @@ private:
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
 	std::unique_ptr<PostEffect> bloomPostEffect_;
 
-	// 現在のポストエフェクト
-	std::unique_ptr<PostEffect> nowPostEffect_;
-
 	// ポストエフェクトの種類
 	PostEffectType postEffectType_;
 
