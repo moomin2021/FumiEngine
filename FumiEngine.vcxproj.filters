@@ -250,6 +250,15 @@
     <None Include="Resources\Shaders\PostEffectTest.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
+    <None Include="Resources\Shaders\Gaussian.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\HighLumi.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\Bloom.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -268,6 +277,24 @@
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectTestVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HighLumiPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HighLumiVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\BloomPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\BloomVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>

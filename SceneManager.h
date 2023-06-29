@@ -1,12 +1,19 @@
 #pragma once
 #include "BaseScene.h"// -> 各シーンのベース
 #include "Key.h"// -> キーボード入力
+#include "PostEffect.h"
 
 #include <memory>
 
 // シーン列挙型
 enum SCENE {
 	SCENE1,
+};
+
+enum PostEffectType {
+	NORMAL,
+	BLUR,
+	BLOOM
 };
 
 class SceneManager {
@@ -19,6 +26,14 @@ private:
 
 	// 現在のシーン
 	std::unique_ptr<BaseScene> nowScene_;
+
+	// ポストエフェクト
+	std::unique_ptr<PostEffect> gaussianPostEffect_;
+	std::unique_ptr<PostEffect> highLumiPostEffect_;
+	std::unique_ptr<PostEffect> bloomPostEffect_;
+
+	// ポストエフェクトの種類
+	PostEffectType postEffectType_;
 
 	// --メンバ関数-- //
 public:

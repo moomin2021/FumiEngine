@@ -25,7 +25,7 @@ public:
 	/// 描画前処理
 	/// </summary>
 	/// <param name="pipelineName"> パイプライン名前 </param>
-	static void PreDraw(std::string pipelineName);
+	static void PreDraw(std::string pipelineName, bool isDescHeap = true);
 
 private:
 	/// <summary>
