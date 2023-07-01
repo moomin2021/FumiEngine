@@ -69,174 +69,174 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="WinAPI.cpp">
+    <ClCompile Include="Engine\Base\WinAPI.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="DX12Cmd.cpp">
+    <ClCompile Include="Engine\Base\DX12Cmd.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="Engine\Base\Texture.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Pipeline.cpp">
+    <ClCompile Include="Engine\Base\Pipeline.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>ソース ファイル\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="Engine\3d\Camera.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Util.cpp">
+    <ClCompile Include="Engine\Util\Util.cpp">
       <Filter>ソース ファイル\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Key.cpp">
+    <ClCompile Include="Engine\Input\Key.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="BillBoard.cpp">
+    <ClCompile Include="Engine\3d\BillBoard.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Object3D.cpp">
+    <ClCompile Include="Engine\3d\Object3D.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="Engine\3d\Model.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
+    <ClCompile Include="Engine\Input\Mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3.cpp">
+    <ClCompile Include="Engine\Util\Math\Vector3.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
+    <ClCompile Include="Engine\Util\Math\Vector2.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4.cpp">
+    <ClCompile Include="Engine\Util\Math\Matrix4.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Scene1.cpp">
+    <ClCompile Include="Application\Scene\Scene1.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TemplateScene.cpp">
+    <ClCompile Include="Application\Scene\TemplateScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="LightGroup.cpp">
+    <ClCompile Include="Engine\Light\LightGroup.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
-    <ClCompile Include="float4.cpp">
+    <ClCompile Include="Engine\Util\Math\float4.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="float3.cpp">
+    <ClCompile Include="Engine\Util\Math\float3.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="float2.cpp">
+    <ClCompile Include="Engine\Util\Math\float2.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="PostEffect.cpp">
+    <ClCompile Include="Engine\2d\PostEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PipelineManager.cpp">
+    <ClCompile Include="Engine\Base\PipelineManager.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="PipelineObj.cpp">
+    <ClCompile Include="Engine\Base\PipelineObj.cpp">
       <Filter>ソース ファイル\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WinAPI.h">
+    <ClInclude Include="Engine\Base\WinAPI.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="DX12Cmd.h">
+    <ClInclude Include="Engine\Base\DX12Cmd.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Engine\Base\Texture.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Pipeline.h">
+    <ClInclude Include="Engine\Base\Pipeline.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="Engine\2d\Sprite.h">
       <Filter>ヘッダー ファイル\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="Engine\3d\Camera.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Util.h">
+    <ClInclude Include="Engine\Util\Util.h">
       <Filter>ヘッダー ファイル\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Key.h">
+    <ClInclude Include="Engine\Input\Key.h">
       <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
-    <ClInclude Include="BillBoard.h">
+    <ClInclude Include="Engine\3d\BillBoard.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
+    <ClInclude Include="Application\Scene\SceneManager.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="BaseScene.h">
+    <ClInclude Include="Application\Scene\BaseScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Object3D.h">
+    <ClInclude Include="Engine\3d\Object3D.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="Engine\3d\Model.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.h">
+    <ClInclude Include="Engine\Input\Mouse.h">
       <Filter>ヘッダー ファイル\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
+    <ClInclude Include="Engine\Util\Math\Vector2.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.h">
+    <ClInclude Include="Engine\Util\Math\Vector3.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix4.h">
+    <ClInclude Include="Engine\Util\Math\Matrix4.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="fMath.h">
+    <ClInclude Include="Engine\Util\Math\fMath.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Scene1.h">
+    <ClInclude Include="Application\Scene\Scene1.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TemplateScene.h">
+    <ClInclude Include="Application\Scene\TemplateScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="LightGroup.h">
+    <ClInclude Include="Engine\Light\LightGroup.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
+    <ClInclude Include="Engine\Light\PointLight.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SpotLight.h">
+    <ClInclude Include="Engine\Light\SpotLight.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
+    <ClInclude Include="Engine\Light\DirectionalLight.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="CircleShadow.h">
+    <ClInclude Include="Engine\Light\CircleShadow.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="float2.h">
+    <ClInclude Include="Engine\Util\Math\float2.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="float3.h">
+    <ClInclude Include="Engine\Util\Math\float3.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="float4.h">
+    <ClInclude Include="Engine\Util\Math\float4.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="PostEffect.h">
+    <ClInclude Include="Engine\2d\PostEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PipelineManager.h">
+    <ClInclude Include="Engine\Base\PipelineManager.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="PipelineObj.h">
+    <ClInclude Include="Engine\Base\PipelineObj.h">
       <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
   </ItemGroup>
