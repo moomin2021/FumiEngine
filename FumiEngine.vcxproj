@@ -86,6 +86,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
@@ -118,6 +120,8 @@
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />

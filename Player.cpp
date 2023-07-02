@@ -3,6 +3,8 @@
 #include "float3.h"
 #include "Vector3.h"
 #include "Util.h"
+#include "Texture.h"
+#include "WinAPI.h"
 
 Player::Player() :
 #pragma region 初期化リスト
@@ -24,8 +26,12 @@ Player::Player() :
 	rightVec_{},	// 右
 
 	// 速度
-	moveSpd_(1.0f),// 移動速度
-	cameraAngleSpd_(0.3f)// カメラの角度の移動速度
+	moveSpd_(1.0f),			// 移動速度
+	cameraAngleSpd_(0.3f),	// カメラの角度の移動速度
+
+	// クロスヘア
+	crossHairHandle_(0),
+	sCrossHair_(nullptr)
 #pragma endregion
 {
 	// 入力クラスインスタンス取得
@@ -40,10 +46,18 @@ Player::Player() :
 	Object3D::SetCamera(camera_.get());
 
 	// 弾のモデル読み込み
-	mBullet_ = std::make_unique<Model>("sphere");
+	mBullet_ = std::make_unique<Model>("bullet");
 
 	// 弾にモデルを設定
 	Bullet::SetModel(mBullet_.get());
+
+	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
+	sCrossHair_ = std::make_unique<Sprite>();
+	sCrossHair_->SetAnchorPoint({ 0.5f, 0.5f });
+	sCrossHair_->SetPosition({
+		WinAPI::GetInstance()->GetWidth() / 2.0f,
+		WinAPI::GetInstance()->GetHeight() / 2.0f });
+	sCrossHair_->SetSize({ 26, 26 });
 }
 
 void Player::Update()
@@ -66,6 +80,11 @@ void Player::Draw()
 	for (auto& bullets : bullets_) {
 		bullets->Draw();
 	}
+}
+
+void Player::Draw2D()
+{
+	sCrossHair_->Draw(crossHairHandle_);
 }
 
 void Player::Shoot()

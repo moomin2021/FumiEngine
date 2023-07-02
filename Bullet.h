@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Object3D.h"
+#include "Collision.h"
 
 #include <memory>
 
@@ -12,6 +13,9 @@ private:
 
 	// 弾のオブジェクト
 	std::unique_ptr<Object3D> oBullet_;
+
+	// 衝突判定用
+	SphereCol col_;
 
 	// 弾の移動方向
 	Vector3 moveVec_;
@@ -63,5 +67,7 @@ public:
 	/// </summary>
 	/// <returns> 生存フラグ </returns>
 	bool GetIsAlive() { return isAlive_; }
+
+	inline const SphereCol& GetSphereCol() { return col_; }
 #pragma endregion
 };

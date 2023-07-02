@@ -3,12 +3,17 @@
 #include "Mouse.h"
 #include "Camera.h"
 #include "Bullet.h"
+#include "Sprite.h"
 
 #include <memory>
 
 class Player
 {
 #pragma region メンバ変数
+public:
+	// 弾のクラス
+	std::vector <std::unique_ptr<Bullet>> bullets_;
+
 private:
 	// 入力クラスインスタンス
 	Key* key_;		// キーボード
@@ -20,9 +25,6 @@ private:
 	// 弾のモデル
 	std::unique_ptr<Model> mBullet_;
 
-	// 弾のクラス
-	std::vector <std::unique_ptr<Bullet>> bullets_;
-
 	// 方向ベクトル
 	Vector3 forwardVec_;// 前方
 	Vector3 rightVec_;	// 右
@@ -30,6 +32,10 @@ private:
 	// 速度
 	float moveSpd_;			// 移動速度
 	float cameraAngleSpd_;	// カメラの角度の移動速度
+
+	// クロスヘア
+	uint16_t crossHairHandle_;
+	std::unique_ptr<Sprite> sCrossHair_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -49,6 +55,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 2D描画処理
+	/// </summary>
+	void Draw2D();
+
 private:
 	// 弾を撃つ処理
 	void Shoot();
@@ -62,5 +73,9 @@ private:
 	/// 移動処理
 	/// </summary>
 	void Move();
+#pragma endregion
+
+#pragma region ゲッター関数
+
 #pragma endregion
 };

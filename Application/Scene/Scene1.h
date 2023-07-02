@@ -4,6 +4,8 @@
 #include "LoadStage.h"
 #include "Player.h"
 
+#include <vector>
+
 class Scene1 : public BaseScene
 {
 	// --ƒƒ“ƒo•Ï”-- //
@@ -34,5 +36,7 @@ public:
 
 	// •`‰æˆ—
 	void Draw();
+
+	void Collision();
 };
 

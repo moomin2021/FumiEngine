@@ -118,5 +118,7 @@ public:
 	/// </summary>
 	/// <returns> À•W(XYZ) </returns>
 	inline float3& GetPosition() { return position_; }
+
+	inline float3& GetScale() { return scale_; }
 #pragma endregion
 };

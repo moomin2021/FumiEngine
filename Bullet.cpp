@@ -8,11 +8,14 @@ Bullet::Bullet(const float3& iniPos, const Vector3& moveVec) :
 	// 弾のオブジェクト
 	oBullet_(nullptr),
 
+	// 衝突判定用
+	col_{},
+
 	// 弾の移動方向
 	moveVec_(moveVec),
 
 	// 弾の速度
-	bulletSpd_(10.0f),
+	bulletSpd_(5.0f),
 
 	// 生存フラグ
 	isAlive_(true),
@@ -35,6 +38,9 @@ void Bullet::Update()
 {
 	// 生存フラグが[OFF]ならこの後の処理を飛ばす
 	if (isAlive_ == false) return;
+
+	col_.pos = oBullet_->GetPosition();
+	col_.radius = oBullet_->GetScale().x;
 
 	// 弾を移動させる
 	oBullet_->SetPosition(oBullet_->GetPosition() + moveVec_ * bulletSpd_);

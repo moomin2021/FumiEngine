@@ -7,17 +7,33 @@
 
 LoadStage::LoadStage()
 {
+	mEnemy_ = std::make_unique<Model>("sphere");
+	Enemy::SetModel(mEnemy_.get());
 	LoadJson("Resources/Stage/stage1.json");
 }
 
 void LoadStage::Update()
 {
+	for (size_t i = 0; i < enemys_.size(); i++) {
+		// 弾の更新処理
+		enemys_[i]->Update();
+
+		// 生存フラグが[OFF]だったら
+		if (enemys_[i]->GetIsAlive() == false) {
+			// 弾を消す
+			enemys_.erase(enemys_.begin() + i);
+		}
+	}
 }
 
 void LoadStage::Draw()
 {
 	for (auto& objs : object_) {
 		objs->Draw();
+	}
+
+	for (auto& enemys : enemys_) {
+		enemys->Draw();
 	}
 }
 
@@ -77,6 +93,11 @@ void LoadStage::LoadJson(std::string fileName)
 				}
 			}
 
+			// クラスの名前
+			if (object.contains("class_name")) {
+				objectData.className = object["class_name"];
+			}
+
 			// visible(表示批評)
 			//objectData.isActive = object["visible"];
 
@@ -94,9 +115,9 @@ void LoadStage::LoadJson(std::string fileName)
 			objectData.rotation.z = (float)transform["rotation"][0];
 
 			// スケーリング
-			objectData.scaling.x = (float)transform["scaling"][1];
+			objectData.scaling.x = (float)transform["scaling"][0];
 			objectData.scaling.y = (float)transform["scaling"][2];
-			objectData.scaling.z = (float)transform["scaling"][0];
+			objectData.scaling.z = (float)transform["scaling"][1];
 		}
 
 		// オブジェクト走査を再帰関数にまとめ、再帰呼出で枝を走査する
@@ -107,22 +128,34 @@ void LoadStage::LoadJson(std::string fileName)
 
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
-		// モデルを指定して3Dオブジェクトを生成
-		std::unique_ptr<Object3D> newObject = std::make_unique<Object3D>(model_[objectData.fileName].get());
+		if (objectData.className == "Enemy") {
+			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 
-		// 座標
-		newObject->SetPosition(objectData.translation);
+			newEnemy->SetPosition(objectData.translation);
+			newEnemy->SetScale(objectData.scaling);
 
-		// 回転角
-		newObject->SetRotation(objectData.rotation);
+			// 配列に登録
+			enemys_.emplace_back(std::move(newEnemy));
+		}
 
-		// 拡縮
-		newObject->SetScale(objectData.scaling);
+		else {
+			// モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Object3D> newObject = std::make_unique<Object3D>(model_[objectData.fileName].get());
 
-		// 表示非表示
-		//newObject->SetActive(objectData.isActive);
+			// 座標
+			newObject->SetPosition(objectData.translation);
 
-		// 配列に登録
-		object_.emplace_back(std::move(newObject));
+			// 回転角
+			newObject->SetRotation(objectData.rotation);
+
+			// 拡縮
+			newObject->SetScale(objectData.scaling);
+
+			// 表示非表示
+			//newObject->SetActive(objectData.isActive);
+
+			// 配列に登録
+			object_.emplace_back(std::move(newObject));
+		}
 	}
 }

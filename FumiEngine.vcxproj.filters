@@ -189,6 +189,12 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Application\ソースファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Application\ソースファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Application\ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -292,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Application\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
