@@ -85,11 +85,6 @@ void Player::EyeMove()
 
 void Player::Move()
 {
-	int num = 0;
-	if (key_->TriggerKey(DIK_0)) {
-		num = 1;
-	}
-
 	// ˆÚ“®•ûŒü
 	Vector3 moveVec = {
 		static_cast<float>(key_->PushKey(DIK_D) - key_->PushKey(DIK_A)),
