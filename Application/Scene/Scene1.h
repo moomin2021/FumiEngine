@@ -1,19 +1,13 @@
 #pragma once
 #include "BaseScene.h"
-#include "Camera.h"
 #include "LightGroup.h"
 #include "LoadStage.h"
 #include "Player.h"
-
-#include <memory>
 
 class Scene1 : public BaseScene
 {
 	// --メンバ変数-- //
 private:
-	// カメラ
-	std::unique_ptr<Camera> camera_;
-
 	// ライト
 	std::unique_ptr<LightGroup> lightGroup_;
 	std::unique_ptr<DirectionalLight> dirLight_;

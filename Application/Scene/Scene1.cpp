@@ -8,9 +8,6 @@
 using namespace DirectX;
 
 Scene1::Scene1() :
-	// カメラ
-	camera_(nullptr),
-
 	lightGroup_(nullptr),
 	dirLight_(nullptr),
 
@@ -29,13 +26,6 @@ Scene1::~Scene1()
 
 void Scene1::Initialize()
 {
-	// カメラを生成＆適用
-	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
-
-	// カメラを適用
-	Object3D::SetCamera(camera_.get());
-
 	// ライト生成＆設定
 	lightGroup_ = std::make_unique<LightGroup>();
 	dirLight_ = std::make_unique<DirectionalLight>();
@@ -43,7 +33,7 @@ void Scene1::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 
 	// ライトを適用
-	Object3D::SetLightGroup(lightGroup_.get());
+	//Object3D::SetLightGroup(lightGroup_.get());
 
 	// ステージ読み込み用クラス生成
 	loadStage_ = std::make_unique<LoadStage>();
@@ -57,8 +47,8 @@ void Scene1::Update()
 	// ステージ更新
 	loadStage_->Update();
 
-	// カメラの更新
-	camera_->Update();
+	// プレイヤー更新
+	player_->Update();
 }
 
 void Scene1::Draw()

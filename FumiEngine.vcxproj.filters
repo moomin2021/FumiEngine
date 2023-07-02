@@ -184,7 +184,7 @@
       <Filter>Engine\ソース ファイル\2D</Filter>
     </ClCompile>
     <ClCompile Include="LoadStage.cpp">
-      <Filter>Application\ヘッダーファイル\Stage</Filter>
+      <Filter>Application\ソースファイル\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,7 +285,7 @@
       <Filter>Application\ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="LoadStage.h">
-      <Filter>Application\ソースファイル\Stage</Filter>
+      <Filter>Application\ヘッダーファイル\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
