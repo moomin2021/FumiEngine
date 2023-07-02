@@ -186,6 +186,9 @@
     <ClCompile Include="LoadStage.cpp">
       <Filter>Application\ソースファイル\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Application\ソースファイル\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="LoadStage.h">
       <Filter>Application\ヘッダーファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Application\ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

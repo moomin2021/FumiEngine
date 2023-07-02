@@ -55,6 +55,9 @@ void Scene1::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
+	// プレイヤーの描画処理
+	player_->Draw();
+
 	// ステージ描画
 	loadStage_->Draw();
 }

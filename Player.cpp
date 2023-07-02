@@ -13,13 +13,19 @@ Player::Player() :
 	// 視点カメラ
 	camera_(nullptr),
 
+	// 弾のモデル
+	mBullet_(nullptr),
+
+	// 弾
+	bullets_{},
+
 	// 方向ベクトル
 	forwardVec_{},	// 前方
 	rightVec_{},	// 右
 
 	// 速度
 	moveSpd_(1.0f),// 移動速度
-	cameraAngleSpd_(1.0f)// カメラの角度の移動速度
+	cameraAngleSpd_(0.3f)// カメラの角度の移動速度
 #pragma endregion
 {
 	// 入力クラスインスタンス取得
@@ -32,10 +38,19 @@ Player::Player() :
 
 	// カメラを適用
 	Object3D::SetCamera(camera_.get());
+
+	// 弾のモデル読み込み
+	mBullet_ = std::make_unique<Model>("sphere");
+
+	// 弾にモデルを設定
+	Bullet::SetModel(mBullet_.get());
 }
 
 void Player::Update()
 {
+	// 弾を撃つ処理
+	Shoot();
+
 	// 視点移動
 	EyeMove();
 
@@ -48,6 +63,29 @@ void Player::Update()
 
 void Player::Draw()
 {
+	for (auto& bullets : bullets_) {
+		bullets->Draw();
+	}
+}
+
+void Player::Shoot()
+{
+	for (size_t i = 0; i < bullets_.size(); i++) {
+		// 弾の更新処理
+		bullets_[i]->Update();
+
+		// 生存フラグが[OFF]だったら
+		if (bullets_[i]->GetIsAlive() == false) {
+			// 弾を消す
+			bullets_.erase(bullets_.begin() + i);
+		}
+	}
+
+	// マウスを左クリックしていなかったらこの後の処理を飛ばす
+	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT) == false) return;
+
+	// 弾を生成
+	bullets_.emplace_back(std::make_unique<Bullet>(camera_->GetEye(), forwardVec_));
 }
 
 void Player::EyeMove()

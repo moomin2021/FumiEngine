@@ -2,6 +2,7 @@
 #include "Key.h"
 #include "Mouse.h"
 #include "Camera.h"
+#include "Bullet.h"
 
 #include <memory>
 
@@ -15,6 +16,12 @@ private:
 
 	// 視点カメラ
 	std::unique_ptr<Camera> camera_;
+
+	// 弾のモデル
+	std::unique_ptr<Model> mBullet_;
+
+	// 弾のクラス
+	std::vector <std::unique_ptr<Bullet>> bullets_;
 
 	// 方向ベクトル
 	Vector3 forwardVec_;// 前方
@@ -43,6 +50,9 @@ public:
 	void Draw();
 
 private:
+	// 弾を撃つ処理
+	void Shoot();
+
 	/// <summary>
 	/// 視点移動処理
 	/// </summary>

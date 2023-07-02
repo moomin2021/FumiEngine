@@ -1,3 +1,4 @@
+#pragma once
 #include "Matrix4.h"
 #include "float4.h"
 #include "float3.h"
@@ -58,7 +59,15 @@ public:
 	/// </summary>
 	static void PreDraw();
 
+private:
+	/// <summary>
+	/// オブジェクトデータの更新
+	/// </summary>
+	void UpdateData();
+#pragma endregion
+
 #pragma region セッター関数
+public:
 	/// <summary>
 	/// 座標(XYZ)を設定
 	/// </summary>
@@ -102,10 +111,12 @@ public:
 	static inline void SetLightGroup(LightGroup* lightGroup) { sLightGroup_ = lightGroup; }
 #pragma endregion
 
-private:
+#pragma region ゲッター関数
+	public:
 	/// <summary>
-	/// オブジェクトデータの更新
+	/// 座標(XYZ)を取得
 	/// </summary>
-	void UpdateData();
+	/// <returns> 座標(XYZ) </returns>
+	inline float3& GetPosition() { return position_; }
 #pragma endregion
 };
