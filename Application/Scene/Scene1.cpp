@@ -14,6 +14,9 @@ Scene1::Scene1() :
 	lightGroup_(nullptr),
 	dirLight_(nullptr),
 
+	// ステージ読み込み用
+	loadStage_(nullptr),
+
 	// プレイヤー
 	player_(nullptr)
 {
@@ -42,17 +45,26 @@ void Scene1::Initialize()
 	// ライトを適用
 	Object3D::SetLightGroup(lightGroup_.get());
 
+	// ステージ読み込み用クラス生成
+	loadStage_ = std::make_unique<LoadStage>();
+
 	// プレイヤー生成
 	player_ = std::make_unique<Player>();
 }
 
 void Scene1::Update()
 {
+	// ステージ更新
+	loadStage_->Update();
+
 	// カメラの更新
 	camera_->Update();
 }
 
 void Scene1::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
 
+	// ステージ描画
+	loadStage_->Draw();
 }

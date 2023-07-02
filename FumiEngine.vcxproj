@@ -44,10 +44,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)External\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)External\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,6 +110,7 @@
     <ClCompile Include="Engine\Util\Math\Vector2.cpp" />
     <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
+    <ClCompile Include="LoadStage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="Engine\Util\Math\Vector2.h" />
     <ClInclude Include="Engine\Util\Math\Vector3.h" />
     <ClInclude Include="Engine\Base\WinAPI.h" />
+    <ClInclude Include="LoadStage.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>

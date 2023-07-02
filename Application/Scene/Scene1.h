@@ -1,14 +1,10 @@
 #pragma once
 #include "BaseScene.h"
-#include "Model.h"
-#include "Object3D.h"
-#include "Sprite.h"
 #include "Camera.h"
 #include "LightGroup.h"
-#include "Key.h"
+#include "LoadStage.h"
 #include "Player.h"
 
-#include <vector>
 #include <memory>
 
 class Scene1 : public BaseScene
@@ -22,8 +18,14 @@ private:
 	std::unique_ptr<LightGroup> lightGroup_;
 	std::unique_ptr<DirectionalLight> dirLight_;
 
+	// ステージ読み込み用クラス
+	std::unique_ptr<LoadStage> loadStage_;
+
 	// プレイヤー
 	std::unique_ptr<Player> player_;
+
+	std::unique_ptr<Model> mCube_;
+	std::unique_ptr<Object3D> oCube_;
 
 	// --メンバ関数-- //
 public:
