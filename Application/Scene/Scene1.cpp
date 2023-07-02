@@ -85,7 +85,7 @@ void Scene1::Collision()
 		if (loadStage_->enemys_[i]->GetIsAlive()) {
 			for (size_t j = 0; j < player_->bullets_.size(); j++) {
 				if (SphereCollision(loadStage_->enemys_[i]->GetSphereCol(), player_->bullets_[j]->GetSphereCol())) {
-					loadStage_->enemys_[i]->ReduceHP(1);
+				loadStage_->enemys_[i]->ReduceHP(1);
 					player_->bullets_.erase(player_->bullets_.begin() + j);
 				}
 			}

@@ -21,6 +21,8 @@ private:
 
 	// 生存フラグ
 	bool isAlive_;
+
+	uint16_t damageCounter_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -44,7 +46,7 @@ public:
 	/// HPを減らす
 	/// </summary>
 	/// <param name="reduceValue"> 減らす値 </param>
-	void ReduceHP(uint16_t reduceValue) { hp_ -= reduceValue; }
+	void ReduceHP(uint16_t reduceValue);
 private:
 
 #pragma endregion
