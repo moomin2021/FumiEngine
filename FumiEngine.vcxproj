@@ -44,10 +44,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -56,6 +56,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,6 +74,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -83,70 +85,65 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BillBoard.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DX12Cmd.cpp" />
-    <ClCompile Include="float2.cpp" />
-    <ClCompile Include="float3.cpp" />
-    <ClCompile Include="float4.cpp" />
-    <ClCompile Include="Key.cpp" />
-    <ClCompile Include="LightGroup.cpp" />
-    <ClCompile Include="Matrix4.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="Object3D.cpp" />
-    <ClCompile Include="Pipeline.cpp" />
-    <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="PipelineObj.cpp" />
-    <ClCompile Include="PostEffect.cpp" />
-    <ClCompile Include="Scene1.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="TemplateScene.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Util.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="WinAPI.cpp" />
+    <ClCompile Include="Engine\3d\BillBoard.cpp" />
+    <ClCompile Include="Engine\3d\Camera.cpp" />
+    <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
+    <ClCompile Include="Engine\Util\Math\float2.cpp" />
+    <ClCompile Include="Engine\Util\Math\float3.cpp" />
+    <ClCompile Include="Engine\Util\Math\float4.cpp" />
+    <ClCompile Include="Engine\Input\Key.cpp" />
+    <ClCompile Include="Engine\Light\LightGroup.cpp" />
+    <ClCompile Include="Engine\Util\Math\Matrix4.cpp" />
+    <ClCompile Include="Engine\3d\Model.cpp" />
+    <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\3d\Object3D.cpp" />
+    <ClCompile Include="Engine\Base\Pipeline.cpp" />
+    <ClCompile Include="Engine\Base\PipelineManager.cpp" />
+    <ClCompile Include="Engine\Base\PipelineObj.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect.cpp" />
+    <ClCompile Include="Application\Scene\Scene1.cpp" />
+    <ClCompile Include="Application\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\2d\Sprite.cpp" />
+    <ClCompile Include="Application\Scene\TemplateScene.cpp" />
+    <ClCompile Include="Engine\Base\Texture.cpp" />
+    <ClCompile Include="Engine\Util\Util.cpp" />
+    <ClCompile Include="Engine\Util\Math\Vector2.cpp" />
+    <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
+    <ClCompile Include="Engine\Base\WinAPI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseScene.h" />
-    <ClInclude Include="BillBoard.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CircleShadow.h" />
-    <ClInclude Include="DirectionalLight.h" />
-    <ClInclude Include="DX12Cmd.h" />
-    <ClInclude Include="float2.h" />
-    <ClInclude Include="float3.h" />
-    <ClInclude Include="float4.h" />
-    <ClInclude Include="fMath.h" />
-    <ClInclude Include="Key.h" />
-    <ClInclude Include="LightGroup.h" />
-    <ClInclude Include="Matrix4.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="Mouse.h" />
-    <ClInclude Include="Object3D.h" />
-    <ClInclude Include="Pipeline.h" />
-    <ClInclude Include="PipelineManager.h" />
-    <ClInclude Include="PipelineObj.h" />
-    <ClInclude Include="PointLight.h" />
-    <ClInclude Include="PostEffect.h" />
-    <ClInclude Include="Scene1.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="SpotLight.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="TemplateScene.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Util.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="WinAPI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
-      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
-    </ProjectReference>
+    <ClInclude Include="Application\Scene\BaseScene.h" />
+    <ClInclude Include="Engine\3d\BillBoard.h" />
+    <ClInclude Include="Engine\3d\Camera.h" />
+    <ClInclude Include="Engine\Light\CircleShadow.h" />
+    <ClInclude Include="Engine\Light\DirectionalLight.h" />
+    <ClInclude Include="Engine\Base\DX12Cmd.h" />
+    <ClInclude Include="Engine\Util\Math\float2.h" />
+    <ClInclude Include="Engine\Util\Math\float3.h" />
+    <ClInclude Include="Engine\Util\Math\float4.h" />
+    <ClInclude Include="Engine\Util\Math\fMath.h" />
+    <ClInclude Include="Engine\Input\Key.h" />
+    <ClInclude Include="Engine\Light\LightGroup.h" />
+    <ClInclude Include="Engine\Util\Math\Matrix4.h" />
+    <ClInclude Include="Engine\3d\Model.h" />
+    <ClInclude Include="Engine\Input\Mouse.h" />
+    <ClInclude Include="Engine\3d\Object3D.h" />
+    <ClInclude Include="Engine\Base\Pipeline.h" />
+    <ClInclude Include="Engine\Base\PipelineManager.h" />
+    <ClInclude Include="Engine\Base\PipelineObj.h" />
+    <ClInclude Include="Engine\Light\PointLight.h" />
+    <ClInclude Include="Engine\2d\PostEffect.h" />
+    <ClInclude Include="Application\Scene\Scene1.h" />
+    <ClInclude Include="Application\Scene\SceneManager.h" />
+    <ClInclude Include="Engine\Light\SpotLight.h" />
+    <ClInclude Include="Engine\2d\Sprite.h" />
+    <ClInclude Include="Application\Scene\TemplateScene.h" />
+    <ClInclude Include="Engine\Base\Texture.h" />
+    <ClInclude Include="Engine\Util\Util.h" />
+    <ClInclude Include="Engine\Util\Math\Vector2.h" />
+    <ClInclude Include="Engine\Util\Math\Vector3.h" />
+    <ClInclude Include="Engine\Base\WinAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
@@ -229,6 +226,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
+      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
