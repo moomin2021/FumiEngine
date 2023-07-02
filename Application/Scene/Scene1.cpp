@@ -33,7 +33,7 @@ void Scene1::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 
 	// ライトを適用
-	//Object3D::SetLightGroup(lightGroup_.get());
+	Object3D::SetLightGroup(lightGroup_.get());
 
 	// ステージ読み込み用クラス生成
 	loadStage_ = std::make_unique<LoadStage>();

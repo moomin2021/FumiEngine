@@ -85,6 +85,11 @@ void Player::EyeMove()
 
 void Player::Move()
 {
+	int num = 0;
+	if (key_->TriggerKey(DIK_0)) {
+		num = 1;
+	}
+
 	// ˆÚ“®•ûŒü
 	Vector3 moveVec = {
 		static_cast<float>(key_->PushKey(DIK_D) - key_->PushKey(DIK_A)),
@@ -93,7 +98,7 @@ void Player::Move()
 	};
 
 	float3 forwardMove = {
-		moveVec.x * forwardVec_.x * moveSpd_,
+		moveVec.z * forwardVec_.x * moveSpd_,
 		0.0f,
 		moveVec.z * forwardVec_.z * moveSpd_
 	};
@@ -101,7 +106,7 @@ void Player::Move()
 	float3 rightMove = {
 		moveVec.x * rightVec_.x * moveSpd_,
 		0.0f,
-		moveVec.z * rightVec_.z * moveSpd_
+		moveVec.x * rightVec_.z * moveSpd_
 	};
 
 	camera_->SetEye(camera_->GetEye() + (forwardMove + rightMove));
