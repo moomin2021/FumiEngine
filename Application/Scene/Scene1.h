@@ -6,6 +6,8 @@
 #include "Camera.h"
 #include "LightGroup.h"
 #include "Key.h"
+#include "Player.h"
+
 #include <vector>
 #include <memory>
 
@@ -19,6 +21,9 @@ private:
 	// ライト
 	std::unique_ptr<LightGroup> lightGroup_;
 	std::unique_ptr<DirectionalLight> dirLight_;
+
+	// プレイヤー
+	std::unique_ptr<Player> player_;
 
 	// --メンバ関数-- //
 public:

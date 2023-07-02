@@ -12,7 +12,10 @@ Scene1::Scene1() :
 	camera_(nullptr),
 
 	lightGroup_(nullptr),
-	dirLight_(nullptr)
+	dirLight_(nullptr),
+
+	// プレイヤー
+	player_(nullptr)
 {
 }
 
@@ -38,6 +41,9 @@ void Scene1::Initialize()
 
 	// ライトを適用
 	Object3D::SetLightGroup(lightGroup_.get());
+
+	// プレイヤー生成
+	player_ = std::make_unique<Player>();
 }
 
 void Scene1::Update()

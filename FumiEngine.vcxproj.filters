@@ -82,6 +82,18 @@
     <Filter Include="Application\ヘッダーファイル\Scene">
       <UniqueIdentifier>{bc700068-4a65-405e-b0d7-9207897e7bba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\ヘッダーファイル\Player">
+      <UniqueIdentifier>{85091c0f-8fc0-4825-a077-bc7dfd479835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ソースファイル\Player">
+      <UniqueIdentifier>{3ae83b5f-05fc-4b7a-9d0b-93a8c5ba6729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ヘッダーファイル\Enemy">
+      <UniqueIdentifier>{ef962e8f-bc6d-4d41-8abd-1ac2e97626d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ソースファイル\Enemy">
+      <UniqueIdentifier>{24703380-c534-424d-bb4e-5a6eccaac99e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -147,9 +159,6 @@
     <ClCompile Include="Engine\Util\Math\float2.cpp">
       <Filter>Engine\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\2d\PostEffect.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\PipelineManager.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
@@ -161,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Application\ソースファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\PostEffect.cpp">
+      <Filter>Engine\ソース ファイル\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +257,6 @@
     <ClInclude Include="Engine\Util\Math\float4.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\2d\PostEffect.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Base\PipelineManager.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -256,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="Application\Scene\SceneManager.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\2d\PostEffect.h">
+      <Filter>Engine\ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Application\ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
