@@ -2,12 +2,13 @@
 #include "DX12Cmd.h"
 #include "Texture.h"
 #include "Util.h"
+#include "BaseCollider.h"
 
 // 静的メンバ変数の実態
 Camera*		Object3D::sCamera_		= nullptr;// カメラ
 LightGroup* Object3D::sLightGroup_	= nullptr;// ライト
 
-Object3D::Object3D(Model* model) :
+Object3D::Object3D() :
 #pragma region 初期化リスト
 	// オブジェクトデータ
 	position_{ 0.0f, 0.0f, 0.0f },	// 位置(XYZ)
@@ -26,7 +27,7 @@ Object3D::Object3D(Model* model) :
 	constMap_(nullptr),
 
 	// モデル
-	model_(model)
+	model_(nullptr)
 #pragma endregion
 {
 	// 関数が成功したかどうかを判別する用変数
@@ -65,6 +66,15 @@ Object3D::Object3D(Model* model) :
 	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
 	assert(SUCCEEDED(result));
 #pragma endregion
+
+	// クラス名の文字列を取得
+	name_ = typeid(*this).name();
+}
+
+Object3D::~Object3D()
+{
+	// コライダー解放
+	if (collider_) delete collider_;
 }
 
 void Object3D::Draw() {
@@ -73,6 +83,9 @@ void Object3D::Draw() {
 
 	// オブジェクトデータの更新
 	UpdateData();
+
+	// 当たり判定更新
+	if (collider_) collider_->Update();
 
 #pragma region 定数バッファへのデータ転送
 	// ビュープロジェクション転送
@@ -144,4 +157,10 @@ void Object3D::UpdateData() {
 
 	// 変更したのでフラグを[OFF]にする
 	hasChanget_ = false;
+}
+
+void Object3D::SetCollider(BaseCollider* collider)
+{
+	collider_->SetObject3D(this);
+	collider_ = collider;
 }

@@ -1,9 +1,13 @@
+#pragma once
 #include "Matrix4.h"
 #include "float4.h"
 #include "float3.h"
 #include "Model.h"
 #include "Camera.h"
 #include "LightGroup.h"
+#include "CollisionInfo.h"
+
+class BaseCollider;
 
 class Object3D {
 	// 定数バッファ用データ構造体
@@ -39,6 +43,13 @@ private:
 	// 静的メンバ変数
 	static Camera*		sCamera_;		// カメラ
 	static LightGroup*	sLightGroup_;	// ライト
+
+protected:
+	// クラス名(デバック用)
+	const char* name_ = nullptr;
+
+	// コライダー
+	BaseCollider* collider_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -46,19 +57,38 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Object3D(Model* model);
+	Object3D();
+
+	/// <summary>
+	/// 仮想デストラクタ
+	/// </summary>
+	virtual ~Object3D();
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	virtual void Draw();
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	/// <param name="info"> 衝突情報 </param>
+	virtual void OnCollision(const CollisionInfo& info) {}
 
 	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	static void PreDraw();
 
+private:
+	/// <summary>
+	/// オブジェクトデータの更新
+	/// </summary>
+	void UpdateData();
+#pragma endregion
+
 #pragma region セッター関数
+public:
 	/// <summary>
 	/// 座標(XYZ)を設定
 	/// </summary>
@@ -90,6 +120,12 @@ public:
 	inline void SetModel(Model* model) { model_ = model; }
 
 	/// <summary>
+	/// コライダーを設定
+	/// </summary>
+	/// <param name="collider"> コライダー </param>
+	void SetCollider(BaseCollider* collider);
+
+	/// <summary>
 	/// カメラを設定
 	/// </summary>
 	/// <param name="camera"> カメラ </param>
@@ -102,10 +138,12 @@ public:
 	static inline void SetLightGroup(LightGroup* lightGroup) { sLightGroup_ = lightGroup; }
 #pragma endregion
 
-private:
+#pragma region ゲッター関数
+	public:
 	/// <summary>
-	/// オブジェクトデータの更新
+	/// ワールド行列を取得
 	/// </summary>
-	void UpdateData();
+	/// <returns> ワールド行列 </returns>
+	const Matrix4& GetMatWorld() { return matWorld_; }
 #pragma endregion
 };

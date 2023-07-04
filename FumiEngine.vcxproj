@@ -90,6 +90,7 @@
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
     <ClCompile Include="Engine\Collision\Collision.cpp" />
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Engine\Util\Math\float2.cpp" />
     <ClCompile Include="Engine\Util\Math\float3.cpp" />
     <ClCompile Include="Engine\Util\Math\float4.cpp" />
@@ -118,8 +119,12 @@
     <ClInclude Include="Application\Scene\BaseScene.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
+    <ClInclude Include="Engine\Collision\BaseCollider.h" />
     <ClInclude Include="Engine\Collision\Collision.h" />
+    <ClInclude Include="Engine\Collision\CollisionInfo.h" />
     <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
+    <ClInclude Include="Engine\Collision\CollisionTypes.h" />
+    <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />

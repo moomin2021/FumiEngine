@@ -30,20 +30,24 @@ void Scene1::Initialize()
 	mFloor_ = std::make_unique<Model>("floor");
 	mCube_ = std::make_unique<Model>("cube");
 
-	// オブジェクト
-	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
-	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+	//// オブジェクト
+	//oFloor_ = std::make_unique<Object3D>();
+	//oFloor_->SetModel(mFloor_.get());
+	//oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
 
-	oCube_.resize(3);
+	//oCube_.resize(3);
 
-	oCube_[0] = std::make_unique<Object3D>(mCube_.get());
-	oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
+	//oCube_[0] = std::make_unique<Object3D>();
+	//oCube_[0]->SetModel(mCube_.get());
+	//oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
 
-	oCube_[1] = std::make_unique<Object3D>(mCube_.get());
-	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
+	//oCube_[1] = std::make_unique<Object3D>(mCube_.get());
+	//oCube_[1]->SetModel(mCube_.get());
+	//oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
-	oCube_[2] = std::make_unique<Object3D>(mCube_.get());
-	oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
+	//oCube_[2] = std::make_unique<Object3D>(mCube_.get());
+	//oCube_[2]->SetModel(mCube_.get());
+	//oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
 
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
@@ -92,8 +96,8 @@ void Scene1::Update()
 	static float rota = 0.0f;
 	rota += 1.0f;
 
-	oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
-	oCube_[1]->SetRotation({0.0f, rota, 0.0f});
+	//oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
+	//oCube_[1]->SetRotation({0.0f, rota, 0.0f});
 
 	// カメラの更新
 	camera_->Update();
@@ -103,8 +107,8 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	oFloor_->Draw();
-	for (auto& object : oCube_) object->Draw();
+	//oFloor_->Draw();
+	//for (auto& object : oCube_) object->Draw();
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
 
