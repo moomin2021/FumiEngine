@@ -1,14 +1,14 @@
 #include "Collision.h"
 
-using namespace DirectX;
+#include <math.h>
 
-bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter)
+bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3* inter)
 {
 	// 座標系の原点から球の中心座標への距離
-	XMVECTOR distV = XMVector3Dot(sphere.center, plane.normal);
+	float distV = Vector3Dot(sphere.center, plane.normal);
 
 	// 平面の原点距離を減算することで、平面と球ｎ中心との距離が出る
-	float dist = distV.m128_f32[0] - plane.distance;
+	float dist = distV - plane.distance;
 
 	// 距離の絶対値が半径より大きければ当たっていない
 	if (fabsf(dist) > sphere.radius) return false;
@@ -22,17 +22,17 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Dire
 	return true;
 }
 
-void Collision::ClosestPtPoint2Triangle(const DirectX::XMVECTOR& point, const Triangle& triangle, DirectX::XMVECTOR* closest)
+void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& triangle, Vector3* closest)
 {
 	// pointがp0の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p0_p1 = triangle.p1 - triangle.p0;
-	XMVECTOR p0_p2 = triangle.p2 - triangle.p0;
-	XMVECTOR p0_pt = point - triangle.p0;
+	Vector3 p0_p1 = triangle.p1 - triangle.p0;
+	Vector3 p0_p2 = triangle.p2 - triangle.p0;
+	Vector3 p0_pt = point - triangle.p0;
 
-	XMVECTOR d1 = XMVector3Dot(p0_p1, p0_pt);
-	XMVECTOR d2 = XMVector3Dot(p0_p2, p0_pt);
+	float d1 = Vector3Dot(p0_p1, p0_pt);
+	float d2 = Vector3Dot(p0_p2, p0_pt);
 
-	if (d1.m128_f32[0] <= 0.0f && d2.m128_f32[0] <= 0.0f)
+	if (d1 <= 0.0f && d2 <= 0.0f)
 	{
 		// p0が最近傍
 		*closest = triangle.p0;
@@ -40,12 +40,12 @@ void Collision::ClosestPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tr
 	}
 
 	// pointがp1の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p1_pt = point - triangle.p1;
+	Vector3 p1_pt = point - triangle.p1;
 
-	XMVECTOR d3 = XMVector3Dot(p0_p1, p1_pt);
-	XMVECTOR d4 = XMVector3Dot(p0_p2, p1_pt);
+	float d3 = Vector3Dot(p0_p1, p1_pt);
+	float d4 = Vector3Dot(p0_p2, p1_pt);
 
-	if (d3.m128_f32[0] >= 0.0f && d4.m128_f32[0] <= d3.m128_f32[0])
+	if (d3 >= 0.0f && d4 <= d3)
 	{
 		// p1が最近傍
 		*closest = triangle.p1;
@@ -53,39 +53,39 @@ void Collision::ClosestPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tr
 	}
 
 	// pointがp0_p1の辺領域の中にあるかどうかチェックし、あればpointのp0_p1上に対する射影を返す
-	float vc = d1.m128_f32[0] * d4.m128_f32[0] - d3.m128_f32[0] * d2.m128_f32[0];
-	if (vc <= 0.0f && d1.m128_f32[0] >= 0.0f && d3.m128_f32[0] <= 0.0f)
+	float vc = d1 * d4 - d3 * d2;
+	if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
 	{
-		float v = d1.m128_f32[0] / (d1.m128_f32[0] - d3.m128_f32[0]);
+		float v = d1 / (d1 - d3);
 		*closest = triangle.p0 + v * p0_p1;
 		return;
 	}
 
 	// pointがp2の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p2_pt = point - triangle.p2;
+	Vector3 p2_pt = point - triangle.p2;
 
-	XMVECTOR d5 = XMVector3Dot(p0_p1, p2_pt);
-	XMVECTOR d6 = XMVector3Dot(p0_p2, p2_pt);
-	if (d6.m128_f32[0] >= 0.0f && d5.m128_f32[0] <= d6.m128_f32[0])
+	float d5 = Vector3Dot(p0_p1, p2_pt);
+	float d6 = Vector3Dot(p0_p2, p2_pt);
+	if (d6 >= 0.0f && d5 <= d6)
 	{
 		*closest = triangle.p2;
 		return;
 	}
 
 	// pointがp0_p2の辺領域の中にあるかどうかチェックし、あればpointのp0_p2上に対する射影を返す
-	float vb = d5.m128_f32[0] * d2.m128_f32[0] - d1.m128_f32[0] * d6.m128_f32[0];
-	if (vb <= 0.0f && d2.m128_f32[0] >= 0.0f && d6.m128_f32[0] <= 0.0f)
+	float vb = d5 * d2 - d1 * d6;
+	if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
 	{
-		float w = d2.m128_f32[0] / (d2.m128_f32[0] - d6.m128_f32[0]);
+		float w = d2 / (d2 - d6);
 		*closest = triangle.p0 + w * p0_p2;
 		return;
 	}
 
 	// pointがp1_p2の辺領域の中にあるかどうかチェックし、あればpointのp1_p2上に対する射影を返す
-	float va = d3.m128_f32[0] * d6.m128_f32[0] - d5.m128_f32[0] * d4.m128_f32[0];
-	if (va <= 0.0f && (d4.m128_f32[0] - d3.m128_f32[0]) >= 0.0f && (d5.m128_f32[0] - d6.m128_f32[0]) >= 0.0f)
+	float va = d3 * d6 - d5 * d4;
+	if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
 	{
-		float w = (d4.m128_f32[0] - d3.m128_f32[0]) / ((d4.m128_f32[0] - d3.m128_f32[0]) + (d5.m128_f32[0] - d6.m128_f32[0]));
+		float w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
 		*closest = triangle.p1 + w * (triangle.p2 - triangle.p1);
 		return;
 	}
@@ -96,22 +96,22 @@ void Collision::ClosestPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tr
 	*closest = triangle.p0 + p0_p1 * v + p0_p2 * w;
 }
 
-bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, DirectX::XMVECTOR* inter)
+bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter)
 {
-	XMVECTOR p;
+	Vector3 p;
 
 	// 球の中心に対する最近接点である三角形上にある点pを見つける
 	ClosestPtPoint2Triangle(sphere.center, triangle, &p);
 
 	// 点pと球の中心の差分ベクトル
-	XMVECTOR v = p - sphere.center;
+	Vector3 v = p - sphere.center;
 
 	// 距離の二乗を求める
 	// (同じベクトル同士の内積は三平方の定理のルート内部の式と一致する)
-	v = XMVector3Dot(v, v);
+	float d = Vector3Dot(v, v);
 
 	// 球と三角形の距離が半径以下なら当たってない
-	if (v.m128_f32[0] > sphere.radius * sphere.radius) return false;
+	if (d > sphere.radius * sphere.radius) return false;
 
 	// 疑似交点を計算
 	if (inter) *inter = p;
@@ -119,20 +119,20 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	return true;
 }
 
-bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, DirectX::XMVECTOR* inter)
+bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, Vector3* inter)
 {
 	// 誤差吸収用の微小な値
 	const float epsilon = static_cast<float>(1.0e-5);
 
 	// 面法線とレイの方向ベクトルの内積
-	float d1 = XMVector3Dot(plane.normal, ray.dir).m128_f32[0];
+	float d1 = Vector3Dot(plane.normal, ray.dir);
 
 	// 裏面には当たらない
 	if (d1 > -epsilon) return false;
 
 	// 始点と原点の距離(平面の法線方向)
 	// 面法線とレイの始点座標
-	float d2 = XMVector3Dot(plane.normal, ray.start).m128_f32[0];
+	float d2 = Vector3Dot(plane.normal, ray.start);
 
 	// 始点と平面の距離(平面の法線方向)
 	float dist = d2 - plane.distance;
@@ -152,13 +152,13 @@ bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distan
 	return true;
 }
 
-bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, float* distance, DirectX::XMVECTOR* inter)
+bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, float* distance, Vector3* inter)
 {
 	// 三角形が乗っている平面を算出
 	Plane plane;
-	XMVECTOR interPlane;
+	Vector3 interPlane;
 	plane.normal = triangle.normal;
-	plane.distance = XMVector3Dot(triangle.normal, triangle.p0).m128_f32[0];
+	plane.distance = Vector3Dot(triangle.normal, triangle.p0);
 
 	// レイと平面が当たっていなければ、当たっていない
 	if (!CheckRay2Plane(ray, plane, distance, &interPlane)) return false;
@@ -167,31 +167,31 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	// レイと平面の交点が三角形の内側にあるか判定
 	const float epsilon = static_cast<float>(1.0e-5);// 誤差吸収量の微小な値
 
-	XMVECTOR m;
+	Vector3 m;
 
 	// 辺p0_p1について
-	XMVECTOR pt_p0 = triangle.p0 - interPlane;
-	XMVECTOR p0_p1 = triangle.p1 - triangle.p0;
-	m = XMVector3Cross(pt_p0, p0_p1);
+	Vector3 pt_p0 = triangle.p0 - interPlane;
+	Vector3 p0_p1 = triangle.p1 - triangle.p0;
+	m = Vector3Cross(pt_p0, p0_p1);
 
 	// 辺の外側であれば当たっていないので判定を打ち切る
-	if (XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) return false;
+	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
 	// 辺p1_p2について
-	XMVECTOR pt_p1 = triangle.p1 - interPlane;
-	XMVECTOR p1_p2 = triangle.p2 - triangle.p1;
-	m = XMVector3Cross(pt_p1, p1_p2);
+	Vector3 pt_p1 = triangle.p1 - interPlane;
+	Vector3 p1_p2 = triangle.p2 - triangle.p1;
+	m = Vector3Cross(pt_p1, p1_p2);
 
 	// 辺の外側であれば当たっていないので判定を打ち切る
-	if (XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) return false;
+	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
 	// 辺p2_p0について
-	XMVECTOR pt_p2 = triangle.p2 - interPlane;
-	XMVECTOR p2_p0 = triangle.p0 - triangle.p2;
-	m = XMVector3Cross(pt_p2, p2_p0);
+	Vector3 pt_p2 = triangle.p2 - interPlane;
+	Vector3 p2_p0 = triangle.p0 - triangle.p2;
+	m = Vector3Cross(pt_p2, p2_p0);
 
 	// 辺の外側であれば当たっていないので判定を打ち切る
-	if (XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) return false;
+	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
 	// 内側なので、当たっている
 	if (inter) *inter = interPlane;
@@ -199,11 +199,11 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	return true;
 }
 
-bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance, DirectX::XMVECTOR* inter)
+bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance, Vector3* inter)
 {
-	XMVECTOR m = ray.start - sphere.center;
-	float b = XMVector3Dot(m, ray.dir).m128_f32[0];
-	float c = XMVector3Dot(m, m).m128_f32[0] - sphere.radius * sphere.radius;
+	Vector3 m = ray.start - sphere.center;
+	float b = Vector3Dot(m, ray.dir);
+	float c = Vector3Dot(m, m) - sphere.radius * sphere.radius;
 
 	// rayの始点がsphereの外側にあり(c > 0)、rayがsphereから離れていく方向を指している場合(b > 0)、当たらない
 	if (c > 0.0f && b > 0.0f) return false;

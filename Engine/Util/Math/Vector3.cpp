@@ -95,6 +95,16 @@ Vector3 Vector3Normalize(const Vector3& vec)
 	return vec;
 }
 
+Vector3 Vector3Cross(const Vector3& v0, const Vector3& v1)
+{
+	return Vector3(v0.y * v1.z - v0.z * v1.y, v0.z * v1.x - v0.x * v1.z, v0.x * v1.y - v0.y * v1.x);
+}
+
+float Vector3Dot(const Vector3& v0, const Vector3& v1)
+{
+	return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z;
+}
+
 // 2項演算子オーバーロード
 // ※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備している
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)

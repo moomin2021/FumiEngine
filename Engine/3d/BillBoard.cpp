@@ -94,16 +94,16 @@
 //void BillBoard::Update(Camera* camera, BillBoardType type)
 //{
 //	// 視点座標
-//	//XMVECTOR eyePos = XMLoadFloat3(&camera->eye_);
+//	//Vector3 eyePos = XMLoadFloat3(&camera->eye_);
 //
 //	//// 注視点座標
-//	//XMVECTOR targetPos = XMLoadFloat3(&camera->target_);
+//	//Vector3 targetPos = XMLoadFloat3(&camera->target_);
 //
 //	//// 上方向
-//	//XMVECTOR upVec = XMLoadFloat3(&camera->up_);
+//	//Vector3 upVec = XMLoadFloat3(&camera->up_);
 //
 //	//// カメラZ軸
-//	//XMVECTOR cameraAxisZ = XMVectorSubtract(targetPos, eyePos);
+//	//Vector3 cameraAxisZ = XMVectorSubtract(targetPos, eyePos);
 //
 //	//// 0ベクトルだと向きが定まらないので除外 //
 //	//assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
@@ -115,7 +115,7 @@
 //	//cameraAxisZ = XMVector3Normalize(cameraAxisZ);
 //
 //	//// カメラのX軸(右方向) //
-//	//XMVECTOR cameraAxisX;
+//	//Vector3 cameraAxisX;
 //
 //	//// X軸は上方向→Z軸の外積で求まる //
 //	//cameraAxisX = XMVector3Cross(upVec, cameraAxisZ);
@@ -124,7 +124,7 @@
 //	//cameraAxisX = XMVector3Normalize(cameraAxisX);
 //
 //	//// カメラのY軸(上方向) //
-//	//XMVECTOR cameraAxisY;
+//	//Vector3 cameraAxisY;
 //
 //	//// Y軸はZ軸→X軸の外積で求まる //
 //	//cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
@@ -146,7 +146,7 @@
 //
 //	//else if (type == BILLBOARDY) {
 //	//	// カメラX軸、Y軸、Z軸 //
-//	//	XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+//	//	Vector3 ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
 //
 //	//	// X軸は共通 //
 //	//	ybillCameraAxisX = cameraAxisX;
@@ -294,16 +294,16 @@
 //		unsigned short index2 = indices_[i * 3 + 2];
 //
 //		// --三角形を構成する頂点座標をベクトルに代入
-//		XMVECTOR p0 = XMLoadFloat3(&vertices_[index0].pos);
-//		XMVECTOR p1 = XMLoadFloat3(&vertices_[index1].pos);
-//		XMVECTOR p2 = XMLoadFloat3(&vertices_[index2].pos);
+//		Vector3 p0 = XMLoadFloat3(&vertices_[index0].pos);
+//		Vector3 p1 = XMLoadFloat3(&vertices_[index1].pos);
+//		Vector3 p2 = XMLoadFloat3(&vertices_[index2].pos);
 //
 //		// --p0->p1ベクトル、p0->p2ベクトルを計算（ベクトルの減算）
-//		XMVECTOR v1 = XMVectorSubtract(p1, p0);
-//		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+//		Vector3 v1 = XMVectorSubtract(p1, p0);
+//		Vector3 v2 = XMVectorSubtract(p2, p0);
 //
 //		// --外積は両方から垂直なベクトル
-//		XMVECTOR normal = XMVector3Cross(v1, v2);
+//		Vector3 normal = XMVector3Cross(v1, v2);
 //
 //		// --正規化
 //		normal = XMVector3Normalize(normal);

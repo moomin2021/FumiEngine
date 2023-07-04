@@ -1,10 +1,10 @@
 #pragma once
-#include <DirectXMath.h>
+#include "Vector3.h"
 
 // 球
 struct Sphere {
 	// 中心座標
-	DirectX::XMVECTOR center = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Vector3 center = { 0.0f, 0.0f, 0.0f };
 
 	// 半径
 	float radius = 1.0f;
@@ -13,7 +13,7 @@ struct Sphere {
 // 平面
 struct Plane {
 	// 法線ベクトル
-	DirectX::XMVECTOR normal = { 0.0f, 1.0f, 0.0f, 0.0f };
+	Vector3 normal = { 0.0f, 1.0f, 0.0f };
 
 	// 原点(0.0f, 0.0f, 0.0f)からの距離
 	float distance = 0.0f;
@@ -23,20 +23,20 @@ struct Plane {
 class Triangle {
 public:
 	// 頂点座標3つ
-	DirectX::XMVECTOR p0;
-	DirectX::XMVECTOR p1;
-	DirectX::XMVECTOR p2;
+	Vector3 p0;
+	Vector3 p1;
+	Vector3 p2;
 
 	// 法線ベクトル
-	DirectX::XMVECTOR normal;
+	Vector3 normal;
 
 	void ComputeNormal();
 };
 
 struct Ray {
 	// 始点座標
-	DirectX::XMVECTOR start = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Vector3 start = { 0.0f, 0.0f, 0.0f };
 
 	// 方向
-	DirectX::XMVECTOR dir = { 1.0f, 0.0f, 0.0f, 0.0f };
+	Vector3 dir = { 1.0f, 0.0f, 0.0f };
 };
