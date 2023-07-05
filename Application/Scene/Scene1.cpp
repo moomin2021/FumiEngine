@@ -29,10 +29,15 @@ void Scene1::Initialize()
 	// モデル
 	mFloor_ = std::make_unique<Model>("floor");
 	mCube_ = std::make_unique<Model>("cube");
+	mSphere_ = std::make_unique<Model>("sphere");
 
 	// オブジェクト
 	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
 	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+
+	oSphere_ = std::make_unique<Object3D>(mSphere_.get());
+	oSphere_->SetPosition({ 0.0f, 1.0f, -2.0f });
+	oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 	oCube_.resize(3);
 
@@ -58,6 +63,7 @@ void Scene1::Initialize()
 	pointLight_ = std::make_unique<PointLight>();
 
 	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
+	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
 	//pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
 
 	lightGroup_->AddDirLight(dirLight_.get());
@@ -104,6 +110,7 @@ void Scene1::Draw()
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
 	oFloor_->Draw();
+	oSphere_->Draw();
 	for (auto& object : oCube_) object->Draw();
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
