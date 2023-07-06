@@ -1,53 +1,14 @@
 #pragma once
-#include "float3.h"
-#include "float2.h"
 
-#include <string>
+
 #include <vector>
 #include <d3d12.h>
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
-#pragma comment(lib, "d3d12.lib")
-
 class Model {
-	// 頂点データ
-	struct Vertex {
-		float3 pos;		// 座標(XYZ)
-		float3 normal;	// 法線(XYZ)
-		float2 uv;		// UV座標(XY)
-	};
-
-	// マテリアルデータ
-	struct Material {
-		std::string name;	// マテリアル名
-		float3 ambient;		// アンビエント影響度
-		float3 diffuse;		// ディフューズ影響度
-		float3 specular;	// スペキュラー影響度
-		float alpha;		// アルファ
-
-		// テクスチャファイル名
-		std::string textureFilename;
-
-		// コンストラクタ
-		Material() {
-			ambient = { 0.3f, 0.3f, 0.3f };
-			diffuse = { 0.0f, 0.0f, 0.0f };
-			specular = { 0.0f, 0.0f, 0.0f };
-			alpha = 1.0f;
-		}
-	};
-
-	// 定数バッファ用マテリアルデータ
-	struct MaterialBuffer {
-		float3 ambient;	// アンビエント係数
-		float pad1;		// パディング
-		float3 diffuse;	// ディフェーズ係数
-		float pad2;		// パディング
-		float3 specular;// スペキュラー係数
-		float alpha;	// アルファ
-	};
+#pragma region エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+#pragma endregion
 
 #pragma region メンバ変数
 private:

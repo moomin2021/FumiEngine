@@ -111,6 +111,7 @@
     <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\3d\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Engine\Util\Math\Vector2.h" />
     <ClInclude Include="Engine\Util\Math\Vector3.h" />
     <ClInclude Include="Engine\Base\WinAPI.h" />
+    <ClInclude Include="Engine\3d\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
