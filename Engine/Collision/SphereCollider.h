@@ -13,6 +13,7 @@ private:
 #pragma endregion
 
 #pragma region メンバ関数
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>

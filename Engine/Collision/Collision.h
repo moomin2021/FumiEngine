@@ -5,6 +5,15 @@ class Collision {
 #pragma region ƒƒ“ƒoŠÖ”
 public:
 	/// <summary>
+	/// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="sphere0"> ‹…0 </param>
+	/// <param name="sphere1"> ‹…1 </param>
+	/// <param name="inter">  </param>
+	/// <returns></returns>
+	static bool CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1, Vector3* inter = nullptr);
+
+	/// <summary>
 	/// ‹…‚Æ•½–Ê‚Ì“–‚½‚è”»’è
 	/// </summary>
 	/// <param name="sphere"> ‹… </param>

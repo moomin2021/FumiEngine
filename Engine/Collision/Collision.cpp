@@ -2,6 +2,20 @@
 
 #include <math.h>
 
+bool Collision::CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1, Vector3* inter)
+{
+	float x = sphere1.center.x - sphere0.center.x;
+	float y = sphere1.center.y - sphere0.center.y;
+	float z = sphere1.center.z - sphere0.center.z;
+
+	float r = sphere0.radius + sphere1.radius;
+
+	// 真なら衝突している
+	if ((x * x) + (y * y) + (z * z) <= (r * r)) return true;
+
+	return false;
+}
+
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3* inter)
 {
 	// 座標系の原点から球の中心座標への距離
@@ -215,7 +229,7 @@ bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* dis
 
 	// レイは球と交差している
 	// 交差する最小の値を計算
-	float t = b - static_cast<float>(sqrt(discr));
+	float t = -b - static_cast<float>(sqrt(discr));
 
 	// tが負である場合、レイは球の内側から開始しているのでtをゼロにクランプ
 	if (t < 0) t = 0.0f;

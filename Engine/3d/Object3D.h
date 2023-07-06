@@ -21,12 +21,6 @@ class Object3D {
 
 #pragma region メンバ変数
 private:
-	// オブジェクトデータ
-	float3 position_;	// 位置(XYZ)
-	float3 rotation_;	// 回転(XYZ)
-	float3 scale_;		// 拡縮(XYZ)
-	float4 color_;		// 色(RGBA)
-
 	// オブジェクトデータを変更したかどうか
 	bool hasChanget_;
 
@@ -45,6 +39,12 @@ private:
 	static LightGroup*	sLightGroup_;	// ライト
 
 protected:
+	// オブジェクトデータ
+	float3 position_;	// 位置(XYZ)
+	float3 rotation_;	// 回転(XYZ)
+	float3 scale_;		// 拡縮(XYZ)
+	float4 color_;		// 色(RGBA)
+
 	// クラス名(デバック用)
 	const char* name_ = nullptr;
 
@@ -57,17 +57,27 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Object3D();
+	Object3D(Model* model);
 
 	/// <summary>
 	/// 仮想デストラクタ
 	/// </summary>
-	virtual ~Object3D();
+	~Object3D();
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	virtual void Initialize() = 0;
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	virtual void Update() = 0;
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	virtual void Draw();
+	void Draw();
 
 	/// <summary>
 	/// 衝突時コールバック関数

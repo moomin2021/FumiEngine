@@ -8,6 +8,9 @@
 #include "Key.h"
 #include <vector>
 #include <memory>
+#include "CollisionManager.h"
+#include "Player.h"
+#include "Enemy.h"
 
 class Scene1 : public BaseScene
 {
@@ -15,6 +18,8 @@ class Scene1 : public BaseScene
 private:
 	// キーボード入力
 	Key* key_;
+
+	CollisionManager* colManager_;
 
 	// カメラ
 	std::unique_ptr<Camera> camera_;
@@ -31,6 +36,8 @@ private:
 	// オブジェクト
 	std::unique_ptr<Object3D> oFloor_;
 	std::vector<std::unique_ptr<Object3D>> oCube_;
+	std::unique_ptr<Player> player_;
+	std::unique_ptr<Enemy> enemy_;
 
 	// テクスチャハンドル
 	uint16_t haeHandle_;

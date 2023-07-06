@@ -19,6 +19,8 @@ Scene1::~Scene1()
 
 void Scene1::Initialize()
 {
+	colManager_ = CollisionManager::GetInstance();
+
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
 
@@ -29,6 +31,13 @@ void Scene1::Initialize()
 	// モデル
 	mFloor_ = std::make_unique<Model>("floor");
 	mCube_ = std::make_unique<Model>("cube");
+
+	player_ = std::make_unique<Player>(mCube_.get());
+	player_->Initialize();
+
+	enemy_ = std::make_unique<Enemy>(mCube_.get());
+	enemy_->SetPosition({ -5.0f, 0.0f, 0.0f });
+	enemy_->Initialize();
 
 	//// オブジェクト
 	//oFloor_ = std::make_unique<Object3D>();
@@ -76,15 +85,15 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	// カメラ移動
-	{
-		static float3 eye = { 0.0f, 10.0f, -30.0f };
+	//// カメラ移動
+	//{
+	//	static float3 eye = { 0.0f, 10.0f, -30.0f };
 
-		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
-		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+	//	eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
+	//	eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
 
-		camera_->SetEye(eye);
-	}
+	//	camera_->SetEye(eye);
+	//}
 
 	static float3 pointLightPos = { -4.0f, 1.0f, 0.0f };
 
@@ -99,6 +108,20 @@ void Scene1::Update()
 	//oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
 	//oCube_[1]->SetRotation({0.0f, rota, 0.0f});
 
+	Ray ray;
+	ray.start = { 5.0f, 0.0f,0.0f };
+	ray.dir = { -1.0f, 0.0f, 0.0f };
+	RaycastHit raycastHit;
+
+	player_->Update();
+	enemy_->Update();
+
+	colManager_->CheckAllCollision();
+
+	if (colManager_->Raycast(ray, &raycastHit)) {
+		raycastHit.object->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	}
+
 	// カメラの更新
 	camera_->Update();
 }
@@ -107,6 +130,8 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
+	player_->Draw();
+	enemy_->Draw();
 	//oFloor_->Draw();
 	//for (auto& object : oCube_) object->Draw();
 

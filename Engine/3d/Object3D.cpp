@@ -3,12 +3,14 @@
 #include "Texture.h"
 #include "Util.h"
 #include "BaseCollider.h"
+#include "CollisionManager.h"
+#include "Key.h"
 
 // 静的メンバ変数の実態
 Camera*		Object3D::sCamera_		= nullptr;// カメラ
 LightGroup* Object3D::sLightGroup_	= nullptr;// ライト
 
-Object3D::Object3D() :
+Object3D::Object3D(Model* model) :
 #pragma region 初期化リスト
 	// オブジェクトデータ
 	position_{ 0.0f, 0.0f, 0.0f },	// 位置(XYZ)
@@ -27,7 +29,7 @@ Object3D::Object3D() :
 	constMap_(nullptr),
 
 	// モデル
-	model_(nullptr)
+	model_(model)
 #pragma endregion
 {
 	// 関数が成功したかどうかを判別する用変数
@@ -74,7 +76,11 @@ Object3D::Object3D() :
 Object3D::~Object3D()
 {
 	// コライダー解放
-	if (collider_) delete collider_;
+	if (collider_) {
+		// コリジョンマネージャーから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider_);
+		delete collider_;
+	}
 }
 
 void Object3D::Draw() {
@@ -83,6 +89,11 @@ void Object3D::Draw() {
 
 	// オブジェクトデータの更新
 	UpdateData();
+
+	int num = 0;
+	if (Key::GetInstance()->TriggerKey(DIK_0)) {
+		num = 0;
+	}
 
 	// 当たり判定更新
 	if (collider_) collider_->Update();
@@ -161,6 +172,12 @@ void Object3D::UpdateData() {
 
 void Object3D::SetCollider(BaseCollider* collider)
 {
-	collider_->SetObject3D(this);
 	collider_ = collider;
+	collider_->SetObject3D(this);
+
+	// コリジョンマネージャーに登録
+	CollisionManager::GetInstance()->AddCollider(collider_);
+
+	// コライダーを更新しておく
+	collider_->Update();
 }

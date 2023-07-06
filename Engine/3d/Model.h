@@ -111,4 +111,18 @@ private:
 	/// </summary>
 	void CreateMaterialBuff();
 #pragma endregion
+
+#pragma region ゲッター関数
+	/// <summary>
+	/// 頂点配列を取得
+	/// </summary>
+	/// <returns></returns>
+	inline const std::vector<Vertex>& GetVertex() { return vertex_; }
+
+	/// <summary>
+	/// インデックス配列を取得
+	/// </summary>
+	/// <returns></returns>
+	inline const std::vector<uint16_t>& GetIndex() { return index_; }
+#pragma endregion
 };
