@@ -88,6 +88,8 @@
     <ClCompile Include="Application\Enemy.cpp" />
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
+    <ClCompile Include="Engine\3d\Material.cpp" />
+    <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
     <ClCompile Include="Engine\Collision\Collision.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
@@ -123,6 +125,8 @@
     <ClInclude Include="Application\Enemy.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
+    <ClInclude Include="Engine\3d\Material.h" />
+    <ClInclude Include="Engine\3d\Mesh.h" />
     <ClInclude Include="Engine\Collision\BaseCollider.h" />
     <ClInclude Include="Engine\Collision\Collision.h" />
     <ClInclude Include="Engine\Collision\CollisionInfo.h" />

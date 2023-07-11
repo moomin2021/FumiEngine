@@ -9,60 +9,22 @@ using namespace std;
 
 Model::Model(string fileName) :
 #pragma region 初期化リスト
-	// 頂点データ
-	vertex_{},				// 頂点データ
-	vertexView_{},			// 頂点バッファービュー
-	vertexBuff_(nullptr),	// 頂点バッファ
-	
-	// インデックスデータ
-	index_{},			// インデックスデータ
-	indexView_{},		// インデックスバッファビュー
-	indexBuff_(nullptr),// インデックスバッファ
-	
-	// マテリアルデータ
-	material_{},			// マテリアルデータ
-	materialBuff_(nullptr),	// マテリアルバッファ
+	// メッシュデータ
+	meshes_{},
 
-	// テクスチャハンドル
-	textureHandle_(0)
+	// マテリアルデータ
+	materials_{}
 #pragma endregion
 {
 	// モデル読み込み
 	LoadModel(fileName);
-
-	// 各バッファ作成
-	CreateVertexBuff();		// 頂点バッファ
-	CreateIndexBuff();		// インデックスバッファ
-	CreateMaterialBuff();	// マテリアルバッファ
 }
 
 void Model::Draw() {
-	// コマンドリスト取得
-	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
-
-	// インスタンス取得
-	Texture* tex = Texture::GetInstance();
-
-	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	// ハンドルを指定された分まで進める
-	srvGpuHandle.ptr += textureHandle_;
-
-	// 定数バッファビュー（CBV）の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(2, materialBuff_->GetGPUVirtualAddress());
-
-	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
-
-	// 頂点バッファビューの設定コマンド
-	cmdList->IASetVertexBuffers(0, 1, &vertexView_);
-
-	// インデックスバッファビューの設定コマンド
-	cmdList->IASetIndexBuffer(&indexView_);
-
-	// 描画コマンド
-	cmdList->DrawIndexedInstanced(static_cast<UINT>(index_.size()), 1, 0, 0, 0);
+	for (auto& i : meshes_) {
+		materials_[i.GetMaterialName()].Draw();
+		i.Draw();
+	}
 }
 
 void Model::LoadModel(string name)
@@ -83,6 +45,10 @@ void Model::LoadModel(string name)
 	vector<float3> normals;		// 法線ベクトル
 	vector<float2> texcoords;	// テクスチャUV
 
+	// メッシュを生成したらカウント
+	uint16_t meshCount = 0;
+	uint16_t loopCount = 0;
+
 	// 1行ずつ読み込む
 	string line;
 	while (getline(file, line)) {
@@ -94,8 +60,16 @@ void Model::LoadModel(string name)
 		string key;
 		getline(line_stream, key, ' ');
 
+		// 先頭文字が[o]なら頂点データをリセット
+		if (key == "o") {
+			// メッシュ生成
+			meshes_.emplace_back();
+			meshCount++;
+			loopCount = 0;
+		}
+
 		// 先頭文字列が[v]なら頂点座標
-		if (key == "v") {
+		else if (key == "v") {
 			// X, Y, Z座標読み込み
 			float3 position{};
 			line_stream >> position.x;
@@ -107,7 +81,7 @@ void Model::LoadModel(string name)
 		}
 
 		// 先頭文字列が[vt]ならテクスチャ
-		if (key == "vt") {
+		else if (key == "vt") {
 			// U, V成分読み込み
 			float2 texcoord{};
 			line_stream >> texcoord.x;
@@ -121,7 +95,7 @@ void Model::LoadModel(string name)
 		}
 
 		// 先頭文字列が[vn]なら法線ベクトル
-		if (key == "vn") {
+		else if (key == "vn") {
 			// X, Y, Z成分読み込み
 			float3 normal{};
 			line_stream >> normal.x;
@@ -133,10 +107,11 @@ void Model::LoadModel(string name)
 		}
 
 		// 先頭文字列が[f]ならポリゴン(三角形)
-		if (key == "f") {
+		else if (key == "f") {
 			// 半角スペース区切りで行の続きを読み込む
 			string index_string;
 			while (getline(line_stream, index_string, ' ')) {
+
 				// 頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
 				std::istringstream index_stream(index_string);
 				unsigned short indexPosition, indexNormal, indexTexcoord;
@@ -147,25 +122,41 @@ void Model::LoadModel(string name)
 				index_stream >> indexNormal;
 
 				// 頂点データの追加
-				Vertex vertex{};
+				Mesh::Vertex vertex{};
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
-				vertex_.emplace_back(vertex);
+				meshes_[meshCount - 1].AddVertex(vertex);
 
 				// 頂点インデックスに追加
-				index_.emplace_back(static_cast<unsigned short>(index_.size()));
+				meshes_[meshCount - 1].AddIndex(loopCount);
+				loopCount++;
 			}
 		}
 
+		// 先頭文字列が[usemtl]ならマテリアル
+		else if (key == "usemtl") {
+			std::string materialName;
+			line_stream >> materialName;
+
+			// マテリアルの名前をメッシュに設定
+			meshes_[meshCount - 1].SetMaterialName(materialName);
+		}
+
 		// 先頭文字列が[mtllib]ならマテリアル
-		if (key == "mtllib") {
+		else if (key == "mtllib") {
 			string fileName;
 			line_stream >> fileName;
 
 			// マテリアル読み込み
 			LoadMaterial(directoryPath, fileName);
 		}
+	}
+
+	// 生成したすべてのメッシュの頂点バッファとインデックスデータの生成
+	for (size_t i = 0; i < meshes_.size(); i++) {
+		meshes_[i].CreateVertexBuff();
+		meshes_[i].CreateIndexBuff();
 	}
 
 	// ファイルを閉じる
@@ -181,6 +172,8 @@ void Model::LoadMaterial(const string& directoryPath, const string& fileName) {
 
 	// ファイルオープン失敗をチェック
 	if (file.fail()) assert(0);
+
+	std::string materialName;
 
 	// 1行ずつ読み込む
 	string line;
@@ -200,193 +193,49 @@ void Model::LoadMaterial(const string& directoryPath, const string& fileName) {
 		// 先頭文字列が[newmtl]ならマテリアル名
 		if (key == "newmtl") {
 			// マテリアル名読み込み
-			line_stream >> material_.name;
+			line_stream >> materialName;
+
+			// マテリアル追加
+			materials_.emplace(materialName, Material());
 		}
 
 		// 先頭文字列が[Ka]ならアンビエント色
 		if (key == "Ka") {
-			line_stream >> material_.ambient.x;
-			line_stream >> material_.ambient.y;
-			line_stream >> material_.ambient.z;
+			line_stream >> materials_[materialName].ambient_.x;
+			line_stream >> materials_[materialName].ambient_.y;
+			line_stream >> materials_[materialName].ambient_.z;
 		}
 
 		// 先頭文字列が[Kd]ならディフェーズ職
 		if (key == "Kd") {
-			line_stream >> material_.diffuse.x;
-			line_stream >> material_.diffuse.y;
-			line_stream >> material_.diffuse.z;
+			line_stream >> materials_[materialName].diffuse_.x;
+			line_stream >> materials_[materialName].diffuse_.y;
+			line_stream >> materials_[materialName].diffuse_.z;
 		}
 
 		// 先頭文字列が[Ks]ならスペキュラー色
 		if (key == "Ks") {
-			line_stream >> material_.specular.x;
-			line_stream >> material_.specular.y;
-			line_stream >> material_.specular.z;
+			line_stream >> materials_[materialName].specular_.x;
+			line_stream >> materials_[materialName].specular_.y;
+			line_stream >> materials_[materialName].specular_.z;
 		}
 
 		// 先頭文字列が[map_Kd]ならテクスチャファイル名
 		if (key == "map_Kd") {
 			// テクスチャのファイル名読み込み
-			line_stream >> material_.textureFilename;
+			std::string texName;
+			line_stream >> texName;
 
 			// テクスチャ読み込み
-			textureHandle_ = LoadTexture(directoryPath + material_.textureFilename);
+			materials_[materialName].texHandle_ = LoadTexture(directoryPath + texName);
 		}
+	}
+
+	// 全てのマテリアルデータのバッファを生成
+	for (auto it = materials_.begin(); it != materials_.end(); ++it) {
+		materials_[it->first].CreateMaterialBuff();
 	}
 
 	// ファイルを閉じる
 	file.close();
-}
-
-void Model::CreateVertexBuff()
-{
-	// デバイス取得
-	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
-
-	// 関数実行の成否を判別用の変数
-	HRESULT result;
-
-	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertex_[0]) * vertex_.size());
-
-	// 頂点バッファの設定
-	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
-
-	// リソース設定
-	D3D12_RESOURCE_DESC resDesc{};
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// 頂点バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProp, // ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&vertexBuff_));
-	assert(SUCCEEDED(result));
-
-	// 頂点バッファビューの作成
-	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// GPU仮想アドレス
-	vertexView_.SizeInBytes = sizeVB;				// 頂点バッファのサイズ
-	vertexView_.StrideInBytes = sizeof(vertex_[0]);	// 頂点1つ分のデータサイズ
-
-	// Map処理でメインメモリとGPUのメモリを紐づける
-	Vertex* vertMap = nullptr;
-	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-
-	// 全頂点に対して
-	for (size_t i = 0; i < vertex_.size(); i++)
-	{
-		vertMap[i] = vertex_[i]; // 座標をコピー
-	}
-
-	// 繋がりを解除
-	vertexBuff_->Unmap(0, nullptr);
-}
-
-void Model::CreateIndexBuff()
-{
-	// デバイス取得
-	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
-
-	// 関数実行の成否を判別用の変数
-	HRESULT result;
-
-	// インデックスデータ全体のサイズ
-	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * index_.size());
-
-	// 頂点バッファの設定
-	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
-
-	// リソース設定
-	D3D12_RESOURCE_DESC resDesc{};
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeIB; // 頂点データ全体のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// インデックスバッファの生成
-	result = device->CreateCommittedResource(
-		&heapProp,// ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc,// リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&indexBuff_)
-	);
-
-	// インデックスバッファビュー作成
-	indexView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
-	indexView_.Format = DXGI_FORMAT_R16_UINT;
-	indexView_.SizeInBytes = sizeIB;
-
-	// インデックスバッファをマッピング
-	uint16_t* indexMap = nullptr;
-	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
-	assert(SUCCEEDED(result));
-
-	// --全インデックスに対して-- //
-	for (size_t i = 0; i < index_.size(); i++)
-	{
-		indexMap[i] = index_[i];
-	}
-
-	// --マッピング解除-- //
-	indexBuff_->Unmap(0, nullptr);
-}
-
-void Model::CreateMaterialBuff()
-{
-	// デバイス取得
-	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
-
-	// 関数実行の成否を判別用の変数
-	HRESULT result;
-
-	// 定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp{};
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	// 定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resdesc{};
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(MaterialBuffer) + 0xff) & ~0xff;
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// 定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&materialBuff_));
-	assert(SUCCEEDED(result));
-
-	// マテリアル定数バッファのマッピング
-	MaterialBuffer* materialMap;
-	result = materialBuff_->Map(0, nullptr, (void**)&materialMap);
-	assert(SUCCEEDED(result));
-	materialMap->ambient = material_.ambient;
-	materialMap->diffuse = material_.diffuse;
-	materialMap->specular = material_.specular;
-	materialMap->alpha = material_.alpha;
-	materialBuff_->Unmap(0, nullptr);
 }
