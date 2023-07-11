@@ -11,6 +11,7 @@
 #include "CollisionManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "TouchableObject.h"
 
 class Scene1 : public BaseScene
 {
@@ -32,9 +33,10 @@ private:
 	// モデル
 	std::unique_ptr<Model> mFloor_;
 	std::unique_ptr<Model> mCube_;
+	std::unique_ptr<Model> mSphere_;
 
 	// オブジェクト
-	std::unique_ptr<Object3D> oFloor_;
+	std::unique_ptr<TouchableObject> oFloor_;
 	std::vector<std::unique_ptr<Object3D>> oCube_;
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;

@@ -1,6 +1,8 @@
 #pragma once
 #include "float3.h"
 
+class Vector3;
+
 // --Matrix4構造体-- //
 struct Matrix4 {
 	float m[4][4];
@@ -8,6 +10,9 @@ struct Matrix4 {
 
 // --単位行列を求める-- //
 Matrix4 Matrix4Identity();
+
+// 逆行列
+Matrix4 Matrix4Inverse(const Matrix4& m);
 
 // --拡大縮小行列の設定-- //
 Matrix4 Matrix4Scale(const float3& s);
@@ -22,6 +27,7 @@ Matrix4 Matrix4Translate(const float3& t);
 
 // --座標変換（ベクトルと行列の掛け算をする）-- //
 float3 Matrix4Transform(const float3& v, const Matrix4& m);
+Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m);
 
 // --代入演算子オーバーロード-- //
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2);

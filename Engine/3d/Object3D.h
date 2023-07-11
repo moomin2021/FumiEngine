@@ -31,9 +31,6 @@ private:
 	ComPtr<ID3D12Resource>	constBuff_;	// 定数バッファ
 	ConstBufferData*		constMap_;	// マッピング処理用
 
-	// モデル
-	Model* model_;
-
 	// 静的メンバ変数
 	static Camera*		sCamera_;		// カメラ
 	static LightGroup*	sLightGroup_;	// ライト
@@ -50,6 +47,9 @@ protected:
 
 	// コライダー
 	BaseCollider* collider_ = nullptr;
+
+	// モデル
+	Model* model_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -155,5 +155,11 @@ public:
 	/// </summary>
 	/// <returns> ワールド行列 </returns>
 	const Matrix4& GetMatWorld() { return matWorld_; }
+
+	/// <summary>
+	/// モデルを取得
+	/// </summary>
+	/// <returns> モデル </returns>
+	inline Model* GetModel() { return model_; }
 #pragma endregion
 };

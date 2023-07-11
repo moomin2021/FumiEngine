@@ -90,5 +90,17 @@ public:
 	/// </summary>
 	/// <returns> マテリアルの名前 </returns>
 	const std::string& GetMaterialName() { return materialName_; }
+
+	/// <summary>
+	/// 頂点配列を取得
+	/// </summary>
+	/// <returns> 頂点配列 </returns>
+	inline const std::vector<Vertex>& GetVertex() { return vertices_; }
+
+	/// <summary>
+	/// インデックス配列を取得
+	/// </summary>
+	/// <returns> インデックス配列 </returns>
+	inline const std::vector<uint16_t>& GetIndex() { return indexes_; }
 #pragma endregion
 };

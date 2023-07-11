@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
 #include "BaseCollider.h"
 #include "Collision.h"
+#include "MeshCollider.h"
 
 CollisionManager* CollisionManager::GetInstance() {
 	// インスタンス生成
@@ -29,6 +30,30 @@ void CollisionManager::CheckAllCollision() {
 				Sphere* sphereB = dynamic_cast<Sphere*>(colB);
 				Vector3 inter;
 				if (Collision::CheckSphere2Sphere(*sphereA, *sphereB, &inter)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+				}
+			}
+
+			// メッシュと球
+			else if (colA->GetShapeType() == SHAPE_MASH && colB->GetShapeType() == SHAPE_SPHERE) {
+				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
+				Sphere* sphere = dynamic_cast<Sphere*>(colB);
+				Vector3 inter;
+
+				if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+				}
+			}
+
+			// 球とメッシュ
+			else if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_MASH) {
+				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colB);
+				Sphere* sphere = dynamic_cast<Sphere*>(colA);
+				Vector3 inter;
+				
+				if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
 					colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
 					colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
 				}
@@ -71,6 +96,21 @@ bool CollisionManager::Raycast(const Ray& ray, RaycastHit* hitinfo, float maxDis
 			if (tempDistance >= distance) continue;
 
 			// 今まで最も近いので記録を取る
+			result = true;
+			distance = tempDistance;
+			inter = tempInter;
+			it_hit = it;
+		}
+
+		// メッシュの場合
+		else if (colA->GetShapeType() == SHAPE_MASH) {
+			MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
+
+			float tempDistance;
+			Vector3 tempInter;
+			if (!meshCollider->CheckCollisionRay(ray, &tempDistance, &tempInter)) continue;
+			if (tempDistance >= distance) continue;
+
 			result = true;
 			distance = tempDistance;
 			inter = tempInter;

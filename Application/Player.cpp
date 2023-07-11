@@ -15,12 +15,12 @@ void Player::Update()
 	static float3 position = {0.0f, 0.0f, 0.0f};
 
 	// [A]A[D]‚Åù‰ñ
-	if (key_->PushKey(DIK_A)) {
-		position.x -= 0.1f;
-	}
-	if (key_->PushKey(DIK_D)) {
-		position.x += 0.1f;
-	}
+	//if (key_->PushKey(DIK_A)) {
+	//	position.x -= 0.1f;
+	//}
+	//if (key_->PushKey(DIK_D)) {
+	//	position.x += 0.1f;
+	//}
 
 	SetPosition(position);
 	SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });

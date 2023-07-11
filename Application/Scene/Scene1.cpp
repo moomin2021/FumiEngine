@@ -31,18 +31,20 @@ void Scene1::Initialize()
 	// モデル
 	mFloor_ = std::make_unique<Model>("floor");
 	mCube_ = std::make_unique<Model>("cube");
+	mSphere_ = std::make_unique<Model>("sphere");
 
-	player_ = std::make_unique<Player>(mCube_.get());
+	player_ = std::make_unique<Player>(mSphere_.get());
 	player_->Initialize();
 
-	enemy_ = std::make_unique<Enemy>(mCube_.get());
+	enemy_ = std::make_unique<Enemy>(mSphere_.get());
 	enemy_->SetPosition({ -5.0f, 0.0f, 0.0f });
 	enemy_->Initialize();
 
-	//// オブジェクト
-	//oFloor_ = std::make_unique<Object3D>();
-	//oFloor_->SetModel(mFloor_.get());
+	// オブジェクト
+	oFloor_ = std::make_unique<TouchableObject>(mCube_.get());
+	oFloor_->SetModel(mFloor_.get());
 	//oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+	oFloor_->Initialize();
 
 	//oCube_.resize(3);
 
@@ -85,20 +87,26 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	//// カメラ移動
-	//{
-	//	static float3 eye = { 0.0f, 10.0f, -30.0f };
+	// カメラ移動
+	{
+		static float3 eye = { 0.0f, 10.0f, -30.0f };
 
-	//	eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
-	//	eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
+		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
 
-	//	camera_->SetEye(eye);
-	//}
+		camera_->SetEye(eye);
+	}
 
 	static float3 pointLightPos = { -4.0f, 1.0f, 0.0f };
 
-	pointLightPos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
-	pointLightPos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
+	static float3 floorPos = { 0.0f, 0.0f, 0.0f };
+
+	//pointLightPos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
+	//pointLightPos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
+
+	floorPos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.1f;
+	floorPos.y += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.1f;
+	oFloor_->SetPosition(floorPos);
 
 	pointLight_->SetLightPos(pointLightPos);
 
@@ -115,6 +123,7 @@ void Scene1::Update()
 
 	player_->Update();
 	enemy_->Update();
+	oFloor_->Update();
 
 	colManager_->CheckAllCollision();
 
@@ -132,7 +141,7 @@ void Scene1::Draw()
 
 	player_->Draw();
 	enemy_->Draw();
-	//oFloor_->Draw();
+	oFloor_->Draw();
 	//for (auto& object : oCube_) object->Draw();
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
