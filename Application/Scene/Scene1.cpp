@@ -36,7 +36,7 @@ void Scene1::Initialize()
 	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	oSphere_ = std::make_unique<Object3D>(mSphere_.get());
-	oSphere_->SetPosition({ 0.0f, 1.0f, -2.0f });
+	oSphere_->SetPosition({ 0.0f, 1.0f, -3.0f });
 	oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 	oCube_.resize(3);
