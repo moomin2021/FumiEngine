@@ -1,4 +1,5 @@
 #pragma once
+#include "Matrix4.h"
 
 class Vector3
 {
@@ -31,6 +32,9 @@ public:
 };
 
 Vector3 Vector3Normalize(const Vector3& vec);
+Vector3 Vector3Cross(const Vector3& v0, const Vector3& v1);
+float Vector3Dot(const Vector3& v0, const Vector3& v1);
+Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
 
 // 2項演算子オーバーロード
 // ※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備している
