@@ -1,4 +1,5 @@
 #include "Matrix4.h"
+#include "Vector3.h"
 #include <cmath>
 
 // --単位行列を求める-- //
@@ -9,6 +10,79 @@ Matrix4 Matrix4Identity() {
 		0.0f, 0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
+
+	return result;
+}
+
+Matrix4 Matrix4Inverse(const Matrix4& m)
+{
+	Matrix4 result;
+	float mat[4][8] = { 0 };
+
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			mat[i][j] = m.m[i][j];
+		}
+	}
+
+	mat[0][4] = 1;
+	mat[1][5] = 1;
+	mat[2][6] = 1;
+	mat[3][7] = 1;
+
+	for (size_t n = 0; n < 4; n++) {
+		//最大の絶対値を探索する(とりあえず対象成分を最大と仮定しておく)
+		float max = abs(mat[n][n]);
+		size_t maxIndex = n;
+
+		for (size_t i = n + 1; i < 4; i++) {
+			if (abs(mat[i][n]) > max) {
+				max = abs(mat[i][n]);
+				maxIndex = i;
+			}
+		}
+
+		//最大の絶対値が0だったら逆行列は求められない
+		if (abs(mat[maxIndex][n]) <= 0.000001f) {
+			return result; //とりあえず単位行列返しちゃう
+		}
+
+		//入れ替え
+		if (n != maxIndex) {
+			for (size_t i = 0; i < 8; i++) {
+				float f = mat[maxIndex][i];
+				mat[maxIndex][i] = mat[n][i];
+				mat[n][i] = f;
+			}
+		}
+
+		//掛けたら1になる値を算出
+		float mul = 1 / mat[n][n];
+
+		//掛ける
+		for (size_t i = 0; i < 8; i++) {
+			mat[n][i] *= mul;
+		}
+
+		//他全部0にする
+		for (size_t i = 0; i < 4; i++) {
+			if (n == i) {
+				continue;
+			}
+
+			float mul = -mat[i][n];
+
+			for (size_t j = 0; j < 8; j++) {
+				mat[i][j] += mat[n][j] * mul;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			result.m[i][j] = mat[i][j + 4];
+		}
+	}
 
 	return result;
 }
@@ -87,6 +161,19 @@ float3 Matrix4Transform(const float3& v, const Matrix4& m) {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 
 	float3 result{
+		(v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + m.m[3][0]) / w,
+		(v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1]) / w,
+		(v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2]) / w
+	};
+
+	return result;
+}
+
+Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m)
+{
+	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
+
+	Vector3 result{
 		(v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + m.m[3][0]) / w,
 		(v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1]) / w,
 		(v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2]) / w
