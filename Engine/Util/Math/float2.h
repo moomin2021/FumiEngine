@@ -1,4 +1,7 @@
 #pragma once
+
+class Vector2;
+
 struct float2
 {
 	// x成分、y成分
@@ -7,6 +10,7 @@ struct float2
 	// コンストラクタ
 	float2();// -----------------> 引数なし
 	float2(float x, float y);// -> 引数あり
+	float2(Vector2 pos);// -> 引数あり
 
 	// 単項演算子オーバーロード
 	float2 operator+() const;
