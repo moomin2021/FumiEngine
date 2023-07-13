@@ -1,4 +1,5 @@
 #include "Vector3.h"
+#include "Matrix4.h"
 #include <cmath>    // sqrt
 
 // コンストラクタ
@@ -9,6 +10,13 @@ Vector3::Vector3(float x, float y, float z)
 	this->x = x;
 	this->y = y;
 	this->z = z;
+}
+
+Vector3::Vector3(float3 pos)
+{
+	this->x = pos.x;
+	this->y = pos.y;
+	this->z = pos.z;
 }
 
 // メンバ関数
