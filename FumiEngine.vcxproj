@@ -118,6 +118,7 @@
     <ClCompile Include="Engine\3d\Material.cpp" />
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
+    <ClCompile Include="Engine\Collision\RayCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Engine\3d\Material.h" />
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="Engine\Collision\MeshCollider.h" />
+    <ClInclude Include="Engine\Collision\RayCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
