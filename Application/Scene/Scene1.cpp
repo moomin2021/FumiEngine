@@ -105,6 +105,11 @@ void Scene1::Update()
 	oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
 	oCube_[1]->SetRotation({0.0f, rota, 0.0f});
 
+	// オブジェクトの更新
+	oFloor_->Update();
+	oSphere_->Update();
+	for (auto& i : oCube_) i->Update();
+
 	// カメラの更新
 	camera_->Update();
 }
