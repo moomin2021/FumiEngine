@@ -1,7 +1,7 @@
 #include "SphereCollider.h"
 #include "Matrix4.h"
 
-SphereCollider::SphereCollider(float3 offset = { 0.0f, 0.0f, 0.0f }, float radius = 1.0f) :
+SphereCollider::SphereCollider(float3 offset, float radius) :
 	offset_(offset), radius_(radius)
 {
 	// 形状タイプを球に設定
