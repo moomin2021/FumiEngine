@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
+#include "CollisionManager.h"
 
 #include <DirectXMath.h>
 
@@ -78,6 +79,9 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
+	// Õ“Ë”»’è
+	CollisionManager::GetInstance()->CheckAllCollision();
+
 	// ƒJƒƒ‰ˆÚ“®
 	{
 		static float3 eye = { 0.0f, 10.0f, -30.0f };

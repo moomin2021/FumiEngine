@@ -102,6 +102,14 @@ public:
 	static inline void SetLightGroup(LightGroup* lightGroup) { sLightGroup_ = lightGroup; }
 #pragma endregion
 
+#pragma region ゲッター関数
+	/// <summary>
+	/// ワールド行列を取得
+	/// </summary>
+	/// <returns> ワールド行列 </returns>
+	inline const Matrix4& GetMatWorld() { return matWorld_; }
+#pragma endregion
+
 private:
 	/// <summary>
 	/// オブジェクトデータの更新
