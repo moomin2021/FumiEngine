@@ -1,3 +1,4 @@
+#pragma once
 #include "Matrix4.h"
 #include "float4.h"
 #include "float3.h"
