@@ -113,5 +113,11 @@ public:
 	/// </summary>
 	/// <returns> ワールド行列 </returns>
 	inline const Matrix4& GetMatWorld() { return matWorld_; }
+
+	/// <summary>
+	/// モデルを取得
+	/// </summary>
+	/// <returns> モデル </returns>
+	inline Model* GetModel() { return model_; }
 #pragma endregion
 };
