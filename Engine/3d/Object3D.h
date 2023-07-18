@@ -37,6 +37,9 @@ private:
 	// モデル
 	Model* model_;
 
+	// 親オブジェクトへのポインタ
+	Object3D* parent_;
+
 	// 静的メンバ変数
 	static Camera*		sCamera_;		// カメラ
 	static LightGroup*	sLightGroup_;	// ライト
@@ -93,6 +96,12 @@ public:
 	/// </summary>
 	/// <param name="model"> モデル </param>
 	inline void SetModel(Model* model) { model_ = model; }
+
+	/// <summary>
+	/// 親オブジェクトへのポインタを設定
+	/// </summary>
+	/// <param name="parent"> 親オブジェクトへのポインタ </param>
+	inline void SetParent(Object3D* parent) { parent_ = parent; }
 
 	/// <summary>
 	/// カメラを設定

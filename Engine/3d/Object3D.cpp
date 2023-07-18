@@ -26,7 +26,10 @@ Object3D::Object3D(Model* model) :
 	constMap_(nullptr),
 
 	// モデル
-	model_(model)
+	model_(model),
+
+	// 親オブジェクトへのポインタ
+	parent_(nullptr)
 #pragma endregion
 {
 	// 関数が成功したかどうかを判別する用変数
@@ -85,6 +88,9 @@ void Object3D::Update()
 
 		// ワールド行列に平行移動を反映
 		matWorld_ *= Matrix4Translate(position_);
+
+		// 親オブジェクトがあれば
+		if (parent_) matWorld_ *= parent_->GetMatWorld();
 #pragma endregion
 
 		// 変更したのでフラグを[OFF]にする
