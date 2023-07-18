@@ -48,4 +48,13 @@ private:
 	/// <param name="fileName"> ファイル名 </param>
 	void LoadMaterial(const std::string& directoryPath, const std::string& fileName);
 #pragma endregion
+
+#pragma region ゲッター関数
+public:
+	/// <summary>
+	/// メッシュコンテナを取得
+	/// </summary>
+	/// <returns> メッシュコンテナ </returns>
+	inline const std::vector<Mesh>& GetMesh() { return meshes_; }
+#pragma endregion
 };

@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "PipelineManager.h"
 #include "CollisionManager.h"
+#include "CollisionAttribute.h"
 
 #include <DirectXMath.h>
 
@@ -37,19 +38,34 @@ void Scene1::Initialize()
 	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	oSphere_ = std::make_unique<Object3D>(mSphere_.get());
-	oSphere_->SetPosition({ 0.0f, 1.0f, -3.0f });
-	oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	oSphere_->SetPosition({ 3.0f, 1.0f, 0.0f });
+	oSphere_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 	oCube_.resize(3);
 
 	oCube_[0] = std::make_unique<Object3D>(mCube_.get());
-	oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
+	oCube_[0]->SetPosition({ 0.0f, 1.0f, 3.0f });
 
 	oCube_[1] = std::make_unique<Object3D>(mCube_.get());
 	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
 
 	oCube_[2] = std::make_unique<Object3D>(mCube_.get());
 	oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
+
+	sphereCollider_ = std::make_unique<SphereCollider>();
+	sphereCollider_->LinkObject3D(oCube_[1].get());
+	sphereCollider_->AddAttribute(COL_ATTR_PLAYER);
+
+	meshCollider_ = std::make_unique<MeshCollider>(oCube_[2].get());
+
+	rayCollider_ = std::make_unique<RayCollider>();
+	rayCollider_->LinkObject3D(oSphere_.get());
+	rayCollider_->SetDir({ -1.0f, 0.0f, 0.0f });
+	rayCollider_->AddAttribute(COL_ATTR_PLAYER);
+
+	CollisionManager::GetInstance()->AddCollider(sphereCollider_.get());
+	CollisionManager::GetInstance()->AddCollider(meshCollider_.get());
+	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
 
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
@@ -79,9 +95,6 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	// 衝突判定
-	CollisionManager::GetInstance()->CheckAllCollision();
-
 	// カメラ移動
 	{
 		static float3 eye = { 0.0f, 10.0f, -30.0f };
@@ -92,12 +105,12 @@ void Scene1::Update()
 		camera_->SetEye(eye);
 	}
 
-	static float3 pointLightPos = { -4.0f, 1.0f, 0.0f };
+	static float3 spherePos = { 3.0f, 1.0f, -3.0f };
 
-	pointLightPos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
-	pointLightPos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
+	spherePos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.2f;
+	spherePos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.2f;
 
-	pointLight_->SetLightPos(pointLightPos);
+	oSphere_->SetPosition(spherePos);
 
 	static float rota = 0.0f;
 	rota += 1.0f;
@@ -105,8 +118,29 @@ void Scene1::Update()
 	oCube_[0]->SetRotation({ 0.0f, rota, 0.0f });
 	oCube_[1]->SetRotation({0.0f, rota, 0.0f});
 
+	oSphere_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	oCube_[1]->SetColor({ 1.0f, 1.0f,1.0f, 1.0f });
+	oCube_[2]->SetColor({ 1.0f, 1.0f,1.0f, 1.0f });
+
+	int num = 0;
+	if (Key::GetInstance()->TriggerKey(DIK_0)) {
+		num = 0;
+	}
+
+	if (sphereCollider_->GetIsHit()) oCube_[1]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	if (meshCollider_->GetIsHit()) oCube_[2]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	if (rayCollider_->GetIsHit()) oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	// オブジェクトの更新
+	oFloor_->Update();
+	oSphere_->Update();
+	for (auto& i : oCube_) i->Update();
+
 	// カメラの更新
 	camera_->Update();
+
+	// 衝突判定
+	CollisionManager::GetInstance()->CheckAllCollision();
 }
 
 void Scene1::Draw()

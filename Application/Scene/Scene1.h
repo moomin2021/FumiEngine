@@ -6,6 +6,10 @@
 #include "Camera.h"
 #include "LightGroup.h"
 #include "Key.h"
+#include "SphereCollider.h"
+#include "MeshCollider.h"
+#include "RayCollider.h"
+
 #include <vector>
 #include <memory>
 
@@ -33,6 +37,10 @@ private:
 	std::unique_ptr<Object3D> oFloor_;
 	std::unique_ptr<Object3D> oSphere_;
 	std::vector<std::unique_ptr<Object3D>> oCube_;
+
+	std::unique_ptr<SphereCollider> sphereCollider_;
+	std::unique_ptr<MeshCollider> meshCollider_;
+	std::unique_ptr<RayCollider> rayCollider_;
 
 	// テクスチャハンドル
 	uint16_t haeHandle_;

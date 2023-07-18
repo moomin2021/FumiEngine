@@ -49,6 +49,9 @@ public:
 	/// </summary>
 	Object3D(Model* model);
 
+	// 更新処理
+	void Update();
+
 	/// <summary>
 	/// 描画処理
 	/// </summary>
@@ -58,6 +61,7 @@ public:
 	/// 描画前処理
 	/// </summary>
 	static void PreDraw();
+#pragma endregion
 
 #pragma region セッター関数
 	/// <summary>
@@ -109,12 +113,11 @@ public:
 	/// </summary>
 	/// <returns> ワールド行列 </returns>
 	inline const Matrix4& GetMatWorld() { return matWorld_; }
-#pragma endregion
 
-private:
 	/// <summary>
-	/// オブジェクトデータの更新
+	/// モデルを取得
 	/// </summary>
-	void UpdateData();
+	/// <returns> モデル </returns>
+	inline Model* GetModel() { return model_; }
 #pragma endregion
 };
