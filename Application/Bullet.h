@@ -15,7 +15,7 @@ private:
 	std::unique_ptr<Object3D> oBullet_;
 
 	// Õ“Ë”»’è—p
-	SphereCol col_;
+	//SphereCol col_;
 
 	// ’e‚ÌˆÚ“®•ûŒü
 	Vector3 moveVec_;
@@ -68,6 +68,6 @@ public:
 	/// <returns> ¶‘¶ƒtƒ‰ƒO </returns>
 	bool GetIsAlive() { return isAlive_; }
 
-	inline const SphereCol& GetSphereCol() { return col_; }
+	//inline const SphereCol& GetSphereCol() { return col_; }
 #pragma endregion
 };

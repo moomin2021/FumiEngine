@@ -8,7 +8,7 @@ Enemy::Enemy() :
 	obj_(nullptr),
 
 	// Õ“Ë”»’è—p
-	col_{},
+	//col_{},
 
 	// HP
 	hp_(3),
@@ -34,8 +34,8 @@ void Enemy::Update()
 		damageCounter_++;
 	}
 
-	col_.pos = obj_->GetPosition();
-	col_.radius = obj_->GetScale().x;
+	//col_.pos = obj_->GetPosition();
+	//col_.radius = obj_->GetScale().x;
 
 	// HP‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç¶‘¶ƒtƒ‰ƒO‚ð[OFF]‚É‚·‚é
 	if (hp_ <= 0) isAlive_ = false;

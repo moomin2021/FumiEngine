@@ -10,6 +10,10 @@ class Scene1 : public BaseScene
 {
 	// --ƒƒ“ƒo•Ï”-- //
 private:
+	Key* key_;
+
+	std::unique_ptr<Camera> camera_;
+
 	// ƒ‰ƒCƒg
 	std::unique_ptr<LightGroup> lightGroup_;
 	std::unique_ptr<DirectionalLight> dirLight_;

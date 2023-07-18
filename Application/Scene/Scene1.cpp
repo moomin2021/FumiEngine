@@ -8,15 +8,6 @@
 
 using namespace DirectX;
 
-bool SphereCollision(const SphereCol& s0, const SphereCol& s1) {
-	float a = s0.pos.x - s1.pos.x;
-	float b = s0.pos.y - s1.pos.y;
-	float c = s0.pos.z - s1.pos.z;
-	float d = sqrtf(a * a + b * b + c * c);
-	if (d <= s0.radius + s1.radius) return true;
-	return false;
-}
-
 Scene1::Scene1() :
 	lightGroup_(nullptr),
 	dirLight_(nullptr),
@@ -70,10 +61,6 @@ void Scene1::Initialize()
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
 
-	// スプライト
-	sHae_ = std::make_unique<Sprite>();
-	sHae_->SetPosition({ 0.0f, 0.0f });
-
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
 	dirLight_ = std::make_unique<DirectionalLight>();
@@ -101,13 +88,14 @@ void Scene1::Update()
 	// カメラ移動
 	{
 		static float3 eye = { 0.0f, 10.0f, -30.0f };
-	// ステージ更新
-	loadStage_->Update();
+		// ステージ更新
+		loadStage_->Update();
 
-	// プレイヤー更新
-	player_->Update();
+		// プレイヤー更新
+		player_->Update();
 
-	Collision();
+		Collision();
+	}
 }
 
 void Scene1::Draw()
@@ -120,6 +108,10 @@ void Scene1::Draw()
 	// ステージ描画
 	loadStage_->Draw();
 
+	oFloor_->Draw();
+	oSphere_->Draw();
+	for (auto& object : oCube_) object->Draw();
+
 	PipelineManager::PreDraw("Sprite");
 
 	player_->Draw2D();
@@ -127,24 +119,17 @@ void Scene1::Draw()
 
 void Scene1::Collision()
 {
-	PipelineManager::GetInstance()->PreDraw("Object3D");
-
-	oFloor_->Draw();
-	oSphere_->Draw();
-	for (auto& object : oCube_) object->Draw();
-
-	PipelineManager::GetInstance()->PreDraw("Sprite");
 
 	//sHae_->Draw();
 	// 弾と敵の衝突判定
-	for (size_t i = 0; i < loadStage_->enemys_.size(); i++) {
-		if (loadStage_->enemys_[i]->GetIsAlive()) {
-			for (size_t j = 0; j < player_->bullets_.size(); j++) {
-				if (SphereCollision(loadStage_->enemys_[i]->GetSphereCol(), player_->bullets_[j]->GetSphereCol())) {
-				loadStage_->enemys_[i]->ReduceHP(1);
-					player_->bullets_.erase(player_->bullets_.begin() + j);
-				}
-			}
-		}
-	}
+	//for (size_t i = 0; i < loadStage_->enemys_.size(); i++) {
+	//	if (loadStage_->enemys_[i]->GetIsAlive()) {
+	//		for (size_t j = 0; j < player_->bullets_.size(); j++) {
+	//			if (SphereCollision(loadStage_->enemys_[i]->GetSphereCol(), player_->bullets_[j]->GetSphereCol())) {
+	//			loadStage_->enemys_[i]->ReduceHP(1);
+	//				player_->bullets_.erase(player_->bullets_.begin() + j);
+	//			}
+	//		}
+	//	}
+	//}
 }

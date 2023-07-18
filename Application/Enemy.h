@@ -14,7 +14,7 @@ private:
 	std::unique_ptr<Object3D> obj_;
 
 	// 衝突判定用
-	SphereCol col_;
+	//SphereCol col_;
 
 	// HP
 	uint16_t hp_;
@@ -73,7 +73,7 @@ public:
 #pragma endregion
 
 #pragma region ゲッター関数
-	inline const SphereCol& GetSphereCol() { return col_; }
+	//inline const SphereCol& GetSphereCol() { return col_; }
 
 	inline bool GetIsAlive() { return isAlive_; }
 #pragma endregion
