@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "PipelineManager.h"
 #include "CollisionManager.h"
+#include "CollisionAttribute.h"
 
 #include <DirectXMath.h>
 

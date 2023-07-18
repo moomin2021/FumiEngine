@@ -67,12 +67,29 @@ Object3D::Object3D(Model* model) :
 #pragma endregion
 }
 
-void Object3D::Draw() {
-	// コマンドリスト取得
-	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+void Object3D::Update()
+{
+	// オブジェクトデータが変更されていたら処理する
+	if (hasChanget_) {
+#pragma region ワールド行列計算
+		// 行列初期化
+		matWorld_ = Matrix4Identity();
 
-	// オブジェクトデータの更新
-	UpdateData();
+		// ワールド行列にスケーリングを反映
+		matWorld_ *= Matrix4Scale(scale_);
+
+		// ワールド行列に回転を反映
+		matWorld_ *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
+		matWorld_ *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
+		matWorld_ *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
+
+		// ワールド行列に平行移動を反映
+		matWorld_ *= Matrix4Translate(position_);
+#pragma endregion
+
+		// 変更したのでフラグを[OFF]にする
+		hasChanget_ = false;
+	}
 
 #pragma region 定数バッファへのデータ転送
 	// ビュープロジェクション転送
@@ -87,6 +104,11 @@ void Object3D::Draw() {
 	// 色(RGBA)転送
 	constMap_->color = color_;
 #pragma endregion
+}
+
+void Object3D::Draw() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());
@@ -120,28 +142,4 @@ void Object3D::PreDraw() {
 	// デスクリプタヒープの配列をセットするコマンド
 	std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
 	cmdList->SetDescriptorHeaps(1, ppHeaps.data());
-}
-
-void Object3D::UpdateData() {
-	// オブジェクトデータの変更がされていなかったら処理を飛ばす
-	if (hasChanget_ == false) return;
-
-#pragma region ワールド行列計算
-	// 行列初期化
-	matWorld_ = Matrix4Identity();
-
-	// ワールド行列にスケーリングを反映
-	matWorld_ *= Matrix4Scale(scale_);
-
-	// ワールド行列に回転を反映
-	matWorld_ *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
-	matWorld_ *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
-	matWorld_ *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
-
-	// ワールド行列に平行移動を反映
-	matWorld_ *= Matrix4Translate(position_);
-#pragma endregion
-
-	// 変更したのでフラグを[OFF]にする
-	hasChanget_ = false;
 }
