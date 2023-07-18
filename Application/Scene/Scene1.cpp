@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
-#include "Collision.h"
+#include "CollisionManager.h"
 
 #include <DirectXMath.h>
 
@@ -36,10 +36,51 @@ Scene1::~Scene1()
 
 void Scene1::Initialize()
 {
-	// ライト生成＆設定
+	// キーボード入力インスタンス取得
+	key_ = Key::GetInstance();
+
+	// カメラ
+	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
+
+	// モデル
+	mFloor_ = std::make_unique<Model>("floor");
+	mCube_ = std::make_unique<Model>("cube");
+	mSphere_ = std::make_unique<Model>("sphere");
+
+	// オブジェクト
+	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
+	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+
+	oSphere_ = std::make_unique<Object3D>(mSphere_.get());
+	oSphere_->SetPosition({ 0.0f, 1.0f, -3.0f });
+	oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	oCube_.resize(3);
+
+	oCube_[0] = std::make_unique<Object3D>(mCube_.get());
+	oCube_[0]->SetPosition({ 3.0f, 1.0f, 0.0f });
+
+	oCube_[1] = std::make_unique<Object3D>(mCube_.get());
+	oCube_[1]->SetPosition({ -3.0f, 1.0f, 0.0f });
+
+	oCube_[2] = std::make_unique<Object3D>(mCube_.get());
+	oCube_[2]->SetPosition({ 0.0f, 1.0f, 0.0f });
+
+	// テクスチャハンドル
+	haeHandle_ = LoadTexture("Resources/hae.png");
+
+	// スプライト
+	sHae_ = std::make_unique<Sprite>();
+	sHae_->SetPosition({ 0.0f, 0.0f });
+
+	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
+	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
+	//pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
+
 	lightGroup_->AddDirLight(dirLight_.get());
 
 	// ライトを適用
@@ -54,6 +95,12 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
+	// 衝突判定
+	CollisionManager::GetInstance()->CheckAllCollision();
+
+	// カメラ移動
+	{
+		static float3 eye = { 0.0f, 10.0f, -30.0f };
 	// ステージ更新
 	loadStage_->Update();
 
@@ -80,6 +127,15 @@ void Scene1::Draw()
 
 void Scene1::Collision()
 {
+	PipelineManager::GetInstance()->PreDraw("Object3D");
+
+	oFloor_->Draw();
+	oSphere_->Draw();
+	for (auto& object : oCube_) object->Draw();
+
+	PipelineManager::GetInstance()->PreDraw("Sprite");
+
+	//sHae_->Draw();
 	// 弾と敵の衝突判定
 	for (size_t i = 0; i < loadStage_->enemys_.size(); i++) {
 		if (loadStage_->enemys_[i]->GetIsAlive()) {

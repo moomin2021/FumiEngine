@@ -56,7 +56,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -74,7 +74,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,6 +91,9 @@
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
+    <ClCompile Include="Engine\Collision\Collision.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Engine\Util\Math\float2.cpp" />
     <ClCompile Include="Engine\Util\Math\float3.cpp" />
     <ClCompile Include="Engine\Util\Math\float4.cpp" />
@@ -115,6 +118,9 @@
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
     <ClCompile Include="LoadStage.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\3d\Mesh.cpp" />
+    <ClCompile Include="Engine\3d\Material.cpp" />
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +130,10 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
+    <ClInclude Include="Engine\Collision\BaseCollider.h" />
+    <ClInclude Include="Engine\Collision\Collision.h" />
+    <ClInclude Include="Engine\Collision\CollisionManager.h" />
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />
@@ -152,6 +162,9 @@
     <ClInclude Include="Engine\Util\Math\Vector2.h" />
     <ClInclude Include="Engine\Util\Math\Vector3.h" />
     <ClInclude Include="Engine\Base\WinAPI.h" />
+    <ClInclude Include="Engine\3d\Mesh.h" />
+    <ClInclude Include="Engine\3d\Material.h" />
+    <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="LoadStage.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

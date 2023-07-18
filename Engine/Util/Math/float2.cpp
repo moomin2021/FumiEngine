@@ -1,10 +1,17 @@
 #include "float2.h"
+#include "Vector2.h"
 
 // 引数無しのコンストラクタ
 float2::float2() : x(0.0f), y(0.0f) {}
 
 // 引数ありのコンストラクタ
 float2::float2(float x, float y) : x(x), y(y) {}
+
+float2::float2(Vector2 pos)
+{
+    x = pos.x;
+    y = pos.y;
+}
 
 // 単項演算子+を使えるようにする
 float2 float2::operator+() const

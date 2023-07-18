@@ -177,6 +177,24 @@
     <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3d\Mesh.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Material.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionManager.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\Collision.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Application\ソースファイル\Player</Filter>
     </ClCompile>
@@ -191,9 +209,6 @@
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Application\ソースファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Application\ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +302,27 @@
     <ClInclude Include="Application\Scene\SceneManager.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3d\Mesh.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Material.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\BaseCollider.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\Collision.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\SphereCollider.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\2d\PostEffect.h">
       <Filter>Engine\ヘッダー ファイル\2D</Filter>
     </ClInclude>
@@ -301,9 +337,6 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Application\ヘッダーファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Application\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

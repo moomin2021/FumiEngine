@@ -14,39 +14,41 @@ PSOutput main(VSOutput input)
     PSOutput output;
     
     // テクスチャマッピング
-    float4 texcolor = tex.Sample(smp, input.uv);
+    float4 texcolor = tex.Sample(smp, input.uv) * input.color;
     
     // 光沢度
-    const float shininess = 4.0f;
+    const float shininess = 20.0f;
     
     // 頂点から視点への方向ベクトル
     float3 eyedir = normalize(cameraPos - input.worldPos.xyz);
     
-    // 環境反射光
-    float3 ambient = m_ambient;
-    
     // シェーディングによる色
-    float4 shadecolor = float4(ambientColor * ambient, m_alpha);
+    float4 shadecolor = float4(0.0f, 0.0f, 0.0f, m_alpha);
     
     // 平行光源
     for (int i = 0; i < DIRLIGHT_NUM; i++)
     {
         if (dirLights[i].active)
         {
-            // ライトに向かうベクトルと法線の内積
-            float3 dotlightnormal = dot(dirLights[i].lightv, input.normal);
-            
             // 反射光ベクトル
-            float3 reflect = normalize(-dirLights[i].lightv + 2.0f * dotlightnormal * input.normal);
+            float3 reflect = normalize(-dirLights[i].lightv + 2.0f * input.normal * dot(input.normal, dirLights[i].lightv));
+            
+            // 物体の面の法線と太陽の位置を示すベクトルどのくらい重なっているかを計算
+			// 重なっていれば重なっているほど明るい！
+			// saturateは値を0-1にクランプする
+            float intensity = saturate(dot(normalize(input.normal), dirLights[i].lightv));
             
             // 拡散反射光
-            float3 diffuse = dotlightnormal * m_diffuse;
+            float3 diffuse = texcolor.rgb * intensity * dirLights[i].lightcolor;
             
             // 鏡面反射光
-            float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+            float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * dirLights[i].lightcolor * m_specular;
+            
+            // 環境光 = 素材の色 × ライトの色 * 暗くするために
+            float3 ambient = texcolor.rgb * dirLights[i].lightcolor * 0.3;
             
             // 全て加算する
-            shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor;
+            shadecolor.rgb += diffuse + specular + ambient;
         }
     }
     
@@ -157,7 +159,7 @@ PSOutput main(VSOutput input)
     }
 
     // シェーディングによる色で描画
-    output.target0 = shadecolor * texcolor * input.color;
-    output.target1 = shadecolor * texcolor * input.color;
+    output.target0 = shadecolor;
+    output.target1 = shadecolor;
     return output;
 }

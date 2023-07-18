@@ -321,7 +321,7 @@ namespace
 //=====================================================================================
 
 //-------------------------------------------------------------------------------------
-// Determine if given texture metadata is supported on the given device_
+// Determine if given texture metadata is supported on the given device
 //-------------------------------------------------------------------------------------
 _Use_decl_annotations_
 bool DirectX::IsSupportedTexture(

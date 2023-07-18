@@ -112,7 +112,14 @@ public:
 #pragma endregion
 
 #pragma region ゲッター関数
-	public:
+	/// <summary>
+	/// ワールド行列を取得
+	/// </summary>
+	/// <returns> ワールド行列 </returns>
+	inline const Matrix4& GetMatWorld() { return matWorld_; }
+#pragma endregion
+
+private:
 	/// <summary>
 	/// 座標(XYZ)を取得
 	/// </summary>

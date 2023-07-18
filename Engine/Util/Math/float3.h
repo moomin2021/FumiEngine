@@ -1,5 +1,6 @@
 #pragma once
-#include "Vector3.h"
+
+class Vector3;
 
 struct float3
 {
@@ -9,6 +10,7 @@ struct float3
 	// コンストラクタ
 	float3();// --------------------------> 引数なし
 	float3(float x, float y, float z);// -> 引数あり
+	float3(Vector3 pos);
 
 	// 単項演算子オーバーロード
 	float3 operator+() const;

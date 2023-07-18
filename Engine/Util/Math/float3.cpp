@@ -1,10 +1,18 @@
 #include "float3.h"
+#include "Vector3.h"
 
 // 引数なしのコンストラクタ
 float3::float3() : x(0.0f), y(0.0f), z(0.0f) {}
 
 // 引数ありのコンストラクタ
 float3::float3(float x, float y, float z) : x(x), y(y), z(z) {}
+
+float3::float3(Vector3 pos)
+{
+	x = pos.x;
+	y = pos.y;
+	z = pos.z;
+}
 
 float3 float3::operator+() const
 {

@@ -1,5 +1,8 @@
 #pragma once
 
+struct Matrix4;
+struct float3;
+
 class Vector3
 {
 public:
@@ -12,6 +15,7 @@ public:
 	// コンストラクタ
 	Vector3();// --------------------------> 零ベクトルとする
 	Vector3(float x, float y, float z);// -> x成分, y成分, z成分 を指定しての生成
+	Vector3(float3 pos);
 
 	// メンバ関数
 	float length() const;// -------------------> ノルム(長さ)を求める
@@ -31,6 +35,9 @@ public:
 };
 
 Vector3 Vector3Normalize(const Vector3& vec);
+Vector3 Vector3Cross(const Vector3& v0, const Vector3& v1);
+float Vector3Dot(const Vector3& v0, const Vector3& v1);
+Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
 
 // 2項演算子オーバーロード
 // ※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備している
