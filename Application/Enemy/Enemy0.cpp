@@ -30,7 +30,8 @@ void Enemy0::Initialize(float3 pos)
 
 void Enemy0::Update()
 {
-	
+	// オブジェクト更新
+	object_->Update();
 }
 
 void Enemy0::Draw()

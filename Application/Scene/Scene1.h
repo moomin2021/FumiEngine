@@ -17,9 +17,6 @@ private:
 	// 敵管理クラス
 	EnemyManager* enemyManager_;
 
-	// カメラ
-	std::unique_ptr<Camera> camera_;
-
 	// ライト
 	std::unique_ptr<LightGroup> lightGroup_;
 	std::unique_ptr<DirectionalLight> dirLight_;

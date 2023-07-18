@@ -25,6 +25,10 @@ void LoadStage::Update()
 	//		enemys_.erase(enemys_.begin() + i);
 	//	}
 	//}
+	for (auto& objs : object_) {
+		objs->Update();
+	}
+
 }
 
 void LoadStage::Draw()

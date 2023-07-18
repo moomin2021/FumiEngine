@@ -34,10 +34,6 @@ void Scene1::Initialize()
 	// 敵管理クラスインスタンス取得
 	enemyManager_ = EnemyManager::GetInstance();
 
-	// カメラ
-	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
-
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
 	dirLight_ = std::make_unique<DirectionalLight>();
@@ -64,11 +60,11 @@ void Scene1::Update()
 	// ステージ更新
 	loadStage_->Update();
 
-	// プレイヤー更新
-	player_->Update();
-
 	// 敵更新
 	enemyManager_->Update();
+
+	// プレイヤー更新
+	player_->Update();
 }
 
 void Scene1::Draw()
