@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "PipelineManager.h"
 #include "CollisionManager.h"
+#include "CollisionAttribute.h"
 
 #include <DirectXMath.h>
 
@@ -53,12 +54,14 @@ void Scene1::Initialize()
 
 	sphereCollider_ = std::make_unique<SphereCollider>();
 	sphereCollider_->LinkObject3D(oCube_[1].get());
+	sphereCollider_->AddAttribute(COL_ATTR_PLAYER);
 
 	meshCollider_ = std::make_unique<MeshCollider>(oCube_[2].get());
 
 	rayCollider_ = std::make_unique<RayCollider>();
 	rayCollider_->LinkObject3D(oSphere_.get());
 	rayCollider_->SetDir({ -1.0f, 0.0f, 0.0f });
+	rayCollider_->AddAttribute(COL_ATTR_PLAYER);
 
 	CollisionManager::GetInstance()->AddCollider(sphereCollider_.get());
 	CollisionManager::GetInstance()->AddCollider(meshCollider_.get());

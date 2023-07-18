@@ -126,6 +126,7 @@
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Collision\BaseCollider.h" />
     <ClInclude Include="Engine\Collision\Collision.h" />
+    <ClInclude Include="Engine\Collision\CollisionAttribute.h" />
     <ClInclude Include="Engine\Collision\CollisionManager.h" />
     <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />

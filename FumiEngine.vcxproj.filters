@@ -308,6 +308,9 @@
     <ClInclude Include="Engine\Collision\RayCollider.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionAttribute.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3D.hlsli">

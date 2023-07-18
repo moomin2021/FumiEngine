@@ -48,6 +48,9 @@ void CollisionManager::CheckAllCollision()
 			for (; it != colliders_.end(); ++it) {
 				BaseCollider* col = *it;
 
+				// 属性が合わなければスキップ
+				if (!(colA->attribute_ & col->attribute_)) continue;
+
 				Ray* ray = dynamic_cast<Ray*>(colA);
 
 				// 球の場合
@@ -95,6 +98,9 @@ void CollisionManager::CheckAllCollision()
 		else {
 			for (; itB != colliders_.end(); ++itB) {
 				BaseCollider* colB = *itB;
+
+				// 属性が合わなければスキップ
+				if (!(colA->attribute_ & colB->attribute_)) continue;
 
 				// ともに球
 				if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_SPHERE) {
