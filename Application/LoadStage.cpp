@@ -1,4 +1,6 @@
 #include "LoadStage.h"
+#include "EnemyManager.h"
+#include "Enemy0.h"
 
 #include <iostream>
 #include <fstream>
@@ -7,23 +9,22 @@
 
 LoadStage::LoadStage()
 {
-	mEnemy_ = std::make_unique<Model>("sphere");
-	Enemy::SetModel(mEnemy_.get());
+	mEnemy_ = std::make_unique<Model>("cube");
 	LoadJson("Resources/Stage/stage1.json");
 }
 
 void LoadStage::Update()
 {
-	for (size_t i = 0; i < enemys_.size(); i++) {
-		// 弾の更新処理
-		enemys_[i]->Update();
+	//for (size_t i = 0; i < enemys_.size(); i++) {
+	//	// 弾の更新処理
+	//	enemys_[i]->Update();
 
-		// 生存フラグが[OFF]だったら
-		if (enemys_[i]->GetIsAlive() == false) {
-			// 弾を消す
-			enemys_.erase(enemys_.begin() + i);
-		}
-	}
+	//	// 生存フラグが[OFF]だったら
+	//	if (enemys_[i]->GetIsAlive() == false) {
+	//		// 弾を消す
+	//		enemys_.erase(enemys_.begin() + i);
+	//	}
+	//}
 }
 
 void LoadStage::Draw()
@@ -32,9 +33,9 @@ void LoadStage::Draw()
 		objs->Draw();
 	}
 
-	for (auto& enemys : enemys_) {
-		enemys->Draw();
-	}
+	//for (auto& enemys : enemys_) {
+	//	enemys->Draw();
+	//}
 }
 
 void LoadStage::LoadJson(std::string fileName)
@@ -129,13 +130,15 @@ void LoadStage::LoadJson(std::string fileName)
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
-			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			//std::unique_ptr<Enemy0> newEnemy = std::make_unique<Enemy0>();
+			Enemy0* newEnemy = new Enemy0(mEnemy_.get());
 
-			newEnemy->SetPosition(objectData.translation);
-			newEnemy->SetScale(objectData.scaling);
+			// 初期化
+			newEnemy->Initialize(objectData.translation);
 
 			// 配列に登録
-			enemys_.emplace_back(std::move(newEnemy));
+			EnemyManager::GetInstance()->AddEnemy(newEnemy);
+			//enemys_.emplace_back(std::move(newEnemy));
 		}
 
 		else {

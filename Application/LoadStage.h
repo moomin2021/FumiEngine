@@ -1,7 +1,6 @@
 #pragma once
 #include "Object3D.h"
 #include "Model.h"
-#include "Enemy.h"
 
 #include <map>
 #include <string>
@@ -29,7 +28,6 @@ class LoadStage
 
 #pragma region ƒƒ“ƒo•Ï”
 public:
-	std::vector<std::unique_ptr<Enemy>> enemys_;
 
 private:
 	// ƒ‚ƒfƒ‹
