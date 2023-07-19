@@ -28,6 +28,9 @@ protected:
 
 	// 当たり判定属性
 	uint16_t attribute_ = 0;
+
+	// 衝突相手との交点
+	float3 inter_ = { 0.0f, 0.0f, 0.0f };
 #pragma endregion
 
 #pragma region メンバ関数
@@ -80,6 +83,12 @@ public:
 	/// </summary>
 	/// <param name="attribute"> 当たり判定属性 </param>
 	inline void SetAttribute(uint16_t attribute) { attribute_ = attribute; }
+
+	/// <summary>
+	/// 衝突相手の交点を設定
+	/// </summary>
+	/// <param name="inter"> 交点 </param>
+	inline void SetInter(const float3& inter) { inter_ = inter; }
 #pragma endregion
 
 #pragma region ゲッター関数
@@ -101,5 +110,11 @@ public:
 	/// </summary>
 	/// <returns> 衝突フラグ </returns>
 	inline bool GetIsHit() { return isHit_; }
+
+	/// <summary>
+	/// 衝突相手の交点を取得
+	/// </summary>
+	/// <returns> 交点 </returns>
+	inline const float3& GetInter() { return inter_; }
 #pragma endregion
 };
