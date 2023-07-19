@@ -66,7 +66,7 @@ void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 
 	ClipCursor(&rect);
 
-	ShowCursor(false);
+	//ShowCursor(false);
 }
 
 bool WinAPI::IsEndMessage()
