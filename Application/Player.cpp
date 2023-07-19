@@ -7,6 +7,7 @@
 #include "WinAPI.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "Util.h"
 
 Player::Player() :
 #pragma region 初期化リスト
@@ -33,7 +34,13 @@ Player::Player() :
 
 	// クロスヘア
 	crossHairHandle_(0),
-	sCrossHair_(nullptr)
+	sCrossHair_(nullptr),
+
+	// ジャンプ用
+	isGround_(false),// 地面についているか
+	gravity_(0.0f),// 重力
+	gAcc_(0.2f),// 重力加速度
+	jumpSpd_(2.5f)// ジャンプ速度
 #pragma endregion
 {
 	// 入力クラスインスタンス取得
@@ -54,12 +61,21 @@ Player::Player() :
 	Bullet::SetModel(mBullet_.get());
 
 	// レイのコライダーを生成
-	rayCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
-	rayCollider_->SetAttribute(COL_PLAYER_RAY);
-	rayCollider_->SetIsCollision(false);
+	eyeCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
+	eyeCollider_->SetAttribute(COL_PLAYER_RAY);
+	eyeCollider_->SetIsCollision(false);
 
 	// コライダーを追加
-	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
+	CollisionManager::GetInstance()->AddCollider(eyeCollider_.get());
+
+	// レイのコライダーを生成
+	downCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
+	downCollider_->SetAttribute(COL_DOWN_RAY);
+	downCollider_->SetIsCollision(true);
+	downCollider_->SetDir(Vector3(0.0f, -1.0f, 0.0f));
+
+	// コライダーを追加
+	CollisionManager::GetInstance()->AddCollider(downCollider_.get());
 
 	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 	sCrossHair_ = std::make_unique<Sprite>();
@@ -72,11 +88,29 @@ Player::Player() :
 
 Player::~Player()
 {
-	CollisionManager::GetInstance()->RemoveCollider(rayCollider_.get());
+	CollisionManager::GetInstance()->RemoveCollider(eyeCollider_.get());
 }
 
 void Player::Update()
 {
+	// ジャンプ処理
+	if (isGround_ && key_->TriggerKey(DIK_SPACE)) {
+		gravity_ = -jumpSpd_;
+		isGround_ = false;
+	}
+
+	if (isGround_ == false) {
+		gravity_ += gAcc_;// 重力加速度を加算
+		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	}
+
+	float3 eye = camera_->GetEye();
+	eye.y = Util::Clamp(eye.y, 1000.0f, 2.0f);
+
+	if (eye.y <= 2.0f) isGround_ = true;
+
+	camera_->SetEye(eye);
+
 	// 弾を撃つ処理
 	Shoot();
 
@@ -89,7 +123,7 @@ void Player::Update()
 	// コライダーの更新
 	ColliderUpdate();
 
-	if (rayCollider_->GetIsHit()) {
+	if (eyeCollider_->GetIsHit()) {
 		int num = 0;
 	}
 
@@ -122,12 +156,12 @@ void Player::Shoot()
 		}
 	}
 
-	rayCollider_->SetIsCollision(false);
+	eyeCollider_->SetIsCollision(false);
 
 	// マウスを左クリックしていなかったらこの後の処理を飛ばす
 	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT) == false) return;
 
-	rayCollider_->SetIsCollision(true);
+	eyeCollider_->SetIsCollision(true);
 
 	// 弾を生成
 	bullets_.emplace_back(std::make_unique<Bullet>(camera_->GetEye(), forwardVec_));
@@ -196,8 +230,17 @@ void Player::Move()
 void Player::ColliderUpdate()
 {
 	// レイの開始位置を設定
-	rayCollider_->SetOffset(camera_->GetEye());
+	eyeCollider_->SetOffset(camera_->GetEye());
 
 	// レイの方向を設定
-	rayCollider_->SetDir(forwardVec_);
+	eyeCollider_->SetDir(forwardVec_);
+
+	downCollider_->SetOffset(camera_->GetEye());
+}
+
+void Player::OnCollision()
+{
+	if (downCollider_->GetIsHit()) {
+		isGround_ = true;
+	}
 }

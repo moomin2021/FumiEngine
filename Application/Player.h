@@ -27,7 +27,8 @@ private:
 	std::unique_ptr<Model> mBullet_;
 
 	// レイのコライダー
-	std::unique_ptr<RayCollider> rayCollider_;
+	std::unique_ptr<RayCollider> eyeCollider_;// 視点のレイ
+	std::unique_ptr<RayCollider> downCollider_;// 真下に向いている地面検出用のレイ
 
 	// 方向ベクトル
 	Vector3 forwardVec_;// 前方
@@ -40,6 +41,12 @@ private:
 	// クロスヘア
 	uint16_t crossHairHandle_;
 	std::unique_ptr<Sprite> sCrossHair_;
+
+	// ジャンプ用
+	bool isGround_;// 地面についているか
+	float gravity_;// 重力
+	float gAcc_;// 重力加速度
+	float jumpSpd_;// ジャンプ速度
 #pragma endregion
 
 #pragma region メンバ関数
@@ -83,6 +90,9 @@ private:
 
 	// コライダーの更新
 	void ColliderUpdate();
+
+	// 衝突時の処理
+	void OnCollision();
 #pragma endregion
 
 #pragma region ゲッター関数
