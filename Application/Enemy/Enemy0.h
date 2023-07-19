@@ -27,7 +27,7 @@ public:
 	/// ‰Šú‰»ˆ—
 	/// </summary>
 	/// <param name="pos"> ‰ŠúˆÊ’u </param>
-	void Initialize(float3 pos);
+	void Initialize(float3 pos, float3 scale);
 
 	// XVˆ—
 	void Update() override;

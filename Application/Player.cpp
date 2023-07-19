@@ -40,7 +40,7 @@ Player::Player() :
 
 	// カメラを生成＆設定
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
+	camera_->SetEye({ 0.0f, 2.0f, 0.0f });
 
 	// カメラを適用
 	Object3D::SetCamera(camera_.get());

@@ -9,7 +9,7 @@
 
 LoadStage::LoadStage()
 {
-	mEnemy_ = std::make_unique<Model>("cube");
+	mEnemy_ = std::make_unique<Model>("sphere");
 	LoadJson("Resources/Stage/stage1.json");
 }
 
@@ -138,7 +138,7 @@ void LoadStage::LoadJson(std::string fileName)
 			Enemy0* newEnemy = new Enemy0(mEnemy_.get());
 
 			// ‰Šú‰»
-			newEnemy->Initialize(objectData.translation);
+			newEnemy->Initialize(objectData.translation, objectData.scaling);
 
 			// ”z—ñ‚É“o˜^
 			EnemyManager::GetInstance()->AddEnemy(newEnemy);

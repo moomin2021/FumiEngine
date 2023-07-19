@@ -16,8 +16,8 @@
                     0.0
                 ],
                 "scaling": [
-                    100.0,
-                    100.0,
+                    200.0,
+                    200.0,
                     1.0
                 ]
             },
@@ -28,9 +28,9 @@
             "name": "wall.000",
             "transform": {
                 "translation": [
-                    -99.0,
                     0.0,
-                    5.0
+                    200.0,
+                    50.0
                 ],
                 "rotation": [
                     0.0,
@@ -38,9 +38,9 @@
                     0.0
                 ],
                 "scaling": [
-                    1.0,
-                    100.0,
-                    5.0
+                    200.0,
+                    0.10000000149011612,
+                    50.0
                 ]
             },
             "file_name": "cube"
@@ -50,9 +50,9 @@
             "name": "wall.001",
             "transform": {
                 "translation": [
-                    99.0,
                     0.0,
-                    5.0
+                    -200.0,
+                    50.0
                 ],
                 "rotation": [
                     0.0,
@@ -60,9 +60,9 @@
                     0.0
                 ],
                 "scaling": [
-                    1.0,
-                    100.0,
-                    5.0
+                    200.0,
+                    0.10000000149011612,
+                    50.0
                 ]
             },
             "file_name": "cube"
@@ -72,9 +72,9 @@
             "name": "wall.002",
             "transform": {
                 "translation": [
+                    200.0,
                     0.0,
-                    99.0,
-                    5.0
+                    50.0
                 ],
                 "rotation": [
                     0.0,
@@ -82,9 +82,9 @@
                     0.0
                 ],
                 "scaling": [
-                    98.0,
-                    1.0,
-                    5.0
+                    0.10000000149011612,
+                    200.0,
+                    50.0
                 ]
             },
             "file_name": "cube"
@@ -94,9 +94,9 @@
             "name": "wall.003",
             "transform": {
                 "translation": [
+                    -200.0,
                     0.0,
-                    -99.0,
-                    5.0
+                    50.0
                 ],
                 "rotation": [
                     0.0,
@@ -104,9 +104,9 @@
                     0.0
                 ],
                 "scaling": [
-                    98.0,
-                    1.0,
-                    5.0
+                    0.10000000149011612,
+                    200.0,
+                    50.0
                 ]
             },
             "file_name": "cube"
@@ -116,9 +116,9 @@
             "name": "cube.000",
             "transform": {
                 "translation": [
-                    -60.0,
-                    70.0,
-                    5.0
+                    -70.0,
+                    -160.0,
+                    20.0
                 ],
                 "rotation": [
                     0.0,
@@ -126,9 +126,9 @@
                     0.0
                 ],
                 "scaling": [
-                    20.0,
-                    10.0,
-                    5.0
+                    60.0,
+                    40.0,
+                    20.0
                 ]
             },
             "file_name": "cube"
@@ -138,9 +138,9 @@
             "name": "cube.001",
             "transform": {
                 "translation": [
-                    60.0,
-                    70.0,
-                    5.0
+                    130.0,
+                    130.0,
+                    20.0
                 ],
                 "rotation": [
                     0.0,
@@ -148,9 +148,9 @@
                     0.0
                 ],
                 "scaling": [
-                    20.0,
-                    20.0,
-                    5.0
+                    40.0,
+                    40.0,
+                    20.0
                 ]
             },
             "file_name": "cube"
@@ -160,9 +160,9 @@
             "name": "cube.002",
             "transform": {
                 "translation": [
-                    -70.0,
-                    -10.0,
-                    5.0
+                    -130.0,
+                    -80.0,
+                    10.0
                 ],
                 "rotation": [
                     0.0,
@@ -170,9 +170,9 @@
                     0.0
                 ],
                 "scaling": [
-                    10.0,
-                    20.0,
-                    5.0
+                    40.0,
+                    40.0,
+                    10.0
                 ]
             },
             "file_name": "cube"
@@ -182,9 +182,9 @@
             "name": "cube.003",
             "transform": {
                 "translation": [
-                    -50.0,
-                    -20.0,
-                    5.0
+                    -70.0,
+                    160.0,
+                    10.0
                 ],
                 "rotation": [
                     0.0,
@@ -192,9 +192,9 @@
                     0.0
                 ],
                 "scaling": [
-                    10.0,
-                    10.0,
-                    5.0
+                    100.0,
+                    40.0,
+                    10.0
                 ]
             },
             "file_name": "cube"
@@ -204,9 +204,9 @@
             "name": "cube.004",
             "transform": {
                 "translation": [
-                    50.0,
-                    -55.0,
-                    5.0
+                    120.0,
+                    -60.0,
+                    25.0
                 ],
                 "rotation": [
                     0.0,
@@ -214,9 +214,9 @@
                     0.0
                 ],
                 "scaling": [
+                    80.0,
                     10.0,
-                    10.0,
-                    5.0
+                    25.0
                 ]
             },
             "file_name": "cube"
@@ -226,9 +226,9 @@
             "name": "cube.005",
             "transform": {
                 "translation": [
-                    70.0,
-                    -75.0,
-                    5.0
+                    150.0,
+                    20.0,
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -236,9 +236,119 @@
                     0.0
                 ],
                 "scaling": [
-                    10.0,
-                    10.0,
-                    5.0
+                    20.0,
+                    40.0,
+                    40.0
+                ]
+            },
+            "file_name": "cube"
+        },
+        {
+            "type": "MESH",
+            "name": "cube.006",
+            "transform": {
+                "translation": [
+                    105.0,
+                    -140.0,
+                    7.579999923706055
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    65.0,
+                    30.0,
+                    10.0
+                ]
+            },
+            "file_name": "cube"
+        },
+        {
+            "type": "MESH",
+            "name": "cube.007",
+            "transform": {
+                "translation": [
+                    80.0,
+                    20.0,
+                    40.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    40.0,
+                    40.0
+                ]
+            },
+            "file_name": "cube"
+        },
+        {
+            "type": "MESH",
+            "name": "cube.008",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    50.0,
+                    10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    40.0,
+                    40.0,
+                    10.0
+                ]
+            },
+            "file_name": "cube"
+        },
+        {
+            "type": "MESH",
+            "name": "cube.009",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    -80.0,
+                    10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    40.0,
+                    10.0
+                ]
+            },
+            "file_name": "cube"
+        },
+        {
+            "type": "MESH",
+            "name": "cube.010",
+            "transform": {
+                "translation": [
+                    -70.0,
+                    50.0,
+                    40.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    40.0,
+                    40.0
                 ]
             },
             "file_name": "cube"
@@ -248,9 +358,9 @@
             "name": "enemy.000",
             "transform": {
                 "translation": [
-                    0.0,
-                    75.0,
-                    3.0
+                    41.98274612426758,
+                    90.76270294189453,
+                    2.0
                 ],
                 "rotation": [
                     0.0,
@@ -263,7 +373,6 @@
                     2.0
                 ]
             },
-            "file_name": "sphere",
             "class_name": "Enemy"
         },
         {
@@ -271,9 +380,9 @@
             "name": "enemy.001",
             "transform": {
                 "translation": [
-                    -49.30893325805664,
-                    31.854679107666016,
-                    3.0
+                    -102.35794067382812,
+                    100.35875701904297,
+                    2.0
                 ],
                 "rotation": [
                     0.0,
@@ -286,7 +395,6 @@
                     2.0
                 ]
             },
-            "file_name": "sphere",
             "class_name": "Enemy"
         },
         {
@@ -294,9 +402,9 @@
             "name": "enemy.002",
             "transform": {
                 "translation": [
-                    59.21474075317383,
-                    14.904731750488281,
-                    3.0
+                    115.95235443115234,
+                    71.1707534790039,
+                    2.0
                 ],
                 "rotation": [
                     0.0,
@@ -309,7 +417,6 @@
                     2.0
                 ]
             },
-            "file_name": "sphere",
             "class_name": "Enemy"
         },
         {
@@ -317,9 +424,9 @@
             "name": "enemy.003",
             "transform": {
                 "translation": [
-                    12.987617492675781,
-                    -43.649627685546875,
-                    3.0
+                    -67.17240142822266,
+                    -15.593589782714844,
+                    2.0
                 ],
                 "rotation": [
                     0.0,
@@ -332,7 +439,6 @@
                     2.0
                 ]
             },
-            "file_name": "sphere",
             "class_name": "Enemy"
         },
         {
@@ -340,9 +446,9 @@
             "name": "enemy.004",
             "transform": {
                 "translation": [
-                    29.937562942504883,
-                    -35.28471755981445,
-                    3.0
+                    76.76844787597656,
+                    -35.185546875,
+                    2.0
                 ],
                 "rotation": [
                     0.0,
@@ -355,77 +461,6 @@
                     2.0
                 ]
             },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.005",
-            "transform": {
-                "translation": [
-                    -53.271263122558594,
-                    -48.2723388671875,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.006",
-            "transform": {
-                "translation": [
-                    23.77394676208496,
-                    29.43326187133789,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy",
-            "visible": 1
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.007",
-            "transform": {
-                "translation": [
-                    -32.35899353027344,
-                    7.200214385986328,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "file_name": "sphere",
             "class_name": "Enemy"
         }
     ]

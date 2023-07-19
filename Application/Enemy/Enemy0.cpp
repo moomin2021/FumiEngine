@@ -13,10 +13,11 @@ Enemy0::~Enemy0()
 	CollisionManager::GetInstance()->RemoveCollider(collider_.get());
 }
 
-void Enemy0::Initialize(float3 pos)
+void Enemy0::Initialize(float3 pos, float3 scale)
 {
 	// 初期位置設定
 	object_->SetPosition(pos);
+	object_->SetScale(scale);
 
 	// コライダー生成
 	collider_ = std::make_unique<SphereCollider>(pos);
