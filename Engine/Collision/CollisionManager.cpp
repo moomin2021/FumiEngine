@@ -91,7 +91,9 @@ void CollisionManager::CheckAllCollision()
 			// “–‚½‚Á‚Ä‚¢‚½‚ç
 			if (result) {
 				colA->SetIsHit(true);
+				colA->SetInter(inter);
 				it_hit->SetIsHit(true);
+				it_hit->SetInter(inter);
 			}
 		}
 
@@ -109,7 +111,9 @@ void CollisionManager::CheckAllCollision()
 					Vector3 inter;
 					if (Collision::CheckSphere2Sphere(*sphereA, *sphereB, &inter)) {
 						colA->SetIsHit(true);
+						colA->SetInter(inter);
 						colB->SetIsHit(true);
+						colB->SetInter(inter);
 					}
 				}
 
@@ -121,7 +125,9 @@ void CollisionManager::CheckAllCollision()
 
 					if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
 						colA->SetIsHit(true);
+						colA->SetInter(inter);
 						colB->SetIsHit(true);
+						colB->SetInter(inter);
 					}
 				}
 
@@ -133,7 +139,9 @@ void CollisionManager::CheckAllCollision()
 
 					if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
 						colA->SetIsHit(true);
+						colA->SetInter(inter);
 						colB->SetIsHit(true);
+						colB->SetInter(inter);
 					}
 				}
 			}
