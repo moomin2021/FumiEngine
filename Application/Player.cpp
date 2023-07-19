@@ -32,7 +32,7 @@ Player::Player() :
 	moveAcc_(0.1f),			// 移動加速度
 	maxSpd_(1.5f),// 最大速度
 	moveSpd_(0.0f),
-	cameraAngleSpd_(0.3f),	// カメラの角度の移動速度
+	cameraAngleSpd_(0.1f),	// カメラの角度の移動速度
 
 	// クロスヘア
 	crossHairHandle_(0),

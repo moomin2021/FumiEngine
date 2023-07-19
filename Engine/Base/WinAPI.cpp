@@ -54,6 +54,17 @@ void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 
 	// ウィンドウを表示状態にする
 	ShowWindow(hwnd_, SW_SHOW);
+
+	RECT rect;
+
+	GetWindowRect(hwnd_, &rect);
+
+	rect.top += 35;
+	rect.left += 10;
+	rect.right -= 10;
+	rect.bottom -= 10;
+
+	ClipCursor(&rect);
 }
 
 bool WinAPI::IsEndMessage()
