@@ -20,6 +20,9 @@ protected:
 	// 任意で紐付けるオブジェクト
 	Object3D* object_ = nullptr;
 
+	// 衝突判定を取るか
+	bool isCollision_ = true;
+
 	// 衝突フラグ
 	bool isHit_ = false;
 
@@ -67,6 +70,12 @@ public:
 	void SetIsHit(bool frag) { isHit_ = frag; }
 
 	/// <summary>
+	/// 衝突判定を取るかフラグを設定
+	/// </summary>
+	/// <param name="frag"> フラグ </param>
+	void SetIsCollision(bool frag) { isCollision_ = frag; }
+
+	/// <summary>
 	/// 当たり判定属性を設定
 	/// </summary>
 	/// <param name="attribute"> 当たり判定属性 </param>
@@ -80,6 +89,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	inline CollisionShapeType GetShapeType() { return shapeType_; }
+
+	/// <summary>
+	/// 衝突判定をとるかフラグを取得
+	/// </summary>
+	/// <returns> フラグ </returns>
+	inline bool GetIsCollision() { return isCollision_; }
 
 	/// <summary>
 	/// 衝突フラグを取得

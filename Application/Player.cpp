@@ -5,6 +5,8 @@
 #include "Util.h"
 #include "Texture.h"
 #include "WinAPI.h"
+#include "CollisionManager.h"
+#include "CollisionAttribute.h"
 
 Player::Player() :
 #pragma region 初期化リスト
@@ -46,10 +48,18 @@ Player::Player() :
 	Object3D::SetCamera(camera_.get());
 
 	// 弾のモデル読み込み
-	mBullet_ = std::make_unique<Model>("bullet");
+	mBullet_ = std::make_unique<Model>("sphere");
 
 	// 弾にモデルを設定
 	Bullet::SetModel(mBullet_.get());
+
+	// レイのコライダーを生成
+	rayCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
+	rayCollider_->SetAttribute(COL_PLAYER_RAY);
+	rayCollider_->SetIsCollision(false);
+
+	// コライダーを追加
+	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
 
 	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 	sCrossHair_ = std::make_unique<Sprite>();
@@ -58,6 +68,11 @@ Player::Player() :
 		WinAPI::GetInstance()->GetWidth() / 2.0f,
 		WinAPI::GetInstance()->GetHeight() / 2.0f });
 	sCrossHair_->SetSize({ 26, 26 });
+}
+
+Player::~Player()
+{
+	CollisionManager::GetInstance()->RemoveCollider(rayCollider_.get());
 }
 
 void Player::Update()
@@ -70,6 +85,13 @@ void Player::Update()
 
 	// 移動
 	Move();
+
+	// コライダーの更新
+	ColliderUpdate();
+
+	if (rayCollider_->GetIsHit()) {
+		int num = 0;
+	}
 
 	// カメラの更新
 	camera_->Update();
@@ -100,8 +122,12 @@ void Player::Shoot()
 		}
 	}
 
+	rayCollider_->SetIsCollision(false);
+
 	// マウスを左クリックしていなかったらこの後の処理を飛ばす
 	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT) == false) return;
+
+	rayCollider_->SetIsCollision(true);
 
 	// 弾を生成
 	bullets_.emplace_back(std::make_unique<Bullet>(camera_->GetEye(), forwardVec_));
@@ -165,4 +191,13 @@ void Player::Move()
 
 	// カメラの注視点を設定
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+}
+
+void Player::ColliderUpdate()
+{
+	// レイの開始位置を設定
+	rayCollider_->SetOffset(camera_->GetEye());
+
+	// レイの方向を設定
+	rayCollider_->SetDir(forwardVec_);
 }

@@ -16,6 +16,10 @@ void EnemyManager::Update()
 	for (it = enemys_.begin(); it != enemys_.end(); it++) {
 		(*it)->Update();
 	}
+
+	//for (size_t i = 0; i < enemys_.size(); i++) {
+	//	enemys_[i]->Update();
+	//}
 }
 
 void EnemyManager::Draw()
@@ -25,6 +29,10 @@ void EnemyManager::Draw()
 	for (it = enemys_.begin(); it != enemys_.end(); it++) {
 		(*it)->Draw();
 	}
+
+	//for (size_t i = 0; i < enemys_.size(); i++) {
+	//	enemys_[i]->Draw();
+	//}
 }
 
 EnemyManager::EnemyManager() {

@@ -15,14 +15,14 @@ Bullet::Bullet(const float3& iniPos, const Vector3& moveVec) :
 	moveVec_(moveVec),
 
 	// 弾の速度
-	bulletSpd_(5.0f),
+	bulletSpd_(20.0f),
 
 	// 生存フラグ
 	isAlive_(true),
 
 	// 生存時間
 	aliveCounter_(0),	// 生成からのカウント
-	maxCount_(600)		// 最大カウント
+	maxCount_(300)		// 最大カウント
 #pragma endregion
 {
 	// オブジェクト生成＆設定
@@ -43,7 +43,9 @@ void Bullet::Update()
 	//col_.radius = oBullet_->GetScale().x;
 
 	// 弾を移動させる
-	//oBullet_->SetPosition(oBullet_->GetPosition() + moveVec_ * bulletSpd_);
+	oBullet_->SetPosition(oBullet_->GetPosition() + moveVec_ * bulletSpd_);
+	
+	oBullet_->Update();
 
 	// カウントを進める
 	aliveCounter_++;

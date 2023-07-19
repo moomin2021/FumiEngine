@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Bullet.h"
 #include "Sprite.h"
+#include "RayCollider.h"
 
 #include <memory>
 
@@ -25,6 +26,9 @@ private:
 	// 弾のモデル
 	std::unique_ptr<Model> mBullet_;
 
+	// レイのコライダー
+	std::unique_ptr<RayCollider> rayCollider_;
+
 	// 方向ベクトル
 	Vector3 forwardVec_;// 前方
 	Vector3 rightVec_;	// 右
@@ -44,6 +48,9 @@ public:
 	/// プレイヤー
 	/// </summary>
 	Player();
+
+	// デストラクタ
+	~Player();
 
 	/// <summary>
 	/// 更新処理
@@ -73,6 +80,9 @@ private:
 	/// 移動処理
 	/// </summary>
 	void Move();
+
+	// コライダーの更新
+	void ColliderUpdate();
 #pragma endregion
 
 #pragma region ゲッター関数

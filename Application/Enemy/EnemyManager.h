@@ -2,6 +2,7 @@
 #include "BaseEnemy.h"
 
 #include <memory>
+#include <vector>
 #include <list>
 
 class EnemyManager {

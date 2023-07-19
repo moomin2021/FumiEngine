@@ -9,7 +9,10 @@ class Enemy0 : public BaseEnemy
 {
 #pragma region ƒƒ“ƒo•Ï”
 private:
-	
+	// HP
+	uint16_t hp_;
+
+	uint16_t damageCounter_;
 #pragma endregion
 
 #pragma region ƒƒ“ƒoŠÖ”
@@ -34,5 +37,9 @@ public:
 
 	// •`‰æˆ—
 	void Draw() override;
+
+private:
+	// Õ“Ë‚Ìˆ—
+	void OnCollision();
 #pragma endregion
 };

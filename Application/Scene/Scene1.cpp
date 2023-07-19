@@ -54,9 +54,6 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	// 衝突判定
-	CollisionManager::GetInstance()->CheckAllCollision();
-
 	// ステージ更新
 	loadStage_->Update();
 
@@ -65,6 +62,9 @@ void Scene1::Update()
 
 	// プレイヤー更新
 	player_->Update();
+
+	// 衝突判定
+	CollisionManager::GetInstance()->CheckAllCollision();
 }
 
 void Scene1::Draw()

@@ -27,6 +27,9 @@ void CollisionManager::CheckAllCollision()
 		++itB;
 		BaseCollider* colA = *itA;
 
+		// 衝突判定を取らないかどうか
+		if (colA->GetIsCollision() == false) continue;
+
 		// レイだったら
 		if (colA->GetShapeType() == SHAPE_RAY) {
 			bool result = false;
@@ -47,6 +50,9 @@ void CollisionManager::CheckAllCollision()
 			it = colliders_.begin();
 			for (; it != colliders_.end(); ++it) {
 				BaseCollider* col = *it;
+
+				// 衝突判定を取らないかどうか
+				if (col->GetIsCollision() == false) continue;
 
 				// 属性が合わなければスキップ
 				if (!(colA->attribute_ & col->attribute_)) continue;
@@ -98,6 +104,9 @@ void CollisionManager::CheckAllCollision()
 		else {
 			for (; itB != colliders_.end(); ++itB) {
 				BaseCollider* colB = *itB;
+
+				// 衝突判定を取らないかどうか
+				if (colB->GetIsCollision() == false) continue;
 
 				// 属性が合わなければスキップ
 				if (!(colA->attribute_ & colB->attribute_)) continue;
