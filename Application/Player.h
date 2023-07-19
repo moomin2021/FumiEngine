@@ -35,7 +35,9 @@ private:
 	Vector3 rightVec_;	// 右
 
 	// 速度
-	float moveSpd_;			// 移動速度
+	float moveAcc_;			// 移動加速度
+	float maxSpd_;// 最大速度
+	float moveSpd_;
 	float cameraAngleSpd_;	// カメラの角度の移動速度
 
 	// クロスヘア

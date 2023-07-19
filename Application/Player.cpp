@@ -29,7 +29,9 @@ Player::Player() :
 	rightVec_{},	// 右
 
 	// 速度
-	moveSpd_(1.0f),			// 移動速度
+	moveAcc_(0.1f),			// 移動加速度
+	maxSpd_(1.5f),// 最大速度
+	moveSpd_(0.0f),
 	cameraAngleSpd_(0.3f),	// カメラの角度の移動速度
 
 	// クロスヘア
@@ -202,6 +204,7 @@ void Player::EyeMove()
 
 void Player::Move()
 {
+
 	// 移動方向
 	Vector3 moveVec = {
 		static_cast<float>(key_->PushKey(DIK_D) - key_->PushKey(DIK_A)),
@@ -209,19 +212,32 @@ void Player::Move()
 		static_cast<float>(key_->PushKey(DIK_W) - key_->PushKey(DIK_S))
 	};
 
+	if (moveVec.length() > 0.0f) {
+		moveSpd_ += moveAcc_;
+	}
+
+	else {
+		moveSpd_ -= moveAcc_;
+	}
+
+	moveSpd_ = Util::Clamp(moveSpd_, maxSpd_, 0.0f);
+
 	float3 forwardMove = {
-		moveVec.z * forwardVec_.x * moveSpd_,
+		moveVec.z * forwardVec_.x,
 		0.0f,
-		moveVec.z * forwardVec_.z * moveSpd_
+		moveVec.z * forwardVec_.z
 	};
 
 	float3 rightMove = {
-		moveVec.x * rightVec_.x * moveSpd_,
+		moveVec.x * rightVec_.x,
 		0.0f,
-		moveVec.x * rightVec_.z * moveSpd_
+		moveVec.x * rightVec_.z
 	};
 
-	camera_->SetEye(camera_->GetEye() + (forwardMove + rightMove));
+	Vector3 resultVec = forwardMove + rightMove;
+	resultVec.normalize();
+
+	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
 
 	// カメラの注視点を設定
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
