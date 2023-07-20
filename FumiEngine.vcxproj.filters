@@ -219,6 +219,12 @@
     <ClCompile Include="Engine\Collision\RayCollider.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Boss\BossGenerator.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Boss\Boss.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Application\Enemy\BossManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
@@ -363,6 +369,12 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\CollisionAttribute.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Boss\BossGenerator.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Boss\Boss.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\BossManager.h">
