@@ -4,7 +4,7 @@
 BossGenerator::BossGenerator() {
 #pragma region ジェネレーター
 	// モデル
-	mGen_ = std::make_unique<Model>();// 生成
+	mGen_ = std::make_unique<Model>("sphere");// 生成
 
 	// オブジェクト
 	oGen_ = std::make_unique<Object3D>(mGen_.get());// 生成
