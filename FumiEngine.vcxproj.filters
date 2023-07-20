@@ -204,10 +204,7 @@
     <ClCompile Include="Application\Enemy\Enemy.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\LoadStage.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player.cpp">
+    <ClCompile Include="Application\Player\Player.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Enemy\EnemyManager.cpp">
@@ -220,6 +217,9 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\RayCollider.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\BossManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,10 +344,7 @@
     <ClInclude Include="Application\Enemy\Enemy.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\LoadStage.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player.h">
+    <ClInclude Include="Application\Player\Player.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\EnemyManager.h">
@@ -366,6 +363,9 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\CollisionAttribute.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\BossManager.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

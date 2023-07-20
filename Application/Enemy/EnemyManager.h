@@ -7,14 +7,17 @@
 
 class EnemyManager {
 #pragma region メンバ変数
-	// 敵
+	// エネミー配列
 	std::list<std::unique_ptr<BaseEnemy>> enemys_;
+
+	// 敵モデル
+	std::unique_ptr<Model> mEnemy0_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	// インスタンス取得
-	static EnemyManager* GetInstance();
+	// コンストラクタ
+	EnemyManager();
 
 	// 更新処理
 	void Update();
@@ -22,15 +25,16 @@ public:
 	// 描画処理
 	void Draw();
 
-	/// <summary>
-	/// 敵追加
-	/// </summary>
-	/// <param name="enemy"> 敵 </param>
-	void AddEnemy(BaseEnemy* enemy) { enemys_.emplace_back(enemy); }
+	// エネミーを生成追加
+	void CreateAddEnemy0(const float3& pos, const float3& scale);
+#pragma endregion
 
-private:
-	// コンストラクタ
-	EnemyManager();
+#pragma region セッター関数
+	
+#pragma endregion
+
+#pragma region ゲッター関数
+
 #pragma endregion
 
 #pragma region 特殊関数

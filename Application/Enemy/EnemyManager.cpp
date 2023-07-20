@@ -1,12 +1,9 @@
 #include "EnemyManager.h"
+#include "Enemy0.h"
 
-EnemyManager* EnemyManager::GetInstance()
-{
-	// インスタンス生成
-	static EnemyManager inst;
-
-	// インスタンスを返す
-	return &inst;
+EnemyManager::EnemyManager() {
+	// モデル読み込み
+	mEnemy0_ = std::make_unique<Model>("sphere");
 }
 
 void EnemyManager::Update()
@@ -35,6 +32,12 @@ void EnemyManager::Draw()
 	//}
 }
 
-EnemyManager::EnemyManager() {
+void EnemyManager::CreateAddEnemy0(const float3& pos, const float3& scale)
+{
+	// 敵の生成
+	std::unique_ptr<Enemy0> newEnemy = std::make_unique<Enemy0>(mEnemy0_.get());
+	newEnemy->Initialize(pos, scale);
 
+	// エネミー配列に追加
+	enemys_.emplace_back(std::move(newEnemy));
 }

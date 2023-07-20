@@ -9,59 +9,32 @@
 #include "CollisionAttribute.h"
 #include "Util.h"
 
-Player::Player() :
-#pragma region 初期化リスト
-	// 入力クラスインスタンス
-	key_(nullptr),
-	mouse_(nullptr),
-
-	// 視点カメラ
-	camera_(nullptr),
-
-	// 弾のモデル
-	mBullet_(nullptr),
-
-	// 弾
-	bullets_{},
-
-	// 方向ベクトル
-	forwardVec_{},	// 前方
-	rightVec_{},	// 右
-
-	// 速度
-	moveAcc_(0.1f),			// 移動加速度
-	maxSpd_(1.5f),// 最大速度
-	moveSpd_(0.0f),
-	cameraAngleSpd_(0.1f),	// カメラの角度の移動速度
-
-	// クロスヘア
-	crossHairHandle_(0),
-	sCrossHair_(nullptr),
-
-	// ジャンプ用
-	isGround_(false),// 地面についているか
-	gravity_(0.0f),// 重力
-	gAcc_(0.2f),// 重力加速度
-	jumpSpd_(2.5f)// ジャンプ速度
-#pragma endregion
+Player::Player()
 {
+#pragma region 入力クラス
 	// 入力クラスインスタンス取得
 	key_	= Key::GetInstance();	// キーボード
 	mouse_	= Mouse::GetInstance();	// マウス
+#pragma endregion
 
+#pragma region カメラ
 	// カメラを生成＆設定
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 2.0f, 0.0f });
 
 	// カメラを適用
 	Object3D::SetCamera(camera_.get());
+#pragma endregion
 
+#pragma region 弾
 	// 弾のモデル読み込み
 	mBullet_ = std::make_unique<Model>("sphere");
 
 	// 弾にモデルを設定
 	Bullet::SetModel(mBullet_.get());
+#pragma endregion
 
+#pragma region コライダー
 	// レイのコライダーを生成
 	eyeCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
 	eyeCollider_->SetAttribute(COL_PLAYER_RAY);
@@ -69,16 +42,9 @@ Player::Player() :
 
 	// コライダーを追加
 	CollisionManager::GetInstance()->AddCollider(eyeCollider_.get());
+#pragma endregion
 
-	// レイのコライダーを生成
-	downCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
-	downCollider_->SetAttribute(COL_DOWN_RAY);
-	downCollider_->SetIsCollision(true);
-	downCollider_->SetDir(Vector3(0.0f, -1.0f, 0.0f));
-
-	// コライダーを追加
-	CollisionManager::GetInstance()->AddCollider(downCollider_.get());
-
+#pragma region クロスヘア
 	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 	sCrossHair_ = std::make_unique<Sprite>();
 	sCrossHair_->SetAnchorPoint({ 0.5f, 0.5f });
@@ -86,6 +52,7 @@ Player::Player() :
 		WinAPI::GetInstance()->GetWidth() / 2.0f,
 		WinAPI::GetInstance()->GetHeight() / 2.0f });
 	sCrossHair_->SetSize({ 26, 26 });
+#pragma endregion
 }
 
 Player::~Player()
@@ -133,14 +100,14 @@ void Player::Update()
 	camera_->Update();
 }
 
-void Player::Draw()
+void Player::Object3DDraw()
 {
 	for (auto& bullets : bullets_) {
 		bullets->Draw();
 	}
 }
 
-void Player::Draw2D()
+void Player::FrontSpriteDraw()
 {
 	sCrossHair_->Draw(crossHairHandle_);
 }
@@ -250,13 +217,9 @@ void Player::ColliderUpdate()
 
 	// レイの方向を設定
 	eyeCollider_->SetDir(forwardVec_);
-
-	downCollider_->SetOffset(camera_->GetEye());
 }
 
 void Player::OnCollision()
 {
-	if (downCollider_->GetIsHit()) {
-		isGround_ = true;
-	}
+
 }

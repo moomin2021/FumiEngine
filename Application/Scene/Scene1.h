@@ -1,33 +1,46 @@
 #pragma once
 #include "BaseScene.h"
 #include "LightGroup.h"
-#include "LoadStage.h"
-#include "Player.h"
 #include "EnemyManager.h"
+#include "Player.h"
 
-#include <vector>
+class Scene1 : public BaseScene {
+#pragma region 構造体
+	// レベルデータ
+	struct LevelData {
+		// オブジェクト1個分のデータ
+		struct ObjectData {
+			// ファイル名
+			int isActive;
+			std::string fileName;
+			std::string className;
+			float3 translation;
+			float3 rotation;
+			float3 scaling;
+		};
 
-class Scene1 : public BaseScene
-{
-	// --メンバ変数-- //
+		std::vector<ObjectData> objects;
+	};
+#pragma endregion
+
+#pragma region メンバ変数
 private:
-	// キーボード入力
-	Key* key_;
-
-	// 敵管理クラス
-	EnemyManager* enemyManager_;
-
 	// ライト
-	std::unique_ptr<LightGroup> lightGroup_;
-	std::unique_ptr<DirectionalLight> dirLight_;
+	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
+	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// ステージ読み込み用クラス
-	std::unique_ptr<LoadStage> loadStage_;
+	// エネミーマネージャー
+	std::unique_ptr<EnemyManager> enemyManager_ = nullptr;
 
 	// プレイヤー
-	std::unique_ptr<Player> player_;
+	std::unique_ptr<Player> player_ = nullptr;
 
-	// --メンバ関数-- //
+	// ステージオブジェクト
+	std::map<std::string, std::unique_ptr<Model>> stageModels_;// モデル連想配列
+	std::list<std::unique_ptr<Object3D>> stageObjects_;// オブジェクト配列
+#pragma endregion
+
+#pragma region メンバ関数
 public:
 	// コンストラクタ
 	Scene1();
@@ -43,5 +56,9 @@ public:
 
 	// 描画処理
 	void Draw();
-};
 
+private:
+	// ステージを読み込む
+	void LoadStage(std::string fileName);
+#pragma endregion
+};
