@@ -9,6 +9,7 @@
 #include "SphereCollider.h"
 #include "MeshCollider.h"
 #include "RayCollider.h"
+#include "Dissolve3D.h"
 
 #include <vector>
 #include <memory>
@@ -30,9 +31,14 @@ private:
 
 	// モデル
 	std::unique_ptr<Model> mFloor_;
+	std::unique_ptr<Model> mSphere_;
+
+	// ディゾルブ
+	std::unique_ptr<Dissolve3D> dissolve_ = nullptr;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> oFloor_;
+	std::vector<std::unique_ptr<Object3D>> oSphere_;
 
 	// テクスチャハンドル
 	uint16_t mainTexHandle_;

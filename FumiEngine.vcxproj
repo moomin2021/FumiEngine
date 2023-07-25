@@ -85,8 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application\Scene\Scene2.cpp" />
-    <ClCompile Include="Application\Scene\Scene3.cpp" />
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\3d\Dissolve3D.cpp" />
@@ -125,8 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
-    <ClInclude Include="Application\Scene\Scene2.h" />
-    <ClInclude Include="Application\Scene\Scene3.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\3d\Dissolve3D.h" />
