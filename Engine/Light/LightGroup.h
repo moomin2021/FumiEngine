@@ -61,6 +61,9 @@ public:
 	/// </summary>
 	void Draw();
 
+	// テクスチャブレンド用描画処理
+	void TextureBlendDraw();
+
 	/// <summary>
 	/// 平行光源追加
 	/// </summary>

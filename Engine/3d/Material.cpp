@@ -40,6 +40,37 @@ void Material::Draw()
 	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 }
 
+void Material::TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle)
+{
+	// コマンドリスト取得
+	static ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// インスタンス取得
+	static Texture* tex = Texture::GetInstance();
+
+	// SRVヒープのハンドルを取得
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	// 定数バッファビュー（CBV）の設定コマンド
+	cmdList->SetGraphicsRootConstantBufferView(4, materialBuff_->GetGPUVirtualAddress());
+
+	// ハンドルを指定された分まで進める
+	srvGpuHandle.ptr += mainTexHandle;
+
+	// 指定されたSRVをルートパラメータ1番に設定
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+
+	// ハンドルを指定された分まで進める
+	srvGpuHandle.ptr = srvGpuHandle.ptr - mainTexHandle + subTexHandle;
+
+	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+	// ハンドルを指定された分まで進める
+	srvGpuHandle.ptr = srvGpuHandle.ptr - subTexHandle + maskTexHandle;
+
+	cmdList->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+}
+
 void Material::CreateMaterialBuff()
 {
 	// デバイス取得

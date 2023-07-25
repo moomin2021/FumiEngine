@@ -81,6 +81,15 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Bloom"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Bloom"]->CreateRootParams(2, 1);
 	pipelineObj_["Bloom"]->CreatePipeline(1);
+
+	AddPipeline("TextureBlend");
+	pipelineObj_["TextureBlend"]->LoadShader("Resources/Shaders/TextureBlendPS.hlsl", PS);
+	pipelineObj_["TextureBlend"]->LoadShader("Resources/Shaders/TextureBlendVS.hlsl", VS);
+	pipelineObj_["TextureBlend"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["TextureBlend"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["TextureBlend"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["TextureBlend"]->CreateRootParams(3, 3);
+	pipelineObj_["TextureBlend"]->CreatePipeline(2);
 }
 
 void PipelineManager::AddPipeline(std::string pipelineName)

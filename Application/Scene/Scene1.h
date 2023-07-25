@@ -44,6 +44,9 @@ private:
 
 	// テクスチャハンドル
 	uint16_t haeHandle_;
+	uint16_t mainTexHandle_;
+	uint16_t subTexHandle_;
+	uint16_t maskTexHandle_;
 
 	// スプライト
 	std::unique_ptr<Sprite> sHae_;

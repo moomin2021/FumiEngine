@@ -58,6 +58,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// テクスチャブレンド用描画処理
+	/// </summary>
+	void TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle);
+
+	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	static void PreDraw();

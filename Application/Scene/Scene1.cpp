@@ -69,6 +69,9 @@ void Scene1::Initialize()
 
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
+	mainTexHandle_ = LoadTexture("Resources/mainTex.jpg");
+	subTexHandle_ = LoadTexture("Resources/subTex.jpg");
+	maskTexHandle_ = LoadTexture("Resources/maskTex.png");
 
 	// スプライト
 	sHae_ = std::make_unique<Sprite>();
@@ -147,9 +150,12 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	oFloor_->Draw();
 	oSphere_->Draw();
 	for (auto& object : oCube_) object->Draw();
+
+	PipelineManager::GetInstance()->PreDraw("TextureBlend");
+
+	oFloor_->TextureBlendDraw(mainTexHandle_, subTexHandle_, maskTexHandle_);
 
 	PipelineManager::GetInstance()->PreDraw("Sprite");
 

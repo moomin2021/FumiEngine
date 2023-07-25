@@ -53,6 +53,18 @@ void LightGroup::Draw() {
 	cmdList->SetGraphicsRootConstantBufferView(3, constBuff_->GetGPUVirtualAddress());
 }
 
+void LightGroup::TextureBlendDraw()
+{
+	// 定数バッファ転送
+	TransferConstBuffer();
+
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(5, constBuff_->GetGPUVirtualAddress());
+}
+
 void LightGroup::AddDirLight(DirectionalLight* light) {
 	dirLights_[0] = light;
 }

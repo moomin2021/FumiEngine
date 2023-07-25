@@ -27,6 +27,14 @@ void Model::Draw() {
 	}
 }
 
+void Model::TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle)
+{
+	for (auto& i : meshes_) {
+		materials_[i.GetMaterialName()].TextureBlendDraw(mainTexHandle, subTexHandle, maskTexHandle);
+		i.Draw();
+	}
+}
+
 void Model::LoadModel(string name)
 {
 	// ファイルストリーム

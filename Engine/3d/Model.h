@@ -34,6 +34,9 @@ public:
 	/// </summary>
 	void Draw();
 
+	// テクスチャブレンド用描画処理
+	void TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle);
+
 private:
 	/// <summary>
 	/// モデル読み込み

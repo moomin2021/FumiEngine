@@ -44,6 +44,9 @@ public:
 	// 描画処理
 	void Draw();
 
+	// テクスチャブレンド用描画処理
+	void TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle);
+
 	/// <summary>
 	/// マテリアルバッファ作成
 	/// </summary>

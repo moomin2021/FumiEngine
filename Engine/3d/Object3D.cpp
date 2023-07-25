@@ -120,6 +120,21 @@ void Object3D::Draw() {
 	model_->Draw();
 }
 
+void Object3D::TextureBlendDraw(uint16_t mainTexHandle, uint16_t subTexHandle, uint16_t maskTexHandle)
+{
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	// 定数バッファビュー（CBV）の設定コマンド
+	cmdList->SetGraphicsRootConstantBufferView(3, constBuff_->GetGPUVirtualAddress());
+
+	// ライトの描画
+	sLightGroup_->TextureBlendDraw();
+
+	// モデルの情報を元に描画
+	model_->TextureBlendDraw(mainTexHandle, subTexHandle, maskTexHandle);
+}
+
 void Object3D::PreDraw() {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();

@@ -331,6 +331,7 @@
     <None Include="Resources\Shaders\Bloom.hlsli">
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
+    <None Include="Resources\Shaders\TextureBlend.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -369,5 +370,7 @@
     <FxCompile Include="Resources\Shaders\BloomVS.hlsl">
       <Filter>Engine\シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\TextureBlendVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\TextureBlendPS.hlsl" />
   </ItemGroup>
 </Project>
