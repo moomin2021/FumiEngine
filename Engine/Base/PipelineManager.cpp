@@ -90,6 +90,23 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["TextureBlend"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["TextureBlend"]->CreateRootParams(3, 3);
 	pipelineObj_["TextureBlend"]->CreatePipeline(2);
+
+	AddPipeline("Dissolve");
+	pipelineObj_["Dissolve"]->LoadShader("Resources/Shaders/DissolvePS.hlsl", PS);
+	pipelineObj_["Dissolve"]->LoadShader("Resources/Shaders/DissolveVS.hlsl", VS);
+	pipelineObj_["Dissolve"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Dissolve"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Dissolve"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Dissolve"]->CreateRootParams(1, 4);
+	pipelineObj_["Dissolve"]->CreatePipeline(2);
+
+	AddPipeline("Noise");
+	pipelineObj_["Noise"]->LoadShader("Resources/Shaders/NoisePS.hlsl", PS);
+	pipelineObj_["Noise"]->LoadShader("Resources/Shaders/NoiseVS.hlsl", VS);
+	pipelineObj_["Noise"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Noise"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Noise"]->CreateRootParams(2, 1);
+	pipelineObj_["Noise"]->CreatePipeline(2);
 }
 
 void PipelineManager::AddPipeline(std::string pipelineName)

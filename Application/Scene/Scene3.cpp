@@ -1,25 +1,25 @@
-#include "Scene1.h"
+#include "Scene3.h"
 #include "Texture.h"
 #include "Vector3.h"
-#include "PipelineManager.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "PipelineManager.h"
 
 #include <DirectXMath.h>
 
 using namespace DirectX;
 
-Scene1::Scene1() :
+Scene3::Scene3() :
 	key_(nullptr)
 {
 }
 
-Scene1::~Scene1()
+Scene3::~Scene3()
 {
-	
+
 }
 
-void Scene1::Initialize()
+void Scene3::Initialize()
 {
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
@@ -28,38 +28,26 @@ void Scene1::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
 
-	// モデル
-	mFloor_ = std::make_unique<Model>("floor");
-
-	// オブジェクト
-	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
-	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
-
-	// テクスチャハンドル
-	mainTexHandle_ = LoadTexture("Resources/mainTex.jpg");
-	subTexHandle_ = LoadTexture("Resources/subTex.jpg");
-	maskTexHandle_ = LoadTexture("Resources/maskTex.png");
+	// カメラを設定
+	Object3D::SetCamera(camera_.get());
 
 	// ライト生成
 	lightGroup_ = std::make_unique<LightGroup>();
 	dirLight_ = std::make_unique<DirectionalLight>();
-	pointLight_ = std::make_unique<PointLight>();
 
 	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
-	//pointLight_->SetLightPos({ -4.0f, 1.0f, 0.0f });
 
 	lightGroup_->AddDirLight(dirLight_.get());
-	//lightGroup_->AddPointLight(pointLight_.get());
-
-	// カメラを設定
-	Object3D::SetCamera(camera_.get());
 
 	// ライトを設定
 	Object3D::SetLightGroup(lightGroup_.get());
+
+	model_ = std::make_unique<Model>("cube");
+	object_ = std::make_unique<Object3D>(model_.get());
 }
 
-void Scene1::Update()
+void Scene3::Update()
 {
 	// カメラ移動
 	{
@@ -71,8 +59,7 @@ void Scene1::Update()
 		camera_->SetEye(eye);
 	}
 
-	// オブジェクトの更新
-	oFloor_->Update();
+	object_->Update();
 
 	// カメラの更新
 	camera_->Update();
@@ -81,9 +68,9 @@ void Scene1::Update()
 	CollisionManager::GetInstance()->CheckAllCollision();
 }
 
-void Scene1::Draw()
+void Scene3::Draw()
 {
-	PipelineManager::GetInstance()->PreDraw("TextureBlend");
+	PipelineManager::PreDraw("Object3D");
 
-	oFloor_->TextureBlendDraw(mainTexHandle_, subTexHandle_, maskTexHandle_);
+	object_->Draw();
 }

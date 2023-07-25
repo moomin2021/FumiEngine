@@ -30,26 +30,14 @@ private:
 
 	// モデル
 	std::unique_ptr<Model> mFloor_;
-	std::unique_ptr<Model> mCube_;
-	std::unique_ptr<Model> mSphere_;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> oFloor_;
-	std::unique_ptr<Object3D> oSphere_;
-	std::vector<std::unique_ptr<Object3D>> oCube_;
-
-	std::unique_ptr<SphereCollider> sphereCollider_;
-	std::unique_ptr<MeshCollider> meshCollider_;
-	std::unique_ptr<RayCollider> rayCollider_;
 
 	// テクスチャハンドル
-	uint16_t haeHandle_;
 	uint16_t mainTexHandle_;
 	uint16_t subTexHandle_;
 	uint16_t maskTexHandle_;
-
-	// スプライト
-	std::unique_ptr<Sprite> sHae_;
 
 	// --メンバ関数-- //
 public:

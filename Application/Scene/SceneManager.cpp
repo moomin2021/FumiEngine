@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 #include "Scene1.h"
+#include "Scene2.h"
+#include "Scene3.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 
@@ -39,6 +41,7 @@ SceneManager::SceneManager() :
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
 	highLumiPostEffect_ = std::make_unique<PostEffect>();
 	bloomPostEffect_ = std::make_unique<PostEffect>();
+	elecPostEffect_ = std::make_unique<PostEffect>();
 
 	PipelineManager::GetInstance();
 }
@@ -56,15 +59,30 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = std::make_unique<Scene1>();
 		nowScene_->Initialize();
 		break;
+
+	case SCENE::SCENE2:
+		nowScene_ = std::make_unique<Scene2>();
+		nowScene_->Initialize();
+		break;
+
+	case SCENE::SCENE3:
+		nowScene_ = std::make_unique<Scene3>();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
 // XVˆ—
 void SceneManager::Update() {
 
-	if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
-	if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
-	if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
+	if (key_->TriggerKey(DIK_7)) postEffectType_ = PostEffectType::NORMAL;
+	if (key_->TriggerKey(DIK_8)) postEffectType_ = PostEffectType::BLUR;
+	if (key_->TriggerKey(DIK_9)) postEffectType_ = PostEffectType::BLOOM;
+	if (key_->TriggerKey(DIK_0)) postEffectType_ = PostEffectType::ELEC;
+
+	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE1);
+	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE2);
+	if (key_->TriggerKey(DIK_3)) ChangeScene(SCENE3);
 
 	nowScene_->Update();
 }
@@ -120,6 +138,24 @@ void SceneManager::Draw()
 		PipelineManager::GetInstance()->PreDraw("Bloom");
 
 		bloomPostEffect_->Draw();
+
+		// --•`‰æŒãˆ—-- //
+		DX12Cmd::GetInstance()->PostDraw();
+	}
+
+	else if (PostEffectType::ELEC == postEffectType_) {
+		elecPostEffect_->PreDraw();
+
+		nowScene_->Draw();
+
+		elecPostEffect_->PostDraw();
+
+		// --•`‰æ‘Oˆ—-- //
+		DX12Cmd::GetInstance()->PreDraw();
+
+		PipelineManager::GetInstance()->PreDraw("Noise");
+
+		elecPostEffect_->Draw();
 
 		// --•`‰æŒãˆ—-- //
 		DX12Cmd::GetInstance()->PostDraw();

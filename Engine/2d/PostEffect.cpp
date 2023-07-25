@@ -207,6 +207,10 @@ void PostEffect::PostDraw()
 
 void PostEffect::UpdateData()
 {
+	t += 0.01f;
+
+	constMap_->t = t;
+
 	// スプライトデータの変更がされていなかったら処理を飛ばす
 	if (hasChanget_ == false) return;
 

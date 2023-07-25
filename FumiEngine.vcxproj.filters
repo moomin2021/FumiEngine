@@ -186,6 +186,15 @@
     <ClCompile Include="Engine\Collision\RayCollider.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Scene\Scene2.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Dissolve3D.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\Scene3.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -311,6 +320,15 @@
     <ClInclude Include="Engine\Collision\CollisionAttribute.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Scene\Scene2.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Dissolve3D.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\Scene3.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3D.hlsli">
@@ -332,6 +350,8 @@
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
     <None Include="Resources\Shaders\TextureBlend.hlsli" />
+    <None Include="Resources\Shaders\Dissolve.hlsli" />
+    <None Include="Resources\Shaders\Noise.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -372,5 +392,9 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\TextureBlendVS.hlsl" />
     <FxCompile Include="Resources\Shaders\TextureBlendPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DissolveVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\DissolvePS.hlsl" />
+    <FxCompile Include="Resources\Shaders\NoiseVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\NoisePS.hlsl" />
   </ItemGroup>
 </Project>

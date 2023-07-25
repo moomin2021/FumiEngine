@@ -8,12 +8,15 @@
 // シーン列挙型
 enum SCENE {
 	SCENE1,
+	SCENE2,
+	SCENE3,
 };
 
 enum PostEffectType {
 	NORMAL,
 	BLUR,
-	BLOOM
+	BLOOM,
+	ELEC,
 };
 
 class SceneManager {
@@ -31,6 +34,7 @@ private:
 	std::unique_ptr<PostEffect> gaussianPostEffect_;
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
 	std::unique_ptr<PostEffect> bloomPostEffect_;
+	std::unique_ptr<PostEffect> elecPostEffect_;
 
 	// ポストエフェクトの種類
 	PostEffectType postEffectType_;

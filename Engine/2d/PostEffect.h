@@ -139,6 +139,7 @@ private:
 	struct ConstBufferData {
 		Matrix4 mat;	// 行列
 		float4 color;	// 色(RGBA)
+		float t;
 	};
 #pragma endregion
 
@@ -149,6 +150,8 @@ private:
 
 	// ペラポリゴンデータを変更したかどうか
 	bool hasChanget_;
+
+	float t = 0.0f;
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuff_;	// 定数バッファ
