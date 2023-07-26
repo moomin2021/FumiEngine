@@ -1,6 +1,9 @@
 #include "Util.h"
 
 #include <Windows.h>
+#include <chrono>
+
+using namespace std::chrono;
 
 int Util::Clamp(int value, int max, int min)
 {
@@ -47,4 +50,11 @@ std::vector<wchar_t> Util::StringToWideChar(const std::string& str)
 
 	// –ß‚è’l‚ð•Ô‚·
 	return wchar;
+}
+
+uint64_t Util::GetTime()
+{
+	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+
+	return sec;
 }

@@ -49,4 +49,9 @@ namespace Util {
 	/// <returns></returns>
 	std::vector<wchar_t> StringToWideChar(const std::string& str);
 
+	/// <summary>
+	/// ƒQ[ƒ€‚ğ‹N“®‚µ‚Ä‚©‚ç‚Ì‹N“®ŠÔ‚ğæ“¾(s)
+	/// </summary>
+	/// <returns> ŠÔ(s) </returns>
+	uint64_t GetTime();
 } // namespace MathUtility

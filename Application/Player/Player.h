@@ -28,12 +28,23 @@ private:
 	// 視点カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 
+	// 数字
+	std::vector<uint16_t> numberHandle_;
+
 	// 弾
 	std::unique_ptr<Model> mBullet_ = nullptr;// 弾のモデル
 	uint8_t maxBullet_ = 30;// 最大弾数
 	uint8_t nowBullet_ = 30;// 現在弾数
+	uint16_t bulletValueDisplayFrameHandle_ = 0;// 残弾数表示UIハンドル
+	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
+	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_;// 最大弾数表示スプライト
+	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_;// 残弾数表示スプライト
+
+	// リロード
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間
+	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
+	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
 
 	// レイのコライダー
 	std::unique_ptr<RayCollider> eyeCollider_ = nullptr;// 視点のレイ
