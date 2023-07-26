@@ -62,39 +62,8 @@ Player::~Player()
 
 void Player::Update()
 {
-	// ジャンプ処理
-	if (isGround_ && key_->TriggerKey(DIK_SPACE)) {
-		gravity_ = -jumpSpd_;
-		isGround_ = false;
-	}
-
-	if (isGround_ == false) {
-		gravity_ += gAcc_;// 重力加速度を加算
-		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
-	}
-
-	float3 eye = camera_->GetEye();
-	eye.y = Util::Clamp(eye.y, 1000.0f, 2.0f);
-
-	if (eye.y <= 2.0f) isGround_ = true;
-
-	camera_->SetEye(eye);
-
-	// 弾を撃つ処理
-	Shoot();
-
-	// 視点移動
-	EyeMove();
-
-	// 移動
-	Move();
-
-	// コライダーの更新
-	ColliderUpdate();
-
-	if (eyeCollider_->GetIsHit()) {
-		int num = 0;
-	}
+	// 状態別更新処理
+	(this->*stateTable[state_])();
 
 	// カメラの更新
 	camera_->Update();
@@ -112,6 +81,45 @@ void Player::FrontSpriteDraw()
 	sCrossHair_->Draw(crossHairHandle_);
 }
 
+void (Player::* Player::stateTable[]) () = {
+	&Player::Normal,// 通常状態
+	&Player::Air,	// 空中状態
+};
+
+void Player::Normal() {
+	// 視点操作
+	EyeMove();
+
+	// 移動操作
+	Move();
+
+	// 撃つ処理
+	Shoot();
+
+	// ジャンプ処理
+	Jump();
+
+	// コライダーの更新
+	ColliderUpdate();
+}
+
+void Player::Air() {
+	// 視点操作
+	EyeMove();
+
+	// 移動操作
+	Move();
+
+	// 撃つ処理
+	Shoot();
+
+	// 落下処理
+	Fall();
+
+	// コライダーの更新
+	ColliderUpdate();
+}
+
 void Player::Shoot()
 {
 	for (size_t i = 0; i < bullets_.size(); i++) {
@@ -127,8 +135,14 @@ void Player::Shoot()
 
 	eyeCollider_->SetIsCollision(false);
 
+	// 残弾数が0以下ならこの後の処理を飛ばす
+	if (nowBullet_ <= 0) return;
+
 	// マウスを左クリックしていなかったらこの後の処理を飛ばす
 	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT) == false) return;
+
+	// 残弾数を減らす
+	nowBullet_--;
 
 	eyeCollider_->SetIsCollision(true);
 
@@ -208,6 +222,49 @@ void Player::Move()
 
 	// カメラの注視点を設定
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+}
+
+void Player::Jump()
+{
+	// [SPACE]キーを押したらジャンプする
+	if (isGround_ && key_->TriggerKey(DIK_SPACE)) {
+		gravity_ = -jumpSpd_;
+		isGround_ = false;
+		state_ = AIR;
+	}
+}
+
+void Player::Fall()
+{
+	// 地面に着いていないなら落下処理をする
+	if (isGround_ == false) {
+		gravity_ += gAcc_;// 重力加速度を加算
+		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	}
+
+	// カメラの座標が2.0f以下にならないように
+	float3 eye = camera_->GetEye();
+	eye.y = Util::Clamp(eye.y, 1000.0f, 2.0f);
+
+	// カメラの座標が2.0以下になったら地面に着いたことにする
+	if (eye.y <= 2.0f) {
+		isGround_ = true;
+		state_ = NORMAL;
+	}
+
+	// カメラの座標更新
+	camera_->SetEye(eye);
+
+	// カメラの注視点を設定
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+}
+
+void Player::Reload()
+{
+	// [R]キーが押されていなかったらこの後の処理を飛ばす
+	if (key_->TriggerKey(DIK_R) == false) return;
+
+
 }
 
 void Player::ColliderUpdate()
