@@ -16,6 +16,9 @@ void Key::Update() {
 	// 前フレームのキーの状態を保存
 	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
 
+	// デバイス制御開始
+	device_->Acquire();
+
 	// 全キーの入力状態を取得する
 	device_->GetDeviceState(static_cast<DWORD>(keys_.size()), keys_.data());
 }
@@ -62,9 +65,6 @@ Key::Key() :
 		win->GetHWND(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY
 	);
 	assert(SUCCEEDED(result));
-
-	// デバイス制御開始
-	device_->Acquire();
 
 #pragma endregion
 }

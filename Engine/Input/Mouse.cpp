@@ -19,6 +19,9 @@ void Mouse::Update() {
 	// インスタンス取得
 	WinAPI* win = WinAPI::GetInstance();
 
+	// マウスデバイス制御開始
+	device_->Acquire();
+
 	// 前フレームのマウスの入力状態を保存
 	oldMouse_ = nowMouse_;
 
@@ -70,9 +73,6 @@ Mouse::Mouse() :
 		win->GetHWND(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY
 	);
 	assert(SUCCEEDED(result));
-
-	// マウスデバイス制御開始
-	device_->Acquire();
 
 	// DirectInputデバイスの解放
 	directInput->Release();
