@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseEnemy.h"
+#include "Player.h"
 
 #include <memory>
 #include <vector>
@@ -30,7 +31,9 @@ public:
 #pragma endregion
 
 #pragma region セッター関数
-	
+public:
+	// プレイヤーを設定
+	void SetPlayer(Player* player);
 #pragma endregion
 
 #pragma region ゲッター関数

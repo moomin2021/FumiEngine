@@ -129,7 +129,7 @@ public:
 	/// <returns> ƒ‚ƒfƒ‹ </returns>
 	inline Model* GetModel() { return model_; }
 	/// <returns> À•W(XYZ) </returns>
-	inline float3& GetPosition() { return position_; }
+	inline const float3& GetPosition() { return position_; }
 
 	inline float3& GetScale() { return scale_; }
 #pragma endregion

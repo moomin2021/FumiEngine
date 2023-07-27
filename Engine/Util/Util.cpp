@@ -58,3 +58,19 @@ uint64_t Util::GetTime()
 
 	return sec;
 }
+
+uint16_t Util::GetRandomInt(uint16_t min, uint16_t max)
+{
+	std::random_device seed_gen;
+	std::mt19937_64 engine(seed_gen());
+	std::uniform_int_distribution<uint16_t> dist(min, max);
+	return dist(engine);
+}
+
+float Util::GetRandomFloat(float min, float max)
+{
+	std::random_device seed_gen;
+	std::mt19937_64 engine(seed_gen());
+	std::uniform_real_distribution<float> dist(min, max);
+	return dist(engine);
+}

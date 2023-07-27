@@ -112,6 +112,8 @@ private:
 #pragma endregion
 
 #pragma region ゲッター関数
-
+	public:
+	// プレイヤーの座標を取得(カメラ基準)
+	const float3& GetPosition() { return camera_->GetEye(); }
 #pragma endregion
 };

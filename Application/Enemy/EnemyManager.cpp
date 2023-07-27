@@ -41,3 +41,8 @@ void EnemyManager::CreateAddEnemy0(const float3& pos, const float3& scale)
 	// エネミー配列に追加
 	enemys_.emplace_back(std::move(newEnemy));
 }
+
+void EnemyManager::SetPlayer(Player* player)
+{
+	Enemy0::SetPlayer(player);
+}

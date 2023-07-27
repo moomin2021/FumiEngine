@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <random>
 
 namespace Util {
 
@@ -54,4 +55,16 @@ namespace Util {
 	/// </summary>
 	/// <returns> 時間(s) </returns>
 	uint64_t GetTime();
+
+	/// <summary>
+	/// ランダムな整数値を取得
+	/// </summary>
+	/// <returns></returns>
+	uint16_t GetRandomInt(uint16_t min, uint16_t max);
+
+	/// <summary>
+	/// ランダムな小数値を取得
+	/// </summary>
+	/// <returns></returns>
+	float GetRandomFloat(float min, float max);
 } // namespace MathUtility

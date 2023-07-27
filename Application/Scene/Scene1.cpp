@@ -39,6 +39,7 @@ void Scene1::Initialize()
 
 	// エネミーマネージャー生成
 	enemyManager_ = std::make_unique<EnemyManager>();
+	enemyManager_->SetPlayer(player_.get());
 
 	// ステージ読み込み
 	LoadStage("Resources/Stage/stage1.json");

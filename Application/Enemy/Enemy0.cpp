@@ -2,6 +2,8 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 
+Player* Enemy0::player_ = nullptr;
+
 Enemy0::Enemy0(Model* model) :
 	// HP
 	hp_(3),
@@ -49,6 +51,9 @@ void Enemy0::Update()
 		damageCounter_++;
 	}
 
+	// 状態別更新処理
+	(this->*stateTable[state_])();
+
 	// HPが0以下になったら生存フラグを[OFF]にする
 	if (hp_ <= 0) isAlive_ = false;
 
@@ -63,6 +68,87 @@ void Enemy0::Draw()
 {
 	// オブジェクト描画
 	if (isAlive_) object_->Draw();
+}
+
+void (Enemy0::* Enemy0::stateTable[]) () = {
+	&Enemy0::Wait,		// 待機状態
+	&Enemy0::RandomMove,// ランダム移動状態
+	&Enemy0::Chase,		// 追跡状態
+};
+
+void Enemy0::Wait()
+{
+	// 経過時間
+	uint64_t elapsedTime = Util::GetTime() - waitStartTime_;
+
+	// 待機時間開始が指定時間以上ならランダム移動状態にする
+	if (waitStartTime_ <= elapsedTime) {
+		state_ = RANDOMMOVE;
+		randomMoveVec_ = Vector3(
+			Util::GetRandomFloat(-1.0f, 1.0f), 0.0f,
+			Util::GetRandomFloat(-1.0f, 1.0f)).normalize();
+		rndMoveStartTime_ = Util::GetTime();
+	}
+
+	// プレイヤーとの距離
+	float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
+
+	// プレイヤーが索敵範囲に入ったら追跡状態になる
+	if (searchRange_ >= dist) {
+		state_ = CHASE;
+		horizontalMoveStartTime_ = Util::GetTime();
+	}
+}
+
+void Enemy0::RandomMove()
+{
+	// 経過時間
+	uint64_t elapsedTime = Util::GetTime() - rndMoveStartTime_;
+
+	// 座標更新
+	float3 pos = object_->GetPosition() + (randomMoveVec_ * rndMoveSpd_);
+	object_->SetPosition(pos);
+
+	// 経過時間が指定の時間をすぎたらランダム移動をやめる
+	if (rndMoveTime_ <= elapsedTime) {
+		state_ = WAIT;
+		waitStartTime_ = Util::GetTime();
+	}
+
+	// プレイヤーとの距離
+	float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
+
+	// プレイヤーが索敵範囲に入ったら追跡状態になる
+	if (searchRange_ >= dist) {
+		state_ = CHASE;
+		horizontalMoveStartTime_ = Util::GetTime();
+	}
+}
+
+void Enemy0::Chase()
+{
+	// 横移動経過時間
+	uint64_t elapsedTime = Util::GetTime() - horizontalMoveStartTime_;
+
+	// エネミーからプレイヤーまでの方向
+	float3 s = player_->GetPosition() - object_->GetPosition();
+	Vector3 enemy2Player = Vector3(player_->GetPosition() - object_->GetPosition());
+	enemy2Player.y = 0.0f;
+	enemy2Player.normalize();
+
+	// 右ベクトルの計算
+	Vector3 rightVec = Vector3(enemy2Player.x, 0.0f, enemy2Player.z);
+	rightVec = -rightVec.cross(rightVec + Vector3(0.0f, 1.0f, 0.0f));
+	rightVec.normalize();
+
+	// 横移動経過時間が指定時間を過ぎたら横移動方向を切り替える
+	if (horizontalMoveSwitchTime_ <= elapsedTime) {
+		isMoveRight_ *= -1.0f;
+		horizontalMoveStartTime_ = Util::GetTime();
+	}
+
+	float3 pos = object_->GetPosition() + (enemy2Player * frontRearMoveSpd_) + (rightVec * horizontalMoveSpd_ * isMoveRight_);
+	object_->SetPosition(pos);
 }
 
 void Enemy0::OnCollision()
