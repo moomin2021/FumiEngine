@@ -90,6 +90,9 @@ private:
 	void RandomMove();	// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®ó‘Ô
 	void Chase();		// ’ÇÕó‘Ô
 
+	// ’e‚ğŒ‚‚Â
+	void Shoot();
+
 	// Õ“Ë‚Ìˆ—
 	void OnCollision();
 #pragma endregion

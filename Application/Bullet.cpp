@@ -1,37 +1,35 @@
 #include "Bullet.h"
+#include "CollisionManager.h"
 
-// 弾のモデル
-Model* Bullet::mBullet_ = nullptr;
-
-Bullet::Bullet(const float3& iniPos, const Vector3& moveVec) :
-#pragma region 初期化リスト
-	// 弾のオブジェクト
-	oBullet_(nullptr),
-
-	// 衝突判定用
-	//col_{},
-
-	// 弾の移動方向
-	moveVec_(moveVec),
-
-	// 弾の速度
-	bulletSpd_(20.0f),
-
-	// 生存フラグ
-	isAlive_(true),
-
-	// 生存時間
-	aliveCounter_(0),	// 生成からのカウント
-	maxCount_(300)		// 最大カウント
-#pragma endregion
+Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector3& moveVec)
 {
-	// オブジェクト生成＆設定
-	oBullet_ = std::make_unique<Object3D>(mBullet_);
-	oBullet_->SetPosition(iniPos);				// 初期座標の設定
-	oBullet_->SetScale({ 0.1f, 0.1f, 0.1f });	// 大きさ設定
+	// オブジェクト生成＆生成
+	data_.object = std::make_unique<Object3D>(model);
 
-	// 移動方向を正規化
-	moveVec_.normalize();
+	// 生成された時間を記録
+	generatedTime_ = Util::GetTime();
+
+	// プレイヤー
+	if (type == PLAYER) {
+		data_.object->SetPosition(iniPos);
+		data_.object->SetScale({ 0.1f, 0.1f, 0.1f });
+		data_.moveVec = moveVec;
+		data_.bulletSpd = 30.0f;
+		data_.aliveTime = 3;
+	}
+
+	else if (type == ENEMY0) {
+		data_.object->SetPosition(iniPos);
+		data_.object->SetScale({ 0.5f, 0.5f, 0.5f });
+		data_.object->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+		data_.col = std::make_unique<SphereCollider>();
+		data_.col->SetRadius(0.5f);
+		data_.col->LinkObject3D(data_.object.get());
+		CollisionManager::GetInstance()->AddCollider(data_.col.get());
+		data_.moveVec = moveVec;
+		data_.bulletSpd = 5.0f;
+		data_.aliveTime = 30;
+	}
 }
 
 void Bullet::Update()
@@ -39,22 +37,23 @@ void Bullet::Update()
 	// 生存フラグが[OFF]ならこの後の処理を飛ばす
 	if (isAlive_ == false) return;
 
-	//col_.pos = oBullet_->GetPosition();
-	//col_.radius = oBullet_->GetScale().x;
-
 	// 弾を移動させる
-	oBullet_->SetPosition(oBullet_->GetPosition() + moveVec_ * bulletSpd_);
+	data_.object->SetPosition(data_.object->GetPosition() + data_.moveVec * data_.bulletSpd);
 	
-	oBullet_->Update();
+	// オブジェクトの更新処理
+	data_.object->Update();
 
-	// カウントを進める
-	aliveCounter_++;
+	// 生成されてからの経過時間
+	uint64_t elapsedTime = Util::GetTime() - generatedTime_;
 
-	// 生存カウントが最大カウントを超えたら生存フラグを[OFF]にする
-	if (aliveCounter_ >= maxCount_) isAlive_ = false;
+	// 経過時間が指定の時間を過ぎたら生存フラグを[OFF]にする
+	if (elapsedTime >= data_.aliveTime) {
+		isAlive_ = false;
+	}
 }
 
 void Bullet::Draw()
 {
-	oBullet_->Draw();
+	// オブジェクトの描画処理
+	data_.object->Draw();
 }

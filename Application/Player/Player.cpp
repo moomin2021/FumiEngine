@@ -53,9 +53,6 @@ Player::Player()
 	// ’e‚Ìƒ‚ƒfƒ‹“Ç‚İ‚İ
 	mBullet_ = std::make_unique<Model>("sphere");
 
-	// ’e‚Éƒ‚ƒfƒ‹‚ğİ’è
-	Bullet::SetModel(mBullet_.get());
-
 	// c’e”•\¦UI‚ğ“Ç‚İ‚İ
 	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
 
@@ -237,7 +234,7 @@ void Player::Shoot()
 	eyeCollider_->SetIsCollision(true);
 
 	// ’e‚ğ¶¬
-	bullets_.emplace_back(std::make_unique<Bullet>(camera_->GetEye(), forwardVec_));
+	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), forwardVec_));
 }
 
 void Player::EyeMove()
