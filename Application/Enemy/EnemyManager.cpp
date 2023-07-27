@@ -4,6 +4,9 @@
 EnemyManager::EnemyManager() {
 	// ƒ‚ƒfƒ‹“Ç‚İ‚İ
 	mEnemy0_ = std::make_unique<Model>("sphere");
+	mEnemy0Bullet_ = std::make_unique<Model>("sphere");
+
+	Enemy0::SetBulletModel(mEnemy0Bullet_.get());
 }
 
 void EnemyManager::Update()

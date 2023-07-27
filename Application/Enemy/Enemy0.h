@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseEnemy.h"
+#include "Bullet.h"
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "Player.h"
@@ -21,6 +22,10 @@ private:
 
 	// 状態
 	State state_ = WAIT;
+
+	// 弾
+	std::vector<std::unique_ptr<Bullet>> bullets_;
+	static Model* sBulletModel_;
 
 	// 各状態の開始時間
 	uint64_t waitStartTime_ = 0;
@@ -53,6 +58,12 @@ private:
 
 	// ランダム移動時の速度
 	float rndMoveSpd_ = 0.1f;
+
+	// 撃つ間隔
+	uint16_t shootInterval_ = 3;
+
+	// 撃った時間
+	uint64_t shootTime_ = 0;
 
 	// HP
 	uint16_t hp_;
@@ -103,5 +114,10 @@ public:
 	/// プレイヤーを設定
 	/// </summary>
 	static void SetPlayer(Player* player) { player_ = player; }
+
+	/// <summary>
+	/// 弾のモデルを設定
+	/// </summary>
+	static void SetBulletModel(Model* model) { sBulletModel_ = model; }
 #pragma endregion
 };

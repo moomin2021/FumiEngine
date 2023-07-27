@@ -13,6 +13,7 @@ class EnemyManager {
 
 	// “Gƒ‚ƒfƒ‹
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
+	std::unique_ptr<Model> mEnemy0Bullet_ = nullptr;
 #pragma endregion
 
 #pragma region ƒƒ“ƒoŠÖ”

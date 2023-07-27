@@ -27,9 +27,11 @@ Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector
 		data_.col->LinkObject3D(data_.object.get());
 		CollisionManager::GetInstance()->AddCollider(data_.col.get());
 		data_.moveVec = moveVec;
-		data_.bulletSpd = 5.0f;
+		data_.bulletSpd = 2.0f;
 		data_.aliveTime = 30;
 	}
+
+	data_.moveVec.normalize();
 }
 
 void Bullet::Update()

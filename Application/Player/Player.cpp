@@ -343,7 +343,7 @@ void Player::Fall()
 	camera_->SetEye(eye);
 
 	// ƒJƒƒ‰‚Ì’Ž‹“_‚ðÝ’è
-	//camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 }
 
 void Player::Reload()
