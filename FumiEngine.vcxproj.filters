@@ -96,9 +96,6 @@
     <ClCompile Include="Engine\Base\Texture.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Pipeline.cpp">
-      <Filter>Engine\ソース ファイル\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>Engine\ソース ファイル\2D</Filter>
     </ClCompile>
@@ -195,9 +192,6 @@
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Texture.h">
-      <Filter>Engine\ヘッダー ファイル\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Pipeline.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\2d\Sprite.h">

@@ -119,27 +119,3 @@ void Object3D::Draw() {
 	// モデルの情報を元に描画
 	model_->Draw();
 }
-
-void Object3D::PreDraw() {
-	// コマンドリスト取得
-	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
-
-	// パイプライン取得
-	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineObject3D();
-
-	// SRVヒープ取得
-	ID3D12DescriptorHeap* srvHeap = Texture::GetInstance()->GetSRVHeap();
-
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipeline.pipelineState.Get());
-
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(pipeline.rootSignature.Get());
-
-	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// デスクリプタヒープの配列をセットするコマンド
-	std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
-	cmdList->SetDescriptorHeaps(1, ppHeaps.data());
-}

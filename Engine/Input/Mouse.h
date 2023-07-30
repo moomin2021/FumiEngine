@@ -4,7 +4,6 @@
 
 // ComPtr用
 #include <wrl.h>
-using namespace Microsoft::WRL;
 
 // Vector2
 #include "Vector2.h"
@@ -16,6 +15,10 @@ enum MouseButton {
 };
 
 class Mouse {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region メンバ変数
 private:
 	// デバイス

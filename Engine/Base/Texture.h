@@ -5,11 +5,11 @@
 #include <string>
 #include <map>
 
-#pragma comment(lib, "d3d12.lib")
-
-using namespace Microsoft::WRL;
-
 class Texture {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region メンバ変数
 private:
 	// 読み込んだ回数

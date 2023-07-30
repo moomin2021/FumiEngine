@@ -1,8 +1,6 @@
 #include "Key.h"
 #include "WinAPI.h"
 #include <cassert>
-#pragma comment(lib, "dinput8.lib")
-#pragma comment(lib, "dxguid.lib")
 
 Key* Key::GetInstance() {
 	// インスタンス生成

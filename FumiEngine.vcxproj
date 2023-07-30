@@ -100,7 +100,6 @@
     <ClCompile Include="Engine\3d\Model.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
     <ClCompile Include="Engine\3d\Object3D.cpp" />
-    <ClCompile Include="Engine\Base\Pipeline.cpp" />
     <ClCompile Include="Engine\Base\PipelineManager.cpp" />
     <ClCompile Include="Engine\Base\PipelineObj.cpp" />
     <ClCompile Include="Engine\2d\PostEffect.cpp" />
@@ -142,7 +141,6 @@
     <ClInclude Include="Engine\3d\Model.h" />
     <ClInclude Include="Engine\Input\Mouse.h" />
     <ClInclude Include="Engine\3d\Object3D.h" />
-    <ClInclude Include="Engine\Base\Pipeline.h" />
     <ClInclude Include="Engine\Base\PipelineManager.h" />
     <ClInclude Include="Engine\Base\PipelineObj.h" />
     <ClInclude Include="Engine\Light\PointLight.h" />

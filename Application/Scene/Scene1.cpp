@@ -5,10 +5,6 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 
-#include <DirectXMath.h>
-
-using namespace DirectX;
-
 Scene1::Scene1() :
 	key_(nullptr)
 {

@@ -5,6 +5,22 @@
 #include <cassert>
 #include <thread>
 
+#pragma comment(lib,"xaudio2.lib")
+#pragma comment(lib, "Mf.lib")
+#pragma comment(lib, "mfplat.lib")
+#pragma comment(lib, "Mfreadwrite.lib")
+#pragma comment(lib, "mfuuid.lib")
+#pragma comment(lib,"dxgi.lib")
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"dxguid.lib")
+#pragma comment(lib, "xinput.lib")
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib,"xaudio2.lib")
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"winmm.lib")
+
 DX12Cmd* DX12Cmd::GetInstance()
 {
 	// インスタンス生成
@@ -48,15 +64,6 @@ void DX12Cmd::Initialize()
 
 	// 深度テスト
 	CreateDepthBuffer();
-
-	//// オブジェクト3D用パイプライン生成
-	//pipelineObj3D_ = CreateObject3DPipeline();
-
-	//// スプライト用パイプライン生成
-	//pipelineSprite_ = CreateSpritePipeline();
-
-	// テストポストエフェクト用パイプライン生成
-	pieplinePostEffectTest_ = CreatePostEffectTestPipeline();
 }
 
 void DX12Cmd::PreDraw()

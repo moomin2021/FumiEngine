@@ -8,11 +8,11 @@
 #include <wrl.h>
 #include <vector>
 
-#pragma comment(lib, "d3d12.lib")
-
-using namespace Microsoft::WRL;
-
 class Sprite {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	// 頂点データ
 	struct Vertex {
 		float2 pos;	// 座標(XYZ)
@@ -70,11 +70,6 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw(int textureHandle = 0);
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	static void PreDraw();
 
 private:
 	/// <summary>
