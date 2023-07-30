@@ -87,6 +87,9 @@ void Scene1::Initialize()
 
 	// ライトを設定
 	Object3D::SetLightGroup(lightGroup_.get());
+
+	// 音声
+	sound_ = Sound::SoundLoadWave("Resources/Sound/a.wav");
 }
 
 void Scene1::Update()
@@ -131,6 +134,10 @@ void Scene1::Update()
 	oFloor_->Update();
 	oSphere_->Update();
 	for (auto& i : oCube_) i->Update();
+
+	if (key_->TriggerKey(DIK_L)) {
+		Sound::SoundPlay(sound_);
+	}
 
 	// カメラの更新
 	camera_->Update();

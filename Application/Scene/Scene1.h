@@ -9,6 +9,7 @@
 #include "SphereCollider.h"
 #include "MeshCollider.h"
 #include "RayCollider.h"
+#include "Sound.h"
 
 #include <vector>
 #include <memory>
@@ -41,6 +42,9 @@ private:
 	std::unique_ptr<SphereCollider> sphereCollider_;
 	std::unique_ptr<MeshCollider> meshCollider_;
 	std::unique_ptr<RayCollider> rayCollider_;
+
+	// 音声
+	SoundData sound_;
 
 	// テクスチャハンドル
 	uint16_t haeHandle_;
