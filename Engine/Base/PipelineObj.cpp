@@ -6,8 +6,6 @@
 #include <d3d12.h>
 #include <cassert>
 
-#pragma comment(lib, "d3dcompiler.lib")
-
 PipelineObj::PipelineObj()
 {
 }

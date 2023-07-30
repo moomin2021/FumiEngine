@@ -5,6 +5,7 @@
 #include "Key.h"// -> キーボード入力
 #include "Mouse.h"// -> マウスキーボード入力
 #include "Object3D.h"// -> オブジェクト3Dクラス
+#include "Sound.h"
 #pragma endregion
 
 #include "SceneManager.h"
@@ -20,6 +21,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// --テクスチャクラス-- //
 	Texture::GetInstance()->Initialize();
+
+	Sound::GetInstance();
 
 	// --ゲームループ-- //
 	while (true) {

@@ -1,19 +1,16 @@
 #pragma once
-#include "Pipeline.h"
-
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
 
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
 #include <chrono>
 #include <vector>
 
-using namespace Microsoft::WRL;
-
 class DX12Cmd {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region メンバ変数
 private:
 	ComPtr<ID3D12Device> device_ = nullptr;			// デバイス
@@ -45,11 +42,6 @@ private:
 
 	// 記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
-
-	// パイプライン
-	PipelineSet pipelineObj3D_;			// オブジェクト3D用
-	PipelineSet pipelineSprite_;		// スプライト用
-	PipelineSet pieplinePostEffectTest_;// テストポストエフェクト用
 #pragma endregion
 
 #pragma region メンバ関数
@@ -87,24 +79,6 @@ public:
 	/// </summary>
 	/// <returns> コマンドリスト </returns>
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList_.Get(); }
-
-	/// <summary>
-	/// Object3D用パイプラインを返す
-	/// </summary>
-	/// <returns> パイプライン </returns>
-	PipelineSet GetPipelineObject3D() { return pipelineObj3D_; }
-
-	/// <summary>
-	/// スプライト用パイプラインを返す
-	/// </summary>
-	/// <returns> パイプライン </returns>
-	PipelineSet GetPipelineSprite() { return pipelineSprite_; }
-
-	/// <summary>
-	/// テストポストエフェクト用パイプラインを返す
-	/// </summary>
-	/// <returns> パイプライン </returns>
-	PipelineSet GetPipelinePostEffectTest() { return pieplinePostEffectTest_; }
 #pragma endregion
 
 private:

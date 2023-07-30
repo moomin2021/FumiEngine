@@ -7,9 +7,11 @@
 #include <d3d12.h>
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
 class LightGroup {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region 定数メンバ変数
 	// 各ライト上限
 	static const uint16_t DIR_LIGHT_LIMIT = 1;

@@ -83,9 +83,6 @@ void PostEffect::Draw(bool isDescHeap)
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// パイプライン取得
-	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelinePostEffectTest();
-
 	// スプライトデータの更新処理
 	UpdateData();
 

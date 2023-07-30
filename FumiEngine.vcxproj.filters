@@ -114,9 +114,6 @@
     <ClCompile Include="Engine\Base\Texture.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Pipeline.cpp">
-      <Filter>Engine\ソース ファイル\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>Engine\ソース ファイル\2D</Filter>
     </ClCompile>
@@ -228,6 +225,9 @@
     <ClCompile Include="Application\Enemy\BossManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Sound.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -237,9 +237,6 @@
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Texture.h">
-      <Filter>Engine\ヘッダー ファイル\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Pipeline.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\2d\Sprite.h">
@@ -378,6 +375,9 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\BossManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Sound.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

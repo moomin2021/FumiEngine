@@ -7,6 +7,10 @@
 #include "LightGroup.h"
 
 class Object3D {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
 		Matrix4 viewProj;	// ビュープロジェクション
@@ -56,11 +60,6 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	static void PreDraw();
 #pragma endregion
 
 private:

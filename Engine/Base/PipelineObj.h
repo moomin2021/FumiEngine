@@ -4,8 +4,6 @@
 
 #include <vector>
 
-using namespace Microsoft::WRL;
-
 // シェーダーの種類
 enum ShaderType {
 	VS,
@@ -14,6 +12,10 @@ enum ShaderType {
 
 class PipelineObj
 {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region メンバ変数
 private:
 	// シェーダーオブジェクト

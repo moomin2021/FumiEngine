@@ -18,9 +18,6 @@ void PipelineManager::PreDraw(std::string pipelineName, bool isDescHeap)
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// パイプライン取得
-	PipelineSet pipeline = DX12Cmd::GetInstance()->GetPipelineObject3D();
-
 	// SRVヒープ取得
 	ID3D12DescriptorHeap* srvHeap = Texture::GetInstance()->GetSRVHeap();
 
