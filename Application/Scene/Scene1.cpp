@@ -22,7 +22,7 @@ void Scene1::Initialize()
 
 	// ƒJƒƒ‰
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 10.0f, -30.0f });
+	camera_->SetEye({ 0.0f, 1.0f, -5.0f });
 
 	// ƒ‚ƒfƒ‹
 	mFloor_ = std::make_unique<Model>("floor");
@@ -101,7 +101,7 @@ void Scene1::Update()
 {
 	// ƒJƒƒ‰ˆÚ“®
 	{
-		static float3 eye = { 0.0f, 10.0f, -30.0f };
+		static float3 eye = { 0.0f, 1.0f, -5.0f };
 
 		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
 		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;

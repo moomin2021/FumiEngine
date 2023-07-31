@@ -21,7 +21,7 @@ Particle::Particle()
 
 #pragma region 頂点設定
 	vertices_.resize(1);
-	vertices_[0] = { {0.0f, 0.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f} };
+	vertices_[0] = { {0.0f, 0.0f, 0.0f } };
 #pragma endregion
 
 #pragma region インデックス設定

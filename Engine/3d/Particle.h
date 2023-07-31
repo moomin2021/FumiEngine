@@ -25,8 +25,6 @@ private:
 	// 頂点データ
 	struct Vertex {
 		float3 pos;
-		float3 normal;
-		float2 uv;
 	};
 
 	// 定数バッファ用
