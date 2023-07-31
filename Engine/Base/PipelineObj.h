@@ -17,6 +17,14 @@ private:
 	// エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+public:
+	enum BLENDMODE {
+		NONE,
+		ALPHA,
+		ADD,
+		SUB
+	};
+
 #pragma region メンバ変数
 private:
 	// シェーダーオブジェクト
@@ -74,7 +82,7 @@ public:
 	/// パイプライン作成
 	/// </summary>
 	/// <param name="renderTargetNum"> レンダーターゲットの数 </param>
-	void CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
+	void CreatePipeline(uint16_t renderTargetNum,BLENDMODE blendMode = NONE, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, bool isDepth = true);
 
 private:
 	/// <summary>

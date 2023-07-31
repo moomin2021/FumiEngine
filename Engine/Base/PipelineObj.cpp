@@ -67,7 +67,7 @@ void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNu
 	}
 }
 
-void PipelineObj::CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType) {
+void PipelineObj::CreatePipeline(uint16_t renderTargetNum, BLENDMODE blendMode, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType, bool isDepth) {
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
@@ -98,7 +98,8 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOL
 
 	// デプスステンシルステート
 	pipelineDesc.DepthStencilState.DepthEnable = true;							// 深度テストを行う
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	// 書き込み許可
+	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	if (isDepth) pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	// 書き込み許可
 	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		// 小さければ合格
 	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;								// 深度値フォーマット
 
@@ -106,13 +107,33 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOL
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RGBA全てのチャンネルを描画
 	blendDesc.BlendEnable = true;
-	blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
 	blendDesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blendDesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	if (blendMode == NONE) {
+		blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	}
+
+	else if (blendMode == ALPHA) {
+		blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	}
+
+	else if (blendMode == ADD) {
+		blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.SrcBlend = D3D12_BLEND_ONE;
+		blendDesc.DestBlend = D3D12_BLEND_ONE;
+	}
+
+	else if (blendMode == SUB) {
+		blendDesc.BlendOpAlpha = D3D12_BLEND_OP_REV_SUBTRACT;
+		blendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		blendDesc.DestBlendAlpha = D3D12_BLEND_ONE;
+	}
 
 	// ブレンドステートの設定
 	for (size_t i = 0; i < renderTargetNum; i++) {

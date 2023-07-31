@@ -199,7 +199,7 @@ void Particle::Update(BILLBOARD billBoard)
 #pragma endregion
 }
 
-void Particle::Draw()
+void Particle::Draw(uint16_t handle)
 {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
@@ -209,6 +209,9 @@ void Particle::Draw()
 
 	// SRVヒープのハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	// ハンドルを指定された分まで進める
+	srvGpuHandle.ptr += handle;
 
 	// 指定されたSRVをルートパラメータ1番に設定
 	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);

@@ -63,10 +63,26 @@ void Scene1::Initialize()
 	CollisionManager::GetInstance()->AddCollider(meshCollider_.get());
 	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
 
-	particle_ = std::make_unique<Particle>();
+	particle_ = std::make_unique<ParticleManager>();
+	for (size_t i = 0; i < 100; i++) {
+		float3 pos{};
+		pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
+		pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
+		pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
+
+		float3 vel{};
+		vel.x = Util::GetRandomFloat(-0.05f, 0.05f);
+		vel.y = Util::GetRandomFloat(-0.05f, 0.05f);
+		vel.z = Util::GetRandomFloat(-0.05f, 0.05f);
+
+		float3 acc{};
+		acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
+
+		particle_->Add(60, pos, vel, acc);
+	}
 
 	// テクスチャハンドル
-	haeHandle_ = LoadTexture("Resources/hae.png");
+	haeHandle_ = LoadTexture("Resources/effect1.png");
 
 	// スプライト
 	sHae_ = std::make_unique<Sprite>();
@@ -91,7 +107,7 @@ void Scene1::Initialize()
 	Object3D::SetLightGroup(lightGroup_.get());
 
 	// パーティクルにカメラを設定
-	Particle::SetCamera(camera_.get());
+	ParticleManager::SetCamera(camera_.get());
 
 	// 音声
 	sound_ = Sound::SoundLoadWave("Resources/Sound/a.wav");
@@ -164,7 +180,7 @@ void Scene1::Draw()
 
 	PipelineManager::GetInstance()->PreDraw("Particle", D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	particle_->Draw();
+	particle_->Draw(haeHandle_);
 
 	//PipelineManager::GetInstance()->PreDraw("Sprite");
 

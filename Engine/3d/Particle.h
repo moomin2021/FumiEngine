@@ -67,7 +67,7 @@ public:
 	void Update(BILLBOARD billBoard = BILLBOARD::NONE);
 
 	// 描画処理
-	void Draw();
+	void Draw(uint16_t handle = 0);
 
 private:
 	// 頂点バッファ作成
