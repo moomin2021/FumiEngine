@@ -63,6 +63,8 @@ void Scene1::Initialize()
 	CollisionManager::GetInstance()->AddCollider(meshCollider_.get());
 	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
 
+	particle_ = std::make_unique<Particle>();
+
 	// テクスチャハンドル
 	haeHandle_ = LoadTexture("Resources/hae.png");
 
@@ -87,6 +89,9 @@ void Scene1::Initialize()
 
 	// ライトを設定
 	Object3D::SetLightGroup(lightGroup_.get());
+
+	// パーティクルにカメラを設定
+	Particle::SetCamera(camera_.get());
 
 	// 音声
 	sound_ = Sound::SoundLoadWave("Resources/Sound/a.wav");
@@ -139,6 +144,9 @@ void Scene1::Update()
 		Sound::SoundPlay(sound_);
 	}
 
+	// パーティクル更新
+	particle_->Update();
+
 	// カメラの更新
 	camera_->Update();
 
@@ -150,11 +158,15 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	oFloor_->Draw();
-	oSphere_->Draw();
-	for (auto& object : oCube_) object->Draw();
+	//oFloor_->Draw();
+	//oSphere_->Draw();
+	//for (auto& object : oCube_) object->Draw();
 
-	PipelineManager::GetInstance()->PreDraw("Sprite");
+	PipelineManager::GetInstance()->PreDraw("Particle");
+
+	particle_->Draw();
+
+	//PipelineManager::GetInstance()->PreDraw("Sprite");
 
 	//sHae_->Draw();
 }

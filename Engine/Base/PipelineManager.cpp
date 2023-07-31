@@ -47,6 +47,16 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
 	pipelineObj_["Object3D"]->CreatePipeline(2);
 
+	AddPipeline("Particle");
+	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticlePS.hlsl", PS);
+	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticleVS.hlsl", VS);
+	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticleGS.hlsl", GS);
+	pipelineObj_["Particle"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Particle"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Particle"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Particle"]->CreateRootParams(1, 1);
+	pipelineObj_["Particle"]->CreatePipeline(2);
+
 	AddPipeline("Sprite");
 	pipelineObj_["Sprite"]->LoadShader("Resources/Shaders/SpritePS.hlsl", PS);
 	pipelineObj_["Sprite"]->LoadShader("Resources/Shaders/SpriteVS.hlsl", VS);

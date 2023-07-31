@@ -20,6 +20,9 @@ void PipelineObj::LoadShader(std::string fileName, ShaderType shaderType)
 	// ピクセルシェーダー
 	case PS : ShaderCompileFromFile(fileName, "ps_5_0", &psBlob_);
 		break;
+		// ジオメトリシェーダー
+	case GS: ShaderCompileFromFile(fileName, "gs_5_0", &gsBlob_);
+		break;
 	}
 }
 
@@ -79,6 +82,11 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum) {
 	pipelineDesc.VS.BytecodeLength = vsBlob_->GetBufferSize();
 	pipelineDesc.PS.pShaderBytecode = psBlob_->GetBufferPointer();
 	pipelineDesc.PS.BytecodeLength = psBlob_->GetBufferSize();
+
+	if (gsBlob_ != nullptr) {
+		pipelineDesc.GS.pShaderBytecode = gsBlob_->GetBufferPointer();
+		pipelineDesc.GS.BytecodeLength = gsBlob_->GetBufferSize();
+	}
 
 	// サンプルマスクの設定
 	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
