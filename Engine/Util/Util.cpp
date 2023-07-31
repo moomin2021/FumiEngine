@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <chrono>
+#include <random>
 
 using namespace std::chrono;
 
@@ -52,13 +53,6 @@ std::vector<wchar_t> Util::StringToWideChar(const std::string& str)
 	return wchar;
 }
 
-uint64_t Util::GetTime()
-{
-	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-
-	return sec;
-}
-
 uint16_t Util::GetRandomInt(uint16_t min, uint16_t max)
 {
 	std::random_device seed_gen;
@@ -67,8 +61,7 @@ uint16_t Util::GetRandomInt(uint16_t min, uint16_t max)
 	return dist(engine);
 }
 
-float Util::GetRandomFloat(float min, float max)
-{
+float Util::GetRandomFloat(float min, float max) {
 	std::random_device seed_gen;
 	std::mt19937_64 engine(seed_gen());
 	std::uniform_real_distribution<float> dist(min, max);

@@ -228,6 +228,12 @@
     <ClCompile Include="Engine\Base\Sound.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\ParticleManager.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Particle.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -380,6 +386,12 @@
     <ClInclude Include="Engine\Base\Sound.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\ParticleManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Particle.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3D.hlsli">
@@ -400,6 +412,7 @@
     <None Include="Resources\Shaders\Bloom.hlsli">
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
+    <None Include="Resources\Shaders\Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -438,5 +451,8 @@
     <FxCompile Include="Resources\Shaders\BloomVS.hlsl">
       <Filter>Engine\シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
   </ItemGroup>
 </Project>

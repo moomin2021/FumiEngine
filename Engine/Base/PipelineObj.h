@@ -7,7 +7,8 @@
 // シェーダーの種類
 enum ShaderType {
 	VS,
-	PS
+	PS,
+	GS
 };
 
 class PipelineObj
@@ -16,11 +17,20 @@ private:
 	// エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+public:
+	enum BLENDMODE {
+		NONE,
+		ALPHA,
+		ADD,
+		SUB
+	};
+
 #pragma region メンバ変数
 private:
 	// シェーダーオブジェクト
-	ComPtr<ID3DBlob> vsBlob_;	// 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> psBlob_;	// ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> vsBlob_ = nullptr;	// 頂点シェーダオブジェクト
+	ComPtr<ID3DBlob> psBlob_ = nullptr;	// ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> gsBlob_ = nullptr;	// ジオメトリシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob_;	// エラーオブジェクト
 
 	// 頂点レイアウト
@@ -72,7 +82,7 @@ public:
 	/// パイプライン作成
 	/// </summary>
 	/// <param name="renderTargetNum"> レンダーターゲットの数 </param>
-	void CreatePipeline(uint16_t renderTargetNum);
+	void CreatePipeline(uint16_t renderTargetNum,BLENDMODE blendMode = NONE, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, bool isDepth = true);
 
 private:
 	/// <summary>

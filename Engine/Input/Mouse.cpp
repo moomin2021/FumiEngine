@@ -26,6 +26,9 @@ void Mouse::Update() {
 	// マウスの入力状態を取得
 	device_->GetDeviceState(sizeof(DIMOUSESTATE), &nowMouse_);
 
+	// マウスデバイス制御開始
+	device_->Acquire();
+
 	// マウスの座標を取得
 	GetCursorPos(&p_);
 	ScreenToClient(FindWindowW(win->GetWinClass().lpszClassName, nullptr), &p_);
