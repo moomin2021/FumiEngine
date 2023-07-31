@@ -144,11 +144,11 @@ void Scene1::Update()
 		Sound::SoundPlay(sound_);
 	}
 
-	// パーティクル更新
-	particle_->Update();
-
 	// カメラの更新
 	camera_->Update();
+
+	// パーティクル更新
+	particle_->Update(BILLBOARD::ALL);
 
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();

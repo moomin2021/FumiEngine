@@ -4,6 +4,9 @@
 #include "Util.h"
 
 #include <cassert>
+#include <DirectXMath.h>
+
+using namespace DirectX;
 
 // 静的メンバ変数の実態
 Camera* Particle::sCamera_ = nullptr;
@@ -72,11 +75,106 @@ Particle::Particle()
 #pragma endregion
 }
 
-void Particle::Update()
+void Particle::Update(BILLBOARD billBoard)
 {
 #pragma region ワールド行列計算
 	// 行列初期化
 	Matrix4 matWorld = Matrix4Identity();
+
+	XMFLOAT3 eye = { sCamera_->GetEye().x, sCamera_->GetEye().y , sCamera_->GetEye().z };
+	XMFLOAT3 target = { sCamera_->GetTarget().x, sCamera_->GetTarget().y , sCamera_->GetTarget().z };
+	XMFLOAT3 up = { sCamera_->GetUp().x, sCamera_->GetUp().y , sCamera_->GetUp().z };
+
+	// 視点座標 //
+	XMVECTOR eyePosition = XMLoadFloat3(&eye);
+
+	// 注視点座標 //
+	XMVECTOR targetPosition = XMLoadFloat3(&target);
+
+	// (仮の)上方向 //
+	XMVECTOR upVector = XMLoadFloat3(&up);
+
+	// カメラZ軸(視線方向) //
+	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
+
+	XMMATRIX matBillboard = XMMatrixIdentity();
+	Matrix4 mMatBillboard = Matrix4Identity();
+
+	// 0ベクトルだと向きが定まらないので除外 //
+	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
+	assert(!XMVector3IsInfinite(cameraAxisZ));
+	assert(!XMVector3Equal(upVector, XMVectorZero()));
+	assert(!XMVector3IsInfinite(upVector));
+
+	// ベクトルを正規化 //
+	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
+
+	// カメラのX軸(右方向) //
+	XMVECTOR cameraAxisX;
+
+	// X軸は上方向→Z軸の外積で求まる //
+	cameraAxisX = XMVector3Cross(upVector, cameraAxisZ);
+
+	// ベクトルを正規化 //
+	cameraAxisX = XMVector3Normalize(cameraAxisX);
+
+	// カメラのY軸(上方向) //
+	XMVECTOR cameraAxisY;
+
+	// Y軸はZ軸→X軸の外積で求まる //
+	cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
+
+	if (billBoard == Y) {
+		// カメラX軸、Y軸、Z軸 //
+		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+
+		// X軸は共通 //
+		ybillCameraAxisX = cameraAxisX;
+
+		// Y軸はワールド座標系のY軸 //
+		ybillCameraAxisY = XMVector3Normalize(upVector);
+
+		// Z軸はX軸→Y軸の外積で求まる //
+		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
+
+		// Y軸回りのビルボード行列 //
+		matBillboard.r[0] = ybillCameraAxisX;
+		matBillboard.r[1] = ybillCameraAxisY;
+		matBillboard.r[2] = ybillCameraAxisZ;
+		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+
+		for (size_t i = 0; i < 4; i++) {
+			for (size_t j = 0; j < 4; j++) {
+				mMatBillboard.m[i][j] = matBillboard.r[i].m128_f32[j];
+			}
+		}
+	}
+
+	else if (billBoard == ALL) {
+		// カメラX軸、Y軸、Z軸 //
+		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+
+		// X軸は共通 //
+		ybillCameraAxisX = cameraAxisX;
+
+		// Y軸はワールド座標系のY軸 //
+		ybillCameraAxisY = XMVector3Normalize(upVector);
+
+		// Z軸はX軸→Y軸の外積で求まる //
+		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
+
+		// 全方向ビルボード行列の計算 //
+		matBillboard.r[0] = cameraAxisX;
+		matBillboard.r[1] = cameraAxisY;
+		matBillboard.r[2] = cameraAxisZ;
+		matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
+
+		for (size_t i = 0; i < 4; i++) {
+			for (size_t j = 0; j < 4; j++) {
+				mMatBillboard.m[i][j] = matBillboard.r[i].m128_f32[j];
+			}
+		}
+	}
 
 	// ワールド行列にスケーリングを反映
 	matWorld *= Matrix4Scale(scale_);
@@ -86,8 +184,11 @@ void Particle::Update()
 	matWorld *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
 	matWorld *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
 
+	if (billBoard != NONE) matWorld *= mMatBillboard;
+
 	// ワールド行列に平行移動を反映
 	matWorld *= Matrix4Translate(position_);
+	
 #pragma endregion
 
 #pragma region 定数バッファへのデータ転送

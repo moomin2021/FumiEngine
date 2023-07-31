@@ -8,6 +8,14 @@
 #include <d3d12.h>
 #include <vector>
 
+enum BILLBOARD {
+	NONE,
+	ALL,
+	X,
+	Y,
+	Z
+};
+
 class Particle
 {
 private:
@@ -58,7 +66,7 @@ public:
 	Particle();
 
 	// XVˆ—
-	void Update();
+	void Update(BILLBOARD billBoard = BILLBOARD::NONE);
 
 	// •`‰æˆ—
 	void Draw();
