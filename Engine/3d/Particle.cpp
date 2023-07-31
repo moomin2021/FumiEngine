@@ -20,11 +20,8 @@ Particle::Particle()
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
 #pragma region 頂点設定
-	vertices_.resize(4);
-	vertices_[0] = { {-5.0f, -5.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f} };
-	vertices_[1] = { {-5.0f, +5.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f} };
-	vertices_[2] = { {+5.0f, -5.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f} };
-	vertices_[3] = { {+5.0f, +5.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f} };
+	vertices_.resize(1);
+	vertices_[0] = { {0.0f, 0.0f, 0.0f }, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f} };
 #pragma endregion
 
 #pragma region インデックス設定
@@ -221,7 +218,7 @@ void Particle::Draw()
 	cmdList->IASetIndexBuffer(&indexView_);
 
 	// 描画コマンド
-	cmdList->DrawIndexedInstanced(static_cast<UINT>(indexes_.size()), 1, 0, 0, 0);
+	cmdList->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
 }
 
 void Particle::CreateVertexBuff()

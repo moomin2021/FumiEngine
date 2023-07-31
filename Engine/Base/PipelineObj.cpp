@@ -67,7 +67,7 @@ void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNu
 	}
 }
 
-void PipelineObj::CreatePipeline(uint16_t renderTargetNum) {
+void PipelineObj::CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType) {
 	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
 	HRESULT result;
 
@@ -124,7 +124,7 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum) {
 	pipelineDesc.InputLayout.NumElements = static_cast<UINT>(inputLayout_.size());
 
 	// }Œ`‚ÌŒ`óİ’è
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	pipelineDesc.PrimitiveTopologyType = primitiveType;
 
 	// ‚»‚Ì‘¼‚Ìİ’è
 	pipelineDesc.NumRenderTargets = renderTargetNum;					// •`‰æ‘ÎÛ‚Í2‚Â

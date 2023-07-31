@@ -13,7 +13,7 @@ PipelineManager* PipelineManager::GetInstance()
 	return &inst;
 }
 
-void PipelineManager::PreDraw(std::string pipelineName, bool isDescHeap)
+void PipelineManager::PreDraw(std::string pipelineName, D3D_PRIMITIVE_TOPOLOGY primitiveType, bool isDescHeap)
 {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
@@ -28,7 +28,7 @@ void PipelineManager::PreDraw(std::string pipelineName, bool isDescHeap)
 	cmdList->SetGraphicsRootSignature(pipelineObj_[pipelineName]->GetRootSignature());
 
 	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	cmdList->IASetPrimitiveTopology(primitiveType);
 
 	// デスクリプタヒープの配列をセットするコマンド
 	if (isDescHeap) {
@@ -55,7 +55,7 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Particle"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineObj_["Particle"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Particle"]->CreateRootParams(1, 1);
-	pipelineObj_["Particle"]->CreatePipeline(2);
+	pipelineObj_["Particle"]->CreatePipeline(2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
 
 	AddPipeline("Sprite");
 	pipelineObj_["Sprite"]->LoadShader("Resources/Shaders/SpritePS.hlsl", PS);

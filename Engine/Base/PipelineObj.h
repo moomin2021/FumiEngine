@@ -74,7 +74,7 @@ public:
 	/// パイプライン作成
 	/// </summary>
 	/// <param name="renderTargetNum"> レンダーターゲットの数 </param>
-	void CreatePipeline(uint16_t renderTargetNum);
+	void CreatePipeline(uint16_t renderTargetNum, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 
 private:
 	/// <summary>

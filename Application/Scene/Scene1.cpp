@@ -162,7 +162,7 @@ void Scene1::Draw()
 	//oSphere_->Draw();
 	//for (auto& object : oCube_) object->Draw();
 
-	PipelineManager::GetInstance()->PreDraw("Particle");
+	PipelineManager::GetInstance()->PreDraw("Particle", D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	particle_->Draw();
 
