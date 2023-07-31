@@ -1,12 +1,13 @@
 #include "EnemyManager.h"
 #include "Enemy0.h"
 
+std::unique_ptr<Model> EnemyManager::mEnemy0Bullet_ = nullptr;
+std::vector<std::unique_ptr<Bullet>> EnemyManager::bullets_ = {};
+
 EnemyManager::EnemyManager() {
 	// モデル読み込み
 	mEnemy0_ = std::make_unique<Model>("sphere");
 	mEnemy0Bullet_ = std::make_unique<Model>("sphere");
-
-	Enemy0::SetBulletModel(mEnemy0Bullet_.get());
 }
 
 void EnemyManager::Update()
@@ -17,9 +18,16 @@ void EnemyManager::Update()
 		(*it)->Update();
 	}
 
-	//for (size_t i = 0; i < enemys_.size(); i++) {
-	//	enemys_[i]->Update();
-	//}
+	for (size_t i = 0; i < bullets_.size(); i++) {
+		// 弾の更新処理
+		bullets_[i]->Update();
+
+		// 生存フラグが[OFF]だったら
+		if (bullets_[i]->GetIsAlive() == false) {
+			// 弾を消す
+			bullets_.erase(bullets_.begin() + i);
+		}
+	}
 }
 
 void EnemyManager::Draw()
@@ -30,9 +38,9 @@ void EnemyManager::Draw()
 		(*it)->Draw();
 	}
 
-	//for (size_t i = 0; i < enemys_.size(); i++) {
-	//	enemys_[i]->Draw();
-	//}
+	for (auto& i : bullets_) {
+		i->Draw();
+	}
 }
 
 void EnemyManager::CreateAddEnemy0(const float3& pos, const float3& scale)
@@ -43,6 +51,11 @@ void EnemyManager::CreateAddEnemy0(const float3& pos, const float3& scale)
 
 	// エネミー配列に追加
 	enemys_.emplace_back(std::move(newEnemy));
+}
+
+void EnemyManager::AddBullet(BulletType type, const float3& iniPos, const Vector3& moveVec)
+{
+	bullets_.emplace_back(std::make_unique<Bullet>(mEnemy0Bullet_.get(), ENEMY0, iniPos, moveVec));
 }
 
 void EnemyManager::SetPlayer(Player* player)

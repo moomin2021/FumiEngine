@@ -5,15 +5,17 @@
 #include <memory>
 #include <vector>
 #include <list>
+#include <vector>
 
 class EnemyManager {
 #pragma region メンバ変数
 	// エネミー配列
 	std::list<std::unique_ptr<BaseEnemy>> enemys_;
+	static std::vector<std::unique_ptr<Bullet>> bullets_;
 
 	// 敵モデル
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
-	std::unique_ptr<Model> mEnemy0Bullet_ = nullptr;
+	static std::unique_ptr<Model> mEnemy0Bullet_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -29,6 +31,9 @@ public:
 
 	// エネミーを生成追加
 	void CreateAddEnemy0(const float3& pos, const float3& scale);
+
+	// 弾を追加
+	static void AddBullet(BulletType type, const float3& iniPos, const Vector3& moveVec);
 #pragma endregion
 
 #pragma region セッター関数

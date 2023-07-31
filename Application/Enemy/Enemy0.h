@@ -23,10 +23,6 @@ private:
 	// 状態
 	State state_ = WAIT;
 
-	// 弾
-	std::vector<std::unique_ptr<Bullet>> bullets_;
-	static Model* sBulletModel_;
-
 	// 各状態の開始時間
 	uint64_t waitStartTime_ = 0;
 	uint64_t rndMoveStartTime_ = 0;
@@ -114,10 +110,5 @@ public:
 	/// プレイヤーを設定
 	/// </summary>
 	static void SetPlayer(Player* player) { player_ = player; }
-
-	/// <summary>
-	/// 弾のモデルを設定
-	/// </summary>
-	static void SetBulletModel(Model* model) { sBulletModel_ = model; }
 #pragma endregion
 };

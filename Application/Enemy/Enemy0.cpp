@@ -1,9 +1,9 @@
 #include "Enemy0.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "EnemyManager.h"
 
 Player* Enemy0::player_ = nullptr;
-Model* Enemy0::sBulletModel_ = nullptr;
 
 Enemy0::Enemy0(Model* model) :
 	// HP
@@ -69,10 +69,6 @@ void Enemy0::Draw()
 {
 	// オブジェクト描画
 	if (isAlive_) object_->Draw();
-
-	for (auto& bullets : bullets_) {
-		bullets->Draw();
-	}
 }
 
 void (Enemy0::* Enemy0::stateTable[]) () = {
@@ -155,17 +151,6 @@ void Enemy0::Chase()
 	float3 pos = object_->GetPosition() + (enemy2Player * frontRearMoveSpd_) + (rightVec * horizontalMoveSpd_ * isMoveRight_);
 	object_->SetPosition(pos);
 
-	for (size_t i = 0; i < bullets_.size(); i++) {
-		// 弾の更新処理
-		bullets_[i]->Update();
-
-		// 生存フラグが[OFF]だったら
-		if (bullets_[i]->GetIsAlive() == false) {
-			// 弾を消す
-			bullets_.erase(bullets_.begin() + i);
-		}
-	}
-
 	// 弾を撃つ処理
 	Shoot();
 }
@@ -190,6 +175,6 @@ void Enemy0::Shoot()
 		shootTime_ = Util::GetTime();
 
 		// 弾を生成
-		bullets_.emplace_back(std::make_unique<Bullet>(sBulletModel_, BulletType::ENEMY0, object_->GetPosition(), player_->GetPosition() - object_->GetPosition()));
+		EnemyManager::AddBullet(ENEMY0, object_->GetPosition(), player_->GetPosition() - object_->GetPosition());
 	}
 }

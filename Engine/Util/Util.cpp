@@ -53,6 +53,13 @@ std::vector<wchar_t> Util::StringToWideChar(const std::string& str)
 	return wchar;
 }
 
+uint64_t Util::GetTime()
+{
+	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+
+	return sec;
+}
+
 uint16_t Util::GetRandomInt(uint16_t min, uint16_t max)
 {
 	std::random_device seed_gen;
