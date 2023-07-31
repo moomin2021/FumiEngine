@@ -20,8 +20,12 @@ Particle::Particle()
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
 #pragma region 頂点設定
-	vertices_.resize(1);
+	vertices_.resize(30);
 	vertices_[0] = { {0.0f, 0.0f, 0.0f } };
+	for (size_t i = 0; i < 30; i++) {
+		const float rnd_width = 10.0f;
+		vertices_[i].pos.x = 
+	}
 #pragma endregion
 
 #pragma region インデックス設定
