@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include "CollisionManager.h"
 #include "Enemy0.h"
 
 std::unique_ptr<Model> EnemyManager::mEnemy0Bullet_ = nullptr;
@@ -28,6 +29,11 @@ void EnemyManager::Update()
 			bullets_.erase(bullets_.begin() + i);
 		}
 	}
+}
+
+EnemyManager::~EnemyManager()
+{
+
 }
 
 void EnemyManager::Draw()

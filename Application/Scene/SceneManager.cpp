@@ -1,5 +1,7 @@
 #include "SceneManager.h"
+#include "TitleScene.h"
 #include "Scene1.h"
+#include "GameOverScene.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 
@@ -33,7 +35,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// ç≈èâÇÃÉVÅ[Éì
-	nowScene_ = std::make_unique<Scene1>();
+	nowScene_ = std::make_unique<TitleScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
@@ -50,10 +52,20 @@ SceneManager::~SceneManager() {
 
 void SceneManager::ChangeScene(int changeSceneNum)
 {
+	isChangeScene_ = true;
+
 	switch (changeSceneNum)
 	{
+	case SCENE::TITLE:
+		nowScene_ = std::make_unique<TitleScene>();
+		nowScene_->Initialize();
+		break;
 	case SCENE::SCENE1:
 		nowScene_ = std::make_unique<Scene1>();
+		nowScene_->Initialize();
+		break;
+	case SCENE::GAMEOVER:
+		nowScene_ = std::make_unique<GameOverScene>();
 		nowScene_->Initialize();
 		break;
 	}
@@ -72,6 +84,11 @@ void SceneManager::Update() {
 // ï`âÊèàóù
 void SceneManager::Draw()
 {
+	if (isChangeScene_) {
+		isChangeScene_ = false;
+		return;
+	}
+
 	if (PostEffectType::NORMAL == postEffectType_) {
 		// --ï`âÊëOèàóù-- //
 		DX12Cmd::GetInstance()->PreDraw();

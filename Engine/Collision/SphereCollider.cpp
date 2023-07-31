@@ -12,6 +12,7 @@ void SphereCollider::Update()
 {
 	// 衝突フラグを初期化
 	isHit_ = false;
+	reject_ = { 0.0f, 0.0f, 0.0f };
 
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {

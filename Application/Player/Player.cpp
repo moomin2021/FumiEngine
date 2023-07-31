@@ -93,6 +93,14 @@ Player::Player()
 
 	// コライダーを追加
 	CollisionManager::GetInstance()->AddCollider(eyeCollider_.get());
+
+	// 球のコライダー生成
+	playerCollider_ = std::make_unique<SphereCollider>(camera_->GetEye() + float3(0.0f, 1.0f, 0.0f));
+	playerCollider_->SetRadius(2.0f);
+	playerCollider_->SetAttribute(COL_PLAYER);
+
+	// コライダーを追加
+	CollisionManager::GetInstance()->AddCollider(playerCollider_.get());
 #pragma endregion
 
 #pragma region クロスヘア
@@ -120,6 +128,7 @@ Player::Player()
 Player::~Player()
 {
 	CollisionManager::GetInstance()->RemoveCollider(eyeCollider_.get());
+	CollisionManager::GetInstance()->RemoveCollider(playerCollider_.get());
 }
 
 void Player::Update()
@@ -130,6 +139,11 @@ void Player::Update()
 	if (key_->TriggerKey(DIK_0)) {
 		uint64_t s = Util::GetTime();
 	}
+
+	// プレイヤーのコライダー更新
+	playerCollider_->SetOffset(camera_->GetEye() + float3(0.0f, 1.0f, 0.0f));
+
+	OnCollision();
 
 	// カメラの更新
 	camera_->Update();
@@ -389,5 +403,7 @@ void Player::ColliderUpdate()
 
 void Player::OnCollision()
 {
-
+	if (playerCollider_->GetIsHit()) {
+		hp_ -= 1;
+	}
 }

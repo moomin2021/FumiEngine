@@ -131,12 +131,17 @@ void CollisionManager::CheckAllCollision()
 					MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
 					Sphere* sphere = dynamic_cast<Sphere*>(colB);
 					Vector3 inter;
+					Vector3 reject;
 
-					if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
+					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
 						colA->SetIsHit(true);
 						colA->SetInter(inter);
+						colA->SetReject(reject);
+						colA->SetCollider(colB);
 						colB->SetIsHit(true);
 						colB->SetInter(inter);
+						colB->SetReject(reject);
+						colB->SetCollider(colA);
 					}
 				}
 
@@ -145,12 +150,17 @@ void CollisionManager::CheckAllCollision()
 					MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colB);
 					Sphere* sphere = dynamic_cast<Sphere*>(colA);
 					Vector3 inter;
+					Vector3 reject;
 
-					if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
+					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
 						colA->SetIsHit(true);
 						colA->SetInter(inter);
+						colA->SetReject(reject);
+						colA->SetCollider(colB);
 						colB->SetIsHit(true);
 						colB->SetInter(inter);
+						colB->SetReject(reject);
+						colB->SetCollider(colA);
 					}
 				}
 			}

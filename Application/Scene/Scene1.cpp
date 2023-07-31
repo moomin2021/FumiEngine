@@ -4,6 +4,7 @@
 #include "PipelineManager.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "SceneManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -14,7 +15,12 @@ using namespace DirectX;
 
 Scene1::Scene1() {}
 
-Scene1::~Scene1() {}
+Scene1::~Scene1() {
+	for (auto& i : stageObjCollider_) {
+		CollisionManager::GetInstance()->RemoveCollider(i.get());
+	}
+	CollisionManager::GetInstance()->AllColliderRemove();
+}
 
 void Scene1::Initialize()
 {
@@ -42,7 +48,7 @@ void Scene1::Initialize()
 	enemyManager_->SetPlayer(player_.get());
 
 	// ステージ読み込み
-	LoadStage("Resources/Stage/stage1.json");
+	LoadStage("Resources/Stage/stage0.json");
 }
 
 void Scene1::Update()
@@ -58,6 +64,10 @@ void Scene1::Update()
 
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();
+
+	if (player_->GetHP() <= 0) {
+		SceneManager::GetInstance()->ChangeScene(SCENE::GAMEOVER);
+	}
 }
 
 void Scene1::Draw()
@@ -190,6 +200,13 @@ void Scene1::LoadStage(std::string fileName)
 
 			// 配列に登録
 			stageObjects_.emplace_back(std::move(newObject));
+
+			std::unique_ptr<MeshCollider> newCollider = std::make_unique<MeshCollider>(stageObjects_.back().get());
+			newCollider->SetAttribute(COL_WALL);
+
+			stageObjCollider_.emplace_back(std::move(newCollider));
+
+			CollisionManager::GetInstance()->AddCollider(stageObjCollider_.back().get());
 		}
 	}
 }

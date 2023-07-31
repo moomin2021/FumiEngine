@@ -120,6 +120,7 @@
     <ClCompile Include="Engine\Util\Math\Vector2.cpp" />
     <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
+    <ClCompile Include="Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="Engine\Base\Sound.cpp" />
     <ClCompile Include="Engine\Base\ParticleManager.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="Application\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Bullet.h" />
@@ -183,6 +185,8 @@
     <ClInclude Include="Engine\Base\Sound.h" />
     <ClInclude Include="Engine\Base\ParticleManager.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\Scene\GameOverScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

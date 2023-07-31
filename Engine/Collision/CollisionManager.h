@@ -31,6 +31,9 @@ public:
 	/// </summary>
 	/// <param name="collider"></param>
 	inline void RemoveCollider(BaseCollider* collider) { colliders_.remove(collider); }
+
+	// 全てのコライダーを削除
+	inline void AllColliderRemove() { colliders_.clear(); }
 #pragma endregion
 
 #pragma region ゲッター関数

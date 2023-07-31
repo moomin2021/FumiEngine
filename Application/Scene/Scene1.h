@@ -3,6 +3,7 @@
 #include "LightGroup.h"
 #include "EnemyManager.h"
 #include "Player.h"
+#include "MeshCollider.h"
 
 class Scene1 : public BaseScene {
 #pragma region 構造体
@@ -38,6 +39,7 @@ private:
 	// ステージオブジェクト
 	std::map<std::string, std::unique_ptr<Model>> stageModels_;// モデル連想配列
 	std::list<std::unique_ptr<Object3D>> stageObjects_;// オブジェクト配列
+	std::list<std::unique_ptr<MeshCollider>> stageObjCollider_;
 #pragma endregion
 
 #pragma region メンバ関数

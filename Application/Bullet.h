@@ -45,6 +45,9 @@ public:
 	/// <param name="iniPos"> 初期位置 </param>
 	Bullet(Model* model, BulletType type, const float3& iniPos, const Vector3& moveVec);
 
+	// デストラクタ
+	~Bullet();
+
 	/// <summary>
 	/// 更新処理
 	/// </summary>

@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "CollisionAttribute.h"
 #include "CollisionManager.h"
 
 Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector3& moveVec)
@@ -23,6 +24,7 @@ Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector
 		data_.object->SetScale({ 0.5f, 0.5f, 0.5f });
 		data_.object->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 		data_.col = std::make_unique<SphereCollider>();
+		data_.col->SetAttribute(COL_ENEMYBULLET);
 		data_.col->SetRadius(0.5f);
 		data_.col->LinkObject3D(data_.object.get());
 		CollisionManager::GetInstance()->AddCollider(data_.col.get());
@@ -32,6 +34,11 @@ Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector
 	}
 
 	data_.moveVec.normalize();
+}
+
+Bullet::~Bullet()
+{
+	CollisionManager::GetInstance()->RemoveCollider(data_.col.get());
 }
 
 void Bullet::Update()

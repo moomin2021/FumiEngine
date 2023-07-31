@@ -7,7 +7,9 @@
 
 // シーン列挙型
 enum SCENE {
+	TITLE,
 	SCENE1,
+	GAMEOVER,
 };
 
 enum PostEffectType {
@@ -35,6 +37,9 @@ private:
 	// ポストエフェクトの種類
 	PostEffectType postEffectType_;
 
+	// シーンを変更中か
+	bool isChangeScene_ = false;
+
 	// --メンバ関数-- //
 public:
 	// インスタンス取得
@@ -46,15 +51,15 @@ public:
 	// 描画処理
 	void Draw();
 
+	// シーン切り替え
+	void ChangeScene(int changeSceneNum);
+
 private:
 	// コンストラクタ
 	SceneManager();
 
 	// デストラクタ
 	~SceneManager();
-
-	// シーン切り替え
-	void ChangeScene(int changeSceneNum);
 
 	// --禁止-- //
 public:

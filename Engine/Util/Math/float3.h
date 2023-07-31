@@ -29,6 +29,7 @@ const float3 operator+(const float3& f1, const float3& f2);
 const float3 operator+(const Vector3& v1, const float3& f1);
 const float3 operator+(const float3& f1, const Vector3& v1);
 const float3 operator-(const float3& f1, const float3& f2);
+const float3 operator-(const float3& f, const Vector3& v);
 const float3 operator*(const float3& f, float s);
 const float3 operator*(float s, const float3& f);
 const float3 operator/(const float3& f, float s);

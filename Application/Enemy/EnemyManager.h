@@ -23,6 +23,9 @@ public:
 	// コンストラクタ
 	EnemyManager();
 
+	// デストラクタ
+	~EnemyManager();
+
 	// 更新処理
 	void Update();
 

@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Sprite.h"
 #include "RayCollider.h"
+#include "SphereCollider.h"
 
 #include <memory>
 
@@ -49,8 +50,14 @@ private:
 	// レイのコライダー
 	std::unique_ptr<RayCollider> eyeCollider_ = nullptr;// 視点のレイ
 
+	// プレイヤー用球コライダー
+	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
+
 	// 状態
 	State state_ = NORMAL;
+
+	uint8_t maxHp_ = 3;
+	uint8_t hp_ = 3;
 
 	// 方向ベクトル
 	Vector3 forwardVec_ = {};// 前方
@@ -58,7 +65,7 @@ private:
 
 	// 速度
 	float moveAcc_			= 0.1f;// 移動加速度
-	float maxSpd_			= 1.5f;// 最大速度
+	float maxSpd_			= 1.0f;// 最大速度
 	float moveSpd_			= 0.0f;// 移動速度
 	float cameraAngleSpd_	= 0.1f;// カメラの角度の移動速度
 
@@ -115,5 +122,8 @@ private:
 	public:
 	// プレイヤーの座標を取得(カメラ基準)
 	const float3& GetPosition() { return camera_->GetEye(); }
+
+	// HPを取得
+	inline uint16_t GetHP() { return hp_; }
 #pragma endregion
 };
