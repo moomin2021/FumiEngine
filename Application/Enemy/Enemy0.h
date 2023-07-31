@@ -7,7 +7,7 @@
 
 #include <memory>
 
-class Enemy0 : public BaseEnemy
+class Enemy0
 {
 	enum State {
 		WAIT,		// 待機状態
@@ -19,6 +19,15 @@ class Enemy0 : public BaseEnemy
 private:
 	// プライヤー
 	static Player* player_;
+
+	// オブジェクト
+	std::unique_ptr<Object3D> object_;
+
+	// コライダー
+	std::unique_ptr<SphereCollider> collider_;
+
+	// 生存フラグ
+	bool isAlive_ = true;
 
 	// 状態
 	State state_ = WAIT;
@@ -85,10 +94,10 @@ public:
 	void Initialize(float3 pos, float3 scale);
 
 	// 更新処理
-	void Update() override;
+	void Update();
 
 	// 描画処理
-	void Draw() override;
+	void Draw();
 
 private:
 	// 状態別処理
@@ -110,5 +119,17 @@ public:
 	/// プレイヤーを設定
 	/// </summary>
 	static void SetPlayer(Player* player) { player_ = player; }
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	/// <summary>
+	/// 生存フラグを取得
+	/// </summary>
+	/// <returns> フラグ </returns>
+	inline bool GetIsAlive() { return isAlive_; }
+
+	// 座標を取得
+	inline const float3& GetPos() { return object_->GetPosition(); }
 #pragma endregion
 };

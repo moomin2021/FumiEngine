@@ -28,10 +28,14 @@ public:
 #pragma endregion
 
 #pragma region ゲッター関数
+public:
 	/// <summary>
 	/// 生存フラグを取得
 	/// </summary>
 	/// <returns> フラグ </returns>
 	inline bool GetIsAlive() { return isAlive_; }
+
+	// 座標を取得
+	inline const float3& GetPos() { return object_->GetPosition(); }
 #pragma endregion
 };

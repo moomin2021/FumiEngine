@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseEnemy.h"
 #include "Player.h"
+#include "ParticleManager.h"
+#include "Enemy0.h"
 
 #include <memory>
 #include <vector>
@@ -10,8 +12,12 @@
 class EnemyManager {
 #pragma region メンバ変数
 	// エネミー配列
-	std::list<std::unique_ptr<BaseEnemy>> enemys_;
+	std::vector<std::unique_ptr<Enemy0>> enemys_;
 	static std::vector<std::unique_ptr<Bullet>> bullets_;
+	std::vector<std::unique_ptr<ParticleManager>> particles_;
+
+	// パーティクル
+	uint16_t particleHandle_ = 0;
 
 	// 敵モデル
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
@@ -37,6 +43,9 @@ public:
 
 	// 弾を追加
 	static void AddBullet(BulletType type, const float3& iniPos, const Vector3& moveVec);
+
+	// パーティクル生成
+	void AddParticle(const float3& pos);
 #pragma endregion
 
 #pragma region セッター関数

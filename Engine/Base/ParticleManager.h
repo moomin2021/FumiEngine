@@ -88,6 +88,8 @@ private:
 	ComPtr<ID3D12Resource> constBuff_;
 	ConstBufferData* constMap_;
 
+	bool isAlive_ = true;
+
 	// カメラ
 	static Camera* sCamera_;
 #pragma endregion
@@ -96,6 +98,9 @@ private:
 public:
 	// コンストラクタ
 	ParticleManager();
+
+	// デストラクタ
+	~ParticleManager();
 
 	// 更新処理
 	void Update(BILLBOARD billBoard = BILLBOARD::NONE);
@@ -124,5 +129,9 @@ private:
 public:
 	// カメラを設定
 	static void SetCamera(Camera* camera) { sCamera_ = camera; }
+
+	void SetPos(const float3& pos) { position_ = pos; }
 #pragma endregion
+
+	bool GetIsAlive() { return isAlive_; }
 };

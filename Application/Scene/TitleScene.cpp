@@ -2,6 +2,7 @@
 #include "PipelineManager.h"
 #include "SceneManager.h"
 #include "Texture.h"
+#include "Util.h"
 
 TitleScene::TitleScene() {}
 
@@ -22,6 +23,9 @@ void TitleScene::Initialize()
 
 	// ‰æ‘œ“Ç‚Ýž‚Ý
 	titleHandle_ = LoadTexture("Resources/title.png");
+
+	bgm_ = Sound::SoundLoadWave("Resources/Sound/titleBGM.wav");
+	Sound::SoundPlay(bgm_);
 }
 
 void TitleScene::Update()
@@ -30,7 +34,7 @@ void TitleScene::Update()
 	camera_->Update();
 
 	if (key_->TriggerKey(DIK_SPACE)) {
-		SceneManager::GetInstance()->ChangeScene(SCENE::SCENE1);
+		SceneManager::GetInstance()->SceneTransition(SCENE::SCENE1);
 	}
 }
 

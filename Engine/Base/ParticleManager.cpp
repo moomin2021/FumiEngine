@@ -71,10 +71,21 @@ ParticleManager::ParticleManager()
 #pragma endregion
 }
 
+ParticleManager::~ParticleManager()
+{
+	particles_.clear();
+}
+
 void ParticleManager::Update(BILLBOARD billBoard)
 {
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
+
+	// 追加した要素の参照
+	Particle& p = particles_.front();
+	if (p.frame >= p.num_frame) {
+		isAlive_ = false;
+	}
 
 	// 寿命が尽きたパーティクルを全削除
 	particles_.remove_if([](Particle& x) {return x.frame >= x.num_frame; });
@@ -270,6 +281,8 @@ void ParticleManager::Add(uint16_t life, float3 pos, float3 velocity, float3 acc
 	Particle& p = particles_.front();
 	// 値のセット
 	p.position = pos;
+	p.scale = startScale;
+	p.startScale = startScale;
 	p.velocity = velocity;
 	p.accel = accel;
 	p.num_frame = life;

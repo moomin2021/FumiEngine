@@ -30,7 +30,7 @@ void GameOverScene::Update()
 	camera_->Update();
 
 	if (key_->TriggerKey(DIK_SPACE)) {
-		SceneManager::GetInstance()->ChangeScene(SCENE::TITLE);
+		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
 	}
 }
 

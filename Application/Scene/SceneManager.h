@@ -10,6 +10,7 @@ enum SCENE {
 	TITLE,
 	SCENE1,
 	GAMEOVER,
+	TRANSITION,
 };
 
 enum PostEffectType {
@@ -34,6 +35,8 @@ private:
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
 	std::unique_ptr<PostEffect> bloomPostEffect_;
 
+	SCENE nextScene_ = SCENE1;
+
 	// ポストエフェクトの種類
 	PostEffectType postEffectType_;
 
@@ -52,7 +55,11 @@ public:
 	void Draw();
 
 	// シーン切り替え
-	void ChangeScene(int changeSceneNum);
+	void ChangeScene(SCENE changeSceneNum);
+
+	void SceneTransition(SCENE scene);
+
+	SCENE GetNextScene() { return nextScene_; }
 
 private:
 	// コンストラクタ

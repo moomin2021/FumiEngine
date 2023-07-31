@@ -2,6 +2,7 @@
 #include "TitleScene.h"
 #include "Scene1.h"
 #include "GameOverScene.h"
+#include "TransitionScene.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 
@@ -50,7 +51,7 @@ SceneManager::~SceneManager() {
 	
 }
 
-void SceneManager::ChangeScene(int changeSceneNum)
+void SceneManager::ChangeScene(SCENE changeSceneNum)
 {
 	isChangeScene_ = true;
 
@@ -68,6 +69,9 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = std::make_unique<GameOverScene>();
 		nowScene_->Initialize();
 		break;
+	case SCENE::TRANSITION:
+		nowScene_ = std::make_unique<TransitionScene>();
+		nowScene_->Initialize();
 	}
 }
 
@@ -141,4 +145,12 @@ void SceneManager::Draw()
 		// --•`‰æŒãˆ—-- //
 		DX12Cmd::GetInstance()->PostDraw();
 	}
+}
+
+void SceneManager::SceneTransition(SCENE scene)
+{
+	nextScene_ = scene;
+
+	nowScene_ = std::make_unique<TransitionScene>();
+	nowScene_->Initialize();
 }

@@ -72,10 +72,10 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	PipelineManager::PreDraw("Object3D");
-
 	// 敵描画
 	enemyManager_->Draw();
+
+	PipelineManager::PreDraw("Object3D");
 
 	// ステージ上のオブジェクト描画
 	for (auto& i : stageObjects_) i->Draw();

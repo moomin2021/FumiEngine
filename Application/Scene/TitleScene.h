@@ -2,7 +2,12 @@
 #include "BaseScene.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "Object3D.h"
 #include "Key.h"
+#include "ParticleManager.h"
+#include "LightGroup.h"
+#include "DirectionalLight.h"
+#include "Sound.h"
 
 #include <memory>
 
@@ -21,6 +26,8 @@ private:
 
 	// テクスチャ
 	uint16_t titleHandle_ = 0;
+
+	SoundData bgm_;
 
 #pragma endregion
 
