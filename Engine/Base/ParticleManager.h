@@ -26,6 +26,7 @@ private:
 	// 頂点データ
 	struct Vertex {
 		float3 pos;
+		float scale;
 	};
 
 	// 定数バッファ用
@@ -48,6 +49,15 @@ private:
 
 		// 終了フレーム
 		uint16_t num_frame = 0;
+
+		// スケール
+		float scale = 1.0f;
+
+		// 初期値
+		float startScale = 1.0f;
+
+		// 最終値
+		float endScale = 0.0f;
 	};
 
 #pragma region メンバ変数
@@ -100,7 +110,7 @@ public:
 	/// <param name="pos"> 初期座標 </param>
 	/// <param name="velocity"> 速度 </param>
 	/// <param name="accel"> 加速度 </param>
-	void Add(uint16_t life, float3 pos, float3 velocity, float3 accel);
+	void Add(uint16_t life, float3 pos, float3 velocity, float3 accel, float startScale, float endScale);
 
 private:
 	// 頂点バッファ作成

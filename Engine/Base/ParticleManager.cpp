@@ -89,6 +89,13 @@ void ParticleManager::Update(BILLBOARD billBoard)
 
 		// 速度による移動
 		it->position = it->position + it->velocity;
+
+		// 進行度を0~1の範囲に換算
+		float f = (float)it->frame / it->num_frame;
+
+		// スケールの線形補間
+		it->scale = (it->endScale - it->startScale) * f;
+		it->scale += it->startScale;
 	}
 
 	// 頂点バッファへデータ転送
@@ -99,6 +106,7 @@ void ParticleManager::Update(BILLBOARD billBoard)
 		for (std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++) {
 			// 座標
 			vertMap->pos = it->position;
+			vertMap->scale = it->scale;
 
 			vertMap++;
 		}
@@ -255,7 +263,7 @@ void ParticleManager::Draw(uint16_t handle)
 	cmdList->DrawInstanced(static_cast<UINT>(std::distance(particles_.begin(), particles_.end())), 1, 0, 0);
 }
 
-void ParticleManager::Add(uint16_t life, float3 pos, float3 velocity, float3 accel) {
+void ParticleManager::Add(uint16_t life, float3 pos, float3 velocity, float3 accel, float startScale, float endScale) {
 	// リストに要素を追加
 	particles_.emplace_front();
 	// 追加した要素の参照

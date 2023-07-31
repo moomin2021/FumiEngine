@@ -78,7 +78,7 @@ void Scene1::Initialize()
 		float3 acc{};
 		acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
 
-		particle_->Add(60, pos, vel, acc);
+		particle_->Add(60, pos, vel, acc, 1.0f, 0.0f);
 	}
 
 	// テクスチャハンドル

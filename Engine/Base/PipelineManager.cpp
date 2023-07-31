@@ -52,6 +52,7 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticleVS.hlsl", VS);
 	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticleGS.hlsl", GS);
 	pipelineObj_["Particle"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Particle"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32_FLOAT);
 	pipelineObj_["Particle"]->CreateRootParams(1, 1);
 	pipelineObj_["Particle"]->CreatePipeline(2, PipelineObj::ADD,  D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT, false);
 

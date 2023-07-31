@@ -33,8 +33,10 @@ void main(
 	// 4点分まわす
     for (uint i = 0; i < vnum; i++)
     {
+        float4 offset = offset_array[i] * input[0].scale;
+        
         // ワールド座標ベースで、ずらす
-        element.svpos = input[0].svpos + offset_array[i];
+        element.svpos = input[0].svpos + offset;
         
         // ビュー、射影変換
         element.svpos = mul(mat, element.svpos);
