@@ -14,6 +14,9 @@ void Key::Update() {
 	// 前フレームのキーの状態を保存
 	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
 
+	// マウスデバイス制御開始
+	device_->Acquire();
+
 	// 全キーの入力状態を取得する
 	device_->GetDeviceState(static_cast<DWORD>(keys_.size()), keys_.data());
 }

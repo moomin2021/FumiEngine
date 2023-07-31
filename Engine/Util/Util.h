@@ -49,4 +49,8 @@ namespace Util {
 	/// <returns></returns>
 	std::vector<wchar_t> StringToWideChar(const std::string& str);
 
+	// ƒ‰ƒ“ƒ_ƒ€
+	uint16_t GetRandomInt(uint16_t min, uint16_t max);
+	float GetRandomFloat(float min, float max);
+
 } // namespace MathUtility
