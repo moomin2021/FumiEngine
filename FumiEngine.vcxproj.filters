@@ -186,9 +186,6 @@
     <ClCompile Include="Engine\Base\Sound.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\ParticleManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\ParticleEmitter.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
@@ -315,9 +312,6 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Sound.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\ParticleManager.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\ParticleEmitter.h">

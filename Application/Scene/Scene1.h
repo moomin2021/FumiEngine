@@ -1,9 +1,11 @@
 #pragma once
 #include "BaseScene.h"
 #include "Key.h"
-#include "Sound.h"
-#include "ParticleManager.h"
 #include "Camera.h"
+#include "LightGroup.h"
+#include "DirectionalLight.h"
+#include "Object3D.h"
+#include "ParticleEmitter.h"
 
 #include <memory>
 
@@ -14,16 +16,29 @@ private:
 	// キーボード入力
 	Key* key_ = nullptr;
 
+	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 
-	// パーティクル
-	std::unique_ptr<ParticleManager> particle_ = nullptr;
+	// ライトグループ
+	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
-	// パーティクル画像
-	uint16_t particleHandle_ = 0;
+	// 平行光源
+	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// サウンド
-	uint16_t soundKey_;
+	// モデル
+	std::unique_ptr<Model> model_ = nullptr;
+
+	// オブジェクト
+	std::unique_ptr<Object3D> object_ = nullptr;
+
+	// パーティクルエミッター
+	std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
+
+	// パーティクル用画像ハンドル
+	uint16_t particlehandle_ = 0;
+
+	// BGMキー
+	uint16_t bgmKey_ = 0;
 
 	// --メンバ関数-- //
 public:

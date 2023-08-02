@@ -2,8 +2,8 @@
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
+#include "Sound.h"
 #include "CollisionManager.h"
-#include "CollisionAttribute.h"
 
 Scene1::Scene1() :
 	key_(nullptr)
@@ -22,55 +22,74 @@ void Scene1::Initialize()
 
 	// カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 1.0f, -5.0f });
+	camera_->SetEye({ 0.0f, 1.0f, -10.0f });
 
-	particle_ = std::make_unique<ParticleManager>();
-	for (size_t i = 0; i < 100; i++) {
-		float3 pos{};
-		pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
-		pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
-		pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
-
-	particles_[0]->SetSpawnPos({ -2.0f, 1.0f, 0.0f });
-	particles_[1]->SetSpawnPos({ 0.0f, 1.0f, 0.0f });
-	particles_[2]->SetSpawnPos({ 2.0f, 1.0f, 0.0f });
-
-		float3 acc{};
-		acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
-
-		particle_->Add(60, pos, vel, acc, 1.0f, 0.0f);
-	}
-
-	// パーティクルにカメラを設定
+	// カメラセット
+	Object3D::SetCamera(camera_.get());
 	ParticleEmitter::SetCamera(camera_.get());
 
-	// パーティクルの画像読み込み
-	particleHandle_ = LoadTexture("Resources/effect1.png");
+	// ライトグループ生成
+	lightGroup_ = std::make_unique<LightGroup>();
 
-	// 音声
-	soundKey_ = Sound::LoadWave("Resources/Sound/TestBGM.wav");
-	Sound::SetVolume(soundKey_, 0.001f);
+	// ライトグループセット
+	Object3D::SetLightGroup(lightGroup_.get());
+
+	// 平行光源生成
+	dirLight_ = std::make_unique<DirectionalLight>();
+
+	// 平行光源セット
+	lightGroup_->AddDirLight(dirLight_.get());
+
+	// モデル生成
+	model_ = std::make_unique<Model>("sphere");
+
+	// オブジェクト生成
+	object_ = std::make_unique<Object3D>(model_.get());
+	object_->SetPosition({ -1.0f, 0.0f, 0.0f });
+
+	// パーティクルエミッター生成
+	particleEmitter_ = std::make_unique<ParticleEmitter>();
+	particleEmitter_->SetSpawnPos({ 1.0f, 0.0f, 0.0f });
+
+	// パーティクル用画像読み込み
+	particlehandle_ = LoadTexture("Resources/effect1.png");
+
+	// サウンド読み込み＆再生
+	bgmKey_ = Sound::LoadWave("Resources/Sound/a.wav");
+	Sound::SetVolume(bgmKey_, 0.001f);
+	Sound::Play(bgmKey_);
 }
 
 void Scene1::Update()
 {
-	// カメラ移動
-	{
-		static float3 eye = { 0.0f, 3.0f, -20.0f };
+	// パーティクル生成
+	float3 pos{};// 座標
+	pos.x = Util::GetRandomFloat(-0.1f, 0.1f);
+	pos.y = Util::GetRandomFloat(-0.1f, 0.1f);
+	pos.z = Util::GetRandomFloat(-0.1f, 0.1f);
 
-		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
-		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
+	// 方向
+	float3 vel{};
+	vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
+	vel.y = Util::GetRandomFloat(-0.1f, 0.1f);
+	vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
 
-		camera_->SetEye(eye);
-	}
- 
-	// カメラの更新
-	camera_->Update();
+	// 加速度
+	float3 acc{};
+	acc.x = Util::GetRandomFloat(-0.001f, 0.0f);
+	acc.y = Util::GetRandomFloat(-0.001f, 0.0f);
+	acc.z = Util::GetRandomFloat(-0.001f, 0.0f);
+
+	particleEmitter_->Add(60, pos, vel, acc, 0.5f, 0.0f);
 
 	// パーティクル更新
-	particles_[0]->Update(BILLBOARD::ALL);
-	particles_[1]->Update(BILLBOARD::ALL);
-	particles_[2]->Update(BILLBOARD::ALL);
+	particleEmitter_->Update(BILLBOARD::ALL);
+ 
+	// オブジェクト更新
+	object_->Update();
+
+	// カメラの更新
+	camera_->Update();
 
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();
@@ -78,8 +97,13 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	PipelineManager::GetInstance()->PreDraw("Particle", D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// パーティクル描画
-	particle_->Draw(particleHandle_);
+	particleEmitter_->Draw(particlehandle_);
+
+	PipelineManager::PreDraw("Object3D");
+
+	// オブジェクト描画
+	object_->Draw();
 }
