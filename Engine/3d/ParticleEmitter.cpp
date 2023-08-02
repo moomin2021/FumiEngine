@@ -18,7 +18,7 @@ ParticleEmitter::ParticleEmitter()
 
 ParticleEmitter::~ParticleEmitter()
 {
-
+	particles_.clear();
 }
 
 void ParticleEmitter::Update(BILLBOARD billBoard)
