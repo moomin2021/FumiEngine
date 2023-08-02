@@ -1,18 +1,10 @@
 #pragma once
 #include "BaseScene.h"
-#include "Model.h"
-#include "Object3D.h"
-#include "Sprite.h"
-#include "Camera.h"
-#include "LightGroup.h"
 #include "Key.h"
-#include "SphereCollider.h"
-#include "MeshCollider.h"
-#include "RayCollider.h"
 #include "Sound.h"
 #include "ParticleManager.h"
+#include "Camera.h"
 
-#include <vector>
 #include <memory>
 
 class Scene1 : public BaseScene
@@ -20,41 +12,18 @@ class Scene1 : public BaseScene
 	// --メンバ変数-- //
 private:
 	// キーボード入力
-	Key* key_;
+	Key* key_ = nullptr;
 
-	// カメラ
-	std::unique_ptr<Camera> camera_;
-
-	// ライト
-	std::unique_ptr<LightGroup> lightGroup_;
-	std::unique_ptr<DirectionalLight> dirLight_;
-	std::unique_ptr<PointLight> pointLight_;
-
-	// モデル
-	std::unique_ptr<Model> mFloor_;
-	std::unique_ptr<Model> mCube_;
-	std::unique_ptr<Model> mSphere_;
-
-	// オブジェクト
-	std::unique_ptr<Object3D> oFloor_;
-	std::unique_ptr<Object3D> oSphere_;
-	std::vector<std::unique_ptr<Object3D>> oCube_;
-
-	std::unique_ptr<SphereCollider> sphereCollider_;
-	std::unique_ptr<MeshCollider> meshCollider_;
-	std::unique_ptr<RayCollider> rayCollider_;
-
-	// 音声
-	SoundData sound_;
-
-	// テクスチャハンドル
-	uint16_t haeHandle_;
+	std::unique_ptr<Camera> camera_ = nullptr;
 
 	// パーティクル
-	std::unique_ptr<ParticleManager> particle_;
+	std::unique_ptr<ParticleManager> particle_ = nullptr;
 
-	// スプライト
-	std::unique_ptr<Sprite> sHae_;
+	// パーティクル画像
+	uint16_t particleHandle_ = 0;
+
+	// サウンド
+	uint16_t soundKey_;
 
 	// --メンバ関数-- //
 public:

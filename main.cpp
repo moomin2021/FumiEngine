@@ -22,7 +22,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// --テクスチャクラス-- //
 	Texture::GetInstance()->Initialize();
 
-	Sound::GetInstance();
+	// サウンドクラス
+	Sound::GetInstance()->Initialize();
 
 	// --ゲームループ-- //
 	while (true) {

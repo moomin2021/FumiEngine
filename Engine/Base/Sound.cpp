@@ -1,8 +1,9 @@
 #include "Sound.h"
 #include <cassert>
 
-
-Microsoft::WRL::ComPtr<IXAudio2> Sound::xAudio2_ = nullptr;
+Microsoft::WRL::ComPtr<IXAudio2> Sound::pXAudio2_ = nullptr;
+std::map<uint16_t, IXAudio2SourceVoice*> Sound::sourceVoices_;
+uint16_t Sound::sourceVoiceCount_ = 0;
 
 Sound* Sound::GetInstance()
 {
@@ -13,52 +14,20 @@ Sound* Sound::GetInstance()
 	return &inst;
 }
 
-Sound::Sound()
+void Sound::Initialize()
 {
 	HRESULT result;
 
-	// XAudioエンジンのインスタンスを生成
-	result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
-
-	// マスターボイスを生成
-	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
-}
-
-void Sound::SoundUnload(SoundData* soundData)
-{
-	delete[] soundData->pBuffer;
-
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
-}
-
-void Sound::SoundPlay(const SoundData& soundData)
-{
-	HRESULT result;
-
-	// 波形フォーマットを元にSourceVoiceの生成
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
+	// XAudioエンジンのインスタンスを作成
+	result = XAudio2Create(&pXAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(result));
 
-	// 再生する波形データの設定
-	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = soundData.bufferSize;
-	buf.Flags = XAUDIO2_END_OF_STREAM;
-
-	// 波形データの再生
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
-	result = pSourceVoice->Start();
+	// マスタリング音声を作成
+	result = pXAudio2_->CreateMasteringVoice(&pMasterVoice_);
+	assert(SUCCEEDED(result));
 }
 
-void Sound::SoundStop(const SoundData& soundData)
-{
-	
-}
-
-SoundData Sound::SoundLoadWave(const char* filename) {
+uint16_t Sound::LoadWave(const char* filename) {
 	// ファイル入力ストリームのインスタンス
 	std::ifstream file;
 
@@ -127,5 +96,41 @@ SoundData Sound::SoundLoadWave(const char* filename) {
 	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
 	soundData.bufferSize = data.size;
 
-	return soundData;
+	HRESULT result;
+
+	// ソース音声を作成
+	sourceVoices_[sourceVoiceCount_] = nullptr;
+	result = pXAudio2_->CreateSourceVoice(&sourceVoices_[sourceVoiceCount_], &soundData.wfex);
+	assert(SUCCEEDED(result));
+
+	// ソース音声にバッファを送信
+	XAUDIO2_BUFFER buf{};
+	buf.pAudioData = soundData.pBuffer;
+	buf.AudioBytes = soundData.bufferSize;
+	buf.Flags = XAUDIO2_END_OF_STREAM;
+	result = sourceVoices_[sourceVoiceCount_]->SubmitSourceBuffer(&buf);
+
+	sourceVoiceCount_++;
+
+	return sourceVoiceCount_ - 1;
 }
+
+void Sound::Play(uint16_t sourceVoiceKey)
+{
+	HRESULT result;
+
+	// 再生
+	result = sourceVoices_[sourceVoiceKey]->Start(0);
+	assert(SUCCEEDED(result));
+}
+
+void Sound::Stop(uint16_t sourceVoiceKey)
+{
+	HRESULT result;
+
+	// 停止
+	result = sourceVoices_[sourceVoiceKey]->Stop(0);
+	assert(SUCCEEDED(result));
+}
+
+Sound::Sound() {}
