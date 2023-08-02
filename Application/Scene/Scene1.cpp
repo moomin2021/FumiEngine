@@ -50,6 +50,7 @@ void Scene1::Initialize()
 
 	// ‰¹º
 	soundKey_ = Sound::LoadWave("Resources/Sound/TestBGM.wav");
+	Sound::SetVolume(soundKey_, 0.001f);
 }
 
 void Scene1::Update()
@@ -62,14 +63,6 @@ void Scene1::Update()
 		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
 
 		camera_->SetEye(eye);
-	}
-
-	if (key_->TriggerKey(DIK_Q)) {
-		Sound::Play(soundKey_);
-	}
-
-	if (key_->TriggerKey(DIK_E)) {
-		Sound::Stop(soundKey_);
 	}
  
 	// ƒJƒƒ‰‚ÌXV

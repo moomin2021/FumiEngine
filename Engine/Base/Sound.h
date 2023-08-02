@@ -68,6 +68,9 @@ public:
 	// サウンドの停止
 	static void Stop(uint16_t sourceVoiceKey);
 
+	// サウンドの音量調節
+	static void SetVolume(uint16_t sourceVoiceKey, const float& volumeValue);
+
 private:
 	// コンストラクタ
 	Sound();
