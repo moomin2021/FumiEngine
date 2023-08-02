@@ -120,7 +120,7 @@
     <ClCompile Include="Engine\Collision\RayCollider.cpp" />
     <ClCompile Include="Engine\Base\Sound.cpp" />
     <ClCompile Include="Engine\Base\ParticleManager.cpp" />
-    <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="Engine\3d\ParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -165,7 +165,7 @@
     <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Base\Sound.h" />
     <ClInclude Include="Engine\Base\ParticleManager.h" />
-    <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="Engine\3d\ParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

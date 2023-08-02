@@ -10,7 +10,8 @@
 #include "MeshCollider.h"
 #include "RayCollider.h"
 #include "Sound.h"
-#include "ParticleManager.h"
+//#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 #include <vector>
 #include <memory>
@@ -51,7 +52,9 @@ private:
 	uint16_t haeHandle_;
 
 	// パーティクル
-	std::unique_ptr<ParticleManager> particle_;
+	std::vector<std::unique_ptr<ParticleEmitter>> particles_;
+
+	std::unique_ptr<Sprite> sprite_;
 
 	// スプライト
 	std::unique_ptr<Sprite> sHae_;

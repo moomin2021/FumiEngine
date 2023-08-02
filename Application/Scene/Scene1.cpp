@@ -32,6 +32,7 @@ void Scene1::Initialize()
 	// オブジェクト
 	oFloor_ = std::make_unique<Object3D>(mFloor_.get());
 	oFloor_->SetScale({ 10.0f, 10.0f, 10.0f });
+	oFloor_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 	oSphere_ = std::make_unique<Object3D>(mSphere_.get());
 	oSphere_->SetPosition({ 3.0f, 1.0f, 0.0f });
@@ -63,26 +64,17 @@ void Scene1::Initialize()
 	CollisionManager::GetInstance()->AddCollider(meshCollider_.get());
 	CollisionManager::GetInstance()->AddCollider(rayCollider_.get());
 
-	particle_ = std::make_unique<ParticleManager>();
-	for (size_t i = 0; i < 100; i++) {
-		float3 pos{};
-		pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
-		pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
-		pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
+	particles_.resize(3);
+	particles_[0] = std::make_unique<ParticleEmitter>();
+	particles_[1] = std::make_unique<ParticleEmitter>();
+	particles_[2] = std::make_unique<ParticleEmitter>();
 
-		float3 vel{};
-		vel.x = Util::GetRandomFloat(-0.05f, 0.05f);
-		vel.y = Util::GetRandomFloat(-0.05f, 0.05f);
-		vel.z = Util::GetRandomFloat(-0.05f, 0.05f);
-
-		float3 acc{};
-		acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
-
-		particle_->Add(60, pos, vel, acc, 1.0f, 0.0f);
-	}
+	particles_[0]->SetSpawnPos({ -2.0f, 1.0f, 0.0f });
+	particles_[1]->SetSpawnPos({ 0.0f, 1.0f, 0.0f });
+	particles_[2]->SetSpawnPos({ 2.0f, 1.0f, 0.0f });
 
 	// テクスチャハンドル
-	haeHandle_ = LoadTexture("Resources/effect1.png");
+	haeHandle_ = LoadTexture("Resources/smoke.png");
 
 	// スプライト
 	sHae_ = std::make_unique<Sprite>();
@@ -107,7 +99,7 @@ void Scene1::Initialize()
 	Object3D::SetLightGroup(lightGroup_.get());
 
 	// パーティクルにカメラを設定
-	ParticleManager::SetCamera(camera_.get());
+	ParticleEmitter::SetCamera(camera_.get());
 
 	// 音声
 	sound_ = Sound::SoundLoadWave("Resources/Sound/a.wav");
@@ -117,7 +109,7 @@ void Scene1::Update()
 {
 	// カメラ移動
 	{
-		static float3 eye = { 0.0f, 1.0f, -5.0f };
+		static float3 eye = { 0.0f, 3.0f, -20.0f };
 
 		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
 		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
@@ -151,6 +143,23 @@ void Scene1::Update()
 	if (meshCollider_->GetIsHit()) oCube_[2]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 	if (rayCollider_->GetIsHit()) oSphere_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 
+	float3 pos{};
+	pos.x = Util::GetRandomFloat(-0.25f, 0.25f);
+	pos.y = Util::GetRandomFloat(-0.25f, 0.25f);
+	pos.z = Util::GetRandomFloat(-0.25f, 0.25f);
+
+	float3 vel{};
+	vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
+	vel.y = Util::GetRandomFloat(0.25f, 0.5f);
+	vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
+
+	float3 acc{};
+	acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
+
+	if (key_->PushKey(DIK_T))particles_[0]->Add(60, pos, vel, acc, 1.0f, 0.0f);
+	if (key_->PushKey(DIK_Y))particles_[1]->Add(60, pos, vel, acc, 1.0f, 0.0f);
+	if (key_->PushKey(DIK_U))particles_[2]->Add(60, pos, vel, acc, 1.0f, 0.0f);
+
 	// オブジェクトの更新
 	oFloor_->Update();
 	oSphere_->Update();
@@ -164,7 +173,9 @@ void Scene1::Update()
 	camera_->Update();
 
 	// パーティクル更新
-	particle_->Update(BILLBOARD::ALL);
+	particles_[0]->Update(BILLBOARD::ALL);
+	particles_[1]->Update(BILLBOARD::ALL);
+	particles_[2]->Update(BILLBOARD::ALL);
 
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();
@@ -174,13 +185,15 @@ void Scene1::Draw()
 {
 	PipelineManager::GetInstance()->PreDraw("Object3D");
 
-	//oFloor_->Draw();
-	//oSphere_->Draw();
+	oFloor_->Draw();
+	oSphere_->Draw();
 	//for (auto& object : oCube_) object->Draw();
 
 	PipelineManager::GetInstance()->PreDraw("Particle", D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	particle_->Draw(haeHandle_);
+	particles_[0]->Draw(haeHandle_);
+	particles_[1]->Draw(haeHandle_);
+	particles_[2]->Draw(haeHandle_);
 
 	//PipelineManager::GetInstance()->PreDraw("Sprite");
 
