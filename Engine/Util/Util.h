@@ -49,8 +49,20 @@ namespace Util {
 	/// <returns></returns>
 	std::vector<wchar_t> StringToWideChar(const std::string& str);
 
-	// ランダム
+	/// <summary>
+	/// 指定された範囲内でランダムな整数を返す
+	/// </summary>
+	/// <param name="min"> 最小値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <returns> 整数値 </returns>
 	uint16_t GetRandomInt(uint16_t min, uint16_t max);
+
+	/// <summary>
+	/// 指定された範囲内でランダムな少数値を返す
+	/// </summary>
+	/// <param name="min"> 最小値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <returns> 小数値 </returns>
 	float GetRandomFloat(float min, float max);
 
 } // namespace MathUtility
