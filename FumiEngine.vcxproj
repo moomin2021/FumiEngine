@@ -53,8 +53,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>
-      </PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;DIRECTINPUT_VERSION=0x0800;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Application;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Boss;$(ProjectDir)Application\Stage;$(ProjectDir)Application\Player;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -71,8 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>
-      </PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;DIRECTINPUT_VERSION=0x0800;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -98,6 +96,7 @@
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
+    <ClCompile Include="Engine\Base\PipelineManager.cpp" />
     <ClCompile Include="Engine\Collision\Collision.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
@@ -110,7 +109,6 @@
     <ClCompile Include="Engine\3d\Model.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
     <ClCompile Include="Engine\3d\Object3D.cpp" />
-    <ClCompile Include="Engine\Base\PipelineManager.cpp" />
     <ClCompile Include="Engine\Base\PipelineObj.cpp" />
     <ClCompile Include="Engine\2d\PostEffect.cpp" />
     <ClCompile Include="Application\Scene\Scene1.cpp" />
@@ -130,8 +128,7 @@
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
     <ClCompile Include="Engine\Collision\RayCollider.cpp" />
     <ClCompile Include="Engine\Base\Sound.cpp" />
-    <ClCompile Include="Engine\Base\ParticleManager.cpp" />
-    <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="Engine\3d\ParticleEmitter.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Application\Scene\TransitionScene.cpp" />
   </ItemGroup>
@@ -148,6 +145,7 @@
     <ClInclude Include="Application\Enemy\BossManager.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
+    <ClInclude Include="Engine\Base\PipelineManager.h" />
     <ClInclude Include="Engine\Collision\BaseCollider.h" />
     <ClInclude Include="Engine\Collision\Collision.h" />
     <ClInclude Include="Engine\Collision\CollisionAttribute.h" />
@@ -166,7 +164,6 @@
     <ClInclude Include="Engine\3d\Model.h" />
     <ClInclude Include="Engine\Input\Mouse.h" />
     <ClInclude Include="Engine\3d\Object3D.h" />
-    <ClInclude Include="Engine\Base\PipelineManager.h" />
     <ClInclude Include="Engine\Base\PipelineObj.h" />
     <ClInclude Include="Engine\Light\PointLight.h" />
     <ClInclude Include="Engine\2d\PostEffect.h" />
@@ -186,8 +183,7 @@
     <ClInclude Include="Engine\Collision\MeshCollider.h" />
     <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Base\Sound.h" />
-    <ClInclude Include="Engine\Base\ParticleManager.h" />
-    <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="Engine\3d\ParticleEmitter.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
     <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Scene\TransitionScene.h" />

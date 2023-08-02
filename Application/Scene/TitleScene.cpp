@@ -24,8 +24,8 @@ void TitleScene::Initialize()
 	// ‰æ‘œ“Ç‚İ‚İ
 	titleHandle_ = LoadTexture("Resources/title.png");
 
-	bgm_ = Sound::SoundLoadWave("Resources/Sound/titleBGM.wav");
-	Sound::SoundPlay(bgm_);
+	bgm_ = Sound::LoadWave("Resources/Sound/titleBGM.wav");
+	Sound::Play(bgm_);
 }
 
 void TitleScene::Update()

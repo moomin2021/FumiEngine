@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseEnemy.h"
 #include "Player.h"
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 #include "Enemy0.h"
 
 #include <memory>
@@ -14,7 +14,7 @@ class EnemyManager {
 	// エネミー配列
 	std::vector<std::unique_ptr<Enemy0>> enemys_;
 	static std::vector<std::unique_ptr<Bullet>> bullets_;
-	std::vector<std::unique_ptr<ParticleManager>> particles_;
+	std::vector<std::unique_ptr<ParticleEmitter>> particles_;
 
 	// パーティクル
 	uint16_t particleHandle_ = 0;

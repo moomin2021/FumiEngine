@@ -93,7 +93,7 @@ void EnemyManager::AddBullet(BulletType type, const float3& iniPos, const Vector
 }
 
 void EnemyManager::AddParticle(const float3& pos) {
-	std::unique_ptr<ParticleManager> newParticle = std::make_unique<ParticleManager>();
+	std::unique_ptr<ParticleEmitter> newParticle = std::make_unique<ParticleEmitter>();
 	for (size_t i = 0; i < 100; i++) {
 		float3 vel{};
 		vel.x = Util::GetRandomFloat(-1.0f, 1.0f);

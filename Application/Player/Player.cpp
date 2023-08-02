@@ -9,7 +9,7 @@
 #include "CollisionAttribute.h"
 #include "Util.h"
 #include "WinAPI.h"
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 Player::Player()
 {
@@ -32,7 +32,7 @@ Player::Player()
 	// ƒJƒƒ‰‚ğ“K—p
 	Object3D::SetCamera(camera_.get());
 
-	ParticleManager::SetCamera(camera_.get());
+	ParticleEmitter::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ”š

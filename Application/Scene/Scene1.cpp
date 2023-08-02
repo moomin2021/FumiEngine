@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
+#include "Sound.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "SceneManager.h"

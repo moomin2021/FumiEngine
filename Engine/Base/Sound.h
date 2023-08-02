@@ -3,6 +3,7 @@
 #include <fstream>
 #include <memory>
 #include <wrl.h>
+#include <map>
 
 // チャンクヘッダ
 struct ChunkHeader {
@@ -37,8 +38,17 @@ private:
 
 #pragma region メンバ変数
 private:
-	static ComPtr<IXAudio2> xAudio2_;
-	IXAudio2MasteringVoice* masterVoice_ = nullptr;
+	// XAudio2エンジンのインスタンス
+	static ComPtr<IXAudio2> pXAudio2_;
+
+	// マスタリング音声
+	IXAudio2MasteringVoice* pMasterVoice_ = nullptr;
+
+	// ソース音声連想配列で保存
+	static std::map<uint16_t, IXAudio2SourceVoice*> sourceVoices_;
+
+	// ソース音声生成カウント
+	static uint16_t sourceVoiceCount_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -46,17 +56,20 @@ public:
 	// インスタンス取得
 	static Sound* GetInstance();
 
+	// 初期化処理
+	void Initialize();
+
 	// サウンド読み込み
-	static SoundData SoundLoadWave(const char* filename);
+	static uint16_t LoadWave(const char* filename);
 
-	// 音声データ解放
-	static void SoundUnload(SoundData* soundData);
+	// サウンドの再生
+	static void Play(uint16_t sourceVoiceKey);
 
-	// 音声再生
-	static void SoundPlay(const SoundData& soundData);
+	// サウンドの停止
+	static void Stop(uint16_t sourceVoiceKey);
 
-	// 音声停止
-	static void SoundStop(const SoundData& soundData);
+	// サウンドの音量調節
+	static void SetVolume(uint16_t sourceVoiceKey, float volumeValue);
 
 private:
 	// コンストラクタ

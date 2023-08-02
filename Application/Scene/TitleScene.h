@@ -4,7 +4,6 @@
 #include "Sprite.h"
 #include "Object3D.h"
 #include "Key.h"
-#include "ParticleManager.h"
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 #include "Sound.h"
@@ -27,7 +26,7 @@ private:
 	// テクスチャ
 	uint16_t titleHandle_ = 0;
 
-	SoundData bgm_;
+	uint16_t bgm_;
 
 #pragma endregion
 

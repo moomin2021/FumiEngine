@@ -162,9 +162,6 @@
     <ClCompile Include="Engine\Util\Math\float2.cpp">
       <Filter>Engine\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\PipelineManager.cpp">
-      <Filter>Engine\ソース ファイル\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\PipelineObj.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
@@ -228,10 +225,7 @@
     <ClCompile Include="Engine\Base\Sound.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\ParticleManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\Particle.cpp">
+    <ClCompile Include="Engine\3d\ParticleEmitter.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Scene\TitleScene.cpp">
@@ -241,6 +235,9 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Scene\TransitionScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\PipelineManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -320,9 +317,6 @@
     <ClInclude Include="Engine\Util\Math\float4.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\PipelineManager.h">
-      <Filter>Engine\ヘッダー ファイル\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Base\PipelineObj.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -395,10 +389,7 @@
     <ClInclude Include="Engine\Base\Sound.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\ParticleManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\Particle.h">
+    <ClInclude Include="Engine\3d\ParticleEmitter.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\TitleScene.h">
@@ -408,6 +399,9 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\TransitionScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\PipelineManager.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
