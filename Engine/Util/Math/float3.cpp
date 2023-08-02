@@ -65,7 +65,7 @@ const float3 operator+(const float3& f1, const float3& f2)
 const float3 operator-(const float3& f1, const float3& f2)
 {
 	float3 tmp(f1);
-	return tmp += f2;
+	return tmp -= f2;
 }
 
 const float3 operator*(const float3& f, float s)
