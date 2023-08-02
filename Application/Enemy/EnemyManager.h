@@ -7,14 +7,14 @@
 #include <memory>
 #include <vector>
 #include <list>
-#include <vector>
+#include <deque>
 
 class EnemyManager {
 #pragma region メンバ変数
 	// エネミー配列
 	std::vector<std::unique_ptr<Enemy0>> enemys_;
 	static std::vector<std::unique_ptr<Bullet>> bullets_;
-	std::vector<std::unique_ptr<ParticleEmitter>> particles_;
+	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
 
 	// パーティクル
 	uint16_t particleHandle_ = 0;

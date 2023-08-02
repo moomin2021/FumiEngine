@@ -27,9 +27,11 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 	HRESULT result;
 
 	// 追加した要素の参照
-	Particle& p = particles_.front();
-	if (p.frame >= p.num_frame) {
-		isAlive_ = false;
+	if (particles_.empty() == false) {
+		Particle& p = particles_.front();
+		if (p.frame >= p.num_frame) {
+			isAlive_ = false;
+		}
 	}
 
 	// 寿命が尽きたパーティクルを全削除

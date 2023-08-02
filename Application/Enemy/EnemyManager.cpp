@@ -41,9 +41,15 @@ void EnemyManager::Update()
 		}
 	}
 
-	for (size_t i = 0; i < particles_.size(); i++) {
-		if (particles_[i]->GetIsAlive() == false) {
-			particles_.erase(particles_.begin() + i);
+	for (auto it = particles_.begin(); it != particles_.end();) {
+		// 生存フラグが[OFF]なら
+		if ((*it)->GetIsAlive() == false) {
+			// 削除された要素の次を指すイテレータが返される。
+			it = particles_.erase(it);
+		}
+		// 要素削除をしない場合に、イテレータを進める
+		else {
+			++it;
 		}
 	}
 
@@ -94,18 +100,18 @@ void EnemyManager::AddBullet(BulletType type, const float3& iniPos, const Vector
 
 void EnemyManager::AddParticle(const float3& pos) {
 	std::unique_ptr<ParticleEmitter> newParticle = std::make_unique<ParticleEmitter>();
-	for (size_t i = 0; i < 100; i++) {
+	for (size_t i = 0; i < 20; i++) {
 		float3 vel{};
-		vel.x = Util::GetRandomFloat(-1.0f, 1.0f);
-		vel.y = Util::GetRandomFloat(-1.0f, 1.0f);
-		vel.z = Util::GetRandomFloat(-1.0f, 1.0f);
+		vel.x = Util::GetRandomFloat(-5.0f, 5.0f);
+		vel.y = Util::GetRandomFloat(-5.0f, 5.0f);
+		vel.z = Util::GetRandomFloat(-5.0f, 5.0f);
 
 		float3 acc{};
-		acc.x = -Util::GetRandomFloat(-1.0f, 1.0f);
-		acc.y = -Util::GetRandomFloat(-1.0f, 1.0f);
-		acc.z = -Util::GetRandomFloat(-1.0f, 1.0f);
+		acc.x = 0.0f;
+		acc.y = 0.0f;
+		acc.z = 0.0f;
 
-		newParticle->Add(10, {0.0f, 0.0f, 0.0f}, vel, acc, 50.0f, 0.0f);
+		newParticle->Add(10, {0.0f, 0.0f, 0.0f}, vel, acc, 10.0f, 0.0f);
 		newParticle->SetPos(pos);
 	}
 

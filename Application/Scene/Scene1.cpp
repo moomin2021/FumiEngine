@@ -73,8 +73,6 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	// “G•`‰æ
-	enemyManager_->Draw();
 
 	PipelineManager::PreDraw("Object3D");
 
@@ -83,6 +81,9 @@ void Scene1::Draw()
 
 	// ƒvƒŒƒCƒ„[•`‰æ
 	player_->Object3DDraw();
+
+	// “G•`‰æ
+	enemyManager_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
 
