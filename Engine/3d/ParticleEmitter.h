@@ -77,6 +77,9 @@ public:
 	// コンストラクタ
 	ParticleEmitter();
 
+	// デストラクタ
+	~ParticleEmitter();
+
 	// 更新処理
 	void Update(BILLBOARD billBoard = BILLBOARD::NONE);
 

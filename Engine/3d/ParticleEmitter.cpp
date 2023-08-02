@@ -16,6 +16,11 @@ ParticleEmitter::ParticleEmitter()
 	CreateIndexBuff();// インデックスバッファ生成
 }
 
+ParticleEmitter::~ParticleEmitter()
+{
+	particles_.clear();
+}
+
 void ParticleEmitter::Update(BILLBOARD billBoard)
 {
 	// 関数が成功したかどうかを判別する用変数
