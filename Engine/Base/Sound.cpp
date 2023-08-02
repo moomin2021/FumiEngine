@@ -133,7 +133,7 @@ void Sound::Stop(uint16_t sourceVoiceKey)
 	assert(SUCCEEDED(result));
 }
 
-void Sound::SetVolume(uint16_t sourceVoiceKey, const float& volumeValue) {
+void Sound::SetVolume(uint16_t sourceVoiceKey, float volumeValue) {
 	HRESULT result;
 
 	// âπó í≤êﬂ
