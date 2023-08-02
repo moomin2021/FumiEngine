@@ -1,84 +1,75 @@
-#include "Particle.h"
+#include "ParticleEmitter.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
-#include "Util.h"
 
 #include <cassert>
 #include <DirectXMath.h>
 
 using namespace DirectX;
 
-// 静的メンバ変数の実態
-Camera* Particle::sCamera_ = nullptr;
+Camera* ParticleEmitter::sCamera_ = nullptr;
 
-Particle::Particle()
+ParticleEmitter::ParticleEmitter()
+{
+	CreateConstBuff();// 定数バッファ生成
+	CreateVertexBuff();// 頂点バッファ生成
+	CreateIndexBuff();// インデックスバッファ生成
+}
+
+void ParticleEmitter::Update(BILLBOARD billBoard)
 {
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
-	// デバイス取得
-	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+	// 寿命が尽きたパーティクルを全削除
+	for (auto it = particles_.begin(); it != particles_.end();) {
+		// 条件一致した要素を削除する
+		if ((*it).frame >= (*it).num_frame) {
+			// 削除された要素の次を指すイテレータが返される。
+			it = particles_.erase(it);
+		}
 
-#pragma region 頂点設定
-	vertices_.resize(30);
-	vertices_[0] = { {0.0f, 0.0f, 0.0f } };
-	for (size_t i = 0; i < 30; i++) {
-		vertices_[i].pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
-		vertices_[i].pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
-		vertices_[i].pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
+		// 要素削除をしない場合に、イテレータを進める
+		else {
+			++it;
+		}
 	}
-#pragma endregion
 
-#pragma region インデックス設定
-	indexes_.resize(6);
-	indexes_[0] = 0;
-	indexes_[1] = 1;
-	indexes_[2] = 2;
-	indexes_[3] = 2;
-	indexes_[4] = 1;
-	indexes_[5] = 3;
-#pragma endregion
+	// 全パーティクル更新
+	for (auto& it : particles_) {
+		// 経過フレーム数をカウント
+		it.frame++;
 
-	// 頂点バッファ作成
-	CreateVertexBuff();
+		// 速度に加速度を加算
+		it.velocity = it.velocity + it.accel;
 
-	// インデックスバッファ作成
-	CreateIndexBuff();
+		// 速度による移動
+		it.position = it.position + it.velocity;
 
-#pragma region 定数バッファ生成
-	// 定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
+		// 進行度を0~1の範囲に換算
+		float f = (float)it.frame / it.num_frame;
 
-	// 定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resDesc{};
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		// スケールの線形補間
+		it.scale = (it.endScale - it.startScale) * f;
+		it.scale += it.startScale;
+	}
 
-	// 定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuff_));
-	assert(SUCCEEDED(result));
-#pragma endregion
+	// 頂点バッファへデータ転送
+	Vertex* vertMap = nullptr;
+	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
+	if (SUCCEEDED(result)) {
+		// パーティクルの情報を1つずつ反映
+		for (auto& it : particles_) {
+			// 座標
+			vertMap->pos = it.position;
+			vertMap->scale = it.scale;
 
-#pragma region 定数バッファへのデータ転送
-	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
-	assert(SUCCEEDED(result));
-#pragma endregion
-}
+			vertMap++;
+		}
 
-void Particle::Update(BILLBOARD billBoard)
-{
+		vertexBuff_->Unmap(0, nullptr);
+	}
+
 #pragma region ワールド行列計算
 	// 行列初期化
 	Matrix4 matWorld = Matrix4Identity();
@@ -178,19 +169,11 @@ void Particle::Update(BILLBOARD billBoard)
 		}
 	}
 
-	// ワールド行列にスケーリングを反映
-	matWorld *= Matrix4Scale(scale_);
-
-	// ワールド行列に回転を反映
-	matWorld *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
-	matWorld *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
-	matWorld *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
-
 	if (billBoard != NONE) matWorld *= mMatBillboard;
 
 	// ワールド行列に平行移動を反映
 	matWorld *= Matrix4Translate(position_);
-	
+
 #pragma endregion
 
 #pragma region 定数バッファへのデータ転送
@@ -199,7 +182,7 @@ void Particle::Update(BILLBOARD billBoard)
 #pragma endregion
 }
 
-void Particle::Draw(uint16_t handle)
+void ParticleEmitter::Draw(uint16_t handle)
 {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
@@ -226,10 +209,65 @@ void Particle::Draw(uint16_t handle)
 	cmdList->IASetIndexBuffer(&indexView_);
 
 	// 描画コマンド
-	cmdList->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
+	cmdList->DrawInstanced(static_cast<UINT>(std::distance(particles_.begin(), particles_.end())), 1, 0, 0);
 }
 
-void Particle::CreateVertexBuff()
+void ParticleEmitter::Add(uint16_t life, float3 pos, float3 velocity, float3 accel, float startScale, float endScale)
+{
+	// リストに要素を追加
+	particles_.emplace_front();
+	// 追加した要素の参照
+	Particle& p = particles_.front();
+	// 値のセット
+	p.position = pos;
+	p.velocity = velocity;
+	p.accel = accel;
+	p.startScale = startScale;
+	p.endScale = endScale;
+	p.num_frame = life;
+}
+
+void ParticleEmitter::CreateConstBuff()
+{
+	// 関数が成功したかどうかを判別する用変数
+	HRESULT result;
+
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
+#pragma region 定数バッファ生成
+	// 定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
+
+	// 定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resDesc{};
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	// 定数バッファの生成
+	result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuff_));
+	assert(SUCCEEDED(result));
+#pragma endregion
+
+#pragma region 定数バッファへのデータ転送
+	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
+	assert(SUCCEEDED(result));
+#pragma endregion
+}
+
+void ParticleEmitter::CreateVertexBuff()
 {
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
@@ -238,7 +276,7 @@ void Particle::CreateVertexBuff()
 	HRESULT result;
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * MAX_VERTEX);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
@@ -267,24 +305,10 @@ void Particle::CreateVertexBuff()
 	// 頂点バッファビューの作成
 	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// GPU仮想アドレス
 	vertexView_.SizeInBytes = sizeVB;				// 頂点バッファのサイズ
-	vertexView_.StrideInBytes = sizeof(vertices_[0]);	// 頂点1つ分のデータサイズ
-
-	// Map処理でメインメモリとGPUのメモリを紐づける
-	Vertex* vertMap = nullptr;
-	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-
-	// 全頂点に対して
-	for (size_t i = 0; i < vertices_.size(); i++)
-	{
-		vertMap[i] = vertices_[i]; // 座標をコピー
-	}
-
-	// 繋がりを解除
-	vertexBuff_->Unmap(0, nullptr);
+	vertexView_.StrideInBytes = sizeof(Vertex);	// 頂点1つ分のデータサイズ
 }
 
-void Particle::CreateIndexBuff()
+void ParticleEmitter::CreateIndexBuff()
 {
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
@@ -293,7 +317,7 @@ void Particle::CreateIndexBuff()
 	HRESULT result;
 
 	// インデックスデータ全体のサイズ
-	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexes_.size());
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * 6);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
@@ -329,11 +353,13 @@ void Particle::CreateIndexBuff()
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	assert(SUCCEEDED(result));
 
-	// 全インデックスに対して
-	for (size_t i = 0; i < indexes_.size(); i++)
-	{
-		indexMap[i] = indexes_[i];
-	}
+	// インデックス情報を送信
+	indexMap[0] = 0;
+	indexMap[1] = 1;
+	indexMap[2] = 2;
+	indexMap[3] = 2;
+	indexMap[4] = 1;
+	indexMap[5] = 3;
 
 	// マッピング解除
 	indexBuff_->Unmap(0, nullptr);

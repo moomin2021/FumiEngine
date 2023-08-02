@@ -31,10 +31,9 @@ void Scene1::Initialize()
 		pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
 		pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
 
-		float3 vel{};
-		vel.x = Util::GetRandomFloat(-0.05f, 0.05f);
-		vel.y = Util::GetRandomFloat(-0.05f, 0.05f);
-		vel.z = Util::GetRandomFloat(-0.05f, 0.05f);
+	particles_[0]->SetSpawnPos({ -2.0f, 1.0f, 0.0f });
+	particles_[1]->SetSpawnPos({ 0.0f, 1.0f, 0.0f });
+	particles_[2]->SetSpawnPos({ 2.0f, 1.0f, 0.0f });
 
 		float3 acc{};
 		acc.y = -Util::GetRandomFloat(-0.001f, 0.0f);
@@ -43,7 +42,7 @@ void Scene1::Initialize()
 	}
 
 	// パーティクルにカメラを設定
-	ParticleManager::SetCamera(camera_.get());
+	ParticleEmitter::SetCamera(camera_.get());
 
 	// パーティクルの画像読み込み
 	particleHandle_ = LoadTexture("Resources/effect1.png");
@@ -57,7 +56,7 @@ void Scene1::Update()
 {
 	// カメラ移動
 	{
-		static float3 eye = { 0.0f, 1.0f, -5.0f };
+		static float3 eye = { 0.0f, 3.0f, -20.0f };
 
 		eye.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.5f;
 		eye.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.5f;
@@ -69,7 +68,9 @@ void Scene1::Update()
 	camera_->Update();
 
 	// パーティクル更新
-	particle_->Update(BILLBOARD::ALL);
+	particles_[0]->Update(BILLBOARD::ALL);
+	particles_[1]->Update(BILLBOARD::ALL);
+	particles_[2]->Update(BILLBOARD::ALL);
 
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();
