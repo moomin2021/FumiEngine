@@ -22,7 +22,7 @@ void Scene1::Initialize()
 
 	// カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 1.0f, -10.0f });
+	camera_->SetEye({ 0.0f, 1.0f, -20.0f });
 
 	// カメラセット
 	Object3D::SetCamera(camera_.get());
@@ -47,9 +47,34 @@ void Scene1::Initialize()
 	object_ = std::make_unique<Object3D>(model_.get());
 	object_->SetPosition({ -1.0f, 0.0f, 0.0f });
 
+	particleEmitters_.resize(10);
 	// パーティクルエミッター生成
-	particleEmitter_ = std::make_unique<ParticleEmitter>();
-	particleEmitter_->SetSpawnPos({ 1.0f, 0.0f, 0.0f });
+	for (size_t i = 0; i < 10; i++) {
+		particleEmitters_[i] = std::make_unique<ParticleEmitter>();
+		particleEmitters_[i]->SetSpawnPos({(i * 1.0f) - 4.5f, 0.0f, 0.0f});
+
+		for (size_t j = 0; j < 1000; j++) {
+			// パーティクル生成
+			float3 pos{};// 座標
+			pos.x = Util::GetRandomFloat(-0.1f, 0.1f);
+			pos.y = Util::GetRandomFloat(-0.1f, 0.1f);
+			pos.z = Util::GetRandomFloat(-0.1f, 0.1f);
+
+			// 方向
+			float3 vel{};
+			vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
+			vel.y = Util::GetRandomFloat(-0.1f, 0.1f);
+			vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
+
+			// 加速度
+			float3 acc{};
+			acc.x = Util::GetRandomFloat(-0.001f, 0.0f);
+			acc.y = Util::GetRandomFloat(-0.001f, 0.0f);
+			acc.z = Util::GetRandomFloat(-0.001f, 0.0f);
+
+			particleEmitters_[i]->Add(1000, pos, vel, acc, 0.5f, 0.0f);
+		}
+	}
 
 	// パーティクル用画像読み込み
 	particlehandle_ = LoadTexture("Resources/effect1.png");
@@ -62,28 +87,10 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
-	// パーティクル生成
-	float3 pos{};// 座標
-	pos.x = Util::GetRandomFloat(-0.1f, 0.1f);
-	pos.y = Util::GetRandomFloat(-0.1f, 0.1f);
-	pos.z = Util::GetRandomFloat(-0.1f, 0.1f);
-
-	// 方向
-	float3 vel{};
-	vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
-	vel.y = Util::GetRandomFloat(-0.1f, 0.1f);
-	vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
-
-	// 加速度
-	float3 acc{};
-	acc.x = Util::GetRandomFloat(-0.001f, 0.0f);
-	acc.y = Util::GetRandomFloat(-0.001f, 0.0f);
-	acc.z = Util::GetRandomFloat(-0.001f, 0.0f);
-
-	particleEmitter_->Add(60, pos, vel, acc, 0.5f, 0.0f);
-
 	// パーティクル更新
-	particleEmitter_->Update(BILLBOARD::ALL);
+	for (auto& i : particleEmitters_) {
+		i->Update(BILLBOARD::ALL);
+	}
  
 	// オブジェクト更新
 	object_->Update();
@@ -97,13 +104,15 @@ void Scene1::Update()
 
 void Scene1::Draw()
 {
-	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
-
-	// パーティクル描画
-	particleEmitter_->Draw(particlehandle_);
-
 	PipelineManager::PreDraw("Object3D");
 
 	// オブジェクト描画
 	object_->Draw();
+
+	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	// パーティクル描画
+	for (auto& i : particleEmitters_) {
+		i->Draw(particlehandle_);
+	}
 }

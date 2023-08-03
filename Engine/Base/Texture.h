@@ -13,7 +13,7 @@ private:
 #pragma region メンバ変数
 private:
 	// 読み込んだ回数
-	uint16_t loadCounter_;
+	uint16_t loadCounter_ = 0;
 
 	// テクスチャバッファ
 	std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
@@ -22,10 +22,12 @@ private:
 	std::map<const std::string, uint16_t> texHandle_;
 
 	// SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
 
 	// SRVヒープのハンドル
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_;
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_{};
+
+	std::vector<ID3D12Resource*> intermediateResources_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -41,12 +43,24 @@ public:
 	/// </summary>
 	void Initialize();
 
+	// 画像イメージを読み取る
+	void LoadImageFile(const std::string filePath, DirectX::ScratchImage& scratchImage, DirectX::TexMetadata& metadata);
+
+	// テクスチャバッファを生成
+	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata, D3D12_RESOURCE_DESC& texResourceDesc);
+
+	// テクスチャバッファにデータを転送
+	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+
+	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
 	/// <summary>
 	/// テクスチャを読み込み、ハンドルを取得する
 	/// </summary>
 	/// <param name="fileName"> 画像ファイル名 </param>
 	/// <returns> 読み込んだ画像のハンドル </returns>
 	uint16_t LoadTexture(const std::string fileName);
+
+	void ReleaseIntermediateResources();
 
 #pragma region ゲッター関数
 	/// <summary>

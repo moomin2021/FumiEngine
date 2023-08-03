@@ -32,7 +32,7 @@ private:
 	std::unique_ptr<Object3D> object_ = nullptr;
 
 	// パーティクルエミッター
-	std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
+	std::vector<std::unique_ptr<ParticleEmitter>> particleEmitters_;
 
 	// パーティクル用画像ハンドル
 	uint16_t particlehandle_ = 0;

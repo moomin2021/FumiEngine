@@ -1,6 +1,7 @@
 #include "DX12Cmd.h"
 #include "WinAPI.h"
 #include "float4.h"
+#include "Texture.h"
 
 #include <cassert>
 #include <thread>
@@ -180,6 +181,8 @@ void DX12Cmd::PostDraw()
 	// 再びコマンドリストを貯める準備
 	result = cmdList_->Reset(cmdAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(result));
+
+	Texture::GetInstance()->ReleaseIntermediateResources();
 
 #pragma endregion
 
