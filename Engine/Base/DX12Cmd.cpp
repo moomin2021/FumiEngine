@@ -434,15 +434,12 @@ void DX12Cmd::CreateRenderTargetView()
 		// 裏か表かでアドレスがずれる
 		rtvHandle.ptr += i * device_->GetDescriptorHandleIncrementSize(rtvHeapDesc_.Type);
 
-		// レンダーターゲットビューの設定
-		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
-
 		// シェーダーの計算結果をSRGBに変換して書き込む
-		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+		rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 		// レンダーターゲットビューの生成
-		device_->CreateRenderTargetView(backBuffers_[i].Get(), &rtvDesc, rtvHandle);
+		device_->CreateRenderTargetView(backBuffers_[i].Get(), &rtvDesc_, rtvHandle);
 	}
 }
 

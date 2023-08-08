@@ -6,6 +6,7 @@
 #include "Mouse.h"// -> マウスキーボード入力
 #include "Object3D.h"// -> オブジェクト3Dクラス
 #include "Sound.h"
+#include "ImGuiManager.h"
 #pragma endregion
 
 #include "SceneManager.h"
@@ -25,6 +26,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// サウンドクラス
 	Sound::GetInstance()->Initialize();
 
+	// ImGuiクラス
+	ImGuiManager::GetInstance()->Initialize();
+
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
@@ -36,11 +40,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// マウス入力更新処理
 		Mouse::GetInstance()->Update();
 
+		// ImGui描画受付開始
+		ImGuiManager::GetInstance()->Begin();
+
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
+		// ImGui描画受付終了
+		ImGuiManager::GetInstance()->End();
+
 		// シーン管理クラス描画処理
 		SceneManager::GetInstance()->Draw();
+	
+		// ImGui描画処理
+		ImGuiManager::GetInstance()->Draw();
 	}
 
 	return 0;
