@@ -91,10 +91,10 @@ void SceneManager::Update() {
 // •`‰æˆ—
 void SceneManager::Draw()
 {
-	if (isChangeScene_) {
-		isChangeScene_ = false;
-		return;
-	}
+	//if (isChangeScene_) {
+	//	isChangeScene_ = false;
+	//	return;
+	//}
 
 	if (PostEffectType::NORMAL == postEffectType_) {
 		// --•`‰æ‘Oˆ—-- //
