@@ -5,6 +5,7 @@
 #include "TransitionScene.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
+#include "ImGuiManager.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -82,6 +83,8 @@ void SceneManager::Update() {
 	if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
+	ImGuiManager::GetInstance()->Begin();
+
 	nowScene_->Update();
 }
 
@@ -98,6 +101,9 @@ void SceneManager::Draw()
 		DX12Cmd::GetInstance()->PreDraw();
 
 		nowScene_->Draw();
+
+		ImGuiManager::GetInstance()->End();
+		ImGuiManager::GetInstance()->Draw();
 
 		// --描画後処理-- //
 		DX12Cmd::GetInstance()->PostDraw();

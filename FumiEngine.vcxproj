@@ -44,9 +44,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(IncludePath)</IncludePath>
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(IncludePath)</IncludePath>
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,6 +122,7 @@
     <ClCompile Include="Engine\Util\Math\Vector2.cpp" />
     <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
+    <ClCompile Include="Engine\Util\ImGuiManager.cpp" />
     <ClCompile Include="Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Base\Sound.h" />
     <ClInclude Include="Engine\3d\ParticleEmitter.h" />
+    <ClInclude Include="Engine\Util\ImGuiManager.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
     <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Scene\TransitionScene.h" />
@@ -290,6 +294,9 @@
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="External\imgui\imgui.vcxproj">
+      <Project>{64c6c7db-9760-4069-8793-f7da0c84314a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

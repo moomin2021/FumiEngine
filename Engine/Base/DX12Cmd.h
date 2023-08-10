@@ -19,6 +19,7 @@ private:
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_ = {};		// スワップチェーン設定
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;	// スワップチェーン
 
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};		// レンダーターゲットビューの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_ = {};	// デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;// レンダーターゲットビュー
 
@@ -141,6 +142,15 @@ private:
 	/// 深度バッファ生成
 	/// </summary>
 	void CreateDepthBuffer();
+#pragma endregion
+
+#pragma region ゲッター関数
+	public:
+	// バックバッファの数を取得
+	size_t GetBackBufferNum() { return backBuffers_.size(); }
+
+	// RTVの設定を取得
+	const D3D12_RENDER_TARGET_VIEW_DESC& GetRTVDesc() { return rtvDesc_; }
 #pragma endregion
 
 #pragma region 特殊関数
