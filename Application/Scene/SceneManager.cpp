@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Scene1.h"
+#include "Scene2.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 #include "ImGuiManager.h"
@@ -57,15 +58,22 @@ void SceneManager::ChangeScene(int changeSceneNum)
 		nowScene_ = std::make_unique<Scene1>();
 		nowScene_->Initialize();
 		break;
+	case SCENE::SCENE2:
+		nowScene_ = std::make_unique<Scene2>();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
 // XVˆ—
 void SceneManager::Update() {
 
-	if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
-	if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
-	if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
+	//if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
+	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
+	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
+
+	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE1);
+	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE2);
 
 	ImGuiManager::GetInstance()->Begin();
 

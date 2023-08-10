@@ -1,4 +1,4 @@
-#include "Scene1.h"
+#include "Scene2.h"
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
@@ -10,18 +10,18 @@
 #include <imgui_impl_win32.h>
 #include <imgui_impl_DX12.h>
 
-Scene1::Scene1() :
+Scene2::Scene2() :
 	key_(nullptr)
 {
 }
 
-Scene1::~Scene1()
+Scene2::~Scene2()
 {
 	CollisionManager::GetInstance()->RemoveCollider(rayCol_.get());
 	CollisionManager::GetInstance()->RemoveCollider(meshCol_.get());
 }
 
-void Scene1::Initialize()
+void Scene2::Initialize()
 {
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
@@ -57,7 +57,7 @@ void Scene1::Initialize()
 	// パーティクルエミッター生成
 	for (size_t i = 0; i < 10; i++) {
 		particleEmitters_[i] = std::make_unique<ParticleEmitter>();
-		particleEmitters_[i]->SetSpawnPos({(i * 1.0f) - 4.5f, 0.0f, 0.0f});
+		particleEmitters_[i]->SetSpawnPos({ (i * 1.0f) - 4.5f, 0.0f, 0.0f });
 
 		for (size_t j = 0; j < 1000; j++) {
 			// パーティクル生成
@@ -91,7 +91,7 @@ void Scene1::Initialize()
 	Sound::Play(bgmKey_);
 
 #pragma region コライダー
-	rayCol_ = std::make_unique<RayCollider>(float3{ 0.0f, 2.0f, 0.0f }, Vector3{0.0f, -1.0f, 0.0f});
+	rayCol_ = std::make_unique<RayCollider>(float3{ 0.0f, 2.0f, 0.0f }, Vector3{ 0.0f, -1.0f, 0.0f });
 	rayCol_->SetAttribute(COL_ATTR_ALL);
 	meshCol_ = std::make_unique<MeshCollider>(object_.get());
 	meshCol_->SetAttribute(COL_ATTR_ALL);
@@ -101,7 +101,7 @@ void Scene1::Initialize()
 #pragma endregion
 }
 
-void Scene1::Update()
+void Scene2::Update()
 {
 	// パーティクル更新
 	for (auto& i : particleEmitters_) {
@@ -119,7 +119,7 @@ void Scene1::Update()
 	ImGui::Text("%f, %f, %f", inter.x, inter.y, inter.z);
 
 	ImGui::End();
- 
+
 	// オブジェクト更新
 	object_->Update();
 
@@ -130,7 +130,7 @@ void Scene1::Update()
 	CollisionManager::GetInstance()->CheckAllCollision();
 }
 
-void Scene1::Draw()
+void Scene2::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
