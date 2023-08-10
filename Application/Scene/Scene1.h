@@ -6,6 +6,9 @@
 #include "DirectionalLight.h"
 #include "Object3D.h"
 #include "ParticleEmitter.h"
+#include "RayCollider.h"
+#include "MeshCollider.h"
+#include "SphereCollider.h"
 
 #include <memory>
 
@@ -33,6 +36,15 @@ private:
 
 	// パーティクルエミッター
 	std::vector<std::unique_ptr<ParticleEmitter>> particleEmitters_;
+
+	// レイコライダー
+	std::unique_ptr<RayCollider> rayCol_ = nullptr;
+
+	// メッシュコライダー
+	std::unique_ptr<MeshCollider> meshCol_ = nullptr;
+
+	// 球コライダー
+	std::unique_ptr<SphereCollider> sphereCol_ = nullptr;
 
 	// パーティクル用画像ハンドル
 	uint16_t particlehandle_ = 0;

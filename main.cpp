@@ -41,19 +41,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Mouse::GetInstance()->Update();
 
 		// ImGui描画受付開始
-		ImGuiManager::GetInstance()->Begin();
+		//ImGuiManager::GetInstance()->Begin();
 
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
 		// ImGui描画受付終了
-		ImGuiManager::GetInstance()->End();
+		//ImGuiManager::GetInstance()->End();
 
 		// シーン管理クラス描画処理
 		SceneManager::GetInstance()->Draw();
 	
 		// ImGui描画処理
-		ImGuiManager::GetInstance()->Draw();
+		//ImGuiManager::GetInstance()->Draw();
 	}
 
 	return 0;

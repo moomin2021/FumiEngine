@@ -1,8 +1,17 @@
 #pragma once
+#include <wrl.h>
+#include <d3d12.h>
+
 class ImGuiManager
 {
+private:
+	// エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 #pragma region メンバ変数
 private:
+	// SRV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

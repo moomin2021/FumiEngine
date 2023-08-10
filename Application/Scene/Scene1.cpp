@@ -4,6 +4,11 @@
 #include "PipelineManager.h"
 #include "Sound.h"
 #include "CollisionManager.h"
+#include "CollisionAttribute.h"
+#include "ImGuiManager.h"
+
+#include <imgui_impl_win32.h>
+#include <imgui_impl_DX12.h>
 
 Scene1::Scene1() :
 	key_(nullptr)
@@ -41,7 +46,7 @@ void Scene1::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 
 	// モデル生成
-	model_ = std::make_unique<Model>("sphere");
+	model_ = std::make_unique<Model>("floor");
 
 	// オブジェクト生成
 	object_ = std::make_unique<Object3D>(model_.get());
@@ -83,6 +88,16 @@ void Scene1::Initialize()
 	bgmKey_ = Sound::LoadWave("Resources/Sound/a.wav");
 	Sound::SetVolume(bgmKey_, 0.001f);
 	Sound::Play(bgmKey_);
+
+#pragma region コライダー
+	rayCol_ = std::make_unique<RayCollider>(float3{ 0.0f, 2.0f, 0.0f }, Vector3{0.0f, -1.0f, 0.0f});
+	rayCol_->SetAttribute(COL_ATTR_ALL);
+	meshCol_ = std::make_unique<MeshCollider>(object_.get());
+	meshCol_->SetAttribute(COL_ATTR_ALL);
+
+	CollisionManager::GetInstance()->AddCollider(rayCol_.get());
+	CollisionManager::GetInstance()->AddCollider(meshCol_.get());
+#pragma endregion
 }
 
 void Scene1::Update()
@@ -91,6 +106,18 @@ void Scene1::Update()
 	for (auto& i : particleEmitters_) {
 		i->Update(BILLBOARD::ALL);
 	}
+
+	float3 inter = {};
+
+	if (meshCol_->GetIsHit()) {
+		inter = meshCol_->GetInter();
+	}
+
+	ImGui::Begin("Test");
+
+	ImGui::Text("%f, %f, %f", inter.x, inter.y, inter.z);
+
+	ImGui::End();
  
 	// オブジェクト更新
 	object_->Update();

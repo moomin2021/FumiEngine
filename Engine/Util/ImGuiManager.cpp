@@ -6,6 +6,8 @@
 #include <imgui_impl_win32.h>
 #include <imgui_impl_DX12.h>
 
+#include <cassert>
+
 ImGuiManager* ImGuiManager::GetInstance()
 {
 	static ImGuiManager inst;
@@ -19,6 +21,16 @@ void ImGuiManager::Initialize()
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();
 	Texture* tex = Texture::GetInstance();
 
+	// デスクリプタヒープ設定
+	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	desc.NumDescriptors = 1;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+	// デスクリプタヒープ生成
+	HRESULT result = dx12->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
+	assert(SUCCEEDED(result));
+
 	// ImGuiのコンテキストを生成
 	ImGui::CreateContext();
 
@@ -27,8 +39,8 @@ void ImGuiManager::Initialize()
 
 	ImGui_ImplWin32_Init(winAPI->GetHWND());
 
-	ImGui_ImplDX12_Init(dx12->GetDevice(), static_cast<int>(dx12->GetBackBufferNum()), dx12->GetRTVDesc().Format,
-		tex->GetSRVHeap(), tex->GetSRVHeap()->GetCPUDescriptorHandleForHeapStart(), tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart());
+	ImGui_ImplDX12_Init(dx12->GetDevice(), static_cast<uint32_t>(dx12->GetBackBufferNum()), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+		srvHeap_.Get(), srvHeap_->GetCPUDescriptorHandleForHeapStart(), srvHeap_->GetGPUDescriptorHandleForHeapStart());
 
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -55,7 +67,7 @@ void ImGuiManager::Draw()
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
 	// デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetInstance()->GetSRVHeap() };
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap_.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 描画コマンドを発行
@@ -70,4 +82,6 @@ ImGuiManager::~ImGuiManager()
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	srvHeap_.Reset();
 }
