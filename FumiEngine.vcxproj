@@ -90,6 +90,7 @@
     <ClCompile Include="Application\Bullet.cpp" />
     <ClCompile Include="Application\Enemy\Enemy.cpp" />
     <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Application\ItemManager.cpp" />
     <ClCompile Include="Application\Player\Player.cpp" />
     <ClCompile Include="Application\Enemy\Enemy0.cpp" />
     <ClCompile Include="Application\Boss\BossGenerator.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Application\Boss\BossGenerator.h" />
     <ClInclude Include="Application\Boss\Boss.h" />
     <ClInclude Include="Application\Enemy\BossManager.h" />
+    <ClInclude Include="Application\ItemManager.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Base\PipelineManager.h" />

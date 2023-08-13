@@ -2,6 +2,7 @@
 #include "CollisionPrimitive.h"
 #include "Collision.h"
 #include "MeshCollider.h"
+#include "RayCollider.h"
 
 CollisionManager::~CollisionManager()
 {
@@ -98,8 +99,13 @@ void CollisionManager::CheckAllCollision()
 			if (result) {
 				colA->SetIsHit(true);
 				colA->SetInter(inter);
+				colA->SetCollider(it_hit);
 				it_hit->SetIsHit(true);
 				it_hit->SetInter(inter);
+				it_hit->SetCollider(colA);
+
+				RayCollider* rayCollider = dynamic_cast<RayCollider*>(colA);
+				rayCollider->SetDist(distance);
 			}
 		}
 
@@ -121,8 +127,10 @@ void CollisionManager::CheckAllCollision()
 					if (Collision::CheckSphere2Sphere(*sphereA, *sphereB, &inter)) {
 						colA->SetIsHit(true);
 						colA->SetInter(inter);
+						colA->SetCollider(colB);
 						colB->SetIsHit(true);
 						colB->SetInter(inter);
+						colB->SetCollider(colA);
 					}
 				}
 

@@ -78,6 +78,12 @@ const float3 operator-(const float3& f1, const float3& f2)
 	return tmp -= f2;
 }
 
+const float3 operator-(const float3& f, const Vector3& v)
+{
+	float3 tmp(f);
+	return tmp -= v;
+}
+
 const float3 operator*(const float3& f, float s)
 {
 	float3 tmp(f);

@@ -8,6 +8,9 @@ class RayCollider : public BaseCollider, public Ray
 #pragma region メンバ変数
 	// オブジェクト中心からのオフセット
 	float3 offset_;
+
+	// 距離
+	float dist_ = 0.0f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -36,5 +39,12 @@ public:
 	/// </summary>
 	/// <param name="dir"> 方向 </param>
 	void SetDir(const Vector3& dir) { Ray::dir = dir; }
+
+	void SetDist(float dist) { dist_ = dist; }
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	inline float GetDist() { return dist_; }
 #pragma endregion
 };

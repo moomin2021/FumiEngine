@@ -43,6 +43,7 @@ Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
 // ※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備している
 const Vector3 operator+(const Vector3& v1, const Vector3& v2);
 const Vector3 operator-(const Vector3& v1, const Vector3& v2);
+const Vector3 operator-(const Vector3& v, const float3& f);
 const Vector3 operator*(const Vector3& v, float s);
 const Vector3 operator*(float s, const Vector3& v);
 const Vector3 operator/(const Vector3& v, float s);

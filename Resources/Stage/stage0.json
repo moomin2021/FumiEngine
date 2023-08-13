@@ -220,6 +220,116 @@
                 ]
             },
             "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "item.000",
+            "transform": {
+                "translation": [
+                    -37.06503677368164,
+                    59.913246154785156,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "class_name": "Item"
+        },
+        {
+            "type": "MESH",
+            "name": "item.001",
+            "transform": {
+                "translation": [
+                    19.025165557861328,
+                    63.41888427734375,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "class_name": "Item"
+        },
+        {
+            "type": "MESH",
+            "name": "item.002",
+            "transform": {
+                "translation": [
+                    -14.528793334960938,
+                    47.893917083740234,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "class_name": "Item"
+        },
+        {
+            "type": "MESH",
+            "name": "item.003",
+            "transform": {
+                "translation": [
+                    8.50825309753418,
+                    35.87458801269531,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "class_name": "Item"
+        },
+        {
+            "type": "MESH",
+            "name": "item.004",
+            "transform": {
+                "translation": [
+                    -38.56745147705078,
+                    30.3657283782959,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "class_name": "Item"
         }
     ]
 }

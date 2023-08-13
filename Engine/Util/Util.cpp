@@ -53,11 +53,18 @@ std::vector<wchar_t> Util::StringToWideChar(const std::string& str)
 	return wchar;
 }
 
-uint64_t Util::GetTime()
+uint64_t Util::GetTimeSec()
 {
 	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
 
 	return sec;
+}
+
+uint64_t Util::GetTimrMil()
+{
+	uint64_t mil = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+
+	return mil;
 }
 
 uint16_t Util::GetRandomInt(uint16_t min, uint16_t max)

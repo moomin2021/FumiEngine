@@ -54,7 +54,8 @@ namespace Util {
 	/// ゲームを起動してからの起動時間を取得(s)
 	/// </summary>
 	/// <returns> 時間(s) </returns>
-	uint64_t GetTime();
+	uint64_t GetTimeSec();
+	uint64_t GetTimrMil();
 
 	// ランダム
 	/// <summary>

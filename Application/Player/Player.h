@@ -6,6 +6,7 @@
 #include "Sprite.h"
 #include "RayCollider.h"
 #include "SphereCollider.h"
+#include "ItemManager.h"
 
 #include <memory>
 
@@ -40,6 +41,17 @@ private:
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_;// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_;// 残弾数表示スプライト
+	float shotInterval_ = 0.5f;
+	uint64_t shotTime_ = 0;
+
+	// 操作ヒント
+	std::unique_ptr<Sprite> opeTips_ = nullptr;
+	uint16_t opeTipsHandle_ = 0;
+	bool isHitItem = false;
+
+	// アイテム
+	std::vector<uint8_t> items_;
+	ItemManager* itemManager_ = nullptr;
 
 	// リロード
 	bool isReload_ = false;	// リロードしているか

@@ -10,6 +10,9 @@
 #include "Util.h"
 #include "WinAPI.h"
 #include "ParticleEmitter.h"
+#include "SphereCollider.h"
+
+#include <imgui_impl_DX12.h>
 
 Player::Player()
 {
@@ -17,6 +20,9 @@ Player::Player()
 	float2 winSize = {
 		static_cast<float>(WinAPI::GetInstance()->GetWidth()),
 		static_cast<float>(WinAPI::GetInstance()->GetHeight()) };
+
+	itemManager_ = ItemManager::GetInstace();
+	itemManager_->Initialize();
 
 #pragma region 入力クラス
 	// 入力クラスインスタンス取得
@@ -92,7 +98,6 @@ Player::Player()
 	// レイのコライダーを生成
 	eyeCollider_ = std::make_unique<RayCollider>(camera_->GetEye());
 	eyeCollider_->SetAttribute(COL_PLAYER_RAY);
-	eyeCollider_->SetIsCollision(false);
 
 	// コライダーを追加
 	CollisionManager::GetInstance()->AddCollider(eyeCollider_.get());
@@ -126,6 +131,16 @@ Player::Player()
 	sReloadUI_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
 	sReloadUI_->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
 #pragma endregion
+
+#pragma region 操作ヒント
+	opeTips_ = std::make_unique<Sprite>();
+	opeTips_->SetPosition({ 950.0f, 550.0f });
+	opeTips_->SetSize({ 250.0f, 50.0f });
+
+	opeTipsHandle_ = LoadTexture("Resources/operationTips0.png");
+#pragma endregion
+
+	items_.resize(2);
 }
 
 Player::~Player()
@@ -136,20 +151,41 @@ Player::~Player()
 
 void Player::Update()
 {
+	maxBullet_ = 30 + (items_[0] * 3);
+	shotInterval_ = 0.5f * (1.0f / (0.15f * items_[1] + 1.0f));
+
 	// 状態別更新処理
 	(this->*stateTable[state_])();
 
 	if (key_->TriggerKey(DIK_0)) {
-		uint64_t s = Util::GetTime();
+		uint64_t s = Util::GetTimeSec();
 	}
 
 	// プレイヤーのコライダー更新
 	playerCollider_->SetOffset(camera_->GetEye() + float3(0.0f, 1.0f, 0.0f));
 
+	itemManager_->Update();
+
 	OnCollision();
 
 	// カメラの更新
 	camera_->Update();
+
+	ImGui::Begin("Player");
+
+	float3 pos = camera_->GetEye();
+
+	ImGui::Text("Pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
+
+	ImGui::End();
+
+	ImGui::Begin("Item");
+
+	ImGui::Text("Magazine = %d", items_[0]);
+	ImGui::Text("Syringe = %d", items_[1]);
+	ImGui::Text("bool = %d", isHitItem);
+
+	ImGui::End();
 }
 
 void Player::Object3DDraw()
@@ -157,6 +193,8 @@ void Player::Object3DDraw()
 	for (auto& bullets : bullets_) {
 		bullets->Draw();
 	}
+
+	itemManager_->Draw();
 }
 
 void Player::FrontSpriteDraw()
@@ -177,6 +215,9 @@ void Player::FrontSpriteDraw()
 
 	// 残弾数表示枠を描画
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
+
+	// 操作ヒント描画
+	if (isHitItem) opeTips_->Draw(opeTipsHandle_);
 }
 
 void (Player::* Player::stateTable[]) () = {
@@ -237,18 +278,20 @@ void Player::Shoot()
 		}
 	}
 
-	eyeCollider_->SetIsCollision(false);
+	float result = (Util::GetTimrMil() - shotTime_) / 1000.0f;
 
 	// 残弾数が0以下ならこの後の処理を飛ばす
 	if (nowBullet_ <= 0) return;
 
 	// マウスを左クリックしていなかったらこの後の処理を飛ばす
-	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT) == false) return;
+	if (mouse_->PushMouseButton(MouseButton::M_LEFT) == false) return;
+
+	if (!(result >= shotInterval_)) return;
+
+	shotTime_ = Util::GetTimrMil();
 
 	// 残弾数を減らす
 	nowBullet_--;
-
-	eyeCollider_->SetIsCollision(true);
 
 	// 弾を生成
 	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), forwardVec_));
@@ -374,7 +417,7 @@ void Player::Reload()
 	// [R]キーが押されたらリロードを開始
 	if (key_->TriggerKey(DIK_R) && isReload_ == false) {
 		isReload_ = true;
-		startReloadTime = Util::GetTime();
+		startReloadTime = Util::GetTimeSec();
 		nowBullet_ = 0;
 	}
 
@@ -386,7 +429,7 @@ void Player::Reload()
 		sReloadUI_->SetRotation(rotaY);
 
 		// 何秒リロードしたか
-		uint64_t elapsedReloadTime = Util::GetTime() - startReloadTime;
+		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
 		// リロード時間を超えたらリロードを終える
 		if (elapsedReloadTime >= reloadTime_) {
 			isReload_ = false;
@@ -407,6 +450,30 @@ void Player::ColliderUpdate()
 void Player::OnCollision()
 {
 	if (playerCollider_->GetIsHit()) {
-		hp_ -= 1;
+		if (playerCollider_->GetCollider()->GetAttribute() == COL_ENEMY) {
+			hp_ -= 1;
+		}
+
+		else if (playerCollider_->GetCollider()->GetAttribute() == COL_WALL) {
+			float3 reject = camera_->GetEye() - playerCollider_->GetReject();
+			camera_->SetEye(reject);
+		}
+	}
+
+	isHitItem = false;
+	SphereCollider* it = nullptr;
+
+	if (eyeCollider_->GetIsHit()) {
+		if (eyeCollider_->GetCollider()->GetAttribute() == COL_ITEM) {
+			if (eyeCollider_->GetDist() <= 10.0f) {
+				isHitItem = true;
+				it = dynamic_cast<SphereCollider*>(eyeCollider_->GetCollider());
+			}
+		}
+	}
+
+	if (isHitItem && key_->TriggerKey(DIK_F)) {
+		items_[Util::GetRandomInt(0, 1)]++;
+		itemManager_->DeleteItem(it);
 	}
 }

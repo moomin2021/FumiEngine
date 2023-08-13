@@ -80,7 +80,7 @@ void (Enemy0::* Enemy0::stateTable[]) () = {
 void Enemy0::Wait()
 {
 	// 経過時間
-	uint64_t elapsedTime = Util::GetTime() - waitStartTime_;
+	uint64_t elapsedTime = Util::GetTimeSec() - waitStartTime_;
 
 	// 待機時間開始が指定時間以上ならランダム移動状態にする
 	if (waitStartTime_ <= elapsedTime) {
@@ -88,7 +88,7 @@ void Enemy0::Wait()
 		randomMoveVec_ = Vector3(
 			Util::GetRandomFloat(-1.0f, 1.0f), 0.0f,
 			Util::GetRandomFloat(-1.0f, 1.0f)).normalize();
-		rndMoveStartTime_ = Util::GetTime();
+		rndMoveStartTime_ = Util::GetTimeSec();
 	}
 
 	// プレイヤーとの距離
@@ -97,14 +97,14 @@ void Enemy0::Wait()
 	// プレイヤーが索敵範囲に入ったら追跡状態になる
 	if (searchRange_ >= dist) {
 		state_ = CHASE;
-		horizontalMoveStartTime_ = Util::GetTime();
+		horizontalMoveStartTime_ = Util::GetTimeSec();
 	}
 }
 
 void Enemy0::RandomMove()
 {
 	// 経過時間
-	uint64_t elapsedTime = Util::GetTime() - rndMoveStartTime_;
+	uint64_t elapsedTime = Util::GetTimeSec() - rndMoveStartTime_;
 
 	// 座標更新
 	float3 pos = object_->GetPosition() + (randomMoveVec_ * rndMoveSpd_);
@@ -113,7 +113,7 @@ void Enemy0::RandomMove()
 	// 経過時間が指定の時間をすぎたらランダム移動をやめる
 	if (rndMoveTime_ <= elapsedTime) {
 		state_ = WAIT;
-		waitStartTime_ = Util::GetTime();
+		waitStartTime_ = Util::GetTimeSec();
 	}
 
 	// プレイヤーとの距離
@@ -122,14 +122,14 @@ void Enemy0::RandomMove()
 	// プレイヤーが索敵範囲に入ったら追跡状態になる
 	if (searchRange_ >= dist) {
 		state_ = CHASE;
-		horizontalMoveStartTime_ = Util::GetTime();
+		horizontalMoveStartTime_ = Util::GetTimeSec();
 	}
 }
 
 void Enemy0::Chase()
 {
 	// 横移動経過時間
-	uint64_t elapsedTime = Util::GetTime() - horizontalMoveStartTime_;
+	uint64_t elapsedTime = Util::GetTimeSec() - horizontalMoveStartTime_;
 
 	// エネミーからプレイヤーまでの方向
 	float3 s = player_->GetPosition() - object_->GetPosition();
@@ -145,7 +145,7 @@ void Enemy0::Chase()
 	// 横移動経過時間が指定時間を過ぎたら横移動方向を切り替える
 	if (horizontalMoveSwitchTime_ <= elapsedTime) {
 		isMoveRight_ *= -1.0f;
-		horizontalMoveStartTime_ = Util::GetTime();
+		horizontalMoveStartTime_ = Util::GetTimeSec();
 	}
 
 	float3 pos = object_->GetPosition() + (enemy2Player * frontRearMoveSpd_) + (rightVec * horizontalMoveSpd_ * isMoveRight_);
@@ -166,15 +166,15 @@ void Enemy0::OnCollision()
 
 void Enemy0::Shoot()
 {
-	// 撃ってからの経過時間
-	uint64_t elapsedTime = Util::GetTime() - shootTime_;
+	//// 撃ってからの経過時間
+	//uint64_t elapsedTime = Util::GetTimeSec() - shootTime_;
 
-	// 経過時間が指定時間を過ぎたら撃つ
-	if (elapsedTime >= shootInterval_) {
-		// 撃った時間を記録
-		shootTime_ = Util::GetTime();
+	//// 経過時間が指定時間を過ぎたら撃つ
+	//if (elapsedTime >= shootInterval_) {
+	//	// 撃った時間を記録
+	//	shootTime_ = Util::GetTimeSec();
 
-		// 弾を生成
-		EnemyManager::AddBullet(ENEMY0, object_->GetPosition(), player_->GetPosition() - object_->GetPosition());
-	}
+	//	// 弾を生成
+	//	EnemyManager::AddBullet(ENEMY0, object_->GetPosition(), player_->GetPosition() - object_->GetPosition());
+	//}
 }

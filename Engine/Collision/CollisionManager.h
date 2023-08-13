@@ -24,7 +24,9 @@ public:
 	/// コライダーの追加
 	/// </summary>
 	/// <param name="collider"> コライダー </param>
-	inline void AddCollider(BaseCollider* collider) { colliders_.push_front(collider); }
+	inline void AddCollider(BaseCollider* collider) {
+		colliders_.push_front(collider);
+	}
 
 	/// <summary>
 	/// コライダーの削除

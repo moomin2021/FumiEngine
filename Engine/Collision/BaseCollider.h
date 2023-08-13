@@ -136,5 +136,9 @@ public:
 	/// </summary>
 	/// <returns> ƒxƒNƒgƒ‹ </returns>
 	inline const Vector3& GetReject() { return reject_; }
+
+	inline BaseCollider* GetCollider() { return collider_; }
+
+	inline uint16_t GetAttribute() { return attribute_; }
 #pragma endregion
 };

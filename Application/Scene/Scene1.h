@@ -4,6 +4,7 @@
 #include "EnemyManager.h"
 #include "Player.h"
 #include "MeshCollider.h"
+#include "ItemManager.h"
 
 class Scene1 : public BaseScene {
 #pragma region \‘¢‘Ì

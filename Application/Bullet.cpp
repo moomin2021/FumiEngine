@@ -8,7 +8,7 @@ Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector
 	data_.object = std::make_unique<Object3D>(model);
 
 	// 生成された時間を記録
-	generatedTime_ = Util::GetTime();
+	generatedTime_ = Util::GetTimeSec();
 
 	// プレイヤー
 	if (type == PLAYER) {
@@ -53,7 +53,7 @@ void Bullet::Update()
 	data_.object->Update();
 
 	// 生成されてからの経過時間
-	uint64_t elapsedTime = Util::GetTime() - generatedTime_;
+	uint64_t elapsedTime = Util::GetTimeSec() - generatedTime_;
 
 	// 経過時間が指定の時間を過ぎたら生存フラグを[OFF]にする
 	if (elapsedTime >= data_.aliveTime) {

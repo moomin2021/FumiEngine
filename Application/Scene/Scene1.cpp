@@ -25,6 +25,7 @@ Scene1::~Scene1() {
 
 void Scene1::Initialize()
 {
+
 #pragma region ライト
 	// 平行光源の生成と設定
 	dirLight_ = std::make_unique<DirectionalLight>();
@@ -54,6 +55,10 @@ void Scene1::Initialize()
 
 void Scene1::Update()
 {
+	if (Key::GetInstance()->TriggerKey(DIK_P)) {
+		int num = 0;
+	}
+
 	// 敵更新
 	enemyManager_->Update();
 
@@ -184,7 +189,12 @@ void Scene1::LoadStage(std::string fileName)
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
 			// 敵を追加
-			enemyManager_->CreateAddEnemy0(objectData.translation, objectData.scaling);
+			//enemyManager_->CreateAddEnemy0(objectData.translation, objectData.scaling);
+		}
+
+		else if (objectData.className == "Item") {
+			// アイテムを追加
+			ItemManager::GetInstace()->AddItem(objectData.translation);
 		}
 
 		else {
