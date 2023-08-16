@@ -99,6 +99,9 @@ void MeshCollider::ConstructTriangles(Model* model)
 	// モデルの持つメッシュリストを取得
 	const std::vector<Mesh>& meshes = model->GetMesh();
 
+	// オブジェクトに設定されているスケールを設定
+	float3 scale = object_->GetScale();
+
 	// 現在のメッシュの開始三角形番号を入れておく変数(0で初期化)
 	uint16_t start = 0;
 
@@ -127,9 +130,9 @@ void MeshCollider::ConstructTriangles(Model* model)
 			uint16_t idx2 = indexes[i * 3 + 2];
 
 			// 三角形の3頂点の座標を代入
-			tri.p0 = { vertices[idx0].pos.x, vertices[idx0].pos.y, vertices[idx0].pos.z };
-			tri.p1 = { vertices[idx1].pos.x, vertices[idx1].pos.y, vertices[idx1].pos.z };
-			tri.p2 = { vertices[idx2].pos.x, vertices[idx2].pos.y, vertices[idx2].pos.z };
+			tri.p0 = { vertices[idx0].pos.x * scale.x, vertices[idx0].pos.y * scale.y, vertices[idx0].pos.z * scale.z };
+			tri.p1 = { vertices[idx1].pos.x * scale.x, vertices[idx1].pos.y * scale.y, vertices[idx1].pos.z * scale.z };
+			tri.p2 = { vertices[idx2].pos.x * scale.x, vertices[idx2].pos.y * scale.y, vertices[idx2].pos.z * scale.z };
 
 			// 3頂点からの法線を計算
 			tri.ComputeNormal();

@@ -114,6 +114,12 @@ public:
 	inline const float3& GetPosition() { return position_; }
 
 	/// <summary>
+	/// 拡縮(XYZ)を取得
+	/// </summary>
+	/// <returns> 拡縮(XYZ) </returns>
+	inline const float3& GetScale() { return scale_; }
+
+	/// <summary>
 	/// ワールド行列を取得
 	/// </summary>
 	/// <returns> ワールド行列 </returns>

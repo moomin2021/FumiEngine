@@ -6,6 +6,7 @@ enum CollisionShapeType {
 	SHAPE_SPHERE,		// ‹…
 	SHAPE_MESH,			// ƒƒbƒVƒ…
 	SHAPE_RAY,			// ƒŒƒC
+	SHAPE_CUBE,
 };
 
 class BaseCollider {

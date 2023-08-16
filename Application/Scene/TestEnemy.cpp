@@ -17,13 +17,13 @@ void TestEnemy::Initialize()
 	colMgr_ = CollisionManager::GetInstance();
 
 	// モデル
-	model_ = std::make_unique<Model>("floor");
+	model_ = std::make_unique<Model>("cube");
 
 	// オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
 
 	// コライダー
-	collider_ = std::make_unique<MeshCollider>(object_.get());
+	collider_ = std::make_unique<CubeCollider>();
 	collider_->SetAttribute(COL_ENEMY);
 	collider_->LinkObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
