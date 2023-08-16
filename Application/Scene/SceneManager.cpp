@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "GameScene.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include "DX12Cmd.h"
@@ -35,7 +36,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// ç≈èâÇÃÉVÅ[Éì
-	nowScene_ = std::make_unique<Scene1>();
+	nowScene_ = std::make_unique<GameScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
@@ -54,6 +55,10 @@ void SceneManager::ChangeScene(int changeSceneNum)
 {
 	switch (changeSceneNum)
 	{
+	case SCENE::GAMESCENE:
+		nowScene_ = std::make_unique<GameScene>();
+		nowScene_->Initialize();
+		break;
 	case SCENE::SCENE1:
 		nowScene_ = std::make_unique<Scene1>();
 		nowScene_->Initialize();
@@ -72,7 +77,7 @@ void SceneManager::Update() {
 	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
-	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE1);
+	if (key_->TriggerKey(DIK_1)) ChangeScene(GAMESCENE);
 	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE2);
 
 	ImGuiManager::GetInstance()->Begin();

@@ -7,6 +7,7 @@
 
 // ƒV[ƒ“—ñ‹“Œ^
 enum SCENE {
+	GAMESCENE,
 	SCENE1,
 	SCENE2,
 };
