@@ -150,6 +150,26 @@ void CollisionManager::CheckAllCollision()
 						colB->SetReject(reject);
 					}
 				}
+
+				// ‹…‚Æ—§•û‘Ì
+				else if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_CUBE) {
+					Sphere* sphere = dynamic_cast<Sphere*>(colA);
+					Cube* cube = dynamic_cast<Cube*>(colB);
+					if (Collision::CheckSphere2Cube(*sphere, *cube)) {
+						colA->SetIsHit(true);
+						colB->SetIsHit(true);
+					}
+				}
+
+				// —§•û‘Ì‚Æ‹…
+				else if (colA->GetShapeType() == SHAPE_CUBE && colB->GetShapeType() == SHAPE_SPHERE) {
+					Cube* cube = dynamic_cast<Cube*>(colA);
+					Sphere* sphere = dynamic_cast<Sphere*>(colB);
+					if (Collision::CheckSphere2Cube(*sphere, *cube)) {
+						colA->SetIsHit(true);
+						colB->SetIsHit(true);
+					}
+				}
 			}
 		}
 	}

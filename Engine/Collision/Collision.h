@@ -41,6 +41,16 @@ public:
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
 	/// <summary>
+	/// 球と立方体の当たり判定チェック
+	/// </summary>
+	/// <param name="sphere"> 球 </param>
+	/// <param name="cube"> 立方体 </param>
+	/// <param name="inter"> 交点 </param>
+	/// <param name="reject"> 押し出しベクトル </param>
+	/// <returns> 交差しているか否か </returns>
+	static bool CheckSphere2Cube(const Sphere& sphere, const Cube& cube, Vector3* inter = nullptr, Vector3* reject = nullptr);
+
+	/// <summary>
 	/// レイと平面の当たり判定
 	/// </summary>
 	/// <param name="ray"> レイ </param>
