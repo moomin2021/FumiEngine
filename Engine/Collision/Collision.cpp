@@ -110,7 +110,7 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 	*closest = triangle.p0 + p0_p1 * v + p0_p2 * w;
 }
 
-bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter)
+bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter, Vector3* reject)
 {
 	Vector3 p;
 
@@ -129,6 +129,14 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 
 	// 疑似交点を計算
 	if (inter) *inter = p;
+
+	// 押し出すベクトルを計算
+	if (reject) {
+		float ds = Vector3Dot(sphere.center, triangle.normal);
+		float dt = Vector3Dot(triangle.p0, triangle.normal);
+		float rejectLen = dt - ds + sphere.radius;
+		*reject = triangle.normal * rejectLen;
+	}
 
 	return true;
 }

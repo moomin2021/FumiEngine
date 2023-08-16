@@ -125,6 +125,8 @@
     <ClCompile Include="Engine\Base\Sound.cpp" />
     <ClCompile Include="Engine\3d\ParticleEmitter.cpp" />
     <ClCompile Include="Application\Scene\Scene2.cpp" />
+    <ClCompile Include="Application\Scene\TestPlayer.cpp" />
+    <ClCompile Include="Application\Scene\TestEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -171,6 +173,8 @@
     <ClInclude Include="Engine\3d\ParticleEmitter.h" />
     <ClInclude Include="Engine\Util\ImGuiManager.h" />
     <ClInclude Include="Application\Scene\Scene2.h" />
+    <ClInclude Include="Application\Scene\TestPlayer.h" />
+    <ClInclude Include="Application\Scene\TestEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

@@ -28,6 +28,9 @@ protected:
 
 	// 衝突相手との交点
 	float3 inter_ = { 0.0f, 0.0f, 0.0f };
+
+	// 押し出しベクトル
+	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };
 #pragma endregion
 
 #pragma region メンバ関数
@@ -80,6 +83,12 @@ public:
 	/// </summary>
 	/// <param name="inter"> 交点 </param>
 	inline void SetInter(const float3& inter) { inter_ = inter; }
+
+	/// <summary>
+	/// 押し出しベクトルを設定
+	/// </summary>
+	/// <param name="reject"> 押し出しベクトル </param>
+	inline void SetReject(const Vector3& reject) { reject_ = reject; }
 #pragma endregion
 
 #pragma region ゲッター関数
@@ -101,5 +110,11 @@ public:
 	/// </summary>
 	/// <returns> 交点 </returns>
 	inline const float3& GetInter() { return inter_; }
+
+	/// <summary>
+	/// 押し出しベクトルを取得
+	/// </summary>
+	/// <returns> 押し出しベクトル </returns>
+	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

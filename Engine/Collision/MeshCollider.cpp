@@ -22,7 +22,7 @@ void MeshCollider::Update()
 	invMatWorld_ = Matrix4Inverse(object_->GetMatWorld());
 }
 
-bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
+bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Vector3* reject)
 {
 	// オブジェクトのローカル座標系での球を得る(半径はXスケールを参照)
 	Sphere localSphere;
@@ -37,7 +37,7 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 		const Triangle& triangle = *it;
 
 		// 球と三角形の当たり判定
-		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter)) {
+		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject)) {
 			if (inter) {
 				const Matrix4& matWorld = object_->GetMatWorld();
 

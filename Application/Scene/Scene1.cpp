@@ -15,11 +15,7 @@ Scene1::Scene1() :
 {
 }
 
-Scene1::~Scene1()
-{
-	CollisionManager::GetInstance()->RemoveCollider(rayCol_.get());
-	CollisionManager::GetInstance()->RemoveCollider(meshCol_.get());
-}
+Scene1::~Scene1() {}
 
 void Scene1::Initialize()
 {
@@ -28,7 +24,7 @@ void Scene1::Initialize()
 
 	// カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 1.0f, -20.0f });
+	camera_->SetEye({ 0.0f, 5.0f, -20.0f });
 
 	// カメラセット
 	Object3D::SetCamera(camera_.get());
@@ -46,82 +42,33 @@ void Scene1::Initialize()
 	// 平行光源セット
 	lightGroup_->AddDirLight(dirLight_.get());
 
-	// モデル生成
-	model_ = std::make_unique<Model>("floor");
-
-	// オブジェクト生成
-	object_ = std::make_unique<Object3D>(model_.get());
-	object_->SetPosition({ -1.0f, 0.0f, 0.0f });
-
-	particleEmitters_.resize(10);
-	// パーティクルエミッター生成
-	for (size_t i = 0; i < 10; i++) {
-		particleEmitters_[i] = std::make_unique<ParticleEmitter>();
-		particleEmitters_[i]->SetSpawnPos({(i * 1.0f) - 4.5f, 0.0f, 0.0f});
-
-		for (size_t j = 0; j < 1000; j++) {
-			// パーティクル生成
-			float3 pos{};// 座標
-			pos.x = Util::GetRandomFloat(-0.1f, 0.1f);
-			pos.y = Util::GetRandomFloat(-0.1f, 0.1f);
-			pos.z = Util::GetRandomFloat(-0.1f, 0.1f);
-
-			// 方向
-			float3 vel{};
-			vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
-			vel.y = Util::GetRandomFloat(-0.1f, 0.1f);
-			vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
-
-			// 加速度
-			float3 acc{};
-			acc.x = Util::GetRandomFloat(-0.001f, 0.0f);
-			acc.y = Util::GetRandomFloat(-0.001f, 0.0f);
-			acc.z = Util::GetRandomFloat(-0.001f, 0.0f);
-
-			particleEmitters_[i]->Add(1000, pos, vel, acc, 0.5f, 0.0f);
-		}
-	}
-
-	// パーティクル用画像読み込み
-	particlehandle_ = LoadTexture("Resources/effect1.png");
-
 	// サウンド読み込み＆再生
 	bgmKey_ = Sound::LoadWave("Resources/Sound/a.wav");
 	Sound::SetVolume(bgmKey_, 0.001f);
 	Sound::Play(bgmKey_);
 
-#pragma region コライダー
-	rayCol_ = std::make_unique<RayCollider>(float3{ 0.0f, 2.0f, 0.0f }, Vector3{0.0f, -1.0f, 0.0f});
-	rayCol_->SetAttribute(COL_ATTR_ALL);
-	meshCol_ = std::make_unique<MeshCollider>(object_.get());
-	meshCol_->SetAttribute(COL_ATTR_ALL);
+	// プレイヤー
+	player_ = std::make_unique<TestPlayer>();
+	player_->Initialize();
 
-	CollisionManager::GetInstance()->AddCollider(rayCol_.get());
-	CollisionManager::GetInstance()->AddCollider(meshCol_.get());
-#pragma endregion
+	// エネミー
+	enemy_ = std::make_unique<TestEnemy>();
+	enemy_->Initialize();
 }
 
 void Scene1::Update()
 {
-	// パーティクル更新
-	for (auto& i : particleEmitters_) {
-		i->Update(BILLBOARD::ALL);
-	}
+	// プレイヤー更新
+	player_->Update();
 
-	float3 inter = {};
+	// エネミー更新
+	enemy_->Update();
 
-	if (meshCol_->GetIsHit()) {
-		inter = meshCol_->GetInter();
-	}
+	// 衝突時処理
+	OnCollision();
 
-	ImGui::Begin("Test");
-
-	ImGui::Text("%f, %f, %f", inter.x, inter.y, inter.z);
-
-	ImGui::End();
- 
-	// オブジェクト更新
-	object_->Update();
+	// オブジェクト更新処理
+	ObjUpdate();
 
 	// カメラの更新
 	camera_->Update();
@@ -134,13 +81,21 @@ void Scene1::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
-	// オブジェクト描画
-	object_->Draw();
+	// プレイヤー描画
+	player_->Draw();
 
-	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
+	// エネミー描画
+	enemy_->Draw();
+}
 
-	// パーティクル描画
-	for (auto& i : particleEmitters_) {
-		i->Draw(particlehandle_);
-	}
+void Scene1::ObjUpdate()
+{
+	player_->ObjUpdate();
+	enemy_->ObjUpdate();
+}
+
+void Scene1::OnCollision()
+{
+	player_->OnCollision();
+	enemy_->OnCollision();
 }

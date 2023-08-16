@@ -38,7 +38,7 @@ public:
 	/// <param name="triangle"> 三角形 </param>
 	/// <param name="inter"> 交点(三角形上の最近接点) </param>
 	/// <returns> 交差しているか否か </returns>
-	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr);
+	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
 	/// <summary>
 	/// レイと平面の当たり判定

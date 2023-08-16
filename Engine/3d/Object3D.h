@@ -108,6 +108,12 @@ public:
 
 #pragma region ゲッター関数
 	/// <summary>
+	/// 座標(XYZ)を取得
+	/// </summary>
+	/// <returns> 座標(XYZ) </returns>
+	inline const float3& GetPosition() { return position_; }
+
+	/// <summary>
 	/// ワールド行列を取得
 	/// </summary>
 	/// <returns> ワールド行列 </returns>

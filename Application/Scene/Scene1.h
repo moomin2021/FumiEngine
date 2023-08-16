@@ -9,6 +9,8 @@
 #include "RayCollider.h"
 #include "MeshCollider.h"
 #include "SphereCollider.h"
+#include "TestPlayer.h"
+#include "TestEnemy.h"
 
 #include <memory>
 
@@ -28,29 +30,14 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
-
-	// オブジェクト
-	std::unique_ptr<Object3D> object_ = nullptr;
-
-	// パーティクルエミッター
-	std::vector<std::unique_ptr<ParticleEmitter>> particleEmitters_;
-
-	// レイコライダー
-	std::unique_ptr<RayCollider> rayCol_ = nullptr;
-
-	// メッシュコライダー
-	std::unique_ptr<MeshCollider> meshCol_ = nullptr;
-
-	// 球コライダー
-	std::unique_ptr<SphereCollider> sphereCol_ = nullptr;
-
-	// パーティクル用画像ハンドル
-	uint16_t particlehandle_ = 0;
-
 	// BGMキー
 	uint16_t bgmKey_ = 0;
+
+	// プレイヤー
+	std::unique_ptr<TestPlayer> player_ = nullptr;
+
+	// エネミー
+	std::unique_ptr<TestEnemy> enemy_ = nullptr;
 
 	// --メンバ関数-- //
 public:
@@ -68,5 +55,12 @@ public:
 
 	// 描画処理
 	void Draw();
+
+private:
+	// オブジェクト更新処理
+	void ObjUpdate();
+
+	// 衝突時処理
+	void OnCollision();
 };
 
