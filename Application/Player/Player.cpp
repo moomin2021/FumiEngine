@@ -70,6 +70,13 @@ void Player::OnCollision()
 {
 	ImGui::Text("IsHit = %d", playerCol_->GetIsHit());
 	ImGui::End();
+
+	if (playerCol_->GetIsHit()) {
+		float3 reject = playerCol_->GetReject();
+		camera_->SetEye(camera_->GetEye() + reject);
+		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+		object_->SetPosition(camera_->GetEye());
+	}
 }
 
 void Player::Move()
