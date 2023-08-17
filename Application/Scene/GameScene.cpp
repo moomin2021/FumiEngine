@@ -40,7 +40,7 @@ void GameScene::Initialize()
 	Object3D::SetLightGroup(lightGroup_.get());
 
 	// ステージ読み込み
-	LoadStage("Resources/Stage/stage0.json");
+	LoadStage("Resources/Stage/stage1.json");
 }
 
 void GameScene::Update()

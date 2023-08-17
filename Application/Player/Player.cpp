@@ -182,14 +182,29 @@ void Player::OnCollision()
 		object_->SetPosition(camera_->GetEye());
 	}
 
-	if (legCol_->GetIsHit() && isGround_ == false) {
+	//if (legCol_->GetIsHit() && isGround_ == false) {
+	//	float3 reject = legCol_->GetReject();
+	//	camera_->SetEye(camera_->GetEye() + reject);
+	//	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	//	object_->SetPosition(camera_->GetEye());
+	//	gravity_ = 0.0f;
+	//	state_ = NORMAL;
+	//	isGround_ = true;
+	//}
+
+	if (legCol_->GetIsHit()) {
+		isGround_ = true;
+		state_ = NORMAL;
+		gravity_ = 0.0f;
 		float3 reject = legCol_->GetReject();
-		camera_->SetEye(camera_->GetEye() + reject);
+		camera_->SetEye(camera_->GetEye() + Vector3{0.0f, reject.y, 0.0f});
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 		object_->SetPosition(camera_->GetEye());
-		gravity_ = 0.0f;
-		state_ = NORMAL;
-		isGround_ = true;
+	}
+
+	else {
+		isGround_ = false;
+		state_ = AIR;
 	}
 }
 
@@ -377,10 +392,16 @@ void Player::EyeMove()
 void Player::Jump()
 {
 	// [SPACE]キーを押したらジャンプする
-	if (isGround_ && key_->TriggerKey(DIK_SPACE)) {
+	//if (isGround_ && key_->TriggerKey(DIK_SPACE)) {
+	//	gravity_ = -jumpSpd_;
+	//	isGround_ = false;
+	//	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	//	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	//	object_->SetPosition(camera_->GetEye());
+	//}
+
+	if (key_->TriggerKey(DIK_SPACE)) {
 		gravity_ = -jumpSpd_;
-		isGround_ = false;
-		state_ = AIR;
 		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 		object_->SetPosition(camera_->GetEye());
@@ -389,14 +410,20 @@ void Player::Jump()
 
 void Player::Fall()
 {
-	// 地面に着いていないなら落下処理をする
-	if (isGround_ == false) {
-		gravity_ += gAcc_;// 重力加速度を加算
-		gravity_ = Util::Clamp(gravity_, maxGravity_, -1000.0f);
-		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
-		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
-		object_->SetPosition(camera_->GetEye());
-	}
+	//// 地面に着いていないなら落下処理をする
+	//if (isGround_ == false) {
+	//	gravity_ += gAcc_;// 重力加速度を加算
+	//	gravity_ = Util::Clamp(gravity_, maxGravity_, -1000.0f);
+	//	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	//	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	//	object_->SetPosition(camera_->GetEye());
+	//}
+
+	gravity_ += gAcc_;// 重力加速度を加算
+	gravity_ = Util::Clamp(gravity_, maxGravity_, -1000.0f);
+	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	object_->SetPosition(camera_->GetEye());
 
 	//// カメラの座標が2.0f以下にならないように
 	//float3 eye = camera_->GetEye();

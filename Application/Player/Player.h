@@ -87,7 +87,7 @@ private:
 	float gravity_		= 0.0f;// 重力
 	float maxGravity_	= 1.5f;// 最大重力
 	float gAcc_			= 0.2f;// 重力加速度
-	float jumpSpd_		= 2.5f;// ジャンプ速度
+	float jumpSpd_		= 3.0f;// ジャンプ速度
 #pragma endregion
 
 #pragma region メンバ関数
