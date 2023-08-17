@@ -26,9 +26,10 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Ve
 {
 	// オブジェクトのローカル座標系での球を得る(半径はXスケールを参照)
 	Sphere localSphere;
-	localSphere.center = Matrix4Transform(sphere.center, invMatWorld_);
-	localSphere.radius *= Vector3(invMatWorld_.m[0][0], invMatWorld_.m[0][1], invMatWorld_.m[0][2]).length();// 注意
-	//localSphere.radius = sphere.radius;
+	localSphere.center = sphere.center - object_->GetPosition();
+	//localSphere.center = Matrix4Transform(sphere.center, invMatWorld_);
+	//localSphere.radius *= Vector3(invMatWorld_.m[0][0], invMatWorld_.m[0][1], invMatWorld_.m[0][2]).length();// 注意
+	localSphere.radius = sphere.radius;
 
 	// ローカル座標系で交差をチェック
 	std::vector<Triangle>::const_iterator it = triangles_.cbegin();

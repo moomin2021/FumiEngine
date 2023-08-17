@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "CollisionAttribute.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -27,10 +28,12 @@ void Player::Initialize()
 
 #pragma region オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
+	object_->SetPosition({ 0.0f, 2.0f, 0.0f });
 #pragma endregion
 
 #pragma region コライダー
 	playerCol_ = std::make_unique<SphereCollider>();
+	playerCol_->SetAttribute(COL_PLAYER);
 	playerCol_->LinkObject3D(object_.get());
 	colMgr_->AddCollider(playerCol_.get());// 追加
 #pragma endregion
@@ -49,7 +52,6 @@ void Player::Update()
 	ImGui::Begin("Player");
 	ImGui::Text("Pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
 	ImGui::Text("ForwardVec = {%f, %f, %f}", forwardVec_.x, forwardVec_.y, forwardVec_.z);
-	ImGui::End();
 }
 
 void Player::Draw()
@@ -66,6 +68,8 @@ void Player::ObjUpdate()
 
 void Player::OnCollision()
 {
+	ImGui::Text("IsHit = %d", playerCol_->GetIsHit());
+	ImGui::End();
 }
 
 void Player::Move()
@@ -105,6 +109,9 @@ void Player::Move()
 	// カメラを更新
 	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// オブジェクトの更新
+	object_->SetPosition(camera_->GetEye());
 }
 
 void Player::EyeMove()

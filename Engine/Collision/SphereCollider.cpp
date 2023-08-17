@@ -15,9 +15,7 @@ void SphereCollider::Update()
 
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {
-		// ワールド行列からワールド座標を抽出
-		const Matrix4& matWorld = object_->GetMatWorld();
-		Sphere::center = Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]) + Vector3(offset_);
+		Sphere::center = object_->GetPosition() + offset_;
 	}
 
 	else {
