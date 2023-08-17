@@ -40,7 +40,15 @@ void Player::Initialize()
 #pragma endregion
 
 #pragma region スプライト
-	// スプライト生成
+	// クロスヘア
+	sCrossHair_ = std::make_unique<Sprite>();
+	sCrossHair_->SetAnchorPoint({ 0.5f, 0.5f });
+	sCrossHair_->SetPosition({
+		WinAPI::GetInstance()->GetWidth() / 2.0f,
+		WinAPI::GetInstance()->GetHeight() / 2.0f });
+	sCrossHair_->SetSize({ 26, 26 });
+
+	// リロードUI
 	sReloadUI_ = std::make_unique<Sprite>();
 	sReloadUI_->SetAnchorPoint({ 0.5f, 0.5f });
 	sReloadUI_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
@@ -76,6 +84,7 @@ void Player::Initialize()
 #pragma endregion
 
 #pragma region 画像読み込み
+	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 	reloadUIHandle_ = LoadTexture("Resources/reloadUI.png");
 	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
 	numberHandle_.resize(10);
@@ -124,7 +133,7 @@ void Player::DrawObject3D()
 void Player::DrawSprite()
 {
 	// クロスヘア描画
-	//sCrossHair_->Draw(crossHairHandle_);
+	sCrossHair_->Draw(crossHairHandle_);
 
 	// リロードUI描画
 	if (isReload_) sReloadUI_->Draw(reloadUIHandle_);

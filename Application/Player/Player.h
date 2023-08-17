@@ -53,6 +53,10 @@ private:
 	float maxMoveSpd_	= 1.0f;// 最大移動速度
 	float moveAcc_		= 0.1f;// 移動加速度
 
+	// クロスヘア
+	uint16_t crossHairHandle_ = 0;
+	std::unique_ptr<Sprite> sCrossHair_ = nullptr;
+
 	// 弾
 	std::deque<std::unique_ptr<Bullet>> bullets_;
 	std::unique_ptr<Model> mBullet_ = nullptr;// 弾のモデル
@@ -62,7 +66,7 @@ private:
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_;// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_;// 残弾数表示スプライト
-	float shotInterval_ = 0.5f;// 撃つインターバル
+	float shotInterval_ = 0.1f;// 撃つインターバル
 	uint64_t shotTime_ = 0;// 弾を撃った時間
 	std::vector<uint16_t> numberHandle_;// 数字
 
