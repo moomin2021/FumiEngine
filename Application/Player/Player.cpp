@@ -24,6 +24,7 @@ void Player::Initialize()
 
 #pragma region モデル
 	model_ = std::make_unique<Model>("sphere");
+	mBullet_ = std::make_unique<Model>("sphere");
 #pragma endregion
 
 #pragma region オブジェクト
@@ -44,8 +45,8 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	EyeMove();
-	Move();
+	// 状態別更新処理
+	(this->*stateTable[state_])();
 
 	float3 pos = camera_->GetEye();
 
@@ -57,6 +58,8 @@ void Player::Update()
 void Player::Draw()
 {
 	//object_->Draw();
+
+	for (auto& it : bullets_) it->Draw();
 }
 
 void Player::ObjUpdate()
@@ -77,6 +80,60 @@ void Player::OnCollision()
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 		object_->SetPosition(camera_->GetEye());
 	}
+}
+
+void (Player::* Player::stateTable[]) () = {
+	&Player::Normal,// 通常状態
+	&Player::Air,	// 空中状態
+};
+
+void Player::Normal()
+{
+	// 視点操作
+	EyeMove();
+
+	// 移動操作
+	Move();
+
+	// 撃つ処理
+	Shoot();
+}
+
+void Player::Air()
+{
+}
+
+void Player::Shoot()
+{
+	for (auto it = bullets_.begin(); it != bullets_.end();) {
+		// 弾の更新
+		(*it)->Update();
+
+		// 弾の生存フラグが[OFF]になったら弾を削除
+		if ((*it)->GetIsAlive() == false) it = bullets_.erase(it);
+		else ++it;
+	}
+
+	// 最後に弾を撃ってからの経過時間
+	float result = (Util::GetTimrMil() - shotTime_) / 1000.0f;
+
+	// 残弾数が0以下ならこの後の処理を飛ばす
+	if (nowBullet_ <= 0) return;
+
+	// マウスを左クリックしていなかったらこの後の弾を飛ばす
+	if (mouse_->PushMouseButton(MouseButton::M_LEFT) == false) return;
+
+	// 経過時間が指定時間を過ぎていなかったら処理を飛ばす
+	if (!(result >= shotInterval_)) return;
+
+	// 弾を撃った時間を記録
+	shotTime_ = Util::GetTimrMil();
+
+	// 残弾を減らす
+	nowBullet_--;
+
+	// 弾を生成
+	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), forwardVec_));
 }
 
 void Player::Move()

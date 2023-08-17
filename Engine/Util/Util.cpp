@@ -67,3 +67,17 @@ float Util::GetRandomFloat(float min, float max) {
 	std::uniform_real_distribution<float> dist(min, max);
 	return dist(engine);
 }
+
+uint64_t Util::GetTimeSec()
+{
+	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+
+	return sec;
+}
+
+uint64_t Util::GetTimrMil()
+{
+	uint64_t mil = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+
+	return mil;
+}
