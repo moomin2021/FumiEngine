@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "CollisionAttribute.h"
+#include "Texture.h"
+#include "WinAPI.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -11,6 +13,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	// ウィンドウサイズを取得
+	float2 winSize = {
+		static_cast<float>(WinAPI::GetInstance()->GetWidth()),
+		static_cast<float>(WinAPI::GetInstance()->GetHeight()) };
+
 #pragma region インスタンス取得
 	key_	= Key::GetInstance();	// キーボード
 	mouse_	= Mouse::GetInstance();	// マウス
@@ -30,6 +37,58 @@ void Player::Initialize()
 #pragma region オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
 	object_->SetPosition({ 0.0f, 2.0f, 0.0f });
+#pragma endregion
+
+#pragma region スプライト
+	// スプライト生成
+	sReloadUI_ = std::make_unique<Sprite>();
+	sReloadUI_->SetAnchorPoint({ 0.5f, 0.5f });
+	sReloadUI_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
+	sReloadUI_->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
+
+	// 残弾数表示UI用のスプライトを生成
+	sBulletValueDisplayFrame_ = std::make_unique<Sprite>();
+	sBulletValueDisplayFrame_->SetAnchorPoint({ 0.5f, 0.5f });
+	sBulletValueDisplayFrame_->SetSize({ 300.0f, 140.0f });
+	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 70.0f });
+
+	// 最大弾数表示用スプライト生成
+	sMaxBulletUI_.resize(2);
+	sMaxBulletUI_[0] = std::make_unique<Sprite>();
+	sMaxBulletUI_[1] = std::make_unique<Sprite>();
+	sMaxBulletUI_[0]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[1]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[0]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[1]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 30.0f });
+	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 30.0f });
+
+	// 残弾数表示スプライト
+	sNowBulletUI_.resize(2);
+	sNowBulletUI_[0] = std::make_unique<Sprite>();
+	sNowBulletUI_[1] = std::make_unique<Sprite>();
+	sNowBulletUI_[0]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[1]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[0]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[1]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[0]->SetPosition({ winSize.x - 247.0f, winSize.y - 30.0f });
+	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 30.0f });
+#pragma endregion
+
+#pragma region 画像読み込み
+	reloadUIHandle_ = LoadTexture("Resources/reloadUI.png");
+	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
+	numberHandle_.resize(10);
+	numberHandle_[0] = LoadTexture("Resources/number0.png");
+	numberHandle_[1] = LoadTexture("Resources/number1.png");
+	numberHandle_[2] = LoadTexture("Resources/number2.png");
+	numberHandle_[3] = LoadTexture("Resources/number3.png");
+	numberHandle_[4] = LoadTexture("Resources/number4.png");
+	numberHandle_[5] = LoadTexture("Resources/number5.png");
+	numberHandle_[6] = LoadTexture("Resources/number6.png");
+	numberHandle_[7] = LoadTexture("Resources/number7.png");
+	numberHandle_[8] = LoadTexture("Resources/number8.png");
+	numberHandle_[9] = LoadTexture("Resources/number9.png");
 #pragma endregion
 
 #pragma region コライダー
@@ -55,11 +114,34 @@ void Player::Update()
 	ImGui::Text("ForwardVec = {%f, %f, %f}", forwardVec_.x, forwardVec_.y, forwardVec_.z);
 }
 
-void Player::Draw()
+void Player::DrawObject3D()
 {
 	//object_->Draw();
 
 	for (auto& it : bullets_) it->Draw();
+}
+
+void Player::DrawSprite()
+{
+	// クロスヘア描画
+	//sCrossHair_->Draw(crossHairHandle_);
+
+	// リロードUI描画
+	if (isReload_) sReloadUI_->Draw(reloadUIHandle_);
+
+	// 最大弾数を表示
+	sMaxBulletUI_[0]->Draw(numberHandle_[maxBullet_ / 10]);
+	sMaxBulletUI_[1]->Draw(numberHandle_[maxBullet_ % 10]);
+
+	// 残弾数を表示
+	sNowBulletUI_[0]->Draw(numberHandle_[nowBullet_ / 10]);
+	sNowBulletUI_[1]->Draw(numberHandle_[nowBullet_ % 10]);
+
+	// 残弾数表示枠を描画
+	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
+
+	// 操作ヒント描画
+	//if (isHitItem) opeTips_->Draw(opeTipsHandle_);
 }
 
 void Player::ObjUpdate()
@@ -97,6 +179,9 @@ void Player::Normal()
 
 	// 撃つ処理
 	Shoot();
+
+	// リロード処理
+	Reload();
 }
 
 void Player::Air()
@@ -134,6 +219,38 @@ void Player::Shoot()
 
 	// 弾を生成
 	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), forwardVec_));
+}
+
+void Player::Reload()
+{
+	// リロード開始時間[s]
+	static uint64_t startReloadTime = 0;
+
+	// リロードUI画像の角度
+	static float rotaY = 0.0f;
+
+	// [R]キーが押されたらリロードを開始
+	if (key_->TriggerKey(DIK_R) && isReload_ == false) {
+		isReload_ = true;
+		startReloadTime = Util::GetTimeSec();
+		nowBullet_ = 0;
+	}
+
+	// リロードしていたらする処理
+	if (isReload_) {
+
+		// リロード画像を回転
+		rotaY -= 3.0f;
+		sReloadUI_->SetRotation(rotaY);
+
+		// 何秒リロードしたか
+		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
+		// リロード時間を超えたらリロードを終える
+		if (elapsedReloadTime >= reloadTime_) {
+			isReload_ = false;
+			nowBullet_ = maxBullet_;
+		}
+	}
 }
 
 void Player::Move()

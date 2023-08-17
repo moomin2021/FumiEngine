@@ -63,7 +63,12 @@ void GameScene::Draw()
 	stageMgr_->Draw();
 
 	// プレイヤー
-	player_->Draw();
+	player_->DrawObject3D();
+
+	PipelineManager::PreDraw("Sprite");
+
+	// プレイヤー前面スプライト描画
+	player_->DrawSprite();
 }
 
 void GameScene::ObjUpdate()

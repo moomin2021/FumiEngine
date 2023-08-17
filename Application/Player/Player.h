@@ -53,7 +53,7 @@ private:
 	float maxMoveSpd_	= 1.0f;// 最大移動速度
 	float moveAcc_		= 0.1f;// 移動加速度
 
-	// 弾のクラス
+	// 弾
 	std::deque<std::unique_ptr<Bullet>> bullets_;
 	std::unique_ptr<Model> mBullet_ = nullptr;// 弾のモデル
 	uint8_t maxBullet_ = 30;// 最大弾数
@@ -64,6 +64,13 @@ private:
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_;// 残弾数表示スプライト
 	float shotInterval_ = 0.5f;// 撃つインターバル
 	uint64_t shotTime_ = 0;// 弾を撃った時間
+	std::vector<uint16_t> numberHandle_;// 数字
+
+	// リロード
+	bool isReload_ = false;	// リロードしているか
+	uint8_t reloadTime_ = 3;// リロード時間
+	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
+	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
 #pragma endregion
 
 #pragma region メンバ関数
@@ -78,7 +85,8 @@ public:
 	void Update();
 
 	// 描画処理
-	void Draw();
+	void DrawObject3D();
+	void DrawSprite();
 
 	// オブジェクト更新処理
 	void ObjUpdate();
@@ -93,6 +101,7 @@ private:
 
 	// 行動関数
 	void Shoot();
+	void Reload();
 	void Move();
 	void EyeMove();
 #pragma endregion
