@@ -13,6 +13,9 @@ void RayCollider::Update()
 	// 衝突フラグを初期化
 	isHit_ = false;
 
+	// 押し出しベクトルをリセット
+	reject_ = { 0.0f, 0.0f, 0.0f };
+
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {
 		// ワールド行列からワールド座標を抽出

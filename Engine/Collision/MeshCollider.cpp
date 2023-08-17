@@ -18,6 +18,9 @@ void MeshCollider::Update()
 	// 衝突フラグを初期化
 	isHit_ = false;
 
+	// 押し出しベクトルをリセット
+	reject_ = { 0.0f, 0.0f, 0.0f };
+
 	// ワールド行列の逆行列を計算
 	invMatWorld_ = Matrix4Inverse(object_->GetMatWorld());
 }

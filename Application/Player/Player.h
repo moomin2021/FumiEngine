@@ -17,6 +17,11 @@ class Player
 		AIR,	// 空中状態
 	};
 
+	std::vector<std::string> stateName_ = {
+		"NORMAL",
+		"AIR"
+	};
+
 #pragma region メンバ変数
 private:
 	// インスタンス
@@ -35,6 +40,7 @@ private:
 
 	// コライダー
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーのコライダー
+	std::unique_ptr<SphereCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
 
 	// 状態
 	State state_ = NORMAL;
@@ -75,6 +81,13 @@ private:
 	uint8_t reloadTime_ = 3;// リロード時間
 	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
 	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
+
+	// ジャンプ用
+	bool isGround_ = true;// 地面についているか
+	float gravity_		= 0.0f;// 重力
+	float maxGravity_	= 1.5f;// 最大重力
+	float gAcc_			= 0.2f;// 重力加速度
+	float jumpSpd_		= 2.5f;// ジャンプ速度
 #pragma endregion
 
 #pragma region メンバ関数
@@ -104,9 +117,11 @@ private:
 	void Air();		// 空中状態
 
 	// 行動関数
-	void Shoot();
-	void Reload();
-	void Move();
-	void EyeMove();
+	void Shoot();	// 弾を撃つ
+	void Reload();	// リロード処理
+	void Move();	// 移動操作
+	void EyeMove();	// 視点操作
+	void Jump();	// ジャンプ処理
+	void Fall();	// 落下処理
 #pragma endregion
 };

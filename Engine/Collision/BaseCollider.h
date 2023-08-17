@@ -90,6 +90,12 @@ public:
 	/// </summary>
 	/// <param name="reject"> 押し出しベクトル </param>
 	inline void SetReject(const Vector3& reject) { reject_ = reject; }
+
+	/// <summary>
+	/// 押し出しベクトルを加算
+	/// </summary>
+	/// <param name="reject"></param>
+	inline void AddReject(const Vector3& reject) { reject_ += reject; }
 #pragma endregion
 
 #pragma region ゲッター関数

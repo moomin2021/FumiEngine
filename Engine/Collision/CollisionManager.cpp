@@ -127,10 +127,10 @@ void CollisionManager::CheckAllCollision()
 					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
 						colA->SetIsHit(true);
 						colA->SetInter(inter);
-						colA->SetReject(reject);
+						colA->AddReject(reject);
 						colB->SetIsHit(true);
 						colB->SetInter(inter);
-						colB->SetReject(reject);
+						colB->AddReject(reject);
 					}
 				}
 
@@ -144,10 +144,10 @@ void CollisionManager::CheckAllCollision()
 					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
 						colA->SetIsHit(true);
 						colA->SetInter(inter);
-						colA->SetReject(reject);
+						colA->AddReject(reject);
 						colB->SetIsHit(true);
 						colB->SetInter(inter);
-						colB->SetReject(reject);
+						colB->AddReject(reject);
 					}
 				}
 
