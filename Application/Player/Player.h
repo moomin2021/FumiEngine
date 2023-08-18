@@ -31,6 +31,7 @@ private:
 
 	// 視点カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
+	float fovAngleY_ = 70.0f;
 
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
@@ -87,7 +88,11 @@ private:
 	float gravity_		= 0.0f;// 重力
 	float maxGravity_	= 1.5f;// 最大重力
 	float gAcc_			= 0.2f;// 重力加速度
-	float jumpSpd_		= 3.0f;// ジャンプ速度
+	float jumpSpd_		= 1.5f;// ジャンプ速度
+
+	// ダッシュ
+	bool isDash_ = false;
+	float dashSpd_ = 2.0f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -123,5 +128,6 @@ private:
 	void EyeMove();	// 視点操作
 	void Jump();	// ジャンプ処理
 	void Fall();	// 落下処理
+	void Dash();	// 走行処理
 #pragma endregion
 };

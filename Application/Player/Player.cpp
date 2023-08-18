@@ -28,6 +28,7 @@ void Player::Initialize()
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 2.0f, 0.0f });
+	camera_->SetFovAngleY(fovAngleY_);
 #pragma endregion
 
 #pragma region モデル
@@ -206,6 +207,14 @@ void Player::OnCollision()
 		isGround_ = false;
 		state_ = AIR;
 	}
+
+	if (key_->PushKey(DIK_LSHIFT) && key_->PushKey(DIK_W)) {
+		isDash_ = true;
+	}
+
+	else {
+		isDash_ = false;
+	}
 }
 
 void (Player::* Player::stateTable[]) () = {
@@ -229,6 +238,9 @@ void Player::Normal()
 
 	// リロード処理
 	Reload();
+
+	// 走行処理
+	Dash();
 }
 
 void Player::Air()
@@ -247,6 +259,9 @@ void Player::Air()
 
 	// リロード処理
 	Reload();
+
+	// 走行処理
+	Dash();
 }
 
 void Player::Shoot()
@@ -328,7 +343,8 @@ void Player::Move()
 	else							moveSpd_ -= moveAcc_;
 
 	// 速度制限
-	moveSpd_ = Util::Clamp(moveSpd_, maxMoveSpd_, 0.0f);
+	if (isDash_) moveSpd_ = Util::Clamp(moveSpd_, dashSpd_, 0.0f);
+	else moveSpd_ = Util::Clamp(moveSpd_, maxMoveSpd_, 0.0f);
 
 	// 正面ベクトルの移動量
 	Vector3 forwardMoveVec = {
@@ -437,4 +453,16 @@ void Player::Fall()
 
 	//// カメラの座標更新
 	//camera_->SetEye(eye);
+}
+
+void Player::Dash()
+{
+	static float time = 1.0f;
+
+	if (isDash_) fovAngleY_ += 2.0f;
+	else fovAngleY_ -= 2.0f;
+
+	fovAngleY_ = Util::Clamp(fovAngleY_, 80.0f, 70.0f);
+
+	camera_->SetFovAngleY(fovAngleY_);
 }
