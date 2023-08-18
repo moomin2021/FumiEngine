@@ -11,9 +11,10 @@ Player::~Player()
 	colMgr_->RemoveCollider(playerCol_.get());
 	colMgr_->RemoveCollider(legCol_.get());
 	colMgr_->RemoveCollider(climbCol_.get());
+	colMgr_->RemoveCollider(eyeCol_.get());
 }
 
-void Player::Initialize()
+void Player::Initialize(EnemyManager* enemyMgr)
 {
 	// ウィンドウサイズを取得
 	float2 winSize = {
@@ -24,6 +25,7 @@ void Player::Initialize()
 	key_	= Key::GetInstance();	// キーボード
 	mouse_	= Mouse::GetInstance();	// マウス
 	colMgr_ = CollisionManager::GetInstance();// コリジョンマネージャー
+	enemyMgr_ = enemyMgr;
 #pragma endregion
 
 #pragma region カメラ
@@ -124,6 +126,13 @@ void Player::Initialize()
 	climbCol_->SetAttribute(COL_FRONT);
 	climbCol_->LinkObject3D(testObj_.get());
 	colMgr_->AddCollider(climbCol_.get());
+
+	// 視点コライダー
+	eyeCol_ = std::make_unique<RayCollider>();
+	eyeCol_->SetAttribute(COL_PLAYER_RAY);
+	eyeCol_->LinkObject3D(object_.get());
+	colMgr_->AddCollider(eyeCol_.get());
+
 #pragma endregion
 
 	// カメラをオブジェクト3Dに適用
@@ -134,6 +143,9 @@ void Player::Update()
 {
 	// 状態別更新処理
 	(this->*stateTable[state_])();
+
+	// レイの方向を設定
+	eyeCol_->SetDir(forwardVec_);
 
 	float3 pos = object_->GetPosition();
 
@@ -250,7 +262,19 @@ void Player::OnCollision()
 		//object_->SetPosition(camera_->GetEye());
 	}
 
-	ImGui::Text("IsHit = %d", climbCol_->GetIsHit());
+	bool isBossGen = false;
+
+	if (eyeCol_->GetIsHit()) {
+		if (eyeCol_->GetCollider()->GetAttribute() == COL_BOSSGENERATOR) {
+			isBossGen = true;
+		}
+	}
+
+	if (isBossGen && key_->TriggerKey(DIK_F)) {
+		enemyMgr_->SummonBoss();
+	}
+
+	ImGui::Text("IsHit = %d", isBossGen);
 	ImGui::Text("Gravity = %f", gravity_);
 	ImGui::Text("State = %s", stateName_[state_].c_str());
 	ImGui::End();

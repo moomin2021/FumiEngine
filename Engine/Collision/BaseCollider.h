@@ -32,6 +32,8 @@ protected:
 
 	// 押し出しベクトル
 	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };
+
+	BaseCollider* collider_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -96,6 +98,8 @@ public:
 	/// </summary>
 	/// <param name="reject"></param>
 	inline void AddReject(const Vector3& reject) { reject_ += reject; }
+
+	inline void SetCollider(BaseCollider* collider) { collider_ = collider; }
 #pragma endregion
 
 #pragma region ゲッター関数
@@ -123,5 +127,9 @@ public:
 	/// </summary>
 	/// <returns> 押し出しベクトル </returns>
 	inline const Vector3& GetReject() { return reject_; }
+
+	inline BaseCollider* GetCollider() { return collider_; }
+
+	inline uint16_t GetAttribute() { return attribute_; }
 #pragma endregion
 };

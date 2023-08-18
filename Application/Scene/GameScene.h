@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "LightGroup.h"
 #include "StageManager.h"
+#include "EnemyManager.h"
 #include "Player.h"
 
 #include <memory>
@@ -34,6 +35,9 @@ private:
 
 	// ステージマネージャー
 	std::unique_ptr<StageManager> stageMgr_ = nullptr;
+
+	// エネミーマネージャー
+	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
 
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;

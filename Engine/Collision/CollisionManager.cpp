@@ -92,6 +92,7 @@ void CollisionManager::CheckAllCollision()
 			if (result) {
 				colA->SetIsHit(true);
 				colA->SetInter(inter);
+				colA->SetCollider(it_hit);
 				it_hit->SetIsHit(true);
 				it_hit->SetInter(inter);
 			}

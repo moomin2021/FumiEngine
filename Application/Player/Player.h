@@ -3,7 +3,9 @@
 #include "Mouse.h"
 #include "Object3D.h"
 #include "SphereCollider.h"
+#include "RayCollider.h"
 #include "CollisionManager.h"
+#include "EnemyManager.h"
 #include "Bullet.h"
 #include "Sprite.h"
 
@@ -30,6 +32,7 @@ private:
 	Key*	key_	= nullptr;// キーボード
 	Mouse*	mouse_	= nullptr;// マウス
 	CollisionManager* colMgr_ = nullptr;// コリジョンマネージャー
+	EnemyManager* enemyMgr_ = nullptr;
 
 	// 視点カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
@@ -46,6 +49,7 @@ private:
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
 	std::unique_ptr<SphereCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
+	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// 視点コライダー
 
 	// 状態
 	State state_ = NORMAL;
@@ -105,7 +109,7 @@ public:
 	~Player();
 
 	// 初期化処理
-	void Initialize();
+	void Initialize(EnemyManager* enemyMgr);
 
 	// 更新処理
 	void Update();

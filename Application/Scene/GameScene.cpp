@@ -32,9 +32,13 @@ void GameScene::Initialize()
 	stageMgr_ = std::make_unique<StageManager>();
 	stageMgr_->Initialize();
 
+	// エネミーマネージャー生成
+	enemyMgr_ = std::make_unique<EnemyManager>();
+	enemyMgr_->Initialize();
+
 	// プレイヤー生成
 	player_ = std::make_unique<Player>();
-	player_->Initialize();
+	player_->Initialize(enemyMgr_.get());
 
 	// オブジェクト3Dにライトを適用
 	Object3D::SetLightGroup(lightGroup_.get());
@@ -45,6 +49,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	// エネミーマネージャー
+	enemyMgr_->Update();
+
 	// プレイヤー
 	player_->Update();
 
@@ -62,6 +69,9 @@ void GameScene::Draw()
 	// ステージマネージャー
 	stageMgr_->Draw();
 
+	// エネミーマネージャー
+	enemyMgr_->Draw();
+
 	// プレイヤー
 	player_->DrawObject3D();
 
@@ -76,6 +86,9 @@ void GameScene::ObjUpdate()
 	// ステージマネージャー
 	stageMgr_->ObjUpdate();
 
+	// エネミーマネージャー
+	enemyMgr_->ObjUpdate();
+
 	// プレイヤー
 	player_->ObjUpdate();
 }
@@ -84,6 +97,9 @@ void GameScene::OnCollision()
 {
 	// 衝突判定
 	CollisionManager::GetInstance()->CheckAllCollision();
+
+	// エネミーマネージャー
+	enemyMgr_->OnCollision();
 
 	// プレイヤー
 	player_->OnCollision();
@@ -187,6 +203,10 @@ void GameScene::LoadStage(std::string fileName)
 		else if (objectData.className == "Item") {
 			// アイテムを追加
 			//ItemManager::GetInstace()->AddItem(objectData.translation);
+		}
+
+		else if (objectData.className == "BossGenerator") {
+			enemyMgr_->SetBossGenerator(objectData.translation);
 		}
 
 		else {
