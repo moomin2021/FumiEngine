@@ -50,3 +50,22 @@ void Camera::Update() {
 		}
 	}
 }
+
+void Camera::SetFovAngleY(float fovAngleY)
+{
+	// ウィンドウサイズ取得
+	float winWidth = static_cast<float>(WinAPI::GetInstance()->GetWidth());	// 横幅
+	float winHeight = static_cast<float>(WinAPI::GetInstance()->GetHeight());	// 縦幅
+
+	// 透視投影行列の計算
+	XMMATRIX mat = XMMatrixPerspectiveFovLH(
+		Util::Degree2Radian(fovAngleY),	// 上下画角45度
+		winWidth / winHeight,		// アスペクト比（画面横幅/画面縦幅）
+		0.1f, 1000.0f);				// 前端、奥端
+
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			matProjection_.m[i][j] = mat.r[i].m128_f32[j];
+		}
+	}
+}
