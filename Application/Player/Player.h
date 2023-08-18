@@ -15,11 +15,13 @@ class Player
 	enum State {
 		NORMAL,	// 通常状態
 		AIR,	// 空中状態
+		CLIMB,	// 登り状態
 	};
 
 	std::vector<std::string> stateName_ = {
 		"NORMAL",
-		"AIR"
+		"AIR",
+		"CLIMB"
 	};
 
 #pragma region メンバ変数
@@ -38,10 +40,12 @@ private:
 
 	// オブジェクト
 	std::unique_ptr<Object3D> object_ = nullptr;
+	std::unique_ptr<Object3D> testObj_ = nullptr;
 
 	// コライダー
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
+	std::unique_ptr<SphereCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
 
 	// 状態
 	State state_ = NORMAL;
@@ -120,6 +124,7 @@ private:
 	static void (Player::* stateTable[]) ();
 	void Normal();	// 通常状態
 	void Air();		// 空中状態
+	void Climb();	// 登り状態
 
 	// 行動関数
 	void Shoot();	// 弾を撃つ

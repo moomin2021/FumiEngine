@@ -42,6 +42,10 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Ve
 
 		// ‹…‚ÆŽOŠpŒ`‚Ì“–‚½‚è”»’è
 		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject)) {
+			if (localSphere.radius <= 0.25f) {
+ 				int num = 0;
+			}
+
 			if (inter) {
 				const Matrix4& matWorld = object_->GetMatWorld();
 

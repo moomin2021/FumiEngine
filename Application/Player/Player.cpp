@@ -10,6 +10,7 @@ Player::~Player()
 	// 削除
 	colMgr_->RemoveCollider(playerCol_.get());
 	colMgr_->RemoveCollider(legCol_.get());
+	colMgr_->RemoveCollider(climbCol_.get());
 }
 
 void Player::Initialize()
@@ -39,6 +40,9 @@ void Player::Initialize()
 #pragma region オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
 	object_->SetPosition({ 0.0f, 2.0f, 0.0f });
+
+	testObj_ = std::make_unique<Object3D>(model_.get());
+	testObj_->SetScale({ 0.25f, 0.25f, 0.25f });
 #pragma endregion
 
 #pragma region スプライト
@@ -114,6 +118,12 @@ void Player::Initialize()
 	legCol_->SetAttribute(COL_LEG);
 	legCol_->LinkObject3D(object_.get());
 	colMgr_->AddCollider(legCol_.get());// 登録
+
+	// 壁登りに使うコライダー
+	climbCol_ = std::make_unique<SphereCollider>(float3{0.0f, 0.0f, 0.0f}, 0.25f);
+	climbCol_->SetAttribute(COL_FRONT);
+	climbCol_->LinkObject3D(testObj_.get());
+	colMgr_->AddCollider(climbCol_.get());
 #pragma endregion
 
 	// カメラをオブジェクト3Dに適用
@@ -125,7 +135,7 @@ void Player::Update()
 	// 状態別更新処理
 	(this->*stateTable[state_])();
 
-	float3 pos = camera_->GetEye();
+	float3 pos = object_->GetPosition();
 
 	ImGui::Begin("Player");
 	ImGui::Text("Pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
@@ -135,6 +145,7 @@ void Player::Update()
 void Player::DrawObject3D()
 {
 	//object_->Draw();
+	//testObj_->Draw();
 
 	for (auto& it : bullets_) it->Draw();
 }
@@ -165,23 +176,13 @@ void Player::DrawSprite()
 void Player::ObjUpdate()
 {
 	object_->Update();
+	testObj_->Update();
 
 	camera_->Update();
 }
 
 void Player::OnCollision()
 {
-	ImGui::Text("IsHit = %d", playerCol_->GetIsHit());
-	ImGui::Text("Gravity = %f", gravity_);
-	ImGui::Text("State = %s", stateName_[state_].c_str());
-	ImGui::End();
-
-	if (playerCol_->GetIsHit()) {
-		float3 reject = playerCol_->GetReject();
-		camera_->SetEye(camera_->GetEye() + reject);
-		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
-		object_->SetPosition(camera_->GetEye());
-	}
 
 	//if (legCol_->GetIsHit() && isGround_ == false) {
 	//	float3 reject = legCol_->GetReject();
@@ -193,7 +194,26 @@ void Player::OnCollision()
 	//	isGround_ = true;
 	//}
 
-	if (legCol_->GetIsHit()) {
+	//if (legCol_->GetIsHit()) {
+	//	isGround_ = true;
+	//	state_ = NORMAL;
+	//	gravity_ = 0.0f;
+	//	float3 reject = legCol_->GetReject();
+	//	camera_->SetEye(camera_->GetEye() + Vector3{0.0f, reject.y, 0.0f});
+	//	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	//	object_->SetPosition(camera_->GetEye());
+	//}
+
+	//else {
+	//	isGround_ = false;
+	//	state_ = AIR;
+	//}
+
+	if (climbCol_->GetIsHit() && key_->PushKey(DIK_W)) {
+		state_ = CLIMB;
+	}
+
+	else if (legCol_->GetIsHit()) {
 		isGround_ = true;
 		state_ = NORMAL;
 		gravity_ = 0.0f;
@@ -215,11 +235,31 @@ void Player::OnCollision()
 	else {
 		isDash_ = false;
 	}
+
+	if (playerCol_->GetIsHit()) {
+		float3 reject = playerCol_->GetReject();
+		camera_->SetEye(camera_->GetEye() + reject);
+		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+		//// 壁登り用コライダーを正面に設定
+		//float3 climbColPos = {
+		//	forwardVec_.x * 1.25f,
+		//	0.0f,
+		//	forwardVec_.z * 1.25f
+		//};
+		//climbCol_->SetOffset(climbColPos);
+		//object_->SetPosition(camera_->GetEye());
+	}
+
+	ImGui::Text("IsHit = %d", climbCol_->GetIsHit());
+	ImGui::Text("Gravity = %f", gravity_);
+	ImGui::Text("State = %s", stateName_[state_].c_str());
+	ImGui::End();
 }
 
 void (Player::* Player::stateTable[]) () = {
 	&Player::Normal,// 通常状態
 	&Player::Air,	// 空中状態
+	&Player::Climb,	// 登り状態
 };
 
 void Player::Normal()
@@ -262,6 +302,21 @@ void Player::Air()
 
 	// 走行処理
 	Dash();
+}
+
+void Player::Climb()
+{
+	gravity_ -= 0.2f;
+	gravity_ = Util::Clamp(gravity_, maxGravity_, -1.0f);
+	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	object_->SetPosition(camera_->GetEye());
+
+	// 視点操作
+	EyeMove();
+
+	// 移動操作
+	Move();
 }
 
 void Player::Shoot()
@@ -367,6 +422,15 @@ void Player::Move()
 	// カメラを更新
 	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// 壁登り用コライダーを正面に設定
+	//float3 climbColPos = {
+	//	forwardVec_.x * 1.25f,
+	//	0.0f,
+	//	forwardVec_.z * 1.25f
+	//};
+	//climbCol_->SetOffset(forwardVec_ * 1.25f);
+	testObj_->SetPosition(object_->GetPosition() + forwardVec_ * 1.25f);
 
 	// オブジェクトの更新
 	object_->SetPosition(camera_->GetEye());
