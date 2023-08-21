@@ -65,4 +65,15 @@ namespace Util {
 	/// <returns> ¬”’l </returns>
 	float GetRandomFloat(float min, float max);
 
+	/// <summary>
+	/// Œ»İ‚ğæ“¾[s]
+	/// </summary>
+	/// <returns> ŠÔ(s) </returns>
+	uint64_t GetTimeSec();
+
+	/// <summary>
+	/// Œ»İ‚ğæ“¾[ms]
+	/// </summary>
+	/// <returns> ŠÔ(ms) </returns>
+	uint64_t GetTimrMSec();
 } // namespace MathUtility
