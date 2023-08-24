@@ -26,9 +26,6 @@ void CollisionManager::CheckAllCollision()
 		itB = itA;
 		++itB;
 
-		// イテレータがendなら終わる
-		if (itB == colliders_.end()) continue;
-
 		// レイだったら
 		if ((*itA)->GetShapeType() == SHAPE_RAY) {
 			// 衝突フラグ
@@ -101,12 +98,14 @@ void CollisionManager::CheckAllCollision()
 				rayCol->SetIsHit(true);
 				rayCol->SetInter(inter);
 				rayCol->SetDistance(distance);
+				rayCol->SetHitCollider(it_hit);
 
 				// 球
 				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
 					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*it);
 					sphereCol->SetIsHit(true);
 					sphereCol->SetInter(inter);
+					sphereCol->SetHitCollider(*itA);
 				}
 
 				// メッシュ
@@ -114,75 +113,84 @@ void CollisionManager::CheckAllCollision()
 					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*it);
 					meshCol->SetIsHit(true);
 					meshCol->SetInter(inter);
+					meshCol->SetHitCollider(*itA);
 				}
 			}
 		}
 
 		// レイ以外だったら
 		else {
-			// 属性が合わなければ除外
-			if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
+			for (; itB != colliders_.end(); ++itB) {
+				// 属性が合わなければ除外
+				if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
 
-			// ともに球
-			if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {
-				// 衝突判定の引数のために球に変換
-				Sphere* sphereA = dynamic_cast<Sphere*>(*itA);
-				Sphere* sphereB = dynamic_cast<Sphere*>(*itB);
+				// ともに球
+				if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {
+					// 衝突判定の引数のために球に変換
+					Sphere* sphereA = dynamic_cast<Sphere*>(*itA);
+					Sphere* sphereB = dynamic_cast<Sphere*>(*itB);
 
-				// 衝突判定
-				if (Collision::CheckSphere2Sphere(*sphereA, *sphereB)) {
-					SphereCollider* sphereColA = dynamic_cast<SphereCollider*>(*itA);
-					sphereColA->SetIsHit(true);
+					// 衝突判定
+					if (Collision::CheckSphere2Sphere(*sphereA, *sphereB)) {
+						SphereCollider* sphereColA = dynamic_cast<SphereCollider*>(*itA);
+						sphereColA->SetIsHit(true);
+						sphereColA->SetHitCollider(*itB);
 
-					SphereCollider* sphereColB = dynamic_cast<SphereCollider*>(*itB);
-					sphereColB->SetIsHit(true);
+						SphereCollider* sphereColB = dynamic_cast<SphereCollider*>(*itB);
+						sphereColB->SetIsHit(true);
+						sphereColB->SetHitCollider(*itA);
+					}
 				}
-			}
 
-			// メッシュと球
-			else if ((*itA)->GetShapeType() == SHAPE_MESH && (*itB)->GetShapeType() == SHAPE_SPHERE) {
-				// 衝突判定の引数のためにメッシュコライダーと球に変換
-				MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itA);
-				Sphere* sphere = dynamic_cast<Sphere*>(*itB);
+				// メッシュと球
+				else if ((*itA)->GetShapeType() == SHAPE_MESH && (*itB)->GetShapeType() == SHAPE_SPHERE) {
+					// 衝突判定の引数のためにメッシュコライダーと球に変換
+					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itA);
+					Sphere* sphere = dynamic_cast<Sphere*>(*itB);
 
-				// 判定したときのデータ
-				Vector3 inter = { 0.0f, 0.0f, 0.0f };
-				Vector3 reject = { 0.0f, 0.0f, 0.0f };
+					// 判定したときのデータ
+					Vector3 inter = { 0.0f, 0.0f, 0.0f };
+					Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
-				if (meshCol->CheckCollisionSphere(*sphere, &inter, &reject)) {
-					meshCol->SetIsHit(true);
-					meshCol->SetInter(inter);
-					meshCol->AddReject(-reject);
+					if (meshCol->CheckCollisionSphere(*sphere, &inter, &reject)) {
+						meshCol->SetIsHit(true);
+						meshCol->SetInter(inter);
+						meshCol->AddReject(-reject);
+						meshCol->SetHitCollider(*itB);
 
-					// 衝突判定の引数のために球コライダーに変換
-					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itB);
-					sphereCol->SetIsHit(true);
-					sphereCol->SetInter(inter);
-					sphereCol->AddReject(reject);
+						// 衝突判定の引数のために球コライダーに変換
+						SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itB);
+						sphereCol->SetIsHit(true);
+						sphereCol->SetInter(inter);
+						sphereCol->AddReject(reject);
+						sphereCol->SetHitCollider(*itA);
+					}
 				}
-			}
 
-			// 球とメッシュ
-			else if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_MESH) {
-				// 衝突判定の引数のためにメッシュコライダーと球に変換
-				Sphere* sphere = dynamic_cast<Sphere*>(*itA);
-				MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itB);
+				// 球とメッシュ
+				else if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_MESH) {
+					// 衝突判定の引数のためにメッシュコライダーと球に変換
+					Sphere* sphere = dynamic_cast<Sphere*>(*itA);
+					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itB);
 
-				// 判定したときのデータ
-				Vector3 inter = { 0.0f, 0.0f, 0.0f };
-				Vector3 reject = { 0.0f, 0.0f, 0.0f };
+					// 判定したときのデータ
+					Vector3 inter = { 0.0f, 0.0f, 0.0f };
+					Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
-				if (meshCol->CheckCollisionSphere(*sphere, &inter)) {
+					if (meshCol->CheckCollisionSphere(*sphere, &inter)) {
 
-					// 衝突判定の引数のために球コライダーに変換
-					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itA);
-					sphereCol->SetIsHit(true);
-					sphereCol->SetInter(inter);
-					sphereCol->AddReject(reject);
+						// 衝突判定の引数のために球コライダーに変換
+						SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itA);
+						sphereCol->SetIsHit(true);
+						sphereCol->SetInter(inter);
+						sphereCol->AddReject(reject);
+						sphereCol->SetHitCollider(*itB);
 
-					meshCol->SetIsHit(true);
-					meshCol->SetInter(inter);
-					meshCol->AddReject(-reject);
+						meshCol->SetIsHit(true);
+						meshCol->SetInter(inter);
+						meshCol->AddReject(-reject);
+						meshCol->SetHitCollider(*itA);
+					}
 				}
 			}
 		}

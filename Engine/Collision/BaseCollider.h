@@ -25,6 +25,9 @@ protected:
 
 	// 衝突フラグ
 	bool isHit_ = false;
+
+	// 衝突したコライダー
+	BaseCollider* hitCol_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -48,16 +51,22 @@ public:
 
 	// 衝突フラグを設定
 	inline void SetIsHit(bool flag) { isHit_ = flag; }
+
+	// 衝突したコライダーを設定
+	inline void SetHitCollider(BaseCollider* collider) { hitCol_ = collider; }
 #pragma endregion
 
 #pragma region ゲッター関数
 	// 形状タイプを取得
 	inline CollisionShapeType GetShapeType() { return shapeType_; }
 
-	// 衝突判定属性を設定
+	// 衝突判定属性を取得
 	inline uint16_t GetAttribute() { return attribute_; }
 
-	// 衝突フラグを設定
+	// 衝突フラグを取得
 	inline bool GetIsHit() { return isHit_; }
+
+	// 衝突したコライダーを取得
+	inline BaseCollider* GetHitCollider() { return hitCol_; }
 #pragma endregion
 };
