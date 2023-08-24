@@ -25,7 +25,7 @@ void EnemyManager::Initialize()
 #pragma region コライダー
 	colBossGenerator_ = std::make_unique<SphereCollider>(float3{0.0f, 3.0f, 0.0f});
 	colBossGenerator_->SetAttribute(COL_BOSSGENERATOR);
-	colBossGenerator_->LinkObject3D(oBossGenerator_.get());
+	colBossGenerator_->SetObject3D(oBossGenerator_.get());
 	colMgr_->AddCollider(colBossGenerator_.get());
 #pragma endregion
 }

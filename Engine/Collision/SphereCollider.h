@@ -1,26 +1,22 @@
 #pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
-#include "float3.h"
 
 class SphereCollider : public BaseCollider, public Sphere
 {
 #pragma region メンバ変数
 private:
 	// オブジェクト中心からのオフセット
-	float3 offset_;
+	float3 offset_ = { 0.0f, 0.0f, 0.0f };
 
-	// 半径
-	float radius_;
+	// 衝突したときの情報
+	float3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
+	Vector3 reject_	= { 0.0f, 0.0f, 0.0f };// 押し出しベクトル
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="offset"> オフセット </param>
-	/// <param name="radius"> 半径 </param>
+	// コンストラクタ
 	SphereCollider(float3 offset = { 0.0f, 0.0f, 0.0f }, float radius = 1.0f);
 
 	// 更新処理
@@ -29,16 +25,24 @@ public:
 
 #pragma region セッター関数
 public:
-	/// <summary>
-	/// オフセットを設定
-	/// </summary>
-	/// <param name="offset"> オフセット </param>
-	void SetOffset(const float3& offset) { offset_ = offset; }
+	// オフセットを設定
+	inline void SetOffset(const float3& offset) { offset_ = offset; }
 
-	/// <summary>
-	/// 半径を設定
-	/// </summary>
-	/// <param name="radius"> 半径 </param>
-	void SetRadius(float radius) { radius_ = radius; }
+	// 交点を設定
+	inline void SetInter(const float3& inter) { inter_ = inter; }
+
+	// 半径を設定
+	inline void SetRadius(float radius) { Sphere::radius = radius; }
+
+	// 押し出しベクトルを加算
+	inline void AddReject(const Vector3& reject) { reject_ += reject; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	// 交点を取得
+	inline const float3& GetInter() { return inter_; }
+
+	// 押し出しベクトルを取得
+	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

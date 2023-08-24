@@ -66,10 +66,14 @@ namespace Util {
 	float GetRandomFloat(float min, float max);
 
 	/// <summary>
-	/// ƒQ[ƒ€‚ğ‹N“®‚µ‚Ä‚©‚ç‚Ì‹N“®ŠÔ‚ğæ“¾(s)
+	/// Œ»İ‚ğæ“¾[s]
 	/// </summary>
 	/// <returns> ŠÔ(s) </returns>
 	uint64_t GetTimeSec();
-	uint64_t GetTimrMil();
 
+	/// <summary>
+	/// Œ»İ‚ğæ“¾[ms]
+	/// </summary>
+	/// <returns> ŠÔ(ms) </returns>
+	uint64_t GetTimrMSec();
 } // namespace MathUtility

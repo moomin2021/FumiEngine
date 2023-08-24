@@ -112,25 +112,25 @@ void Player::Initialize(EnemyManager* enemyMgr)
 	// プレイヤーのコライダー(敵からの攻撃や壁との衝突処理に使用)
 	playerCol_ = std::make_unique<SphereCollider>();
 	playerCol_->SetAttribute(COL_PLAYER);
-	playerCol_->LinkObject3D(object_.get());
+	playerCol_->SetObject3D(object_.get());
 	colMgr_->AddCollider(playerCol_.get());// 登録
 
 	// 足元のコライダー(落下処理に使用)
 	legCol_ = std::make_unique<SphereCollider>(float3{0.0f, -1.0f, 0.0f});
 	legCol_->SetAttribute(COL_LEG);
-	legCol_->LinkObject3D(object_.get());
+	legCol_->SetObject3D(object_.get());
 	colMgr_->AddCollider(legCol_.get());// 登録
 
 	// 壁登りに使うコライダー
 	climbCol_ = std::make_unique<SphereCollider>(float3{0.0f, 0.0f, 0.0f}, 0.25f);
 	climbCol_->SetAttribute(COL_FRONT);
-	climbCol_->LinkObject3D(testObj_.get());
+	climbCol_->SetObject3D(testObj_.get());
 	colMgr_->AddCollider(climbCol_.get());
 
 	// 視点コライダー
 	eyeCol_ = std::make_unique<RayCollider>();
 	eyeCol_->SetAttribute(COL_PLAYER_RAY);
-	eyeCol_->LinkObject3D(object_.get());
+	eyeCol_->SetObject3D(object_.get());
 	colMgr_->AddCollider(eyeCol_.get());
 
 #pragma endregion
@@ -265,9 +265,9 @@ void Player::OnCollision()
 	bool isBossGen = false;
 
 	if (eyeCol_->GetIsHit()) {
-		if (eyeCol_->GetCollider()->GetAttribute() == COL_BOSSGENERATOR) {
-			isBossGen = true;
-		}
+		//if (eyeCol_->GetCollider()->GetAttribute() == COL_BOSSGENERATOR) {
+		//	isBossGen = true;
+		//}
 	}
 
 	if (isBossGen && key_->TriggerKey(DIK_F)) {
@@ -355,7 +355,7 @@ void Player::Shoot()
 	}
 
 	// 最後に弾を撃ってからの経過時間
-	float result = (Util::GetTimrMil() - shotTime_) / 1000.0f;
+	float result = (Util::GetTimrMSec() - shotTime_) / 1000.0f;
 
 	// 残弾数が0以下ならこの後の処理を飛ばす
 	if (nowBullet_ <= 0) return;
@@ -367,7 +367,7 @@ void Player::Shoot()
 	if (!(result >= shotInterval_)) return;
 
 	// 弾を撃った時間を記録
-	shotTime_ = Util::GetTimrMil();
+	shotTime_ = Util::GetTimrMSec();
 
 	// 残弾を減らす
 	nowBullet_--;

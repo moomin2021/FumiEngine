@@ -26,7 +26,7 @@ Bullet::Bullet(Model* model, BulletType type, const float3& iniPos, const Vector
 		data_.col = std::make_unique<SphereCollider>();
 		data_.col->SetAttribute(COL_ENEMY_BULLET);
 		data_.col->SetRadius(0.5f);
-		data_.col->LinkObject3D(data_.object.get());
+		data_.col->SetObject3D(data_.object.get());
 		CollisionManager::GetInstance()->AddCollider(data_.col.get());
 		data_.moveVec = moveVec;
 		data_.bulletSpd = 2.0f;

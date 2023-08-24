@@ -29,7 +29,7 @@ void Boss0::Initialize(const float3& pos)
 #pragma region コライダー
 	collider_ = std::make_unique<SphereCollider>(float3{0.0f, 7.5f * 5.0, 0.0f}, 5.0f);
 	collider_->SetAttribute(COL_ENEMY);
-	collider_->LinkObject3D(object_.get());
+	collider_->SetObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
 #pragma endregion
 }

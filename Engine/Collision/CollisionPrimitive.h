@@ -41,11 +41,3 @@ struct Ray {
 	// •ûŒü
 	Vector3 dir = { 1.0f, 0.0f, 0.0f };
 };
-
-struct Cube {
-	// ’†SÀ•W
-	Vector3 center = { 0.0f, 0.0f, 0.0f };
-
-	// Še¬•ª‚Ì”¼Œa
-	float3 radius = { 1.0f, 1.0f, 1.0f };
-};

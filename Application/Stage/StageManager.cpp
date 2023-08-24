@@ -51,7 +51,7 @@ void StageManager::AddObject3D(std::string modelName, const float3& position, co
 	// コライダーを生成
 	stageObjColliders_.emplace_back(std::make_unique<MeshCollider>(stageObjects_.back().get()));
 	stageObjColliders_.back()->SetAttribute(COL_STAGE_OBJ);
-	stageObjColliders_.back()->LinkObject3D(stageObjects_.back().get());
+	stageObjColliders_.back()->SetObject3D(stageObjects_.back().get());
 
 	// コライダーを登録
 	colMgr_->AddCollider(stageObjColliders_.back().get());

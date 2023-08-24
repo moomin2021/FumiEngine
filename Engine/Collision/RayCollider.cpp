@@ -1,9 +1,10 @@
 #include "RayCollider.h"
 
-RayCollider::RayCollider(float3 offset, Vector3 dir) :
-	offset_(offset)
+RayCollider::RayCollider(float3 offset, Vector3 dir)
 {
 	shapeType_ = SHAPE_RAY;
+
+	offset_ = offset;
 
 	Ray::dir = dir;
 }
@@ -13,14 +14,15 @@ void RayCollider::Update()
 	// 衝突フラグを初期化
 	isHit_ = false;
 
-	// 押し出しベクトルをリセット
-	reject_ = { 0.0f, 0.0f, 0.0f };
+	// 衝突したときの情報を初期化
+	inter_ = { 0.0f, 0.0f, 0.0f };
+	minDistance_ = FLT_MAX;
 
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {
 		// ワールド行列からワールド座標を抽出
-		const Matrix4& matWorld = object_->GetMatWorld();
-		Ray::start = Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]) + Vector3(offset_);
+		const float3 objPos = object_->GetPosition();
+		Ray::start = objPos + offset_;
 	}
 
 	else {

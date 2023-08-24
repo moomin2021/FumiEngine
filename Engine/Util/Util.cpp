@@ -70,14 +70,10 @@ float Util::GetRandomFloat(float min, float max) {
 
 uint64_t Util::GetTimeSec()
 {
-	uint64_t sec = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
-
-	return sec;
+	return duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
 }
 
-uint64_t Util::GetTimrMil()
+uint64_t Util::GetTimrMSec()
 {
-	uint64_t mil = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-
-	return mil;
+	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }

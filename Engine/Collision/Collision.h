@@ -1,8 +1,8 @@
 #pragma once
 #include "CollisionPrimitive.h"
 
-class Collision {
-#pragma region メンバ関数
+class Collision
+{
 public:
 	/// <summary>
 	/// 球と球の当たり判定
@@ -11,7 +11,7 @@ public:
 	/// <param name="sphere1"> 球1 </param>
 	/// <param name="inter">  </param>
 	/// <returns></returns>
-	static bool CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1, Vector3* inter = nullptr);
+	static bool CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1);
 
 	/// <summary>
 	/// 球と平面の当たり判定
@@ -39,16 +39,6 @@ public:
 	/// <param name="inter"> 交点(三角形上の最近接点) </param>
 	/// <returns> 交差しているか否か </returns>
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
-
-	/// <summary>
-	/// 球と立方体の当たり判定チェック
-	/// </summary>
-	/// <param name="sphere"> 球 </param>
-	/// <param name="cube"> 立方体 </param>
-	/// <param name="inter"> 交点 </param>
-	/// <param name="reject"> 押し出しベクトル </param>
-	/// <returns> 交差しているか否か </returns>
-	static bool CheckSphere2Cube(const Sphere& sphere, const Cube& cube, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
 	/// <summary>
 	/// レイと平面の当たり判定
@@ -79,5 +69,4 @@ public:
 	/// <param name="inter"> 交点(出力用) </param>
 	/// <returns> 交差しているか否か </returns>
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, Vector3* inter = nullptr);
-#pragma endregion
 };

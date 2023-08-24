@@ -1,23 +1,23 @@
 #pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
-#include "float3.h"
 
 class RayCollider : public BaseCollider, public Ray
 {
 #pragma region メンバ変数
+private:
 	// オブジェクト中心からのオフセット
-	float3 offset_;
+	float3 offset_ = { 0.0f, 0.0f, 0.0f };
+
+	// 衝突したときの情報
+	float3 inter_ = { 0.0f, 0.0f, 0.0f };// 交点
+	float minDistance_ = FLT_MAX;// 交点までの距離
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="offset"> オフセット </param>
-	/// <param name="radius"> 半径 </param>
-	RayCollider(float3 offset = { 0.0f, 0.0f, 0.0f }, Vector3 dir = { 0.0f, 0.0f, 1.0f });
+	// コンストラクタ
+	RayCollider(float3 offset = { 0.0f, 0.0f, 0.0f }, Vector3 dir = { 0.0f, 0.0f, 0.0f });
 
 	// 更新処理
 	void Update() override;
@@ -25,16 +25,24 @@ public:
 
 #pragma region セッター関数
 public:
-	/// <summary>
-	/// オフセットを設定
-	/// </summary>
-	/// <param name="offset"> オフセット </param>
-	void SetOffset(const float3& offset) { offset_ = offset; }
+	// オフセットを設定
+	inline void SetOffSet(const float3& offset) { offset_ = offset; }
 
-	/// <summary>
-	/// 方向を設定
-	/// </summary>
-	/// <param name="dir"> 方向 </param>
-	void SetDir(const Vector3& dir) { Ray::dir = dir; }
+	// 方向を設定
+	inline void SetDir(const Vector3& dir) { Ray::dir = dir; }
+
+	// 交点を設定
+	inline void SetInter(const float3& inter) { inter_ = inter; }
+
+	// 交点までの距離を設定
+	inline void SetDistance(float distance) { minDistance_ = distance; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	// 交点を取得
+	inline const float3& GetInter() { return inter_; }
+
+	// 交点までの距離を取得
+	inline float GetDistance() { return minDistance_; }
 #pragma endregion
 };
