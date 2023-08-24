@@ -1,28 +1,25 @@
 #pragma once
-
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
-class MeshCollider : public BaseCollider {
+class MeshCollider : public BaseCollider
+{
 #pragma region メンバ変数
 private:
 	// 三角形
 	std::vector<Triangle> triangles_;
 
-	// ワールド行列の逆行列
-	Matrix4 invMatWorld_;
+	// 衝突したときの情報
+	float3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
+	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };// 押し出しベクトル
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
+	// コンストラクタ
 	MeshCollider(Object3D* object);
 
-	/// <summary>
-	/// 更新処理
-	/// </summary>
+	// 更新処理
 	void Update() override;
 
 	/// <summary>
@@ -48,5 +45,22 @@ private:
 	/// </summary>
 	/// <param name="model"> モデル </param>
 	void ConstructTriangles(Model* model);
+#pragma endregion
+
+#pragma region セッター関数
+public:
+	// 交点を設定
+	inline void SetInter(const float3& inter) { inter_ = inter; }
+
+	// 押し出しベクトルを加算
+	inline void AddReject(const Vector3& reject) { reject_ += reject; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	// 交点を取得
+	inline const float3& GetInter() { return inter_; }
+
+	// 押し出しベクトルを取得
+	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

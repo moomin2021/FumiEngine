@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-bool Collision::CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1, Vector3* inter)
+bool Collision::CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1)
 {
 	float x = sphere1.center.x - sphere0.center.x;
 	float y = sphere1.center.y - sphere0.center.y;
@@ -139,48 +139,6 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	}
 
 	return true;
-}
-
-float DistSquared(float sphereCenter, float cubeCenter, float cubeRadius) {
-	float point = sphereCenter;
-	float boxMin = cubeCenter - cubeRadius;
-	float boxMax = cubeCenter + cubeRadius;
-
-	float result = 0.0f;
-
-	if (point < boxMin) result = (point - boxMin) * (point - boxMin);
-	if (point > boxMax) result = (point - boxMax) * (point - boxMax);
-
-	return result;
-}
-
-bool Collision::CheckSphere2Cube(const Sphere& sphere, const Cube& cube, Vector3* inter, Vector3* reject)
-{
-	//bool xHit = (sphere.center.x + sphere.radius >= cube.center.x - cube.radius.x) || (sphere.center.x - sphere.radius <= cube.center.x + cube.radius.x);
-	//bool yHit = (sphere.center.y + sphere.radius >= cube.center.y - cube.radius.y) || (sphere.center.y - sphere.radius <= cube.center.y + cube.radius.y);
-	//bool zHit = (sphere.center.z + sphere.radius >= cube.center.z - cube.radius.z) || (sphere.center.z - sphere.radius <= cube.center.z + cube.radius.z);
-
-	//if (xHit || yHit || zHit) return true;
-
-	//bool xDist = (cube.center.x - sphere.center.x);
-	//bool yDist = (cube.center.y - sphere.center.y);
-	//bool zDist = (cube.center.z - sphere.center.z);
-
-	//if (sqrt(xDist * xDist + yDist * yDist + zDist * zDist) <= sphere.radius) return true;
-
-	//xDist = (cube.center.x - sphere.center.x);
-	//yDist = (cube.center.y - sphere.center.y);
-	//zDist = (cube.center.z - sphere.center.z);
-
-	float sqLength = 0.0f;
-
-	sqLength += DistSquared(sphere.center.x, cube.center.x, cube.radius.x);
-	sqLength += DistSquared(sphere.center.y, cube.center.y, cube.radius.y);
-	sqLength += DistSquared(sphere.center.z, cube.center.z, cube.radius.z);
-
-	if (sqLength == 0.0f) return true;
-
-	return sqLength <= sphere.radius * sphere.radius;
 }
 
 bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, Vector3* inter)

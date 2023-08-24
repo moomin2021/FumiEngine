@@ -1,11 +1,15 @@
 #include "SphereCollider.h"
-#include "Matrix4.h"
 
-SphereCollider::SphereCollider(float3 offset, float radius) :
-	offset_(offset), radius_(radius)
+SphereCollider::SphereCollider(float3 offset, float radius)
 {
 	// 形状タイプを球に設定
 	shapeType_ = SHAPE_SPHERE;
+
+	// オフセットを設定
+	offset_ = offset;
+
+	// 半径を設定
+	Sphere::radius = radius;
 }
 
 void SphereCollider::Update()
@@ -13,16 +17,16 @@ void SphereCollider::Update()
 	// 衝突フラグを初期化
 	isHit_ = false;
 
+	// 衝突したときの情報を初期化
+	inter_ = { 0.0f, 0.0f, 0.0f };
+	reject_ = { 0.0f, 0.0f, 0.0f };
+
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {
-		// ワールド行列からワールド座標を抽出
-		const Matrix4& matWorld = object_->GetMatWorld();
-		Sphere::center = Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]) + Vector3(offset_);
+		Sphere::center = object_->GetPosition() + offset_;
 	}
 
 	else {
 		Sphere::center = offset_;
 	}
-
-	Sphere::radius = radius_;
 }

@@ -88,13 +88,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Collision\CubeCollider.cpp" />
+    <ClCompile Include="Engine\Collision\Collision.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
-    <ClCompile Include="Engine\Collision\Collision.cpp" />
-    <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
-    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Engine\Util\Math\float2.cpp" />
     <ClCompile Include="Engine\Util\Math\float3.cpp" />
     <ClCompile Include="Engine\Util\Math\float4.cpp" />
@@ -120,25 +119,24 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
-    <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
-    <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
-    <ClCompile Include="Engine\Collision\RayCollider.cpp" />
     <ClCompile Include="Engine\Base\Sound.cpp" />
     <ClCompile Include="Engine\3d\ParticleEmitter.cpp" />
     <ClCompile Include="Application\Scene\Scene2.cpp" />
     <ClCompile Include="Application\Scene\TestPlayer.cpp" />
     <ClCompile Include="Application\Scene\TestEnemy.cpp" />
+    <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
+    <ClCompile Include="Engine\Collision\RayCollider.cpp" />
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
-    <ClInclude Include="Engine\Collision\CubeCollider.h" />
+    <ClInclude Include="Engine\Collision\Collision.h" />
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
+    <ClInclude Include="Engine\Collision\CollisionManager.h" />
     <ClInclude Include="Engine\3d\BillBoard.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Collision\BaseCollider.h" />
-    <ClInclude Include="Engine\Collision\Collision.h" />
     <ClInclude Include="Engine\Collision\CollisionAttribute.h" />
-    <ClInclude Include="Engine\Collision\CollisionManager.h" />
-    <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />
@@ -168,15 +166,15 @@
     <ClInclude Include="Engine\Base\WinAPI.h" />
     <ClInclude Include="Engine\3d\Mesh.h" />
     <ClInclude Include="Engine\3d\Material.h" />
-    <ClInclude Include="Engine\Collision\SphereCollider.h" />
-    <ClInclude Include="Engine\Collision\MeshCollider.h" />
-    <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Base\Sound.h" />
     <ClInclude Include="Engine\3d\ParticleEmitter.h" />
     <ClInclude Include="Engine\Util\ImGuiManager.h" />
     <ClInclude Include="Application\Scene\Scene2.h" />
     <ClInclude Include="Application\Scene\TestPlayer.h" />
     <ClInclude Include="Application\Scene\TestEnemy.h" />
+    <ClInclude Include="Engine\Collision\MeshCollider.h" />
+    <ClInclude Include="Engine\Collision\RayCollider.h" />
+    <ClInclude Include="Engine\Collision\SphereCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

@@ -25,7 +25,7 @@ void TestPlayer::Initialize()
 	// コライダー
 	collider_ = std::make_unique<SphereCollider>();
 	collider_->SetAttribute(COL_PLAYER);
-	collider_->LinkObject3D(object_.get());
+	collider_->SetObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
 }
 

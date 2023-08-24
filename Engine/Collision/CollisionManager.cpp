@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
-#include "CollisionPrimitive.h"
 #include "Collision.h"
+#include "SphereCollider.h"
+#include "RayCollider.h"
 #include "MeshCollider.h"
 
 CollisionManager::~CollisionManager()
@@ -11,76 +12,81 @@ CollisionManager::~CollisionManager()
 
 void CollisionManager::CheckAllCollision()
 {
-	for (std::forward_list<BaseCollider*>::iterator it = colliders_.begin(); it != colliders_.end(); ++it)
-	{
-		BaseCollider* collider = *it;
-		collider->Update();
+	// コライダー更新
+	for (auto& it : colliders_) {
+		it->Update();
 	}
 
-	std::forward_list<BaseCollider*>::iterator itA;
+	// 総当たりするために用意
+	std::forward_list<BaseCollider*>::iterator itA = colliders_.begin();;
 	std::forward_list<BaseCollider*>::iterator itB;
 
-	// 全ての組み合わせについて総当たりチェック
-	itA = colliders_.begin();
+	// 総当たりチェック
 	for (; itA != colliders_.end(); ++itA) {
 		itB = itA;
 		++itB;
-		BaseCollider* colA = *itA;
+
+		// イテレータがendなら終わる
+		if (itB == colliders_.end()) continue;
 
 		// レイだったら
-		if (colA->GetShapeType() == SHAPE_RAY) {
+		if ((*itA)->GetShapeType() == SHAPE_RAY) {
+			// 衝突フラグ
 			bool result = false;
 
-			// 走査用のイテレータ
-			std::forward_list<BaseCollider*>::iterator it;
+			// 最も近いコライダーの情報
+			float distance = FLT_MAX;				// 最も最小の距離
+			Vector3 inter = { 0.0f, 0.0f, 0.0f };	// 最も近い距離にいるコライダーとの交点
+			BaseCollider* it_hit = nullptr;			// 最も近いコライダー
 
-			// 今までで最も近いコライダーを記録するためのイテレータ
-			BaseCollider* it_hit = nullptr;
+			// 走査用のイテレーター
+			std::forward_list<BaseCollider*>::iterator it = colliders_.begin();
 
-			// 今までで最も近いコライダーの距離を記録する変数
-			float distance = FLT_MAX;
+			// 衝突判定の引数のためにレイに変換
+			Ray* ray = dynamic_cast<Ray*>(*itA);
 
-			// 今までで最も近いコライダーとの交点を記録する変数
-			Vector3 inter;
-
-			// 全てのコライダーとの総当たりチェック
-			it = colliders_.begin();
+			// 総当たりチェック
 			for (; it != colliders_.end(); ++it) {
-				BaseCollider* col = *it;
-
 				// 属性が合わなければスキップ
-				if (!(colA->attribute_ & col->attribute_)) continue;
-
-				Ray* ray = dynamic_cast<Ray*>(colA);
+				if (!((*itA)->attribute_ & (*it)->attribute_)) continue;
 
 				// 球の場合
-				if (col->GetShapeType() == SHAPE_SPHERE) {
-					Sphere* sphere = dynamic_cast<Sphere*>(col);
-					float tempDistance;
-					Vector3 tempInter;
+				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
+					// 衝突判定の引数のために球に変換
+					Sphere* sphere = dynamic_cast<Sphere*>(*it);
 
-					// 当たらなければ除外
+					// 判定したときのデータ
+					float tempDistance = 0.0f;
+					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
+
+					// 衝突していなかったら除外
 					if (!Collision::CheckRay2Sphere(*ray, *sphere, &tempDistance, &tempInter)) continue;
 
 					// 距離が最小でなければ除外
-					if (tempDistance >= distance) continue;
+					if (tempDistance <= distance) continue;
 
-					// 今まで最も近いので記録を取る
+					// 最も近いコライダーなので情報を保存
 					result = true;
 					distance = tempDistance;
 					inter = tempInter;
 					it_hit = *it;
 				}
 
-				// メッシュの場合
-				else if (col->GetShapeType() == SHAPE_MESH) {
-					MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(col);
+				else if ((*it)->GetShapeType() == SHAPE_MESH) {
+					// 衝突判定の引数のためにメッシュコライダーに変換
+					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*it);
 
-					float tempDistance;
-					Vector3 tempInter;
-					if (!meshCollider->CheckCollisionRay(*ray, &tempDistance, &tempInter)) continue;
-					if (tempDistance >= distance) continue;
+					// 判定したときのデータ
+					float tempDistance = 0.0f;
+					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
 
+					// 衝突していなかったら除外
+					if (!meshCol->CheckCollisionRay(*ray, &tempDistance, &tempInter)) continue;
+
+					// 距離が最小でなければ除外
+					if (tempDistance <= distance) continue;
+
+					// 最も近いコライダーなので情報を保存
 					result = true;
 					distance = tempDistance;
 					inter = tempInter;
@@ -88,87 +94,95 @@ void CollisionManager::CheckAllCollision()
 				}
 			}
 
-			// 当たっていたら
+			// 衝突していたら
 			if (result) {
-				colA->SetIsHit(true);
-				colA->SetInter(inter);
-				it_hit->SetIsHit(true);
-				it_hit->SetInter(inter);
+				// レイ
+				RayCollider* rayCol = dynamic_cast<RayCollider*>(*itA);
+				rayCol->SetIsHit(true);
+				rayCol->SetInter(inter);
+				rayCol->SetDistance(distance);
+
+				// 球
+				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
+					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*it);
+					sphereCol->SetIsHit(true);
+					sphereCol->SetInter(inter);
+				}
+
+				// メッシュ
+				else if ((*it)->GetShapeType() == SHAPE_MESH) {
+					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*it);
+					meshCol->SetIsHit(true);
+					meshCol->SetInter(inter);
+				}
 			}
 		}
 
+		// レイ以外だったら
 		else {
-			for (; itB != colliders_.end(); ++itB) {
-				BaseCollider* colB = *itB;
+			// 属性が合わなければ除外
+			if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
 
-				// 属性が合わなければスキップ
-				if (!(colA->attribute_ & colB->attribute_)) continue;
+			// ともに球
+			if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {
+				// 衝突判定の引数のために球に変換
+				Sphere* sphereA = dynamic_cast<Sphere*>(*itA);
+				Sphere* sphereB = dynamic_cast<Sphere*>(*itB);
 
-				// ともに球
-				if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_SPHERE) {
-					Sphere* sphereA = dynamic_cast<Sphere*>(colA);
-					Sphere* sphereB = dynamic_cast<Sphere*>(colB);
-					Vector3 inter;
-					if (Collision::CheckSphere2Sphere(*sphereA, *sphereB, &inter)) {
-						colA->SetIsHit(true);
-						colA->SetInter(inter);
-						colB->SetIsHit(true);
-						colB->SetInter(inter);
-					}
+				// 衝突判定
+				if (Collision::CheckSphere2Sphere(*sphereA, *sphereB)) {
+					SphereCollider* sphereColA = dynamic_cast<SphereCollider*>(*itA);
+					sphereColA->SetIsHit(true);
+
+					SphereCollider* sphereColB = dynamic_cast<SphereCollider*>(*itB);
+					sphereColB->SetIsHit(true);
 				}
+			}
 
-				// メッシュと球
-				else if (colA->GetShapeType() == SHAPE_MESH && colB->GetShapeType() == SHAPE_SPHERE) {
-					MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
-					Sphere* sphere = dynamic_cast<Sphere*>(colB);
-					Vector3 inter;
-					Vector3 reject;
+			// メッシュと球
+			else if ((*itA)->GetShapeType() == SHAPE_MESH && (*itB)->GetShapeType() == SHAPE_SPHERE) {
+				// 衝突判定の引数のためにメッシュコライダーと球に変換
+				MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itA);
+				Sphere* sphere = dynamic_cast<Sphere*>(*itB);
 
-					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
-						colA->SetIsHit(true);
-						colA->SetInter(inter);
-						colA->SetReject(reject);
-						colB->SetIsHit(true);
-						colB->SetInter(inter);
-						colB->SetReject(reject);
-					}
+				// 判定したときのデータ
+				Vector3 inter = { 0.0f, 0.0f, 0.0f };
+				Vector3 reject = { 0.0f, 0.0f, 0.0f };
+
+				if (meshCol->CheckCollisionSphere(*sphere, &inter, &reject)) {
+					meshCol->SetIsHit(true);
+					meshCol->SetInter(inter);
+					meshCol->AddReject(-reject);
+
+					// 衝突判定の引数のために球コライダーに変換
+					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itB);
+					sphereCol->SetIsHit(true);
+					sphereCol->SetInter(inter);
+					sphereCol->AddReject(reject);
 				}
+			}
 
-				// 球とメッシュ
-				else if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_MESH) {
-					MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colB);
-					Sphere* sphere = dynamic_cast<Sphere*>(colA);
-					Vector3 inter;
-					Vector3 reject;
+			// 球とメッシュ
+			else if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_MESH) {
+				// 衝突判定の引数のためにメッシュコライダーと球に変換
+				Sphere* sphere = dynamic_cast<Sphere*>(*itA);
+				MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*itB);
 
-					if (meshCollider->CheckCollisionSphere(*sphere, &inter, &reject)) {
-						colA->SetIsHit(true);
-						colA->SetInter(inter);
-						colA->SetReject(reject);
-						colB->SetIsHit(true);
-						colB->SetInter(inter);
-						colB->SetReject(reject);
-					}
-				}
+				// 判定したときのデータ
+				Vector3 inter = { 0.0f, 0.0f, 0.0f };
+				Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
-				// 球と立方体
-				else if (colA->GetShapeType() == SHAPE_SPHERE && colB->GetShapeType() == SHAPE_CUBE) {
-					Sphere* sphere = dynamic_cast<Sphere*>(colA);
-					Cube* cube = dynamic_cast<Cube*>(colB);
-					if (Collision::CheckSphere2Cube(*sphere, *cube)) {
-						colA->SetIsHit(true);
-						colB->SetIsHit(true);
-					}
-				}
+				if (meshCol->CheckCollisionSphere(*sphere, &inter)) {
 
-				// 立方体と球
-				else if (colA->GetShapeType() == SHAPE_CUBE && colB->GetShapeType() == SHAPE_SPHERE) {
-					Cube* cube = dynamic_cast<Cube*>(colA);
-					Sphere* sphere = dynamic_cast<Sphere*>(colB);
-					if (Collision::CheckSphere2Cube(*sphere, *cube)) {
-						colA->SetIsHit(true);
-						colB->SetIsHit(true);
-					}
+					// 衝突判定の引数のために球コライダーに変換
+					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itA);
+					sphereCol->SetIsHit(true);
+					sphereCol->SetInter(inter);
+					sphereCol->AddReject(reject);
+
+					meshCol->SetIsHit(true);
+					meshCol->SetInter(inter);
+					meshCol->AddReject(-reject);
 				}
 			}
 		}

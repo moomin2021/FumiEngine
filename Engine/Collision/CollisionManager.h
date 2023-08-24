@@ -3,7 +3,8 @@
 
 #include <forward_list>
 
-class CollisionManager {
+class CollisionManager
+{
 #pragma region メンバ変数
 	// コライダー
 	std::forward_list<BaseCollider*> colliders_;

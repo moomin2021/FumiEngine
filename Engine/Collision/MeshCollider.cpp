@@ -18,17 +18,17 @@ void MeshCollider::Update()
 	// 衝突フラグを初期化
 	isHit_ = false;
 
-	// ワールド行列の逆行列を計算
-	invMatWorld_ = Matrix4Inverse(object_->GetMatWorld());
+	// 衝突したときの情報を初期化
+	inter_ = { 0.0f, 0.0f, 0.0f };
+	reject_ = { 0.0f, 0.0f, 0.0f };
 }
 
 bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Vector3* reject)
 {
 	// オブジェクトのローカル座標系での球を得る(半径はXスケールを参照)
 	Sphere localSphere;
-	localSphere.center = Matrix4Transform(sphere.center, invMatWorld_);
-	localSphere.radius *= Vector3(invMatWorld_.m[0][0], invMatWorld_.m[0][1], invMatWorld_.m[0][2]).length();// 注意
-	//localSphere.radius = sphere.radius;
+	localSphere.center = sphere.center - object_->GetPosition();
+	localSphere.radius = sphere.radius;
 
 	// ローカル座標系で交差をチェック
 	std::vector<Triangle>::const_iterator it = triangles_.cbegin();
@@ -56,8 +56,8 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 {
 	// オブジェクトのローカル座標系でのレイを得る
 	Ray localRay;
-	localRay.start = Vector3Transform(ray.start, invMatWorld_);
-	localRay.dir = Vector3Transform(ray.dir, invMatWorld_);
+	localRay.start = ray.start - object_->GetPosition();
+	localRay.dir = ray.dir;
 
 	// ローカル座標系で交差をチェック
 	std::vector<Triangle>::const_iterator it = triangles_.cbegin();

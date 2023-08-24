@@ -21,11 +21,12 @@ void TestEnemy::Initialize()
 
 	// オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
+	object_->SetScale({ 5.0f, 1.0f, 1.0f });
 
 	// コライダー
-	collider_ = std::make_unique<CubeCollider>();
+	collider_ = std::make_unique<MeshCollider>(object_.get());
 	collider_->SetAttribute(COL_ENEMY);
-	collider_->LinkObject3D(object_.get());
+	collider_->SetObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
 }
 

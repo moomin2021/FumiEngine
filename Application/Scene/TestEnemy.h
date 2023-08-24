@@ -3,7 +3,6 @@
 #include "Key.h"
 #include "CollisionManager.h"
 #include "MeshCollider.h"
-#include "CubeCollider.h"
 
 #include <memory>
 
@@ -22,7 +21,7 @@ private:
 	std::unique_ptr<Object3D> object_ = nullptr;
 
 	// 球コライダー
-	std::unique_ptr<CubeCollider> collider_ = nullptr;
+	std::unique_ptr<MeshCollider> collider_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
