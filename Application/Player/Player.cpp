@@ -38,6 +38,7 @@ void Player::Initialize(EnemyManager* enemyMgr)
 #pragma region モデル
 	model_ = std::make_unique<Model>("sphere");
 	mBullet_ = std::make_unique<Model>("sphere");
+	mSheriff_ = std::make_unique<Model>("Sheriff");
 #pragma endregion
 
 #pragma region オブジェクト
@@ -46,6 +47,9 @@ void Player::Initialize(EnemyManager* enemyMgr)
 
 	testObj_ = std::make_unique<Object3D>(model_.get());
 	testObj_->SetScale({ 0.25f, 0.25f, 0.25f });
+
+	oSheriff_ = std::make_unique<Object3D>(mSheriff_.get());
+	oSheriff_->SetScale(float3{ 0.1f, 0.1f, 0.1f });
 #pragma endregion
 
 #pragma region スプライト
@@ -161,6 +165,7 @@ void Player::DrawObject3D()
 {
 	//object_->Draw();
 	//testObj_->Draw();
+	oSheriff_->Draw();
 
 	for (auto& it : bullets_) it->Draw();
 }
@@ -194,6 +199,19 @@ void Player::ObjUpdate()
 	testObj_->Update();
 
 	camera_->Update();
+
+	float3 adsPos = camera_->GetEye() + float3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
+	float3 noAdsPos = camera_->GetEye() + float3{0.0f, -0.2f, 0.0f} + (forwardVec_ * 0.5f) + (rightVec_ * 0.5f);
+
+	float3 resultPos = { 0.0f, 0.0f, 0.0f };
+
+	resultPos.x = Easing::lerp(noAdsPos.x, adsPos.x, adsRate_);
+	resultPos.y = Easing::lerp(noAdsPos.y, adsPos.y, adsRate_);
+	resultPos.z = Easing::lerp(noAdsPos.z, adsPos.z, adsRate_);
+
+	oSheriff_->SetPosition(resultPos);
+	oSheriff_->SetRotation({ (eyeAngle_.y + 90.0f), eyeAngle_.x, 180.0f });
+	oSheriff_->Update();
 }
 
 void Player::OnCollision()
@@ -514,7 +532,7 @@ void Player::EyeMove()
 	eyeAngle_.y += mouse_->GetMouseVelosity().y * sencivity_;
 
 	// 視点移動の上下に制限を付ける
-	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 180.0f, 0.0f);
+	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 120.0f, 60.0f);
 
 	// 前方ベクトル計算
 	forwardVec_ = {
