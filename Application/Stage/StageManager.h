@@ -34,6 +34,9 @@ public:
 	// XVˆ—
 	void ObjUpdate();
 
+	// Õ“Ëˆ—
+	void OnCollision();
+
 	// •`‰æˆ—
 	void Draw();
 

@@ -38,10 +38,6 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Ve
 
 		// 球と三角形の当たり判定
 		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject)) {
-			if (localSphere.radius <= 0.25f) {
- 				int num = 0;
-			}
-
 			if (inter) {
 				const Matrix4& matWorld = object_->GetMatWorld();
 
@@ -76,12 +72,12 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 			const Matrix4& matWorld = object_->GetMatWorld();
 
 			// ワールド座標系での交点を得る
-			tempInter = Vector3Transform(tempInter, matWorld);
+			//tempInter = Vector3Transform(tempInter, matWorld);
 
 			if (distance) {
 				// 交点とレイ始点の距離を計算
-				Vector3 sub = tempInter - ray.start;
-				*distance = Vector3Dot(sub, ray.dir);
+				Vector3 sub = tempInter - localRay.start;
+				*distance = Vector3Dot(sub, localRay.dir);
 			}
 
 			if (inter) {

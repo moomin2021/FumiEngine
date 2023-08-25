@@ -116,15 +116,16 @@ void Player::Initialize(EnemyManager* enemyMgr)
 	colMgr_->AddCollider(playerCol_.get());// 登録
 
 	// 足元のコライダー(落下処理に使用)
-	legCol_ = std::make_unique<SphereCollider>(float3{0.0f, -1.0f, 0.0f});
+	legCol_ = std::make_unique<RayCollider>();
 	legCol_->SetAttribute(COL_LEG);
 	legCol_->SetObject3D(object_.get());
+	legCol_->SetDir({ 0.0f, -1.0f, 0.0f });
 	colMgr_->AddCollider(legCol_.get());// 登録
 
 	// 壁登りに使うコライダー
-	climbCol_ = std::make_unique<SphereCollider>(float3{0.0f, 0.0f, 0.0f}, 0.25f);
+	climbCol_ = std::make_unique<RayCollider>();
 	climbCol_->SetAttribute(COL_FRONT);
-	climbCol_->SetObject3D(testObj_.get());
+	climbCol_->SetObject3D(object_.get());
 	colMgr_->AddCollider(climbCol_.get());
 
 	// 視点コライダー
@@ -146,6 +147,7 @@ void Player::Update()
 
 	// レイの方向を設定
 	eyeCol_->SetDir(forwardVec_);
+	climbCol_->SetDir(forwardVec_);
 
 	float3 pos = object_->GetPosition();
 
@@ -221,18 +223,18 @@ void Player::OnCollision()
 	//	state_ = AIR;
 	//}
 
-	if (climbCol_->GetIsHit() && key_->PushKey(DIK_W)) {
+	if (climbCol_->GetIsHit() && key_->PushKey(DIK_W) && climbCol_->GetDistance() <= 1.5f) {
 		state_ = CLIMB;
 	}
 
-	else if (legCol_->GetIsHit()) {
-		isGround_ = true;
-		state_ = NORMAL;
-		gravity_ = 0.0f;
-		float3 reject = legCol_->GetReject();
-		camera_->SetEye(camera_->GetEye() + Vector3{0.0f, reject.y, 0.0f});
-		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
-		object_->SetPosition(camera_->GetEye());
+	else if (legCol_->GetIsHit() && legCol_->GetDistance() <= 2.0f) {
+			isGround_ = true;
+			state_ = NORMAL;
+			gravity_ = 0.0f;
+			Vector3 reject = (2.0f - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
+			camera_->SetEye(camera_->GetEye() + reject);
+			camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+			object_->SetPosition(camera_->GetEye());
 	}
 
 	else {
@@ -265,18 +267,24 @@ void Player::OnCollision()
 	bool isBossGen = false;
 
 	if (eyeCol_->GetIsHit()) {
-		//if (eyeCol_->GetCollider()->GetAttribute() == COL_BOSSGENERATOR) {
-		//	isBossGen = true;
-		//}
+		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_BOSSGENERATOR) {
+			isBossGen = true;
+		}
 	}
 
 	if (isBossGen && key_->TriggerKey(DIK_F)) {
 		enemyMgr_->SummonBoss();
 	}
 
+	Vector3 dir = climbCol_->GetDir();
+	Vector3 start = climbCol_->GetStart();
+
 	ImGui::Text("IsHit = %d", isBossGen);
 	ImGui::Text("Gravity = %f", gravity_);
 	ImGui::Text("State = %s", stateName_[state_].c_str());
+	ImGui::Text("distance = %f", climbCol_->GetDistance());
+	ImGui::Text("dir = {%f, %f, %f}", dir.x, dir.y, dir.z);
+	ImGui::Text("start = {%f, %f, %f}", start.x, start.y, start.z);
 	ImGui::End();
 }
 
@@ -447,13 +455,6 @@ void Player::Move()
 	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
-	// 壁登り用コライダーを正面に設定
-	//float3 climbColPos = {
-	//	forwardVec_.x * 1.25f,
-	//	0.0f,
-	//	forwardVec_.z * 1.25f
-	//};
-	//climbCol_->SetOffset(forwardVec_ * 1.25f);
 	testObj_->SetPosition(object_->GetPosition() + forwardVec_ * 1.25f);
 
 	// オブジェクトの更新

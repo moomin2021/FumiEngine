@@ -47,8 +47,8 @@ private:
 
 	// コライダー
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーのコライダー
-	std::unique_ptr<SphereCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
-	std::unique_ptr<SphereCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
+	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
+	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
 	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// 視点コライダー
 
 	// 状態

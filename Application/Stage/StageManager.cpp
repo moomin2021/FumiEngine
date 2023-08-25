@@ -22,6 +22,19 @@ void StageManager::ObjUpdate()
 	}
 }
 
+void StageManager::OnCollision()
+{
+	for (size_t i = 0; i < stageObjColliders_.size(); i++) {
+		if (stageObjColliders_[i]->GetIsHit()) {
+			stageObjects_[i]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+		}
+
+		else {
+			stageObjects_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+		}
+	}
+}
+
 void StageManager::Draw()
 {
 	// オブジェクト描画
