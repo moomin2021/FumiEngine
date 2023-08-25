@@ -57,6 +57,13 @@ private:
 	// カメラ感度
 	float sencivity_ = 0.1f;
 
+	// 視点角度
+	Vector3 eyeAngle_ = { 0.0f, 90.0f, 0.0f };
+	float diffusivity_ = 5.0f;
+	const float maxDiffusivity_ = 5.0f;
+	float adsRate_ = 0.0f;
+	bool isAds_ = false;
+
 	// 前方ベクトル
 	Vector3 forwardVec_ = { 0.0f, 0.0f, 0.0f };
 
@@ -131,6 +138,7 @@ private:
 	void Climb();	// 登り状態
 
 	// 行動関数
+	void Ads();		// 覗き込み
 	void Shoot();	// 弾を撃つ
 	void Reload();	// リロード処理
 	void Move();	// 移動操作

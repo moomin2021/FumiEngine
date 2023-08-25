@@ -2,6 +2,7 @@
 #include "CollisionAttribute.h"
 #include "Texture.h"
 #include "WinAPI.h"
+#include "Easing.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -147,7 +148,7 @@ void Player::Update()
 
 	// レイの方向を設定
 	eyeCol_->SetDir(forwardVec_);
-	climbCol_->SetDir(forwardVec_);
+	climbCol_->SetDir({forwardVec_.x, 0.0f, forwardVec_.z});
 
 	float3 pos = object_->GetPosition();
 
@@ -302,6 +303,9 @@ void Player::Normal()
 	// 移動操作
 	Move();
 
+	// 覗き込み
+	Ads();
+
 	// 撃つ処理
 	Shoot();
 
@@ -322,6 +326,9 @@ void Player::Air()
 
 	// 移動操作
 	Move();
+
+	// 覗き込み
+	Ads();
 
 	// 撃つ処理
 	Shoot();
@@ -349,6 +356,33 @@ void Player::Climb()
 
 	// 移動操作
 	Move();
+}
+
+void Player::Ads()
+{
+	if (mouse_->PushMouseButton(MouseButton::M_RIGHT)) {
+		adsRate_ += 0.1f;
+	}
+
+	else {
+		adsRate_ -= 0.1f;
+	}
+
+	if (adsRate_ > 0.0f) {
+		isAds_ = true;
+	}
+
+	else {
+		isAds_ = false;
+	}
+
+	adsRate_ = Util::Clamp(adsRate_, 1.0f, 0.0f);
+	diffusivity_ = Easing::lerp(maxDiffusivity_, 0.0f, adsRate_);
+
+	fovAngleY_ = Easing::lerp(70.0f, 40.0f, adsRate_);
+	fovAngleY_ = Util::Clamp(fovAngleY_, 70.0f, 40.0f);
+
+	camera_->SetFovAngleY(fovAngleY_);
 }
 
 void Player::Shoot()
@@ -380,8 +414,20 @@ void Player::Shoot()
 	// 残弾を減らす
 	nowBullet_--;
 
+	Vector3 shotAngle = {
+		eyeAngle_.x + Util::GetRandomFloat(-diffusivity_, diffusivity_),
+		eyeAngle_.y + Util::GetRandomFloat(-diffusivity_, diffusivity_),
+		0.0f
+	};
+ 
+	Vector3 shotVec = {
+		sinf(Util::Degree2Radian(shotAngle.x)),
+		cosf(Util::Degree2Radian(shotAngle.y)),
+		cosf(Util::Degree2Radian(shotAngle.x))
+	};
+
 	// 弾を生成
-	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), forwardVec_));
+	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));
 }
 
 void Player::Reload()
@@ -463,21 +509,18 @@ void Player::Move()
 
 void Player::EyeMove()
 {
-	// 視点角度
-	static float3 eyeAngle = { 0.0f, 90.0f, 0.0f };
-
 	// マウスの移動量分視点の角度に加算
-	eyeAngle.x += mouse_->GetMouseVelosity().x * sencivity_;
-	eyeAngle.y += mouse_->GetMouseVelosity().y * sencivity_;
+	eyeAngle_.x += mouse_->GetMouseVelosity().x * sencivity_;
+	eyeAngle_.y += mouse_->GetMouseVelosity().y * sencivity_;
 
 	// 視点移動の上下に制限を付ける
-	eyeAngle.y = Util::Clamp(eyeAngle.y, 180.0f, 0.0f);
+	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 180.0f, 0.0f);
 
 	// 前方ベクトル計算
 	forwardVec_ = {
-		sinf(Util::Degree2Radian(eyeAngle.x)),
-		cosf(Util::Degree2Radian(eyeAngle.y)),
-		cosf(Util::Degree2Radian(eyeAngle.x))
+		sinf(Util::Degree2Radian(eyeAngle_.x)),
+		cosf(Util::Degree2Radian(eyeAngle_.y)),
+		cosf(Util::Degree2Radian(eyeAngle_.x))
 	};
 
 	// 前方ベクトル正規化
@@ -546,6 +589,8 @@ void Player::Fall()
 
 void Player::Dash()
 {
+	if (isAds_) return;
+
 	static float time = 1.0f;
 
 	if (isDash_) fovAngleY_ += 2.0f;
