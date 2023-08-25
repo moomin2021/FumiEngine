@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
+#include "RayCollider.h"
 #include "Key.h"
 #include "CollisionManager.h"
 
@@ -19,9 +20,10 @@ private:
 
 	// オブジェクト
 	std::unique_ptr<Object3D> object_ = nullptr;
+	std::unique_ptr<Object3D> rayObj_ = nullptr;
 
 	// 球コライダー
-	std::unique_ptr<SphereCollider> collider_ = nullptr;
+	std::unique_ptr<RayCollider> collider_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

@@ -60,7 +60,7 @@ void CollisionManager::CheckAllCollision()
 					if (!Collision::CheckRay2Sphere(*ray, *sphere, &tempDistance, &tempInter)) continue;
 
 					// 距離が最小でなければ除外
-					if (tempDistance <= distance) continue;
+					if (tempDistance >= distance) continue;
 
 					// 最も近いコライダーなので情報を保存
 					result = true;
@@ -81,7 +81,7 @@ void CollisionManager::CheckAllCollision()
 					if (!meshCol->CheckCollisionRay(*ray, &tempDistance, &tempInter)) continue;
 
 					// 距離が最小でなければ除外
-					if (tempDistance <= distance) continue;
+					if (tempDistance >= distance) continue;
 
 					// 最も近いコライダーなので情報を保存
 					result = true;
@@ -101,16 +101,16 @@ void CollisionManager::CheckAllCollision()
 				rayCol->SetHitCollider(it_hit);
 
 				// 球
-				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
-					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*it);
+				if (it_hit->GetShapeType() == SHAPE_SPHERE) {
+					SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(it_hit);
 					sphereCol->SetIsHit(true);
 					sphereCol->SetInter(inter);
 					sphereCol->SetHitCollider(*itA);
 				}
 
 				// メッシュ
-				else if ((*it)->GetShapeType() == SHAPE_MESH) {
-					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*it);
+				else if (it_hit->GetShapeType() == SHAPE_MESH) {
+					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(it_hit);
 					meshCol->SetIsHit(true);
 					meshCol->SetInter(inter);
 					meshCol->SetHitCollider(*itA);

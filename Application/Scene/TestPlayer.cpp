@@ -20,10 +20,14 @@ void TestPlayer::Initialize()
 
 	// オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
-	object_->SetPosition({ 0.0f, 1.0f, 0.0f });
+	object_->SetPosition({ 0.0f, 0.0f, -7.0f });
+
+	rayObj_ = std::make_unique<Object3D>(model_.get());
+	rayObj_->SetPosition({ 0.0f, 0.0f, -7.0f });
+	rayObj_->SetScale({ 0.1f, 0.1f, 100.0f });
 
 	// コライダー
-	collider_ = std::make_unique<SphereCollider>();
+	collider_ = std::make_unique<RayCollider>(float3{ 0.0f, 0.0f, 0.0f }, Vector3{0.0f, 0.0f, 1.0f});
 	collider_->SetAttribute(COL_PLAYER);
 	collider_->SetObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
@@ -39,6 +43,7 @@ void TestPlayer::Update()
 	pos.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.1f;
 
 	object_->SetPosition(pos);
+	rayObj_->SetPosition(pos);
 
 	ImGui::Begin("Player");
 	ImGui::Text("pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
@@ -50,14 +55,16 @@ void TestPlayer::Draw()
 
 	// 描画処理
 	object_->Draw();
+	rayObj_->Draw();
 }
 
 void TestPlayer::OnCollision()
 {
+	float distance = collider_->GetDistance();
+	ImGui::Text("distance = %f", distance);
+
 	if (collider_->GetIsHit()) {
-		Vector3 reject = collider_->GetReject();
 		object_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-		ImGui::Text("Reject = {%f, %f, %f}", reject.x, reject.y, reject.z);
 	}
 
 	else {
@@ -69,4 +76,5 @@ void TestPlayer::ObjUpdate()
 {
 	// オブジェクト更新処理
 	object_->Update();
+	rayObj_->Update();
 }

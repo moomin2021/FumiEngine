@@ -21,7 +21,8 @@ void TestEnemy::Initialize()
 
 	// オブジェクト
 	object_ = std::make_unique<Object3D>(model_.get());
-	object_->SetScale({ 5.0f, 1.0f, 1.0f });
+	object_->SetPosition({0.0f, 5.0f, 20.0f});
+	object_->SetScale({ 10.0f, 5.0f, 10.0f });
 
 	// コライダー
 	collider_ = std::make_unique<MeshCollider>(object_.get());
