@@ -21,6 +21,12 @@ private:
 
 	// ステージの各オブジェクトのコライダー
 	std::deque<std::unique_ptr<MeshCollider>> stageObjColliders_;
+
+	// モデル
+	std::unique_ptr<Model> mSkydome_ = nullptr;
+
+	// オブジェクト
+	std::unique_ptr<Object3D> oSkydome_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

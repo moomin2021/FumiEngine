@@ -364,7 +364,7 @@ void Player::Air()
 void Player::Climb()
 {
 	gravity_ -= 0.2f;
-	gravity_ = Util::Clamp(gravity_, maxGravity_, -1.0f);
+	gravity_ = Util::Clamp(gravity_, 1.0f, -1.0f);
 	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 	object_->SetPosition(camera_->GetEye());

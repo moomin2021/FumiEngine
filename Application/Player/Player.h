@@ -74,8 +74,8 @@ private:
 
 	// 移動速度関連
 	float moveSpd_		= 0.0f;// 移動速度
-	float maxMoveSpd_	= 1.0f;// 最大移動速度
-	float moveAcc_		= 0.1f;// 移動加速度
+	float maxMoveSpd_	= 0.5f;// 最大移動速度
+	float moveAcc_		= 0.05f;// 移動加速度
 
 	// クロスヘア
 	uint16_t crossHairHandle_ = 0;
@@ -109,7 +109,7 @@ private:
 
 	// ダッシュ
 	bool isDash_ = false;
-	float dashSpd_ = 2.0f;
+	float dashSpd_ = 1.0f;
 #pragma endregion
 
 #pragma region メンバ関数

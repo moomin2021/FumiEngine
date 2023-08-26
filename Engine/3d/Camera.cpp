@@ -26,7 +26,7 @@ Camera::Camera() :
 	XMMATRIX mat = XMMatrixPerspectiveFovLH(
 		Util::Degree2Radian(45.0f),	// 上下画角45度
 		winWidth / winHeight,		// アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f);				// 前端、奥端
+		0.1f, 2000.0f);				// 前端、奥端
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {
@@ -61,7 +61,7 @@ void Camera::SetFovAngleY(float fovAngleY)
 	XMMATRIX mat = XMMatrixPerspectiveFovLH(
 		Util::Degree2Radian(fovAngleY),	// 上下画角45度
 		winWidth / winHeight,		// アスペクト比（画面横幅/画面縦幅）
-		0.1f, 1000.0f);				// 前端、奥端
+		0.1f, 2000.0f);				// 前端、奥端
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {

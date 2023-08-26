@@ -12,6 +12,13 @@ void StageManager::Initialize()
 {
 	// コリジョンマネージャーインスタンス取得
 	colMgr_ = CollisionManager::GetInstance();
+
+	// モデル
+	mSkydome_ = std::make_unique<Model>("skydome");
+
+	// オブジェクト
+	oSkydome_ = std::make_unique<Object3D>(mSkydome_.get());
+	oSkydome_->SetScale({ 1000.0f, 1000.0f, 1000.0f });
 }
 
 void StageManager::ObjUpdate()
@@ -20,19 +27,21 @@ void StageManager::ObjUpdate()
 	for (auto& it : stageObjects_) {
 		it->Update();
 	}
+
+	oSkydome_->Update();
 }
 
 void StageManager::OnCollision()
 {
-	for (size_t i = 0; i < stageObjColliders_.size(); i++) {
-		if (stageObjColliders_[i]->GetIsHit()) {
-			stageObjects_[i]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-		}
+	//for (size_t i = 0; i < stageObjColliders_.size(); i++) {
+	//	if (stageObjColliders_[i]->GetIsHit()) {
+	//		stageObjects_[i]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	//	}
 
-		else {
-			stageObjects_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-		}
-	}
+	//	else {
+	//		stageObjects_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	//	}
+	//}
 }
 
 void StageManager::Draw()
@@ -41,6 +50,8 @@ void StageManager::Draw()
 	for (auto& it : stageObjects_) {
 		it->Draw();
 	}
+
+	oSkydome_->Draw();
 }
 
 void StageManager::AddModel(std::string fileName)
