@@ -1,6 +1,6 @@
 #pragma once
 #include "Camera.h"
-#include "float3.h"
+#include "Vector3.h"
 #include "Matrix4.h"
 
 #include <d3d12.h>
@@ -24,7 +24,7 @@ private:
 #pragma region 構造体
 	// 頂点データ
 	struct Vertex {
-		float3 pos;
+		Vector3 pos;
 		float scale;
 	};
 
@@ -35,9 +35,9 @@ private:
 
 	// パーティクル1粒
 	struct Particle {
-		float3 position = {};	// 座標
-		float3 velocity = {};	// 速度
-		float3 accel = {};		// 加速度
+		Vector3 position = {};	// 座標
+		Vector3 velocity = {};	// 速度
+		Vector3 accel = {};		// 加速度
 		uint16_t frame = 0;		// 現在フレーム
 		uint16_t num_frame = 0;	// 終了フレーム
 		float scale = 1.0f;		// スケール
@@ -54,7 +54,7 @@ private:
 	const uint16_t MAX_VERTEX = 1024;
 
 	// 発生位置
-	float3 position_ = { 0.0f, 0.0f, 0.0f };
+	Vector3 position_ = { 0.0f, 0.0f, 0.0f };
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuff_ = nullptr;
@@ -93,7 +93,7 @@ public:
 	/// <param name="pos"> 初期座標 </param>
 	/// <param name="velocity"> 速度 </param>
 	/// <param name="accel"> 加速度 </param>
-	void Add(uint16_t life, float3 pos, float3 velocity, float3 accel, float startScale, float endScale);
+	void Add(uint16_t life, Vector3 pos, Vector3 velocity, Vector3 accel, float startScale, float endScale);
 
 private:
 	// 定数バッファ生成
@@ -109,7 +109,7 @@ private:
 #pragma region セッター関数
 public:
 	// 生成位置を設定
-	void SetSpawnPos(const float3& pos) { position_ = pos; }
+	void SetSpawnPos(const Vector3& pos) { position_ = pos; }
 
 	// カメラを設定
 	static void SetCamera(Camera* camera) { sCamera_ = camera; }

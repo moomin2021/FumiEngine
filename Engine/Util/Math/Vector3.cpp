@@ -12,13 +12,6 @@ Vector3::Vector3(float x, float y, float z)
 	this->z = z;
 }
 
-Vector3::Vector3(float3 pos)
-{
-	this->x = pos.x;
-	this->y = pos.y;
-	this->z = pos.z;
-}
-
 // ƒƒ“ƒoŠÖ”
 
 // ƒmƒ‹ƒ€(’·‚³)‚ğ‹‚ß‚é
@@ -131,35 +124,12 @@ const Vector3 operator+(const Vector3& v1, const Vector3& v2)
 	return temp += v2;
 }
 
-const Vector3 operator+(const Vector3& v, const float3& f)
-{
-	Vector3 temp(v);
-	return temp += f;
-}
-
-const Vector3 operator+(const float3& f, const Vector3& v)
-{
-	Vector3 temp(v);
-	return temp += f;
-}
-
 const Vector3 operator-(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 temp(v1);
 	return temp -= v2;
 }
 
-const Vector3 operator-(const Vector3& v, const float3& f)
-{
-	Vector3 temp(v);
-	return temp -= f;
-}
-
-const Vector3 operator-(const float3& f, const Vector3& v)
-{
-	Vector3 temp(v);
-	return temp -= f;
-}
 
 const Vector3 operator*(const Vector3& v, float s)
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "float2.h"
+#include "Vector2.h"
 #include "Util.h"
 
 class SpotLight {
@@ -8,13 +8,13 @@ public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
 		Vector3 lightVec;			// ライトの方向(XYZ)
-		float3 lightPos;			// ライトの座標(XYZ)
+		Vector3 lightPos;			// ライトの座標(XYZ)
 		float pad1;// パディング
-		float3 lightColor;			// ライトの色(RGB)
+		Vector3 lightColor;			// ライトの色(RGB)
 		float pad2;// パディング
-		float3 lightAtten;			// ライトの距離減衰係数(XYZ)
+		Vector3 lightAtten;			// ライトの距離減衰係数(XYZ)
 		float pad3;// パディング
-		float2 lightFactorAngleCos;	// ライトの減衰角度(開始角度, 終了角度)
+		Vector2 lightFactorAngleCos;	// ライトの減衰角度(開始角度, 終了角度)
 		bool active;				// 有効フラグ
 		float pad4;// パディング
 	};
@@ -26,16 +26,16 @@ private:
 	Vector3 lightDir_ = { 1.0f, 0.0f, 0.0f };
 
 	// ライト座標(XYZ)
-	float3 lightPos_ = { 0.0f, 0.0f, 0.0f };
+	Vector3 lightPos_ = { 0.0f, 0.0f, 0.0f };
 
 	// ライト色
-	float3 lightColor_ = { 1.0f, 1.0f, 1.0f };
+	Vector3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
 	// ライト距離減衰係数
-	float3 lightAtten_ = { 1.0f, 1.0f, 1.0f };
+	Vector3 lightAtten_ = { 1.0f, 1.0f, 1.0f };
 
 	// ライト減衰角度(開始角度、終了角度)
-	float2 lightFactorAngleCos_ = { 0.5f, 0.2f };
+	Vector2 lightFactorAngleCos_ = { 0.5f, 0.2f };
 
 	// 有効フラグ
 	bool active_ = true;
@@ -53,25 +53,25 @@ public:
 	/// ライトの座標(XYZ)を設定
 	/// </summary>
 	/// <param name="lightPos"> ライトの座標(XYZ) </param>
-	inline void SetLightPos(const float3& lightPos) { lightPos_ = lightPos; }
+	inline void SetLightPos(const Vector3& lightPos) { lightPos_ = lightPos; }
 
 	/// <summary>
 	/// ライトの色(RGB)を設定
 	/// </summary>
 	/// <param name="lightColor"> ライトの色(RGB) </param>
-	inline void SetLightColor(const float3& lightColor) { lightColor_ = lightColor; }
+	inline void SetLightColor(const Vector3& lightColor) { lightColor_ = lightColor; }
 
 	/// <summary>
 	/// ライトの距離減衰係数(XYZ)を設定
 	/// </summary>
 	/// <param name="lightAtten"> ライトの距離減衰係数(XYZ) </param>
-	inline void SetLightAtten(const float3& lightAtten) { lightAtten_ = lightAtten; }
+	inline void SetLightAtten(const Vector3& lightAtten) { lightAtten_ = lightAtten; }
 
 	/// <summary>
 	/// ライト減衰角度(開始角度、終了角度)を設定
 	/// </summary>
 	/// <param name="lightFactorAngle"> ライトの減衰角度(開始角度, 終了角度) </param>
-	inline void SetLightFactorAngle(const float2& lightFactorAngle) {
+	inline void SetLightFactorAngle(const Vector2& lightFactorAngle) {
 		lightFactorAngleCos_.x = cosf(Util::Degree2Radian(lightFactorAngle.x));
 		lightFactorAngleCos_.y = cosf(Util::Degree2Radian(lightFactorAngle.y));
 	}
@@ -95,25 +95,25 @@ public:
 	/// ライトの座標(XYZ)を取得
 	/// </summary>
 	/// <returns> ライトの座標(XYZ) </returns>
-	inline const float3& GetLightPos() { return lightPos_; }
+	inline const Vector3& GetLightPos() { return lightPos_; }
 
 	/// <summary>
 	/// ライトの色(RGB)を取得
 	/// </summary>
 	/// <returns> ライトの色(RGB) </returns>
-	inline const float3& GetLightColor() { return lightColor_; }
+	inline const Vector3& GetLightColor() { return lightColor_; }
 
 	/// <summary>
 	/// ライトの距離減衰係数(XYZ)を取得
 	/// </summary>
 	/// <returns> ライトの距離減衰係数(XYZ) </returns>
-	inline const float3& GetLightAtten() { return lightAtten_; }
+	inline const Vector3& GetLightAtten() { return lightAtten_; }
 
 	/// <summary>
 	/// ライト減衰角度(開始角度、終了角度)を取得
 	/// </summary>
 	/// <returns> ライト減衰角度(開始角度、終了角度) </returns>
-	inline const float2& GetLightFactorAngle() { return lightFactorAngleCos_; }
+	inline const Vector2& GetLightFactorAngle() { return lightFactorAngleCos_; }
 
 	/// <summary>
 	/// ライト有効フラグを取得

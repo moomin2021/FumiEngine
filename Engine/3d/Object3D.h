@@ -1,7 +1,7 @@
 #pragma once
 #include "Matrix4.h"
 #include "float4.h"
-#include "float3.h"
+#include "Vector3.h"
 #include "Model.h"
 #include "Camera.h"
 #include "LightGroup.h"
@@ -15,7 +15,7 @@ private:
 	struct ConstBufferData {
 		Matrix4 viewProj;	// ビュープロジェクション
 		Matrix4 world;		// ワールド行列
-		float3 cameraPos;	// カメラ座標(ワールド座標)
+		Vector3 cameraPos;	// カメラ座標(ワールド座標)
 		float pad1;			// パディング
 		float4 color;		// 色(RGBA)
 	};
@@ -23,9 +23,9 @@ private:
 #pragma region メンバ変数
 private:
 	// オブジェクトデータ
-	float3 position_;	// 位置(XYZ)
-	float3 rotation_;	// 回転(XYZ)
-	float3 scale_;		// 拡縮(XYZ)
+	Vector3 position_;	// 位置(XYZ)
+	Vector3 rotation_;	// 回転(XYZ)
+	Vector3 scale_;		// 拡縮(XYZ)
 	float4 color_;		// 色(RGBA)
 
 	// オブジェクトデータを変更したかどうか
@@ -67,19 +67,19 @@ public:
 	/// 座標(XYZ)を設定
 	/// </summary>
 	/// <param name="position"> 座標(XYZ) </param>
-	inline void SetPosition(const float3& position) { position_ = position, hasChanget_ = true; }
+	inline void SetPosition(const Vector3& position) { position_ = position, hasChanget_ = true; }
 
 	/// <summary>
 	/// 回転(XYZ)を設定
 	/// </summary>
 	/// <param name="rotation"> 回転(XYZ) </param>
-	inline void SetRotation(const float3& rotation) { rotation_ = rotation, hasChanget_ = true; }
+	inline void SetRotation(const Vector3& rotation) { rotation_ = rotation, hasChanget_ = true; }
 
 	/// <summary>
 	/// 拡縮(XYZ)を設定
 	/// </summary>
 	/// <param name="scale"> 拡縮(XYZ) </param>
-	inline void SetScale(const float3& scale) { scale_ = scale, hasChanget_ = true; }
+	inline void SetScale(const Vector3& scale) { scale_ = scale, hasChanget_ = true; }
 
 	/// <summary>
 	/// 色(RGBA)を設定
@@ -111,13 +111,13 @@ public:
 	/// 座標(XYZ)を取得
 	/// </summary>
 	/// <returns> 座標(XYZ) </returns>
-	inline const float3& GetPosition() { return position_; }
+	inline const Vector3& GetPosition() { return position_; }
 
 	/// <summary>
 	/// 拡縮(XYZ)を取得
 	/// </summary>
 	/// <returns> 拡縮(XYZ) </returns>
-	inline const float3& GetScale() { return scale_; }
+	inline const Vector3& GetScale() { return scale_; }
 
 	/// <summary>
 	/// ワールド行列を取得

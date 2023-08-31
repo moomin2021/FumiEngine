@@ -34,7 +34,7 @@ void TestEnemy::Initialize()
 void TestEnemy::Update()
 {
 	// ˆÚ“®
-	static float3 pos = object_->GetPosition();
+	static Vector3 pos = object_->GetPosition();
 
 	pos.x += (key_->PushKey(DIK_RIGHT) - key_->PushKey(DIK_LEFT)) * 0.1f;
 	pos.z += (key_->PushKey(DIK_UP) - key_->PushKey(DIK_DOWN)) * 0.1f;

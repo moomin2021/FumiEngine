@@ -27,7 +27,7 @@ void TestPlayer::Initialize()
 	rayObj_->SetScale({ 0.1f, 0.1f, 100.0f });
 
 	// コライダー
-	collider_ = std::make_unique<RayCollider>(float3{ 0.0f, 0.0f, 0.0f }, Vector3{0.0f, 0.0f, 1.0f});
+	collider_ = std::make_unique<RayCollider>(Vector3{ 0.0f, 0.0f, 0.0f }, Vector3{0.0f, 0.0f, 1.0f});
 	collider_->SetAttribute(COL_PLAYER);
 	collider_->SetObject3D(object_.get());
 	colMgr_->AddCollider(collider_.get());
@@ -36,7 +36,7 @@ void TestPlayer::Initialize()
 void TestPlayer::Update()
 {
 	// 移動
-	static float3 pos = object_->GetPosition();
+	static Vector3 pos = object_->GetPosition();
 
 	pos.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.1f;
 	pos.y += (key_->PushKey(DIK_SPACE) - key_->PushKey(DIK_LCONTROL)) * 0.1f;

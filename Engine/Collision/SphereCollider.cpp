@@ -1,6 +1,6 @@
 #include "SphereCollider.h"
 
-SphereCollider::SphereCollider(float3 offset, float radius)
+SphereCollider::SphereCollider(Vector3 offset, float radius)
 {
 	// 形状タイプを球に設定
 	shapeType_ = SHAPE_SPHERE;

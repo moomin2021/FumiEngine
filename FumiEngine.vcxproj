@@ -94,8 +94,6 @@
     <ClCompile Include="Engine\3d\BillBoard.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
-    <ClCompile Include="Engine\Util\Math\float2.cpp" />
-    <ClCompile Include="Engine\Util\Math\float3.cpp" />
     <ClCompile Include="Engine\Util\Math\float4.cpp" />
     <ClCompile Include="Engine\Input\Key.cpp" />
     <ClCompile Include="Engine\Light\LightGroup.cpp" />
@@ -140,8 +138,6 @@
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />
-    <ClInclude Include="Engine\Util\Math\float2.h" />
-    <ClInclude Include="Engine\Util\Math\float3.h" />
     <ClInclude Include="Engine\Util\Math\float4.h" />
     <ClInclude Include="Engine\Util\Math\fMath.h" />
     <ClInclude Include="Engine\Input\Key.h" />

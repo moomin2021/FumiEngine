@@ -1,5 +1,5 @@
 #pragma once
-#include "float3.h"
+#include "Vector3.h"
 #include "Vector3.h"
 
 class DirectionalLight {
@@ -9,7 +9,7 @@ public:
 	struct ConstBufferData {
 		Vector3 lightVec;	// ライトへ方向を表す
 		float pad1;
-		float3 lightColor;	// ライトの色
+		Vector3 lightColor;	// ライトの色
 		bool active;		// 有効フラグ
 	};
 #pragma endregion
@@ -20,7 +20,7 @@ private:
 	Vector3 lightDir_ = { 0.0f, -1.0f, 0.0f };
 
 	// ライト色
-	float3 lightColor_ = { 1.0f, 1.0f, 1.0f };
+	Vector3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
 	// 有効フラグ
 	bool active_ = true;
@@ -38,7 +38,7 @@ public:
 	/// ライトの色(RGB)を設定
 	/// </summary>
 	/// <param name="color"> ライトの色(RGB) </param>
-	inline void SetLightColor(const float3& color) { lightColor_ = color; }
+	inline void SetLightColor(const Vector3& color) { lightColor_ = color; }
 
 	/// <summary>
 	/// ライトの有効フラグを設定
@@ -59,7 +59,7 @@ public:
 	/// ライトの色(RGB)を取得
 	/// </summary>
 	/// <returns> ライトの色(RGB) </returns>
-	inline const float3& GetLightColor() { return lightColor_; }
+	inline const Vector3& GetLightColor() { return lightColor_; }
 
 	/// <summary>
 	/// 有効フラグを取得

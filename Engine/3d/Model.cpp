@@ -41,9 +41,9 @@ void Model::LoadModel(string name)
 	// ファイルオープン失敗をチェック
 	assert(!file.fail());
 
-	vector<float3> positions;	// 頂点座標
-	vector<float3> normals;		// 法線ベクトル
-	vector<float2> texcoords;	// テクスチャUV
+	vector<Vector3> positions;	// 頂点座標
+	vector<Vector3> normals;		// 法線ベクトル
+	vector<Vector2> texcoords;	// テクスチャUV
 
 	// メッシュを生成したらカウント
 	uint16_t meshCount = 0;
@@ -71,7 +71,7 @@ void Model::LoadModel(string name)
 		// 先頭文字列が[v]なら頂点座標
 		else if (key == "v") {
 			// X, Y, Z座標読み込み
-			float3 position{};
+			Vector3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
@@ -83,7 +83,7 @@ void Model::LoadModel(string name)
 		// 先頭文字列が[vt]ならテクスチャ
 		else if (key == "vt") {
 			// U, V成分読み込み
-			float2 texcoord{};
+			Vector2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
 
@@ -97,7 +97,7 @@ void Model::LoadModel(string name)
 		// 先頭文字列が[vn]なら法線ベクトル
 		else if (key == "vn") {
 			// X, Y, Z成分読み込み
-			float3 normal{};
+			Vector3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;

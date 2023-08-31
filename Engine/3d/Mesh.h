@@ -1,6 +1,6 @@
 #pragma once
-#include "float2.h"
-#include "float3.h"
+#include "Vector2.h"
+#include "Vector3.h"
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -18,9 +18,9 @@ private:
 public:
 	// 頂点データ
 	struct Vertex {
-		float3 pos;		// 座標(XYZ)
-		float3 normal;	// 法線(XYZ)
-		float2 uv;		// UV座標(XY)
+		Vector3 pos;		// 座標(XYZ)
+		Vector3 normal;	// 法線(XYZ)
+		Vector2 uv;		// UV座標(XY)
 	};
 #pragma endregion
 

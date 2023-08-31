@@ -1,5 +1,5 @@
 #include "Vector2.h"
-#include "float2.h"
+#include "Vector2.h"
 #include <cmath>    // sqrt
 
 // 引数なしのコンストラクタ
@@ -7,12 +7,6 @@ Vector2::Vector2() : x(0), y(0) {}
 
 // 引数2つのコンストラクタ
 Vector2::Vector2(float x, float y) : x(x), y(y) {}
-
-Vector2::Vector2(float2 pos)
-{
-    x = pos.x;
-    y = pos.y;
-}
 
 // ベクトルの長さを求める
 float Vector2::length() const

@@ -88,7 +88,7 @@ Matrix4 Matrix4Inverse(const Matrix4& m)
 }
 
 // --拡大縮小行列を求める-- //
-Matrix4 Matrix4Scale(const float3& s) {
+Matrix4 Matrix4Scale(const Vector3& s) {
 	Matrix4 result{
 		s.x, 0.0f, 0.0f, 0.0f,
 		0.0f, s.y, 0.0f, 0.0f,
@@ -145,7 +145,7 @@ Matrix4 Matrix4RotateZ(float angle) {
 }
 
 // --平行移動行列を求める-- //
-Matrix4 Matrix4Translate(const float3& t) {
+Matrix4 Matrix4Translate(const Vector3& t) {
 	Matrix4 result{
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
@@ -157,20 +157,7 @@ Matrix4 Matrix4Translate(const float3& t) {
 }
 
 // --座標変換（ベクトルと行列の掛け算）を行うtransform関数を作成する。（透視変換にも対応している）-- //
-float3 Matrix4Transform(const float3& v, const Matrix4& m) {
-	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
-
-	float3 result{
-		(v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + m.m[3][0]) / w,
-		(v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1]) / w,
-		(v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2]) / w
-	};
-
-	return result;
-}
-
-Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m)
-{
+Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m) {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 
 	Vector3 result{
@@ -204,6 +191,6 @@ const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2) {
 }
 
 // --2項演算子*のオーバーロード関数（ベクトルと行列の積）-- //
-const float3 operator*(const float3& v, const Matrix4& m) {
+const Vector3 operator*(const Vector3& v, const Matrix4& m) {
 	return Matrix4Transform(v, m);
 }

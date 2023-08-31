@@ -10,7 +10,7 @@ private:
 	std::vector<Triangle> triangles_;
 
 	// 衝突したときの情報
-	float3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
+	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
 	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };// 押し出しベクトル
 #pragma endregion
 
@@ -50,7 +50,7 @@ private:
 #pragma region セッター関数
 public:
 	// 交点を設定
-	inline void SetInter(const float3& inter) { inter_ = inter; }
+	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
 	// 押し出しベクトルを加算
 	inline void AddReject(const Vector3& reject) { reject_ += reject; }
@@ -58,7 +58,7 @@ public:
 
 #pragma region ゲッター関数
 	// 交点を取得
-	inline const float3& GetInter() { return inter_; }
+	inline const Vector3& GetInter() { return inter_; }
 
 	// 押し出しベクトルを取得
 	inline const Vector3& GetReject() { return reject_; }

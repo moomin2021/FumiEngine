@@ -7,17 +7,17 @@ class SphereCollider : public BaseCollider, public Sphere
 #pragma region メンバ変数
 private:
 	// オブジェクト中心からのオフセット
-	float3 offset_ = { 0.0f, 0.0f, 0.0f };
+	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
 
 	// 衝突したときの情報
-	float3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
+	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// 交点
 	Vector3 reject_	= { 0.0f, 0.0f, 0.0f };// 押し出しベクトル
 #pragma endregion
 
 #pragma region メンバ関数
 public:
 	// コンストラクタ
-	SphereCollider(float3 offset = { 0.0f, 0.0f, 0.0f }, float radius = 1.0f);
+	SphereCollider(Vector3 offset = { 0.0f, 0.0f, 0.0f }, float radius = 1.0f);
 
 	// 更新処理
 	void Update() override;
@@ -26,10 +26,10 @@ public:
 #pragma region セッター関数
 public:
 	// オフセットを設定
-	inline void SetOffset(const float3& offset) { offset_ = offset; }
+	inline void SetOffset(const Vector3& offset) { offset_ = offset; }
 
 	// 交点を設定
-	inline void SetInter(const float3& inter) { inter_ = inter; }
+	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
 	// 半径を設定
 	inline void SetRadius(float radius) { Sphere::radius = radius; }
@@ -40,7 +40,7 @@ public:
 
 #pragma region ゲッター関数
 	// 交点を取得
-	inline const float3& GetInter() { return inter_; }
+	inline const Vector3& GetInter() { return inter_; }
 
 	// 押し出しベクトルを取得
 	inline const Vector3& GetReject() { return reject_; }

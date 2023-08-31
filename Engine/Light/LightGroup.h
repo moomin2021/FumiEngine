@@ -24,7 +24,7 @@ private:
 public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		float3 ambientColor;// 環境光の色
+		Vector3 ambientColor;// 環境光の色
 		float pad1;
 		DirectionalLight::ConstBufferData dirLights[DIR_LIGHT_LIMIT];		// 平行光源用
 		PointLight::ConstBufferData pointLights[POINT_LIGHT_LIMIT];			// 点光源用
@@ -39,7 +39,7 @@ private:
 	ComPtr<ID3D12Resource> constBuff_;// ライトデータ
 
 	// 環境光の色
-	float3 ambientColor_;
+	Vector3 ambientColor_;
 	
 	// ライトデータ
 	std::vector<DirectionalLight*> dirLights_;	// 平行光源の配列

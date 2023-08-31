@@ -138,12 +138,6 @@
     <ClCompile Include="Engine\Util\Math\float4.cpp">
       <Filter>Engine\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Util\Math\float3.cpp">
-      <Filter>Engine\ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Util\Math\float2.cpp">
-      <Filter>Engine\ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\2d\PostEffect.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
@@ -268,12 +262,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Light\CircleShadow.h">
       <Filter>Engine\ヘッダー ファイル\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\Math\float2.h">
-      <Filter>Engine\ヘッダー ファイル\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\Math\float3.h">
-      <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\Math\float4.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>

@@ -1,14 +1,14 @@
 #pragma once
 #include "Matrix4.h"
-#include "float3.h"
+#include "Vector3.h"
 
 class Camera {
 #pragma region メンバ変数
 private:
 	// カメラデータ
-	float3 eye_;	// カメラの位置
-	float3 target_;	// カメラの注視点
-	float3 up_;		// カメラの上方向ベクトル
+	Vector3 eye_;	// カメラの位置
+	Vector3 target_;	// カメラの注視点
+	Vector3 up_;		// カメラの上方向ベクトル
 
 	// 行列
 	Matrix4 matView_;		// ビュー変換行列
@@ -32,19 +32,19 @@ public:
 	/// カメラの位置を設定
 	/// </summary>
 	/// <param name="eye"> カメラの位置 </param>
-	inline void SetEye(const float3& eye) { eye_ = eye; }
+	inline void SetEye(const Vector3& eye) { eye_ = eye; }
 
 	/// <summary>
 	/// カメラの注視点を設定
 	/// </summary>
 	/// <param name="target"> カメラの注視点 </param>
-	inline void SetTarget(const float3& target) { target_ = target; }
+	inline void SetTarget(const Vector3& target) { target_ = target; }
 
 	/// <summary>
 	/// カメラの上方向ベクトル
 	/// </summary>
 	/// <param name="up"> カメラの上方向ベクトル </param>
-	inline void SetUp(const float3& up) { up_ = up; }
+	inline void SetUp(const Vector3& up) { up_ = up; }
 #pragma endregion
 
 #pragma region ゲッター関数
@@ -52,19 +52,19 @@ public:
 	/// カメラの位置を取得
 	/// </summary>
 	/// <returns> カメラの位置 </returns>
-	inline const float3& GetEye() { return eye_; }
+	inline const Vector3& GetEye() { return eye_; }
 
 	/// <summary>
 	/// カメラの注視点を取得
 	/// </summary>
 	/// <returns> カメラの注視点 </returns>
-	inline const float3& GetTarget() { return target_; }
+	inline const Vector3& GetTarget() { return target_; }
 
 	/// <summary>
 	/// カメラの上方向を取得
 	/// </summary>
 	/// <returns> カメラの上方向 </returns>
-	inline const float3& GetUp() { return up_; }
+	inline const Vector3& GetUp() { return up_; }
 
 	/// <summary>
 	/// ビュー変換行列を取得

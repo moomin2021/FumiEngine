@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector3.h"
-#include "float3.h"
+#include "Vector3.h"
 
 // ‹…
 struct Sphere {

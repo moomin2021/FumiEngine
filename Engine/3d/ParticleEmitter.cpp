@@ -217,7 +217,7 @@ void ParticleEmitter::Draw(uint16_t handle)
 	cmdList->DrawInstanced(static_cast<UINT>(std::distance(particles_.begin(), particles_.end())), 1, 0, 0);
 }
 
-void ParticleEmitter::Add(uint16_t life, float3 pos, float3 velocity, float3 accel, float startScale, float endScale)
+void ParticleEmitter::Add(uint16_t life, Vector3 pos, Vector3 velocity, Vector3 accel, float startScale, float endScale)
 {
 	// ƒŠƒXƒg‚É—v‘f‚ð’Ç‰Á
 	particles_.emplace_front();

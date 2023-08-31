@@ -61,19 +61,19 @@ void Scene2::Initialize()
 
 		for (size_t j = 0; j < 1000; j++) {
 			// パーティクル生成
-			float3 pos{};// 座標
+			Vector3 pos{};// 座標
 			pos.x = Util::GetRandomFloat(-0.1f, 0.1f);
 			pos.y = Util::GetRandomFloat(-0.1f, 0.1f);
 			pos.z = Util::GetRandomFloat(-0.1f, 0.1f);
 
 			// 方向
-			float3 vel{};
+			Vector3 vel{};
 			vel.x = Util::GetRandomFloat(-0.1f, 0.1f);
 			vel.y = Util::GetRandomFloat(-0.1f, 0.1f);
 			vel.z = Util::GetRandomFloat(-0.1f, 0.1f);
 
 			// 加速度
-			float3 acc{};
+			Vector3 acc{};
 			acc.x = Util::GetRandomFloat(-0.001f, 0.0f);
 			acc.y = Util::GetRandomFloat(-0.001f, 0.0f);
 			acc.z = Util::GetRandomFloat(-0.001f, 0.0f);
@@ -91,7 +91,7 @@ void Scene2::Initialize()
 	Sound::Play(bgmKey_);
 
 #pragma region コライダー
-	rayCol_ = std::make_unique<RayCollider>(float3{ 0.0f, 2.0f, 0.0f }, Vector3{ 0.0f, -1.0f, 0.0f });
+	rayCol_ = std::make_unique<RayCollider>(Vector3{ 0.0f, 2.0f, 0.0f }, Vector3{ 0.0f, -1.0f, 0.0f });
 	rayCol_->SetAttribute(COL_ATTR_ALL);
 	meshCol_ = std::make_unique<MeshCollider>(object_.get());
 	meshCol_->SetAttribute(COL_ATTR_ALL);
@@ -108,7 +108,7 @@ void Scene2::Update()
 		i->Update(BILLBOARD::ALL);
 	}
 
-	float3 inter = {};
+	Vector3 inter = {};
 
 	if (meshCol_->GetIsHit()) {
 		inter = meshCol_->GetInter();

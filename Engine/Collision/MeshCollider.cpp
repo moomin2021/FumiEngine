@@ -100,7 +100,7 @@ void MeshCollider::ConstructTriangles(Model* model)
 	const std::vector<Mesh>& meshes = model->GetMesh();
 
 	// オブジェクトに設定されているスケールを設定
-	float3 scale = object_->GetScale();
+	Vector3 scale = object_->GetScale();
 
 	// 現在のメッシュの開始三角形番号を入れておく変数(0で初期化)
 	uint16_t start = 0;

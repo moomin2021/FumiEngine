@@ -1,6 +1,6 @@
 #pragma once
-#include "float2.h"
-#include "float3.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "float4.h"
 #include "Matrix4.h"
 
@@ -15,8 +15,8 @@ private:
 
 	// 頂点データ
 	struct Vertex {
-		float2 pos;	// 座標(XYZ)
-		float2 uv;	// UV座標(XY)
+		Vector2 pos;	// 座標(XYZ)
+		Vector2 uv;	// UV座標(XY)
 	};
 
 	// 定数バッファ用データ構造体
@@ -28,11 +28,11 @@ private:
 #pragma region メンバ変数
 private:
 	// スプライトデータ
-	float2 position_;	// 座標(XY)
+	Vector2 position_;	// 座標(XY)
 	float rotation_;	// 回転(Z)
-	float2 size_;		// サイズ(XY)
+	Vector2 size_;		// サイズ(XY)
 	float4 color_;		// 色(RGBA)
-	float2 anchorPoint_;// アンカーポイント座標(XY)
+	Vector2 anchorPoint_;// アンカーポイント座標(XY)
 	bool isFlipX_;		// 左右反転
 	bool isFlipY_;		// 上下反転
 
@@ -85,7 +85,7 @@ public:
 	/// 座標(XY)を設定
 	/// </summary>
 	/// <param name="position"> 座標(XY) </param>
-	inline void SetPosition(const float2& position) { position_ = position, hasChanget_ = true; }
+	inline void SetPosition(const Vector2& position) { position_ = position, hasChanget_ = true; }
 
 	/// <summary>
 	/// 回転(Z)を設定
@@ -97,7 +97,7 @@ public:
 	/// 拡縮(XY)を設定
 	/// </summary>
 	/// <param name="scale"> 拡縮(XY) </param>
-	inline void SetSize(const float2& size) { size_ = size, hasChanget_ = true; }
+	inline void SetSize(const Vector2& size) { size_ = size, hasChanget_ = true; }
 
 	/// <summary>
 	/// 色(RGBA)を設定
@@ -109,7 +109,7 @@ public:
 	/// アンカーポイント(XY)を設定
 	/// </summary>
 	/// /// <param name="anchorPoint"> アンカーポイント(XY) </param>
-	inline void SetAnchorPoint(const float2& anchorPoint) { anchorPoint_ = anchorPoint, hasChanget_ = true; }
+	inline void SetAnchorPoint(const Vector2& anchorPoint) { anchorPoint_ = anchorPoint, hasChanget_ = true; }
 
 	/// <summary>
 	/// 左右反転を設定

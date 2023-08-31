@@ -1,6 +1,6 @@
 #include "RayCollider.h"
 
-RayCollider::RayCollider(float3 offset, Vector3 dir)
+RayCollider::RayCollider(Vector3 offset, Vector3 dir)
 {
 	shapeType_ = SHAPE_RAY;
 
@@ -21,7 +21,7 @@ void RayCollider::Update()
 	// オブジェクト3Dが紐づけられていたら
 	if (object_) {
 		// ワールド行列からワールド座標を抽出
-		const float3 objPos = object_->GetPosition();
+		const Vector3 objPos = object_->GetPosition();
 		Ray::start = objPos + offset_;
 	}
 

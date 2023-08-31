@@ -1,6 +1,6 @@
 #pragma once
-#include "float2.h"
-#include "float3.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "float4.h"
 #include "Matrix4.h"
 #include "Key.h"
@@ -18,8 +18,8 @@ private:
 private:
 	// 頂点データ
 	struct Vertex {
-		float2 pos;	// 座標(XYZ)
-		float2 uv;	// UV座標(XY)
+		Vector2 pos;	// 座標(XYZ)
+		Vector2 uv;	// UV座標(XY)
 	};
 
 	// 定数バッファ用データ構造体
@@ -32,7 +32,7 @@ private:
 #pragma region メンバ変数
 private:
 	// ペラポリゴンデータ
-	float2 scale_;// 拡縮(画面の大きさに対して)
+	Vector2 scale_;// 拡縮(画面の大きさに対して)
 
 	// ペラポリゴンデータを変更したかどうか
 	bool hasChanget_;

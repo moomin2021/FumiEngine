@@ -1,5 +1,5 @@
 #pragma once
-#include "float3.h"
+#include "Vector3.h"
 
 #include <d3d12.h>
 #include <wrl.h>
@@ -15,11 +15,11 @@ private:
 #pragma region 構造体
 private:
 	struct MaterialBuffer {
-		float3 ambient;	// アンビエント係数
+		Vector3 ambient;	// アンビエント係数
 		float pad1;		// パディング
-		float3 diffuse;	// ディフェーズ係数
+		Vector3 diffuse;	// ディフェーズ係数
 		float pad2;		// パディング
-		float3 specular;// スペキュラー係数
+		Vector3 specular;// スペキュラー係数
 		float alpha;	// アルファ
 	};
 #pragma endregion
@@ -28,9 +28,9 @@ private:
 public:
 	// マテリアルデータ
 	std::string name_;	// マテリアル名
-	float3 ambient_;	// アンビエント影響度
-	float3 diffuse_;	// ディフューズ影響度
-	float3 specular_;	// スペキュラー影響度
+	Vector3 ambient_;	// アンビエント影響度
+	Vector3 diffuse_;	// ディフューズ影響度
+	Vector3 specular_;	// スペキュラー影響度
 	float alpha_;		// アルファ値
 	uint16_t texHandle_;// テクスチャハンドル
 	ComPtr<ID3D12Resource> materialBuff_;	// マテリアルバッファ
