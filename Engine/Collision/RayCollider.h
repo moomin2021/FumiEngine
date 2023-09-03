@@ -44,5 +44,11 @@ public:
 
 	// Œğ“_‚Ü‚Å‚Ì‹——£‚ğæ“¾
 	inline float GetDistance() { return minDistance_; }
+
+	// •ûŒü‚ğæ“¾
+	inline const Vector3& GetDir() { return Ray::dir; }
+
+	// ƒŒƒC‚ÌˆÊ’u‚ğæ“¾
+	inline const Vector3& GetStart() { return Ray::start; }
 #pragma endregion
 };

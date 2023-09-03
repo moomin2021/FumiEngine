@@ -1,0 +1,160 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "plateau",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "plateau"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -50.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "bossGenerator",
+            "class_name": "BossGenerator"
+        },
+        {
+            "type": "MESH",
+            "name": "Cylinder.000",
+            "transform": {
+                "translation": [
+                    -28.130931854248047,
+                    39.85215377807617,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "Cylinder.001",
+            "transform": {
+                "translation": [
+                    31.144962310791016,
+                    16.91204833984375,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "Cylinder.002",
+            "transform": {
+                "translation": [
+                    -31.64729881286621,
+                    -33.48920822143555,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "Cylinder.003",
+            "transform": {
+                "translation": [
+                    22.270322799682617,
+                    -7.2001800537109375,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "Cylinder.004",
+            "transform": {
+                "translation": [
+                    15.739927291870117,
+                    52.07571029663086,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Cylinder"
+        }
+    ]
+}

@@ -1,10 +1,14 @@
 #include "SceneManager.h"
-#include "Scene1.h"
-#include "Scene2.h"
-#include "Scene3.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 #include "ImGuiManager.h"
+
+#include "Scene1.h"
+#include "Scene2.h"
+#include "Scene3.h"
+#include "TitleScene.h"
+#include "GameScene.h"
+#include "TransitionScene.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -36,7 +40,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = std::make_unique<Scene1>();
+	nowScene_ = std::make_unique<TitleScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
@@ -51,23 +55,33 @@ SceneManager::~SceneManager() {
 	
 }
 
-void SceneManager::ChangeScene(int changeSceneNum)
+void SceneManager::ChangeScene(SCENE changeSceneNum)
 {
+	isChangeScene_ = true;
+
 	switch (changeSceneNum)
 	{
-	case SCENE::SCENE1:
-		nowScene_ = std::make_unique<Scene1>();
+	case SCENE::TITLE:
+		nowScene_ = std::make_unique<TitleScene>();
 		nowScene_->Initialize();
 		break;
-	case SCENE::SCENE2:
-		nowScene_ = std::make_unique<Scene2>();
+	case SCENE::GAME:
+		nowScene_ = std::make_unique<GameScene>();
 		nowScene_->Initialize();
 		break;
-	case SCENE::SCENE3:
-		nowScene_ = std::make_unique<Scene3>();
+	case SCENE::TRANSITION:
+		nowScene_ = std::make_unique<TransitionScene>();
 		nowScene_->Initialize();
 		break;
 	}
+}
+
+void SceneManager::SceneTransition(SCENE scene)
+{
+	nextScene_ = scene;
+
+	nowScene_ = std::make_unique<TransitionScene>();
+	nowScene_->Initialize();
 }
 
 // 更新処理
@@ -77,9 +91,8 @@ void SceneManager::Update() {
 	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
-	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE1);
-	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE2);
-	if (key_->TriggerKey(DIK_3)) ChangeScene(SCENE3);
+	if (key_->TriggerKey(DIK_1)) ChangeScene(TITLE);
+	if (key_->TriggerKey(DIK_2)) ChangeScene(GAME);
 
 	ImGuiManager::GetInstance()->Begin();
 
