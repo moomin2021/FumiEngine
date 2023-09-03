@@ -61,6 +61,8 @@ void GameScene::Update()
 
 	// オブジェクト更新処理
 	ObjUpdate();
+
+	enemyMgr_->CheckSceneChange();
 }
 
 void GameScene::Draw()

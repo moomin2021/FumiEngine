@@ -22,9 +22,11 @@ private:
 	std::unique_ptr<SphereCollider> collider_ = nullptr;
 
 	// HP
-	uint16_t hp_ = 100;
+	uint16_t hp_ = 20;
 
 	uint16_t damageCounter_ = 0;
+
+	bool isAlive_ = true;
 #pragma endregion
 
 #pragma region ƒƒ“ƒoŠÖ”
@@ -50,4 +52,7 @@ public:
 	// Õ“Ëˆ—
 	void OnCollision();
 #pragma endregion
+
+public:
+	bool GetIsAlive() { return isAlive_; }
 };

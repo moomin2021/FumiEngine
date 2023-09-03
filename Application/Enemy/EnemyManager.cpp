@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include "CollisionAttribute.h"
+#include "SceneManager.h"
 
 EnemyManager::EnemyManager() {}
 
@@ -33,8 +34,6 @@ void EnemyManager::Initialize()
 
 void EnemyManager::Update()
 {
-	if (boss_) boss_->Update();
-
 	for (auto it = enemys_.begin(); it != enemys_.end();) {
 		// 敵の更新
 		(*it)->Update();
@@ -42,6 +41,10 @@ void EnemyManager::Update()
 		// 敵の生存フラグが[OFF]になったら消す
 		if ((*it)->GetIsAlive() == false) it = enemys_.erase(it);
 		else ++it;
+	}
+
+	if (boss_) {
+		boss_->Update();
 	}
 }
 
@@ -86,6 +89,13 @@ void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& scale)
 
 	// エネミー配列に追加
 	enemys_.emplace_back(std::move(newEnemy));
+}
+
+void EnemyManager::CheckSceneChange()
+{
+	if (boss_ && boss_->GetIsAlive() == false) {
+		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+	}
 }
 
 void EnemyManager::SetBossGenerator(const Vector3& pos)

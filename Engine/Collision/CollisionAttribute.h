@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-const uint16_t COL_PLAYER			= 0b1100000000000001;
+const uint16_t COL_PLAYER			= 0b1100000000000000;
 const uint16_t COL_PLAYER_RAY		= 0b0000100000001000;
 const uint16_t COL_PLAYER_SHOT		= 0b0000000000000100;
 const uint16_t COL_FRONT			= 0b0001000000000000;

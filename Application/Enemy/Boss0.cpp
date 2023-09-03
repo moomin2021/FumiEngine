@@ -42,6 +42,10 @@ void Boss0::Update()
 	else {
 		damageCounter_++;
 	}
+
+	if (hp_ <= 0) {
+		isAlive_ = false;
+	}
 }
 
 void Boss0::Draw()

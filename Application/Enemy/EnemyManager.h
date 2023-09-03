@@ -60,6 +60,8 @@ public:
 	// エネミーを生成追加
 	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
 
+	void CheckSceneChange();
+
 private:
 #pragma endregion
 
