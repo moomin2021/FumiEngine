@@ -3,6 +3,7 @@
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 #include "Boss0.h"
+#include "Enemy0.h"
 
 #include <memory>
 
@@ -15,6 +16,7 @@ private:
 
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
+	std::unique_ptr<Model> mEnemy0_ = nullptr;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> oBossGenerator_ = nullptr;
@@ -24,6 +26,9 @@ private:
 
 	// ボス
 	std::unique_ptr<Boss0> boss_ = nullptr;
+
+	// エネミー
+	std::deque<std::unique_ptr<Enemy0>> enemys_;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -52,11 +57,17 @@ public:
 	// ボス召喚
 	void SummonBoss();
 
+	// エネミーを生成追加
+	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
+
 private:
 #pragma endregion
 
 #pragma region セッター関数
 public:
 	void SetBossGenerator(const Vector3& pos);
+
+	// プレイヤーを設定
+	void SetPlayer(Player* player);
 #pragma endregion
 };

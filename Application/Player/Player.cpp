@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "WinAPI.h"
 #include "Easing.h"
+#include "EnemyManager.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -13,6 +14,7 @@ Player::~Player()
 	colMgr_->RemoveCollider(legCol_.get());
 	colMgr_->RemoveCollider(climbCol_.get());
 	colMgr_->RemoveCollider(eyeCol_.get());
+	colMgr_->RemoveCollider(shotCol_.get());
 }
 
 void Player::Initialize(EnemyManager* enemyMgr)
@@ -139,7 +141,25 @@ void Player::Initialize(EnemyManager* enemyMgr)
 	eyeCol_->SetObject3D(object_.get());
 	colMgr_->AddCollider(eyeCol_.get());
 
+	// 弾を撃った時に使うコライダー
+	shotCol_ = std::make_unique<RayCollider>();
+	shotCol_->SetAttribute(COL_PLAYER_SHOT);
+	shotCol_->SetObject3D(object_.get());
+	colMgr_->AddCollider(shotCol_.get());
 #pragma endregion
+
+#pragma region 操作ヒント
+	opeTips_ = std::make_unique<Sprite>();
+	opeTips_->SetPosition({ 950.0f, 550.0f });
+	opeTips_->SetSize({ 250.0f, 50.0f });
+
+	opeTipsHandle_ = LoadTexture("Resources/operationTips0.png");
+#pragma endregion
+
+	itemManager_ = ItemManager::GetInstace();
+	itemManager_->Initialize();
+
+	items_.resize(2);
 
 	// カメラをオブジェクト3Dに適用
 	Object3D::SetCamera(camera_.get());
@@ -166,6 +186,7 @@ void Player::DrawObject3D()
 	//object_->Draw();
 	//testObj_->Draw();
 	oSheriff_->Draw();
+	itemManager_->Draw();
 
 	for (auto& it : bullets_) it->Draw();
 }
@@ -190,13 +211,15 @@ void Player::DrawSprite()
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
 
 	// 操作ヒント描画
-	//if (isHitItem) opeTips_->Draw(opeTipsHandle_);
+	if (isHitItem || isBossGen_) opeTips_->Draw(opeTipsHandle_);
 }
 
 void Player::ObjUpdate()
 {
 	object_->Update();
 	testObj_->Update();
+
+	itemManager_->Update();
 
 	camera_->Update();
 
@@ -283,22 +306,38 @@ void Player::OnCollision()
 		//object_->SetPosition(camera_->GetEye());
 	}
 
-	bool isBossGen = false;
+	isBossGen_ = false;
 
 	if (eyeCol_->GetIsHit()) {
 		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_BOSSGENERATOR) {
-			isBossGen = true;
+			isBossGen_ = true;
 		}
 	}
 
-	if (isBossGen && key_->TriggerKey(DIK_F)) {
+	if (isBossGen_ && key_->TriggerKey(DIK_F)) {
 		enemyMgr_->SummonBoss();
+	}
+
+	isHitItem = false;
+	SphereCollider* it = nullptr;
+
+	if (eyeCol_->GetIsHit()) {
+		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_ITEM) {
+			if (eyeCol_->GetDistance() <= 10.0f) {
+				isHitItem = true;
+				it = dynamic_cast<SphereCollider*>(eyeCol_->GetHitCollider());
+			}
+		}
+	}
+
+	if (isHitItem && key_->TriggerKey(DIK_F)) {
+		items_[Util::GetRandomInt(0, 1)]++;
+		itemManager_->DeleteItem(it);
 	}
 
 	Vector3 dir = climbCol_->GetDir();
 	Vector3 start = climbCol_->GetStart();
 
-	ImGui::Text("IsHit = %d", isBossGen);
 	ImGui::Text("Gravity = %f", gravity_);
 	ImGui::Text("State = %s", stateName_[state_].c_str());
 	ImGui::Text("distance = %f", climbCol_->GetDistance());
@@ -405,6 +444,9 @@ void Player::Ads()
 
 void Player::Shoot()
 {
+	// フラグリセット
+	shotCol_->SetAttribute(0);
+
 	for (auto it = bullets_.begin(); it != bullets_.end();) {
 		// 弾の更新
 		(*it)->Update();
@@ -426,6 +468,9 @@ void Player::Shoot()
 	// 経過時間が指定時間を過ぎていなかったら処理を飛ばす
 	if (!(result >= shotInterval_)) return;
 
+	// フラグを建てる
+	shotCol_->SetAttribute(COL_PLAYER_SHOT);
+
 	// 弾を撃った時間を記録
 	shotTime_ = Util::GetTimrMSec();
 
@@ -443,6 +488,8 @@ void Player::Shoot()
 		cosf(Util::Degree2Radian(shotAngle.y)),
 		cosf(Util::Degree2Radian(shotAngle.x))
 	};
+
+	shotCol_->SetDir(shotVec);
 
 	// 弾を生成
 	bullets_.emplace_back(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));

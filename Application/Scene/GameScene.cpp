@@ -39,12 +39,13 @@ void GameScene::Initialize()
 	// プレイヤー生成
 	player_ = std::make_unique<Player>();
 	player_->Initialize(enemyMgr_.get());
+	enemyMgr_->SetPlayer(player_.get());
 
 	// オブジェクト3Dにライトを適用
 	Object3D::SetLightGroup(lightGroup_.get());
 
 	// ステージ読み込み
-	LoadStage("Resources/Stage/stage1.json");
+	LoadStage("Resources/StageJson/stage1.json");
 }
 
 void GameScene::Update()
@@ -200,12 +201,12 @@ void GameScene::LoadStage(std::string fileName)
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
 			// 敵を追加
-			//enemyManager_->CreateAddEnemy0(objectData.translation, objectData.scaling);
+			enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
 		}
 
 		else if (objectData.className == "Item") {
 			// アイテムを追加
-			//ItemManager::GetInstace()->AddItem(objectData.translation);
+			ItemManager::GetInstace()->AddItem(objectData.translation);
 		}
 
 		else if (objectData.className == "BossGenerator") {

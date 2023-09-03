@@ -5,12 +5,14 @@
 #include "SphereCollider.h"
 #include "RayCollider.h"
 #include "CollisionManager.h"
-#include "EnemyManager.h"
 #include "Bullet.h"
 #include "Sprite.h"
+#include "ItemManager.h"
 
 #include <memory>
 #include <deque>
+
+class EnemyManager;
 
 class Player
 {
@@ -52,6 +54,7 @@ private:
 	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元のコライダー(落下処理に使用)
 	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
 	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// 視点コライダー
+	std::unique_ptr<RayCollider> shotCol_ = nullptr;// 弾を撃った時に使うコライダー
 
 	// 状態
 	State state_ = NORMAL;
@@ -71,6 +74,8 @@ private:
 
 	// 右方向ベクトル
 	Vector3 rightVec_ = { 0.0f, 0.0f, 0.0f };
+
+	bool isBossGen_ = false;
 
 	// 移動速度関連
 	float moveSpd_ = 0.0f;// 移動速度
@@ -110,6 +115,15 @@ private:
 	// ダッシュ
 	bool isDash_ = false;
 	float dashSpd_ = 1.0f;
+
+	// 操作ヒント
+	std::unique_ptr<Sprite> opeTips_ = nullptr;
+	uint16_t opeTipsHandle_ = 0;
+	bool isHitItem = false;
+
+	// アイテム
+	std::vector<uint8_t> items_;
+	ItemManager* itemManager_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -148,5 +162,10 @@ private:
 	void Jump();	// ジャンプ処理
 	void Fall();	// 落下処理
 	void Dash();	// 走行処理
+#pragma endregion
+
+#pragma region ゲッター関数
+public:
+	inline const Vector3& GetPosition() { return camera_->GetEye(); }
 #pragma endregion
 };
