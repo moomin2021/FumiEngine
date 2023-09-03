@@ -88,6 +88,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Collision\CircleCollider.cpp" />
+    <ClCompile Include="Engine\Collision\BoxCollider.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionManager2D.cpp" />
     <ClCompile Include="Engine\Collision\Collision.cpp" />
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
@@ -125,9 +128,15 @@
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
     <ClCompile Include="Engine\Collision\RayCollider.cpp" />
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
+    <ClCompile Include="Engine\Collision\PointCollider.cpp" />
+    <ClCompile Include="Application\Scene\Scene3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
+    <ClInclude Include="Engine\Collision\CircleCollider.h" />
+    <ClInclude Include="Engine\Collision\BoxCollider.h" />
+    <ClInclude Include="Engine\Collision\BaseCollider2D.h" />
+    <ClInclude Include="Engine\Collision\CollisionManager2D.h" />
     <ClInclude Include="Engine\Collision\Collision.h" />
     <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Engine\Collision\CollisionManager.h" />
@@ -135,6 +144,7 @@
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Collision\BaseCollider.h" />
     <ClInclude Include="Engine\Collision\CollisionAttribute.h" />
+    <ClInclude Include="Engine\Collision\CollisionShapeType.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />
@@ -171,6 +181,8 @@
     <ClInclude Include="Engine\Collision\MeshCollider.h" />
     <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
+    <ClInclude Include="Engine\Collision\PointCollider.h" />
+    <ClInclude Include="Application\Scene\Scene3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

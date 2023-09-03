@@ -9,6 +9,7 @@
 enum SCENE {
 	SCENE1,
 	SCENE2,
+	SCENE3,
 };
 
 enum PostEffectType {

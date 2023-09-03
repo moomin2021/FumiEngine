@@ -247,3 +247,84 @@ bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* dis
 
 	return true;
 }
+
+bool Collision::CheckCircle2Circle(const Circle& circle0, const Circle& circle1)
+{
+	float x = circle0.center.x - circle1.center.x;
+	float y = circle0.center.y - circle1.center.y;
+	float c = sqrtf(x * x + y * y);
+
+	if (c <= circle0.radius + circle1.radius) return true;
+	return false;
+}
+
+bool Collision::CheckBox2Box(const Box& box0, const Box& box1)
+{
+	float x0 = box0.center.x - box0.radius.x;
+	float x1 = box1.center.x + box1.radius.x;
+
+	if (x0 > x1) return false;
+
+	float x0 = box0.center.x + box0.radius.x;
+	float x1 = box1.center.x - box1.radius.x;
+
+	if (x0 < x1) return false;
+
+	float y0 = box0.center.y - box0.radius.y;
+	float y1 = box1.center.y + box1.radius.y;
+
+	if (y0 > y1) return false;
+
+	float y0 = box0.center.y + box0.radius.y;
+	float y1 = box1.center.y - box1.radius.y;
+
+	if (y0 < y1) return false;
+
+	return true;
+}
+
+bool Collision::CheckCircle2Box(const Circle& circle, const Box& box)
+{
+	float boxX1 = box.center.x - box.radius.x;
+	float boxX2 = box.center.x + box.radius.x;
+	float boxY1 = box.center.y - box.radius.y;
+	float boxY2 = box.center.y + box.radius.y;
+
+	if ((boxX1 < circle.center.x) && (circle.center.x < boxX2) && (boxY1 - circle.radius < circle.center.y) && (circle.center.y < boxY2 + circle.radius)) return true;
+	if ((boxX1 - circle.radius < circle.center.x) && (circle.center.x < boxX2 + circle.radius) && (boxY1 < circle.center.y) && (circle.center.y < boxY2)) return true;
+	if (pow((double)boxX1 - circle.center.x, 2) + pow((double)boxY1 - circle.center.y, 2) < pow(circle.radius, 2)) return true;
+	if (pow((double)boxX1 - circle.center.x, 2) + pow((double)boxY2 - circle.center.y, 2) < pow(circle.radius, 2)) return true;
+	if (pow((double)boxX2 - circle.center.x, 2) + pow((double)boxY1 - circle.center.y, 2) < pow(circle.radius, 2)) return true;
+	if (pow((double)boxX2 - circle.center.x, 2) + pow((double)boxY2 - circle.center.y, 2) < pow(circle.radius, 2)) return true;
+	return false;
+}
+
+bool Collision::CheckPoint2Box(const Point& point, const Box& box)
+{
+	float x = box.center.x - box.radius.x;
+
+	if (x > point.pos.x) return false;
+
+	float x = box.center.x + box.radius.x;
+
+	if (x < point.pos.x) return false;
+
+	float y = box.center.y - box.radius.y;
+
+	if (y > point.pos.y) return false;
+
+	float y = box.center.y + box.radius.y;
+
+	if (y < point.pos.y) return false;
+
+	return true;
+}
+
+bool Collision::CheckPoint2Circle(const Point& point, const Circle& circle)
+{
+	float x = powf(point.pos.x - circle.center.x, 2);
+	float y = powf(point.pos.y - circle.center.y, 2);
+
+	if (x + y <= powf(circle.radius, 2)) return true;
+	return false;
+}

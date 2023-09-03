@@ -69,4 +69,44 @@ public:
 	/// <param name="inter"> 交点(出力用) </param>
 	/// <returns> 交差しているか否か </returns>
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, Vector3* inter = nullptr);
+
+	/// <summary>
+	/// 円と円の当たり判定
+	/// </summary>
+	/// <param name="circle0"> 円0 </param>
+	/// <param name="circle1"> 円1 </param>
+	/// <returns></returns>
+	static bool CheckCircle2Circle(const Circle& circle0, const Circle& circle1);
+
+	/// <summary>
+	/// 四角形と四角形の当たり判定
+	/// </summary>
+	/// <param name="box0"> 四角形0 </param>
+	/// <param name="box1"> 四角形1 </param>
+	/// <returns></returns>
+	static bool CheckBox2Box(const Box& box0, const Box& box1);
+
+	/// <summary>
+	/// 円と四角形の当たり判定
+	/// </summary>
+	/// <param name="circle"> 円 </param>
+	/// <param name="box"> 四角形 </param>
+	/// <returns></returns>
+	static bool CheckCircle2Box(const Circle& circle, const Box& box);
+
+	/// <summary>
+	/// 点と四角形の当たり判定
+	/// </summary>
+	/// <param name="point"> 点 </param>
+	/// <param name="box"> 四角形 </param>
+	/// <returns></returns>
+	static bool CheckPoint2Box(const Point& point, const Box& box);
+
+	/// <summary>
+	/// 点と円の当たり判定
+	/// </summary>
+	/// <param name="point"> 点 </param>
+	/// <param name="circle"> 円 </param>
+	/// <returns></returns>
+	static bool CheckPoint2Circle(const Point& point, const Circle& circle);
 };

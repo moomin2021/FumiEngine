@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector3.h"
-#include "Vector3.h"
+#include "Vector2.h"
 
 // ‹…
 struct Sphere {
@@ -40,4 +40,25 @@ struct Ray {
 
 	// •ûŒü
 	Vector3 dir = { 1.0f, 0.0f, 0.0f };
+};
+
+struct Point {
+	// À•W
+	Vector2 pos = { 0.0f, 0.0f };
+};
+
+struct Box {
+	// ’†‰›À•W
+	Vector2 center = { 0.0f, 0.0f };
+
+	// ”¼Œa
+	Vector2 radius = { 1.0f, 1.0f };
+};
+
+struct Circle {
+	// ’†‰›À•W
+	Vector2 center = { 0.0f, 0.0f };
+
+	// ”¼Œa
+	float radius = 1.0f;
 };
