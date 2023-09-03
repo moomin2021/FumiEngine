@@ -4,6 +4,9 @@
 #include "Mouse.h"
 #include "PointCollider.h"
 #include "BoxCollider.h"
+#include "CircleCollider.h"
+#include "Sprite.h"
+#include "CollisionManager2D.h"
 
 #include <memory>
 
@@ -15,8 +18,13 @@ private:
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
 
+	CollisionManager2D* colMgr2D_ = nullptr;
+
 	std::unique_ptr<PointCollider> pCol_ = nullptr;
 	std::unique_ptr<BoxCollider> boxCol_ = nullptr;
+	std::unique_ptr<CircleCollider> cirCol_ = nullptr;
+
+	std::unique_ptr<Sprite> sBox_ = nullptr;
 
 	// --メンバ関数-- //
 public:
@@ -34,5 +42,12 @@ public:
 
 	// 描画処理
 	void Draw();
+
+private:
+	// 衝突判定後処理
+	void OnCollision();
+
+	// オブジェクト更新
+	void ObjUpdate();
 };
 

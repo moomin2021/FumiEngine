@@ -265,8 +265,8 @@ bool Collision::CheckBox2Box(const Box& box0, const Box& box1)
 
 	if (x0 > x1) return false;
 
-	float x0 = box0.center.x + box0.radius.x;
-	float x1 = box1.center.x - box1.radius.x;
+	x0 = box0.center.x + box0.radius.x;
+	x1 = box1.center.x - box1.radius.x;
 
 	if (x0 < x1) return false;
 
@@ -275,8 +275,8 @@ bool Collision::CheckBox2Box(const Box& box0, const Box& box1)
 
 	if (y0 > y1) return false;
 
-	float y0 = box0.center.y + box0.radius.y;
-	float y1 = box1.center.y - box1.radius.y;
+	y0 = box0.center.y + box0.radius.y;
+	y1 = box1.center.y - box1.radius.y;
 
 	if (y0 < y1) return false;
 
@@ -305,7 +305,7 @@ bool Collision::CheckPoint2Box(const Point& point, const Box& box)
 
 	if (x > point.pos.x) return false;
 
-	float x = box.center.x + box.radius.x;
+	x = box.center.x + box.radius.x;
 
 	if (x < point.pos.x) return false;
 
@@ -313,7 +313,7 @@ bool Collision::CheckPoint2Box(const Point& point, const Box& box)
 
 	if (y > point.pos.y) return false;
 
-	float y = box.center.y + box.radius.y;
+	y = box.center.y + box.radius.y;
 
 	if (y < point.pos.y) return false;
 
