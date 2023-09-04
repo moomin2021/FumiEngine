@@ -167,6 +167,9 @@ void Player::Initialize(EnemyManager* enemyMgr)
 
 void Player::Update()
 {
+	maxBullet_ = 30 + (items_[0] * 3);
+	shotInterval_ = 0.1f * (1.0f / (0.15f * items_[1] + 1.0f));
+
 	// ó‘Ô•ÊXVˆ—
 	(this->*stateTable[state_])();
 
@@ -176,9 +179,9 @@ void Player::Update()
 
 	Vector3 pos = object_->GetPosition();
 
-	ImGui::Begin("Player");
-	ImGui::Text("Pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
-	ImGui::Text("ForwardVec = {%f, %f, %f}", forwardVec_.x, forwardVec_.y, forwardVec_.z);
+	//ImGui::Begin("Player");
+	//ImGui::Text("Pos = {%f, %f, %f}", pos.x, pos.y, pos.z);
+	//ImGui::Text("ForwardVec = {%f, %f, %f}", forwardVec_.x, forwardVec_.y, forwardVec_.z);
 }
 
 void Player::DrawObject3D()
@@ -338,12 +341,12 @@ void Player::OnCollision()
 	Vector3 dir = climbCol_->GetDir();
 	Vector3 start = climbCol_->GetStart();
 
-	ImGui::Text("Gravity = %f", gravity_);
-	ImGui::Text("State = %s", stateName_[state_].c_str());
-	ImGui::Text("distance = %f", climbCol_->GetDistance());
-	ImGui::Text("dir = {%f, %f, %f}", dir.x, dir.y, dir.z);
-	ImGui::Text("start = {%f, %f, %f}", start.x, start.y, start.z);
-	ImGui::End();
+	//ImGui::Text("Gravity = %f", gravity_);
+	//ImGui::Text("State = %s", stateName_[state_].c_str());
+	//ImGui::Text("distance = %f", climbCol_->GetDistance());
+	//ImGui::Text("dir = {%f, %f, %f}", dir.x, dir.y, dir.z);
+	//ImGui::Text("start = {%f, %f, %f}", start.x, start.y, start.z);
+	//ImGui::End();
 }
 
 void (Player::* Player::stateTable[]) () = {

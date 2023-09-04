@@ -4,6 +4,7 @@
 #include "CollisionManager.h"
 #include "Boss0.h"
 #include "Enemy0.h"
+#include "ParticleEmitter.h"
 
 #include <memory>
 
@@ -17,6 +18,12 @@ private:
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
+
+	// パーティクルエミッター
+	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
+
+	// パーティクル画像のハンドル
+	uint16_t hParticle_ = 0;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> oBossGenerator_ = nullptr;
@@ -61,6 +68,9 @@ public:
 	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
 
 	void CheckSceneChange();
+
+	// パーティクル生成
+	void AddParticle(const Vector3& pos);
 
 private:
 #pragma endregion
