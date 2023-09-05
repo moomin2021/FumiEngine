@@ -38,8 +38,9 @@ void Scene3::Initialize()
 	pCol_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(pCol_.get());
 
-	boxCol_ = std::make_unique<BoxCollider>(Vector2{ 500.0f, 300.0f }, Vector2{ 50.0f, 50.0f });
+	boxCol_ = std::make_unique<BoxCollider>(Vector2{ 0.0f, 0.0f }, Vector2{ 50.0f, 50.0f });
 	boxCol_->SetAttribute(COL_BOX);
+	boxCol_->SetSprite(sBox_.get());
 	colMgr2D_->AddCollider(boxCol_.get());
 #pragma endregion
 }
@@ -47,7 +48,7 @@ void Scene3::Initialize()
 void Scene3::Update()
 {
 	// コライダーの座標を設定
-	pCol_->SetPosition(mouse_->MousePos());
+	pCol_->SetOffset(mouse_->MousePos());
 
 	// 衝突判定
 	OnCollision();
@@ -55,7 +56,7 @@ void Scene3::Update()
 	// オブジェクト更新
 	ObjUpdate();
 
-	Vector2 pos = pCol_->GetPosition();
+	Vector2 pos = pCol_->GetOffset();
 
 	ImGui::Begin("Debug");
 	ImGui::Text("mouse = {%f, %f}", pos.x, pos.y);
