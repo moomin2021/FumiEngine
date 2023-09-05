@@ -130,6 +130,7 @@
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Engine\Collision\PointCollider.cpp" />
     <ClCompile Include="Application\Scene\Scene3.cpp" />
+    <ClCompile Include="Engine\Input\Pad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="Engine\Collision\PointCollider.h" />
     <ClInclude Include="Application\Scene\Scene3.h" />
+    <ClInclude Include="Engine\Input\Pad.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
