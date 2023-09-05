@@ -7,6 +7,7 @@
 #include "CircleCollider.h"
 #include "Sprite.h"
 #include "CollisionManager2D.h"
+#include "Camera.h"
 
 #include <memory>
 
@@ -17,6 +18,8 @@ private:
 	// キーボード入力
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
+
+	std::unique_ptr<Camera> camera_ = nullptr;
 
 	CollisionManager2D* colMgr2D_ = nullptr;
 

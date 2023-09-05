@@ -22,6 +22,10 @@ void Scene3::Initialize()
 
 	colMgr2D_ = CollisionManager2D::GetInstance();
 
+	camera_ = std::make_unique<Camera>();
+
+	Sprite::SetCamera(camera_.get());
+
 #pragma region スプライト初期化
 	sBox_ = std::make_unique<Sprite>();
 	sBox_->SetPosition(Vector2{ 500.0f, 300.0f });
@@ -76,5 +80,5 @@ void Scene3::OnCollision()
 
 void Scene3::ObjUpdate()
 {
-
+	sBox_->MatUpdate();
 }
