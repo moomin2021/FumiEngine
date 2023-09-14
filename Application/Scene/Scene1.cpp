@@ -2,7 +2,6 @@
 #include "Texture.h"
 #include "Vector3.h"
 #include "PipelineManager.h"
-#include "Sound.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "ImGuiManager.h"
@@ -21,6 +20,7 @@ void Scene1::Initialize()
 {
 	// キーボード入力インスタンス取得
 	key_ = Key::GetInstance();
+	sound_ = Sound::GetInstance();
 
 	// カメラ
 	camera_ = std::make_unique<Camera>();
@@ -43,9 +43,8 @@ void Scene1::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 
 	// サウンド読み込み＆再生
-	bgmKey_ = Sound::LoadWave("Resources/Sound/a.wav");
-	Sound::SetVolume(bgmKey_, 0.001f);
-	Sound::Play(bgmKey_);
+	bgmKey_ = sound_->LoadWave("Resources/Sound/a.wav", 0.001f);
+	sound_->Play(bgmKey_);
 
 	// プレイヤー
 	player_ = std::make_unique<TestPlayer>();

@@ -9,6 +9,7 @@
 #include "RayCollider.h"
 #include "MeshCollider.h"
 #include "SphereCollider.h"
+#include "Sound.h"
 
 #include <memory>
 
@@ -18,6 +19,7 @@ class Scene2 : public BaseScene
 private:
 	// キーボード入力
 	Key* key_ = nullptr;
+	Sound* sound_ = nullptr;
 
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;

@@ -44,20 +44,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// パッド入力更新
 		Pad::GetInstance()->Update();
 
-		// ImGui描画受付開始
-		//ImGuiManager::GetInstance()->Begin();
+		// サウンド更新処理
+		Sound::GetInstance()->Update();
 
 		// シーン管理クラス更新処理
 		SceneManager::GetInstance()->Update();
 
-		// ImGui描画受付終了
-		//ImGuiManager::GetInstance()->End();
-
 		// シーン管理クラス描画処理
 		SceneManager::GetInstance()->Draw();
-	
-		// ImGui描画処理
-		//ImGuiManager::GetInstance()->Draw();
 	}
 
 	return 0;

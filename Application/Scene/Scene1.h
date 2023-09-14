@@ -11,6 +11,7 @@
 #include "SphereCollider.h"
 #include "TestPlayer.h"
 #include "TestEnemy.h"
+#include "Sound.h"
 
 #include <memory>
 
@@ -20,6 +21,7 @@ class Scene1 : public BaseScene
 private:
 	// キーボード入力
 	Key* key_ = nullptr;
+	Sound* sound_ = nullptr;
 
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;

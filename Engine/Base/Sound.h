@@ -4,6 +4,8 @@
 #include <memory>
 #include <wrl.h>
 #include <map>
+#include <string>
+#include <vector>
 
 // チャンクヘッダ
 struct ChunkHeader {
@@ -28,27 +30,32 @@ struct SoundData {
 	WAVEFORMATEX wfex;	// 波形フォーマット
 	BYTE* pBuffer;		// バッファの先頭アドレス
 	uint32_t bufferSize;// バッファサイズ
+	float volume = 0;
 };
 
-class Sound
-{
+class Sound {
 private:
 	// エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
 #pragma region メンバ変数
 private:
 	// XAudio2エンジンのインスタンス
-	static ComPtr<IXAudio2> pXAudio2_;
+	ComPtr<IXAudio2> pXAudio2_ = nullptr;
 
 	// マスタリング音声
 	IXAudio2MasteringVoice* pMasterVoice_ = nullptr;
 
-	// ソース音声連想配列で保存
-	static std::map<uint16_t, IXAudio2SourceVoice*> sourceVoices_;
+	// 読み込んだ音声データ
+	std::map<uint16_t, SoundData> soundDatas_ = {};
 
-	// ソース音声生成カウント
-	static uint16_t sourceVoiceCount_;
+	// 音声ハンドルを保存
+	std::map<std::string, uint16_t> soundHandles_ = {};
+
+	// 再生中の音
+	std::map<uint16_t, IXAudio2SourceVoice*> isPlaySounds_ = {};
+
+	// 音声読み込みカウンター
+	uint16_t soundCounter_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -59,20 +66,20 @@ public:
 	// 初期化処理
 	void Initialize();
 
+	// 更新処理
+	void Update();
+
 	// サウンド読み込み
-	static uint16_t LoadWave(const char* filename);
+	// volume = 0.0f ~ 1.0f
+	uint16_t LoadWave(std::string fileName, float volume = 1.0f);
 
-	// サウンドの再生
-	static void Play(uint16_t sourceVoiceKey);
+	// 再生
+	void Play(uint16_t handle, bool isLoop = false);
 
-	// サウンドの停止
-	static void Stop(uint16_t sourceVoiceKey);
+	// 停止
+	void Stop(uint16_t handle);
 
-	// サウンドの音量調節
-	static void SetVolume(uint16_t sourceVoiceKey, float volumeValue);
-
-private:
-	// コンストラクタ
-	Sound();
+	// 解放
+	void Release();
 #pragma endregion
 };

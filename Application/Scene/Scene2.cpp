@@ -86,9 +86,8 @@ void Scene2::Initialize()
 	particlehandle_ = LoadTexture("Resources/effect1.png");
 
 	// サウンド読み込み＆再生
-	bgmKey_ = Sound::LoadWave("Resources/Sound/a.wav");
-	Sound::SetVolume(bgmKey_, 0.001f);
-	Sound::Play(bgmKey_);
+	bgmKey_ = sound_->LoadWave("Resources/Sound/a.wav", 0.001f);
+	sound_->Play(bgmKey_);
 
 #pragma region コライダー
 	rayCol_ = std::make_unique<RayCollider>(Vector3{ 0.0f, 2.0f, 0.0f }, Vector3{ 0.0f, -1.0f, 0.0f });
