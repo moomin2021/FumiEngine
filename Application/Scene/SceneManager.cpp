@@ -1,7 +1,5 @@
 #include "SceneManager.h"
-#include "Scene1.h"
-#include "Scene2.h"
-#include "Scene3.h"
+#include "TestScene.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 #include "ImGuiManager.h"
@@ -36,7 +34,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// ç≈èâÇÃÉVÅ[Éì
-	nowScene_ = std::make_unique<Scene1>();
+	nowScene_ = std::make_unique<TestScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
@@ -55,16 +53,8 @@ void SceneManager::ChangeScene(int changeSceneNum)
 {
 	switch (changeSceneNum)
 	{
-	case SCENE::SCENE1:
-		nowScene_ = std::make_unique<Scene1>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::SCENE2:
-		nowScene_ = std::make_unique<Scene2>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::SCENE3:
-		nowScene_ = std::make_unique<Scene3>();
+	case SCENE::TEST:
+		nowScene_ = std::make_unique<TestScene>();
 		nowScene_->Initialize();
 		break;
 	}
@@ -76,10 +66,6 @@ void SceneManager::Update() {
 	//if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
 	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
-
-	if (key_->TriggerKey(DIK_1)) ChangeScene(SCENE1);
-	if (key_->TriggerKey(DIK_2)) ChangeScene(SCENE2);
-	if (key_->TriggerKey(DIK_3)) ChangeScene(SCENE3);
 
 	ImGuiManager::GetInstance()->Begin();
 

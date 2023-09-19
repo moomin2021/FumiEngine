@@ -147,9 +147,6 @@
     <ClCompile Include="Engine\Base\PipelineObj.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\Scene1.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
@@ -166,15 +163,6 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Util\ImGuiManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\Scene2.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TestPlayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TestEnemy.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\CollisionManager.cpp">
@@ -207,10 +195,10 @@
     <ClCompile Include="Engine\Collision\CircleCollider.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\Scene3.cpp">
+    <ClCompile Include="Engine\Input\Pad.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Input\Pad.cpp">
+    <ClCompile Include="Application\Scene\TestScene.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,9 +281,6 @@
     <ClInclude Include="Engine\Base\PipelineObj.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\Scene1.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Scene\SceneManager.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
@@ -312,15 +297,6 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\ImGuiManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\Scene2.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TestPlayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TestEnemy.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\BaseCollider.h">
@@ -365,10 +341,10 @@
     <ClInclude Include="Engine\Collision\CircleCollider.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\Scene3.h">
+    <ClInclude Include="Engine\Input\Pad.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Input\Pad.h">
+    <ClInclude Include="Application\Scene\TestScene.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
