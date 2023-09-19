@@ -1,6 +1,10 @@
 #pragma once
 #include "BaseScene.h"
 #include "Camera.h"
+#include "Model.h"
+#include "Object3D.h"
+#include "LightGroup.h"
+#include "DirectionalLight.h"
 
 #include <memory>
 
@@ -10,6 +14,18 @@ class TestScene : public BaseScene
 private:
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
+
+	// ライトグループ
+	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
+
+	// 平行光源
+	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
+
+	// モデル
+	std::unique_ptr<Model> model_ = nullptr;
+
+	// オブジェクト3D
+	std::unique_ptr<Object3D> object_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

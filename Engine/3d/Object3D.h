@@ -23,23 +23,23 @@ private:
 #pragma region メンバ変数
 private:
 	// オブジェクトデータ
-	Vector3 position_;	// 位置(XYZ)
-	Vector3 rotation_;	// 回転(XYZ)
-	Vector3 scale_;		// 拡縮(XYZ)
-	float4 color_;		// 色(RGBA)
+	Vector3 position_ = { 0.0f, 0.0f, 0.0f };	// 位置(XYZ)
+	Vector3 rotation_ = { 0.0f, 0.0f, 0.0f };	// 回転(XYZ)
+	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };		// 拡縮(XYZ)
+	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// 色(RGBA)
 
 	// オブジェクトデータを変更したかどうか
-	bool hasChanget_;
+	bool hasChanget_ = true;
 
 	// ワールド行列
-	Matrix4 matWorld_;
+	Matrix4 matWorld_ = {};
 
 	// 定数バッファ
-	ComPtr<ID3D12Resource>	constBuff_;	// 定数バッファ
-	ConstBufferData*		constMap_;	// マッピング処理用
+	ComPtr<ID3D12Resource>	constBuff_	= nullptr;// 定数バッファ
+	ConstBufferData*		constMap_	= nullptr;// マッピング処理用
 
 	// モデル
-	Model* model_;
+	Model* model_ = nullptr;
 
 	// 静的メンバ変数
 	static Camera*		sCamera_;		// カメラ
@@ -53,8 +53,8 @@ public:
 	/// </summary>
 	Object3D(Model* model);
 
-	// 更新処理
-	void Update();
+	// 行列更新処理
+	void MatUpdate();
 
 	/// <summary>
 	/// 描画処理

@@ -7,27 +7,7 @@
 Camera*		Object3D::sCamera_		= nullptr;// カメラ
 LightGroup* Object3D::sLightGroup_	= nullptr;// ライト
 
-Object3D::Object3D(Model* model) :
-#pragma region 初期化リスト
-	// オブジェクトデータ
-	position_{ 0.0f, 0.0f, 0.0f },	// 位置(XYZ)
-	rotation_{0.0f, 0.0f, 0.0f},	// 回転(XYZ)
-	scale_{1.0f, 1.0f, 1.0f},		// 拡縮(XYZ)
-	color_{1.0f, 1.0f, 1.0f, 1.0f},	// 色(RGBA)
-
-	// オブジェクトデータを変更したかどうか
-	hasChanget_(true),
-
-	// ワールド行列
-	matWorld_{},
-
-	// 定数バッファ
-	constBuff_(nullptr),
-	constMap_(nullptr),
-
-	// モデル
-	model_(model)
-#pragma endregion
+Object3D::Object3D(Model* model) : model_(model)
 {
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
@@ -67,7 +47,7 @@ Object3D::Object3D(Model* model) :
 #pragma endregion
 }
 
-void Object3D::Update()
+void Object3D::MatUpdate()
 {
 	// オブジェクトデータが変更されていたら処理する
 	if (hasChanget_) {
