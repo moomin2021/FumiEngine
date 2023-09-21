@@ -56,7 +56,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;DIRECTINPUT_VERSION=0x0800;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -76,7 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -119,7 +119,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
-    <ClCompile Include="Engine\Base\Sound.cpp" />
+    <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="Engine\3d\ParticleEmitter.cpp" />
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
     <ClCompile Include="Engine\Collision\RayCollider.cpp" />
@@ -168,7 +168,7 @@
     <ClInclude Include="Engine\Base\WinAPI.h" />
     <ClInclude Include="Engine\3d\Mesh.h" />
     <ClInclude Include="Engine\3d\Material.h" />
-    <ClInclude Include="Engine\Base\Sound.h" />
+    <ClInclude Include="Engine\Sound\Sound.h" />
     <ClInclude Include="Engine\3d\ParticleEmitter.h" />
     <ClInclude Include="Engine\Util\ImGuiManager.h" />
     <ClInclude Include="Engine\Collision\MeshCollider.h" />
