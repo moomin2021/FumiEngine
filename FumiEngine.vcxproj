@@ -116,6 +116,8 @@
     <ClCompile Include="Engine\Util\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
     <ClCompile Include="Engine\Util\ImGuiManager.cpp" />
+    <ClCompile Include="Application\Scene\GameScene.cpp" />
+    <ClCompile Include="Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -128,6 +130,7 @@
     <ClCompile Include="Engine\Input\Pad.cpp" />
     <ClCompile Include="Application\Scene\TestScene.cpp" />
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
+    <ClCompile Include="Application\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -179,6 +182,9 @@
     <ClInclude Include="Engine\Input\Pad.h" />
     <ClInclude Include="Application\Scene\TestScene.h" />
     <ClInclude Include="Engine\Util\Math\Quaternion.h" />
+    <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\Scene\GameScene.h" />
+    <ClInclude Include="Application\Scene\GameOverScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
