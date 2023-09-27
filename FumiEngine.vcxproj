@@ -127,6 +127,7 @@
     <ClCompile Include="Engine\Collision\PointCollider.cpp" />
     <ClCompile Include="Engine\Input\Pad.cpp" />
     <ClCompile Include="Application\Scene\TestScene.cpp" />
+    <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Engine\Collision\PointCollider.h" />
     <ClInclude Include="Engine\Input\Pad.h" />
     <ClInclude Include="Application\Scene\TestScene.h" />
+    <ClInclude Include="Engine\Util\Math\Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
