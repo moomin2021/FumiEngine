@@ -6,6 +6,8 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 
+#include "StageObjectManager.h"
+
 #include <memory>
 
 class GameScene : public BaseScene
@@ -26,6 +28,9 @@ private:
 
 	// オブジェクト3D
 	std::unique_ptr<Object3D> object_ = nullptr;
+
+	// ステージオブジェクトの管理クラス
+	std::unique_ptr<StageObjectManager> stageObjMgr_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

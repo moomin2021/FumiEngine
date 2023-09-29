@@ -29,6 +29,10 @@ void GameScene::Initialize()
 #pragma region オブジェクト3D
 	object_ = std::make_unique<Object3D>(model_.get());
 #pragma endregion
+
+#pragma region ステージオブジェクトの管理クラス
+	stageObjMgr_ = std::make_unique<StageObjectManager>();
+#pragma endregion
 }
 
 void GameScene::Update()
@@ -46,6 +50,9 @@ void GameScene::Draw()
 
 	// オブジェクト
 	object_->Draw();
+
+	// ステージオブジェクトの管理クラス
+	stageObjMgr_->Draw();
 }
 
 void GameScene::OnCollision()
@@ -59,4 +66,7 @@ void GameScene::MatUpdate()
 
 	// オブジェクト3D
 	object_->MatUpdate();
+
+	// ステージオブジェクトの管理クラス
+	stageObjMgr_->MatUpdate();
 }
