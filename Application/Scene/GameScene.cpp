@@ -22,14 +22,6 @@ void GameScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region モデル
-	model_ = std::make_unique<Model>("cube");
-#pragma endregion
-
-#pragma region オブジェクト3D
-	object_ = std::make_unique<Object3D>(model_.get());
-#pragma endregion
-
 #pragma region ステージオブジェクトの管理クラス
 	stageObjMgr_ = std::make_unique<StageObjectManager>();
 #pragma endregion
@@ -46,11 +38,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	PipelineManager::PreDraw("Object3D");
-
-	// オブジェクト
-	object_->Draw();
-
 	// ステージオブジェクトの管理クラス
 	stageObjMgr_->Draw();
 }
@@ -63,9 +50,6 @@ void GameScene::MatUpdate()
 {
 	// カメラ
 	camera_->Update();
-
-	// オブジェクト3D
-	object_->MatUpdate();
 
 	// ステージオブジェクトの管理クラス
 	stageObjMgr_->MatUpdate();

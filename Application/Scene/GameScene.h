@@ -23,12 +23,6 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
-
-	// オブジェクト3D
-	std::unique_ptr<Object3D> object_ = nullptr;
-
 	// ステージオブジェクトの管理クラス
 	std::unique_ptr<StageObjectManager> stageObjMgr_ = nullptr;
 #pragma endregion
