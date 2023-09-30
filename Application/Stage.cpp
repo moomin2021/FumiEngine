@@ -15,12 +15,24 @@ void Stage::Initialize()
 {
 	// 衝突判定管理クラスインスタンス
 	colMgr_ = CollisionManager::GetInstance();
+
+#pragma region スカイドーム
+	// モデル
+	mSkydome_ = std::make_unique<Model>("skydome");
+
+	// オブジェクト
+	oSkydome_ = std::make_unique<Object3D>(mSkydome_.get());
+	oSkydome_->SetScale({ 1000.0f, 1000.0f, 1000.0f });
+#pragma endregion
 }
 
 void Stage::MatUpdate()
 {
 	// オブジェクト行列更新
 	for (auto& object : objects_) object->MatUpdate();
+
+	// スカイドーム
+	oSkydome_->MatUpdate();
 }
 
 void Stage::Draw()
@@ -30,6 +42,9 @@ void Stage::Draw()
 
 	// オブジェクト描画処理
 	for (auto& object : objects_) object->Draw();
+
+	// スカイドーム
+	oSkydome_->Draw();
 }
 
 void Stage::Load(std::string fileName)

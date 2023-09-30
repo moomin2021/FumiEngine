@@ -40,6 +40,10 @@ private:
 
 	// コライダー
 	std::forward_list<std::unique_ptr<MeshCollider>> colliders_ = {};
+
+	// スカイドーム
+	std::unique_ptr<Model> mSkydome_	= nullptr;// モデル
+	std::unique_ptr<Object3D> oSkydome_	= nullptr;// オブジェクト
 #pragma endregion
 
 #pragma region メンバ関数
