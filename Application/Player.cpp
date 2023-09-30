@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "CollisionAttribute.h"
 
 Player::Player()
 {
@@ -21,6 +22,22 @@ void Player::Initialize()
 	camera_->SetEye({ 0.0f, 0.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 #pragma endregion
+
+#pragma region モデル
+	mSphere_ = std::make_unique<Model>("sphere");
+#pragma endregion
+
+#pragma region オブジェクト
+	oCol_ = std::make_unique<Object3D>(mSphere_.get());
+#pragma endregion
+
+#pragma region コライダー
+	legCol_ = std::make_unique<RayCollider>();
+	legCol_->SetAttribute(COL_LEG);
+	legCol_->SetObject3D(oCol_.get());
+	legCol_->SetDir({ 0.0f, -1.0f, 0.0f });
+	colMgr_->AddCollider(legCol_.get());
+#pragma endregion
 }
 
 void Player::Update()
@@ -36,12 +53,16 @@ void Player::Draw3D()
 
 void Player::OnCollision()
 {
+
 }
 
 void Player::MatUpdate()
 {
 	// カメラ
 	camera_->Update();
+
+	// オブジェクト
+	oCol_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {
@@ -54,6 +75,9 @@ void Player::Normal()
 {
 	// 視点操作
 	EyeMove();
+
+	// 移動操作
+	Move();
 }
 
 void Player::Air()
@@ -62,6 +86,49 @@ void Player::Air()
 
 void Player::Climb()
 {
+}
+
+void Player::Move()
+{
+	// 入力方向
+	Vector3 inputVec = {
+		static_cast<float>(key_->PushKey(DIK_D) - key_->PushKey(DIK_A)),
+		0.0f,
+		static_cast<float>(key_->PushKey(DIK_W) - key_->PushKey(DIK_S))
+	};
+
+	// 移動入力がされていたら加速させる
+	if (inputVec.length() > 0.0f)	moveSpd_ += moveAcc_;
+	else							moveSpd_ -= moveAcc_;
+
+	// 速度制限
+	if (isDash_) moveSpd_ = Util::Clamp(moveSpd_, dashSpd_, 0.0f);
+	else moveSpd_ = Util::Clamp(moveSpd_, maxMoveSpd_, 0.0f);
+
+	// 正面ベクトルの移動量
+	Vector3 forwardMoveVec = {
+		inputVec.z * forwardVec_.x,
+		0.0f,
+		inputVec.z * forwardVec_.z
+	};
+
+	// 右方向ベクトルの移動量
+	Vector3 rightMoveVec = {
+		inputVec.x * rightVec_.x,
+		0.0f,
+		inputVec.x * rightVec_.z
+	};
+
+	// 移動ベクトルの結果
+	Vector3 resultVec = forwardMoveVec + rightMoveVec;
+	resultVec.normalize();
+
+	// カメラを更新
+	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// オブジェクトの位置を更新
+	oCol_->SetPosition(camera_->GetEye());
 }
 
 void Player::EyeMove()

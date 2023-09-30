@@ -2,6 +2,7 @@
 #include "Key.h"
 #include "Mouse.h"
 #include "CollisionManager.h"
+#include "RayCollider.h"
 
 #include "Camera.h"
 
@@ -40,6 +41,22 @@ private:
 	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル
 	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// 右ベクトル
 
+	// モデル
+	std::unique_ptr<Model> mSphere_ = nullptr;// 球
+
+	// オブジェクト
+	std::unique_ptr<Object3D> oCol_ = nullptr;// コライダーの基準となるオブジェクト3D
+
+	// コライダー
+	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元コライダー
+
+	// 移動関連
+	float moveSpd_ = 0.0f;// 移動速度
+	float maxMoveSpd_ = 0.5f;// 最大移動速度
+	float moveAcc_ = 0.05f;// 移動加速度
+	bool isDash_ = false;// ダッシュフラグ
+	float dashSpd_ = 1.0f;// ダッシュ速度
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -73,6 +90,7 @@ private:
 	void Climb();	// 登り状態
 
 	// 行動関数
+	void Move();	// 移動操作
 	void EyeMove();	// 視点操作
 #pragma endregion
 };
