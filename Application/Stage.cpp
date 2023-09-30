@@ -1,15 +1,32 @@
-#include "LoadStage.h"
+#include "Stage.h"
+#include "CollisionAttribute.h"
+#include "PipelineManager.h"
 
 #include <iostream>
 #include <fstream>
 #include <cassert>
 #include <json.hpp>
 
-LoadStage::LoadStage() {}
+Stage::Stage() {}
 
-LoadStage::~LoadStage() {}
+Stage::~Stage() {}
 
-void LoadStage::Load(std::string fileName)
+void Stage::MatUpdate()
+{
+	// オブジェクト行列更新
+	for (auto& object : objects_) object->MatUpdate();
+}
+
+void Stage::Draw()
+{
+	// 描画設定をオブジェクト3D用に
+	PipelineManager::PreDraw("Object3D");
+
+	// オブジェクト描画処理
+	for (auto& object : objects_) object->Draw();
+}
+
+void Stage::Load(std::string fileName)
 {
 	// ファイルストリーム
 	std::ifstream file;
@@ -115,9 +132,19 @@ void LoadStage::Load(std::string fileName)
 			//enemyMgr_->SetBossGenerator(objectData.translation);
 		}
 
+		// オブジェクト追加
 		else {
-			// オブジェクト追加
-			//stageMgr_->AddObject3D(objectData.fileName, objectData.translation, objectData.rotation, objectData.scaling);
+			// オブジェクト
+			objects_.emplace_front(std::make_unique<Object3D>(models_[objectData.fileName].get()));
+			objects_.front()->SetPosition(objectData.translation);
+			objects_.front()->SetRotation(objectData.rotation);
+			objects_.front()->SetScale(objectData.scaling);
+
+			// コライダー
+			colliders_.emplace_front(std::make_unique<MeshCollider>(objects_.front().get()));
+			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
+			colliders_.front()->SetObject3D(objects_.front().get());
+			colMgr_->AddCollider(colliders_.front().get());
 		}
 	}
 }

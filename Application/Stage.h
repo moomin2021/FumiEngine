@@ -9,8 +9,24 @@
 #include <memory>
 #include <forward_list>
 
-class StageObjectManager
+class Stage
 {
+	// レベルデータ
+	struct LevelData {
+		// オブジェクト1個分のデータ
+		struct ObjectData {
+			// ファイル名
+			int isActive;
+			std::string fileName;
+			std::string className;
+			Vector3 translation;
+			Vector3 rotation;
+			Vector3 scaling;
+		};
+
+		std::vector<ObjectData> objects;
+	};
+
 #pragma region メンバ変数
 private:
 	// 衝突判定管理クラスインスタンス
@@ -29,24 +45,18 @@ private:
 #pragma region メンバ関数
 public:
 	// コンストラクタ
-	StageObjectManager();
+	Stage();
 
 	// デストラクタ
-	~StageObjectManager();
-
-	// 初期化処理
-	void Initialize();
-
-	// 更新処理
-	void Update();
-
-	// 描画処理
-	void Draw();
-
-	// 衝突時更新処理
-	void OnCollision();
+	~Stage();
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// 描画更新処理
+	void Draw();
+
+	// ステージ情報読み込み
+	void Load(std::string fileName);
 #pragma endregion
 };

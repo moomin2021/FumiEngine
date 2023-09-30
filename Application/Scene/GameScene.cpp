@@ -22,8 +22,8 @@ void GameScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region ステージオブジェクトの管理クラス
-	stageObjMgr_ = std::make_unique<StageObjectManager>();
+#pragma region ステージクラス
+	stage_ = std::make_unique<Stage>();
 #pragma endregion
 }
 
@@ -38,8 +38,8 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	// ステージオブジェクトの管理クラス
-	stageObjMgr_->Draw();
+	// ステージクラス
+	stage_->Draw();
 }
 
 void GameScene::OnCollision()
@@ -51,6 +51,6 @@ void GameScene::MatUpdate()
 	// カメラ
 	camera_->Update();
 
-	// ステージオブジェクトの管理クラス
-	stageObjMgr_->MatUpdate();
+	// ステージクラス
+	stage_->MatUpdate();
 }

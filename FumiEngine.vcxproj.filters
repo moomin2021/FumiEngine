@@ -213,10 +213,7 @@
     <ClCompile Include="Application\Scene\GameOverScene.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\StageObjectManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\LoadStage.cpp">
+    <ClCompile Include="Application\Stage.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -377,10 +374,7 @@
     <ClInclude Include="Application\Scene\GameOverScene.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\StageObjectManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\LoadStage.h">
+    <ClInclude Include="Application\Stage.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,7 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 
-#include "StageObjectManager.h"
+#include "Stage.h"
 
 #include <memory>
 
@@ -24,7 +24,7 @@ private:
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
 	// ステージオブジェクトの管理クラス
-	std::unique_ptr<StageObjectManager> stageObjMgr_ = nullptr;
+	std::unique_ptr<Stage> stage_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
