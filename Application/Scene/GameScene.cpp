@@ -13,6 +13,8 @@ void GameScene::Initialize()
 	Object3D::SetLightGroup(lightGroup_.get());
 
 	dirLight_ = std::make_unique<DirectionalLight>();
+	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
+	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
