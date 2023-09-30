@@ -44,10 +44,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(SolutionDir)External\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,6 +118,7 @@
     <ClCompile Include="Engine\Util\ImGuiManager.cpp" />
     <ClCompile Include="Application\Scene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\GameOverScene.cpp" />
+    <ClCompile Include="Application\LoadStage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Application\Scene\GameScene.h" />
     <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\StageObjectManager.h" />
+    <ClInclude Include="Application\LoadStage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
