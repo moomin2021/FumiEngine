@@ -8,12 +8,6 @@ GameScene::~GameScene() {}
 
 void GameScene::Initialize()
 {
-#pragma region カメラ
-	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 0.0f, -10.0f });
-	Object3D::SetCamera(camera_.get());
-#pragma endregion
-
 #pragma region ライトグループ
 	lightGroup_ = std::make_unique<LightGroup>();
 	Object3D::SetLightGroup(lightGroup_.get());
@@ -27,10 +21,18 @@ void GameScene::Initialize()
 	stage_->Initialize();
 	stage_->Load("Resources/StageJson/stage1.json");
 #pragma endregion
+
+#pragma region プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialize();
+#pragma endregion
 }
 
 void GameScene::Update()
 {
+	// プレイヤー
+	player_->Update();
+
 	// 衝突時処理
 	OnCollision();
 
@@ -42,17 +44,22 @@ void GameScene::Draw()
 {
 	// ステージクラス
 	stage_->Draw();
+
+	// プレイヤー
+	player_->Draw3D();
 }
 
 void GameScene::OnCollision()
 {
+	// プレイヤー
+	player_->OnCollision();
 }
 
 void GameScene::MatUpdate()
 {
-	// カメラ
-	camera_->Update();
-
 	// ステージクラス
 	stage_->MatUpdate();
+
+	// プレイヤー
+	player_->MatUpdate();
 }

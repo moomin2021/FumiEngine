@@ -1,12 +1,12 @@
 #pragma once
 #include "BaseScene.h"
-#include "Camera.h"
 #include "Model.h"
 #include "Object3D.h"
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 
 #include "Stage.h"
+#include "Player.h"
 
 #include <memory>
 
@@ -14,9 +14,6 @@ class GameScene : public BaseScene
 {
 #pragma region メンバ変数
 private:
-	// カメラ
-	std::unique_ptr<Camera> camera_ = nullptr;
-
 	// ライトグループ
 	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
@@ -25,6 +22,9 @@ private:
 
 	// ステージオブジェクトの管理クラス
 	std::unique_ptr<Stage> stage_ = nullptr;
+
+	// プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
