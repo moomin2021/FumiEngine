@@ -11,6 +11,12 @@ Stage::Stage() {}
 
 Stage::~Stage() {}
 
+void Stage::Initialize()
+{
+	// 衝突判定管理クラスインスタンス
+	colMgr_ = CollisionManager::GetInstance();
+}
+
 void Stage::MatUpdate()
 {
 	// オブジェクト行列更新

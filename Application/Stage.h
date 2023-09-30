@@ -50,6 +50,9 @@ public:
 	// デストラクタ
 	~Stage();
 
+	// 初期化処理
+	void Initialize();
+
 	// 行列更新処理
 	void MatUpdate();
 

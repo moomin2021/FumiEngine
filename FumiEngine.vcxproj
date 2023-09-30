@@ -132,6 +132,7 @@
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Application\Stage.cpp" />
+    <ClCompile Include="Application\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Application\Scene\GameScene.h" />
     <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Stage.h" />
+    <ClInclude Include="Application\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

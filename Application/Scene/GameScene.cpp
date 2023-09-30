@@ -24,6 +24,8 @@ void GameScene::Initialize()
 
 #pragma region ステージクラス
 	stage_ = std::make_unique<Stage>();
+	stage_->Initialize();
+	stage_->Load("Resources/StageJson/stage1.json");
 #pragma endregion
 }
 
