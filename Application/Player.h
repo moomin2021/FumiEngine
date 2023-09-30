@@ -57,6 +57,12 @@ private:
 	bool isDash_ = false;// ダッシュフラグ
 	float dashSpd_ = 1.0f;// ダッシュ速度
 
+	// ジャンプ関連
+	float gravity_ = 0.0f;// 重力
+	float maxGravity_ = 1.5f;// 最大重力
+	float gAcc_ = 0.2f;// 重力加速度
+	float jumpSpd_ = 1.5f;// ジャンプ速度
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -92,5 +98,7 @@ private:
 	// 行動関数
 	void Move();	// 移動操作
 	void EyeMove();	// 視点操作
+	void Jump();	// ジャンプ処理
+	void Fall();	// 落下処理
 #pragma endregion
 };

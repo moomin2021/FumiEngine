@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "CollisionAttribute.h"
+#include "Util.h"
 
 Player::Player()
 {
@@ -19,7 +20,7 @@ void Player::Initialize()
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 0.0f, -10.0f });
+	camera_->SetEye({ 0.0f, 10.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
@@ -53,7 +54,22 @@ void Player::Draw3D()
 
 void Player::OnCollision()
 {
+	if (legCol_->GetIsHit()) {
+		int num = 0;
+	}
 
+	if (legCol_->GetIsHit() && legCol_->GetDistance() <= 2.0f) {
+		state_ = NORMAL;
+		gravity_ = 0.0f;
+		Vector3 reject = (2.0f - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
+		camera_->SetEye(camera_->GetEye() + reject);
+		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+		oCol_->SetPosition(camera_->GetEye());
+	}
+
+	else {
+		state_ = AIR;
+	}
 }
 
 void Player::MatUpdate()
@@ -78,10 +94,21 @@ void Player::Normal()
 
 	// 移動操作
 	Move();
+
+	// ジャンプ処理
+	Jump();
 }
 
 void Player::Air()
 {
+	// 視点操作
+	EyeMove();
+
+	// 移動操作
+	Move();
+
+	// 落下処理
+	Fall();
 }
 
 void Player::Climb()
@@ -159,4 +186,39 @@ void Player::EyeMove()
 
 	// カメラ設定
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// オブジェクトの位置を更新
+	oCol_->SetPosition(camera_->GetEye());
+}
+
+void Player::Jump()
+{
+	// [SPACE]が押されたら上方向に加速させる
+	if (key_->TriggerKey(DIK_SPACE)) {
+		// 重力を更新
+		gravity_ = -jumpSpd_;
+
+		// カメラの位置を更新
+		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+		// 衝突判定用のコライダーを更新
+		oCol_->SetPosition(camera_->GetEye());
+	}
+}
+
+void Player::Fall()
+{
+	// 重力加速度を加算
+	gravity_ += gAcc_;// 重力加速度を加算
+
+	// 最大重力を超えないように
+	gravity_ = Util::Clamp(gravity_, maxGravity_, -1000.0f);
+
+	// カメラを更新
+	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// 衝突判定用のコライダーを更新
+	oCol_->SetPosition(camera_->GetEye());
 }

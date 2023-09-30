@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "CollisionManager.h"
 
 #include "PipelineManager.h"
 
@@ -53,6 +54,9 @@ void GameScene::Draw()
 
 void GameScene::OnCollision()
 {
+	// Õ“Ë”»’è‚ð‚Æ‚é
+	CollisionManager::GetInstance()->CheckAllCollision();
+
 	// ƒvƒŒƒCƒ„[
 	player_->OnCollision();
 }
