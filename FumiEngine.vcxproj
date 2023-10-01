@@ -123,6 +123,7 @@
     <ClCompile Include="Engine\Util\ImGuiManager.cpp" />
     <ClCompile Include="Application\Scene\GameScene.cpp" />
     <ClCompile Include="Application\Scene\GameOverScene.cpp" />
+    <ClCompile Include="Application\ItemManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Application\Stage.h" />
     <ClInclude Include="Application\Player.h" />
     <ClInclude Include="Application\Scene\TransitionScene.h" />
+    <ClInclude Include="Application\ItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

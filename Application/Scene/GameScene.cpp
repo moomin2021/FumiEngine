@@ -35,6 +35,7 @@ void GameScene::Initialize()
 	enemyMgr_->Initialize();
 	enemyMgr_->SetPlayer(player_.get());
 	stage_->SetEnemyManager(enemyMgr_.get());
+	player_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
 	// ステージ読み込み

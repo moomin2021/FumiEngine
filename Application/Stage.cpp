@@ -146,7 +146,7 @@ void Stage::Load(std::string fileName)
 
 		else if (objectData.className == "Item") {
 			// ƒAƒCƒeƒ€‚ð’Ç‰Á
-			//ItemManager::GetInstace()->AddItem(objectData.translation);
+			ItemManager::GetInstace()->AddItem(objectData.translation);
 		}
 
 		else if (objectData.className == "BossGenerator") {

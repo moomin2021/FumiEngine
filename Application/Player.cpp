@@ -5,6 +5,8 @@
 #include "WinAPI.h"
 #include "Texture.h"
 
+#include "EnemyManager.h"
+
 #include <imgui_impl_DX12.h>
 
 Player::Player()
@@ -17,6 +19,7 @@ Player::~Player()
 	colMgr_->RemoveCollider(legCol_.get());
 	colMgr_->RemoveCollider(climbCol_.get());
 	colMgr_->RemoveCollider(shotCol_.get());
+	colMgr_->RemoveCollider(eyeCol_.get());
 }
 
 void Player::Initialize()
@@ -135,11 +138,34 @@ void Player::Initialize()
 	shotCol_->SetAttribute(COL_PLAYER_SHOT);
 	shotCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(shotCol_.get());
+
+	eyeCol_ = std::make_unique<RayCollider>();
+	eyeCol_->SetAttribute(COL_PLAYER_RAY);
+	eyeCol_->SetObject3D(oPlayer_.get());
+	colMgr_->AddCollider(eyeCol_.get());
+#pragma endregion
+
+#pragma region アイテム
+	itemManager_ = ItemManager::GetInstace();
+	itemManager_->Initialize();
+
+	items_.resize(2);
+#pragma endregion
+
+#pragma region 操作ヒント
+	opeTips_ = std::make_unique<Sprite>();
+	opeTips_->SetPosition({ 950.0f, 550.0f });
+	opeTips_->SetSize({ 250.0f, 50.0f });
+
+	opeTipsHandle_ = LoadTexture("Resources/operationTips0.png");
 #pragma endregion
 }
 
 void Player::Update()
 {
+	maxBullet_ = 30 + (items_[0] * 3);
+	shotInterval_ = 0.1f * (1.0f / (0.15f * items_[1] + 1.0f));
+
 	// 状態別更新処理
 	(this->*stateTable[state_])();
 
@@ -153,6 +179,7 @@ void Player::Update()
 	}
 
 	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
+	eyeCol_->SetDir(forwardVec_);
 
 	ImGui::Begin("Player");
 	ImGui::Text("state = %s", stateName_[state_].c_str());
@@ -167,6 +194,9 @@ void Player::Draw3D()
 
 	// 銃
 	oSheriff_->Draw();
+
+	// アイテム
+	itemManager_->Draw();
 }
 
 void Player::DrawFront2D()
@@ -187,6 +217,9 @@ void Player::DrawFront2D()
 
 	// 残弾数表示枠を描画
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
+
+	// 操作ヒント描画
+	if (isHitItem_ || isBossGen_) opeTips_->Draw(opeTipsHandle_);
 }
 
 void Player::OnCollision()
@@ -224,6 +257,39 @@ void Player::OnCollision()
 		isDash_ = false;
 	}
 #pragma endregion
+
+#pragma region アイテム
+	isHitItem_ = false;
+	SphereCollider* it = nullptr;
+
+	if (eyeCol_->GetIsHit()) {
+		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_ITEM) {
+			if (eyeCol_->GetDistance() <= 10.0f) {
+				isHitItem_ = true;
+				it = dynamic_cast<SphereCollider*>(eyeCol_->GetHitCollider());
+			}
+		}
+	}
+
+	if (isHitItem_ && key_->TriggerKey(DIK_F)) {
+		items_[Util::GetRandomInt(0, 1)]++;
+		itemManager_->DeleteItem(it);
+	}
+#pragma endregion
+
+#pragma region ボスジェネレータ
+	isBossGen_ = false;
+
+	if (eyeCol_->GetIsHit()) {
+		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_BOSSGENERATOR) {
+			isBossGen_ = true;
+		}
+	}
+
+	if (isBossGen_ && key_->TriggerKey(DIK_F)) {
+		enemyMgr_->SummonBoss();
+	}
+#pragma endregion
 }
 
 void Player::MatUpdate()
@@ -236,6 +302,9 @@ void Player::MatUpdate()
 
 	// 弾
 	for (auto& it : bullets_) it->MatUpdate();
+
+	// アイテム
+	itemManager_->MatUpdate();
 
 	// 銃
 	Vector3 adsPos = camera_->GetEye() + Vector3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
@@ -267,6 +336,9 @@ void Player::MatUpdate()
 
 	// リロードUI
 	sReloadUI_->MatUpdate();
+
+	// 操作ヒント
+	opeTips_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {
