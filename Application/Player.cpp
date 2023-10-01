@@ -98,6 +98,16 @@ void Player::OnCollision()
 	if (climbCol_->GetIsHit() && climbCol_->GetDistance() <= 1.5f && key_->PushKey(DIK_W)) {
 		state_ = CLIMB;
 	}
+
+#pragma region ダッシュする
+	if (key_->PushKey(DIK_LSHIFT) && key_->PushKey(DIK_W)) {
+		isDash_ = true;
+	}
+
+	else {
+		isDash_ = false;
+	}
+#pragma endregion
 }
 
 void Player::MatUpdate()
@@ -125,6 +135,9 @@ void Player::Normal()
 
 	// ジャンプ処理
 	Jump();
+
+	// 走行処理
+	Dash();
 }
 
 void Player::Air()
@@ -139,6 +152,9 @@ void Player::Air()
 
 	// 落下処理
 	Fall();
+
+	// 走行処理
+	Dash();
 }
 
 void Player::Climb()
@@ -262,4 +278,16 @@ void Player::Fall()
 
 	// 衝突判定用のコライダーを更新
 	oPlayer_->SetPosition(camera_->GetEye());
+}
+
+void Player::Dash()
+{
+	static float time = 1.0f;
+
+	if (isDash_) fovAngleY_ += 2.0f;
+	else fovAngleY_ -= 2.0f;
+
+	fovAngleY_ = Util::Clamp(fovAngleY_, 80.0f, 70.0f);
+
+	camera_->SetFovAngleY(fovAngleY_);
 }

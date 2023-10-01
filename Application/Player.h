@@ -41,6 +41,7 @@ private:
 	Vector3 eyeAngle_	= { 0.0f, 0.0f, 0.0f };// カメラ角度
 	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル
 	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// 右ベクトル
+	float fovAngleY_ = 70.0f;
 
 	// モデル
 	std::unique_ptr<Model> mSphere_ = nullptr;// 球
@@ -103,5 +104,6 @@ private:
 	void EyeMove();	// 視点操作
 	void Jump();	// ジャンプ処理
 	void Fall();	// 落下処理
+	void Dash();	// 走行処理
 #pragma endregion
 };
