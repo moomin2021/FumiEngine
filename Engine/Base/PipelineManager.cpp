@@ -47,6 +47,15 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
 	pipelineObj_["Object3D"]->CreatePipeline(2);
 
+	AddPipeline("Toon");
+	pipelineObj_["Toon"]->LoadShader("Resources/Shaders/ToonPS.hlsl", PS);
+	pipelineObj_["Toon"]->LoadShader("Resources/Shaders/ToonVS.hlsl", VS);
+	pipelineObj_["Toon"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Toon"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Toon"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Toon"]->CreateRootParams(1, 3);
+	pipelineObj_["Toon"]->CreatePipeline(2);
+
 	AddPipeline("Particle");
 	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticlePS.hlsl", PS);
 	pipelineObj_["Particle"]->LoadShader("Resources/Shaders/ParticleVS.hlsl", VS);

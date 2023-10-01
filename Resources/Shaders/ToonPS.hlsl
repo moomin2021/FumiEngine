@@ -36,13 +36,13 @@ PSOutput main(VSOutput input)
             // 物体の面の法線と太陽の位置を示すベクトルどのくらい重なっているかを計算
 			// 重なっていれば重なっているほど明るい！
 			// saturateは値を0-1にクランプする
-            float intensity = saturate(dot(normalize(input.normal), dirLights[i].lightv));
+            float intensity = smoothstep(0.275, 0.325, saturate(dot(normalize(input.normal), dirLights[i].lightv)));
             
             // 拡散反射光
             float3 diffuse = texcolor.rgb * intensity * dirLights[i].lightcolor;
             
             // 鏡面反射光
-            float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * dirLights[i].lightcolor * m_specular;
+            float3 specular = step(0.4, pow(saturate(dot(reflect, eyedir)), shininess)) * dirLights[i].lightcolor * m_specular;
             
             // 環境光 = 素材の色 × ライトの色 * 暗くするために
             float3 ambient = texcolor.rgb * dirLights[i].lightcolor * 0.3;

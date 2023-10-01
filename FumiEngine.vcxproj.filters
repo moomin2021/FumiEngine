@@ -446,6 +446,7 @@
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli" />
+    <None Include="Resources\Shaders\Toon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -487,5 +488,7 @@
     <FxCompile Include="Resources\Shaders\ParticlePS.hlsl" />
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl" />
     <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ToonVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ToonPS.hlsl" />
   </ItemGroup>
 </Project>

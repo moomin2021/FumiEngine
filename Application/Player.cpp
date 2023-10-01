@@ -4,6 +4,7 @@
 #include "Easing.h"
 #include "WinAPI.h"
 #include "Texture.h"
+#include "PipelineManager.h"
 
 #include "EnemyManager.h"
 
@@ -195,11 +196,15 @@ void Player::Draw3D()
 	// 弾
 	for (auto& it : bullets_) it->Draw();
 
+	// アイテム
+	itemManager_->Draw();
+
+	PipelineManager::PreDraw("Toon");
+
 	// 銃
 	oSheriff_->Draw();
 
-	// アイテム
-	itemManager_->Draw();
+	PipelineManager::PreDraw("Object3D");
 }
 
 void Player::DrawFront2D()
