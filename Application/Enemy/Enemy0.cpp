@@ -153,6 +153,7 @@ void Enemy0::OnCollision()
 {
 	// Õ“Ë‚µ‚Ä‚¢‚È‚©‚Á‚½‚çˆ—‚ð”ò‚Î‚·
 	if (collider_->GetIsHit() == false) return;
+	if (collider_->GetHitCollider()->GetAttribute() != COL_PLAYER_SHOT) return;
 	hp_ -= 1;
 	object_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
 	damageCounter_ = 0;

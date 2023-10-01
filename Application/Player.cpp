@@ -34,6 +34,11 @@ void Player::Initialize()
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
 	colMgr_ = CollisionManager::GetInstance();
+	sound_ = Sound::GetInstance();
+#pragma endregion
+
+#pragma region サウンド
+	shotSE_ = sound_->LoadWave("Resources/Sound/shot.wav", 0.1f);
 #pragma endregion
 
 #pragma region カメラ
@@ -164,8 +169,8 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	maxBullet_ = 30 + (items_[0] * 3);
-	shotInterval_ = 0.1f * (1.0f / (0.15f * items_[1] + 1.0f));
+	maxBullet_ = 6 + (items_[0] * 1);
+	shotInterval_ = 1.0f * (1.0f / (0.15f * items_[1] + 1.0f));
 
 	recoilEyeAngle_ -= 0.5f;
 	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
@@ -185,10 +190,10 @@ void Player::Update()
 	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
 	eyeCol_->SetDir(forwardVec_);
 
-	ImGui::Begin("Player");
-	ImGui::Text("state = %s", stateName_[state_].c_str());
-	ImGui::Text("distance = %f", legCol_->GetDistance());
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//ImGui::Text("state = %s", stateName_[state_].c_str());
+	//ImGui::Text("distance = %f", legCol_->GetDistance());
+	//ImGui::End();
 }
 
 void Player::Draw3D()
@@ -498,6 +503,9 @@ void Player::Shoot()
 
 	// 反動をつける
 	recoilEyeAngle_ = 10.0f;
+
+	// SE再生
+	sound_->Play(shotSE_);
 
 	// 弾を生成
 	bullets_.emplace_front(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));
