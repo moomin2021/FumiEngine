@@ -4,13 +4,15 @@
 #include "CollisionManager.h"
 #include "RayCollider.h"
 #include "SphereCollider.h"
-
 #include "Camera.h"
 #include "Sprite.h"
+
+#include "Bullet.h"
 
 #include <string>
 #include <vector>
 #include <memory>
+#include <deque>
 
 class Player
 {
@@ -43,6 +45,8 @@ private:
 	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル
 	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// 右ベクトル
 	float fovAngleY_ = 70.0f;
+	float diffusivity_ = 5.0f;
+	const float maxDiffusivity_ = 5.0f;
 
 	// モデル
 	std::unique_ptr<Model> mSphere_ = nullptr;// 球
@@ -54,6 +58,7 @@ private:
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーコライダー
 	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元コライダー
 	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
+	std::unique_ptr<RayCollider> shotCol_ = nullptr;// 弾を撃った時に使うコライダー
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度
@@ -71,6 +76,25 @@ private:
 	// クロスヘア
 	uint16_t crossHairHandle_ = 0;
 	std::unique_ptr<Sprite> sCrossHair_ = nullptr;
+
+	// 弾
+	std::unique_ptr<Model> mBullet_ = nullptr;
+	std::deque<std::unique_ptr<Bullet>> bullets_ = {};
+	uint8_t maxBullet_ = 30;// 最大弾数
+	uint8_t nowBullet_ = 30;// 現在弾数
+	uint16_t bulletValueDisplayFrameHandle_ = 0;// 残弾数表示UIフレームハンドル
+	std::vector<uint16_t> numberHandle_ = {};// 数字ハンドル
+	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
+	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
+	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
+	float shotInterval_ = 0.1f;
+	uint64_t shotTime_ = 0;
+
+	// リロード
+	bool isReload_ = false;	// リロードしているか
+	uint8_t reloadTime_ = 3;// リロード時間
+	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
+	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
 
 #pragma endregion
 
@@ -108,6 +132,8 @@ private:
 	void Climb();	// 登り状態
 
 	// 行動関数
+	void Shoot();	// 弾を撃つ
+	void Reload();	// リロード処理
 	void Move();	// 移動操作
 	void EyeMove();	// 視点操作
 	void Jump();	// ジャンプ処理

@@ -14,10 +14,17 @@ Player::~Player()
 {
 	colMgr_->RemoveCollider(playerCol_.get());
 	colMgr_->RemoveCollider(legCol_.get());
+	colMgr_->RemoveCollider(climbCol_.get());
+	colMgr_->RemoveCollider(shotCol_.get());
 }
 
 void Player::Initialize()
 {
+	// ウィンドウサイズを取得
+	Vector2 winSize = {
+		static_cast<float>(WinAPI::GetInstance()->GetWidth()),
+		static_cast<float>(WinAPI::GetInstance()->GetHeight()) };
+
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
@@ -33,6 +40,7 @@ void Player::Initialize()
 
 #pragma region モデル
 	mSphere_ = std::make_unique<Model>("sphere");
+	mBullet_ = std::make_unique<Model>("sphere");
 #pragma endregion
 
 #pragma region オブジェクト
@@ -47,10 +55,57 @@ void Player::Initialize()
 		WinAPI::GetInstance()->GetWidth() / 2.0f,
 		WinAPI::GetInstance()->GetHeight() / 2.0f });
 	sCrossHair_->SetSize({ 26, 26 });
+
+	// リロードUI
+	sReloadUI_ = std::make_unique<Sprite>();
+	sReloadUI_->SetAnchorPoint({ 0.5f, 0.5f });
+	sReloadUI_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
+	sReloadUI_->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
+
+	// 残弾数表示UI用のスプライトを生成
+	sBulletValueDisplayFrame_ = std::make_unique<Sprite>();
+	sBulletValueDisplayFrame_->SetAnchorPoint({ 0.5f, 0.5f });
+	sBulletValueDisplayFrame_->SetSize({ 300.0f, 140.0f });
+	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 70.0f });
+
+	// 最大弾数表示用スプライト生成
+	sMaxBulletUI_.resize(2);
+	sMaxBulletUI_[0] = std::make_unique<Sprite>();
+	sMaxBulletUI_[1] = std::make_unique<Sprite>();
+	sMaxBulletUI_[0]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[1]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[0]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[1]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 30.0f });
+	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 30.0f });
+
+	// 残弾数表示スプライト
+	sNowBulletUI_.resize(2);
+	sNowBulletUI_[0] = std::make_unique<Sprite>();
+	sNowBulletUI_[1] = std::make_unique<Sprite>();
+	sNowBulletUI_[0]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[1]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[0]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[1]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[0]->SetPosition({ winSize.x - 247.0f, winSize.y - 30.0f });
+	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 30.0f });
 #pragma endregion
 
 #pragma region 画像読み込み
 	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
+	reloadUIHandle_ = LoadTexture("Resources/reloadUI.png");
+	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
+	numberHandle_.resize(10);
+	numberHandle_[0] = LoadTexture("Resources/number0.png");
+	numberHandle_[1] = LoadTexture("Resources/number1.png");
+	numberHandle_[2] = LoadTexture("Resources/number2.png");
+	numberHandle_[3] = LoadTexture("Resources/number3.png");
+	numberHandle_[4] = LoadTexture("Resources/number4.png");
+	numberHandle_[5] = LoadTexture("Resources/number5.png");
+	numberHandle_[6] = LoadTexture("Resources/number6.png");
+	numberHandle_[7] = LoadTexture("Resources/number7.png");
+	numberHandle_[8] = LoadTexture("Resources/number8.png");
+	numberHandle_[9] = LoadTexture("Resources/number9.png");
 #pragma endregion
 
 #pragma region コライダー
@@ -69,6 +124,12 @@ void Player::Initialize()
 	climbCol_->SetAttribute(COL_CLIMB);
 	climbCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(climbCol_.get());
+
+	// 弾を撃った時に使うコライダー
+	shotCol_ = std::make_unique<RayCollider>();
+	shotCol_->SetAttribute(COL_PLAYER_SHOT);
+	shotCol_->SetObject3D(oPlayer_.get());
+	colMgr_->AddCollider(shotCol_.get());
 #pragma endregion
 }
 
@@ -76,6 +137,15 @@ void Player::Update()
 {
 	// 状態別更新処理
 	(this->*stateTable[state_])();
+
+	for (auto it = bullets_.begin(); it != bullets_.end();) {
+		// 弾の更新
+		(*it)->Update();
+
+		// 弾の生存フラグが[OFF]になったら弾を削除
+		if ((*it)->GetIsAlive() == false) it = bullets_.erase(it);
+		else ++it;
+	}
 
 	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
 
@@ -87,13 +157,28 @@ void Player::Update()
 
 void Player::Draw3D()
 {
-
+	// 弾
+	for (auto& it : bullets_) it->Draw();
 }
 
 void Player::DrawFront2D()
 {
 	// クロスヘア描画
 	sCrossHair_->Draw(crossHairHandle_);
+
+	// リロードUI描画
+	if (isReload_) sReloadUI_->Draw(reloadUIHandle_);
+
+	// 最大弾数を表示
+	sMaxBulletUI_[0]->Draw(numberHandle_[maxBullet_ / 10]);
+	sMaxBulletUI_[1]->Draw(numberHandle_[maxBullet_ % 10]);
+
+	// 残弾数を表示
+	sNowBulletUI_[0]->Draw(numberHandle_[nowBullet_ / 10]);
+	sNowBulletUI_[1]->Draw(numberHandle_[nowBullet_ % 10]);
+
+	// 残弾数表示枠を描画
+	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
 }
 
 void Player::OnCollision()
@@ -141,8 +226,25 @@ void Player::MatUpdate()
 	// オブジェクト
 	oPlayer_->MatUpdate();
 
+	// 弾
+	for (auto& it : bullets_) it->MatUpdate();
+
 	// クロスヘア
 	sCrossHair_->MatUpdate();
+
+	// 残弾数表示UIハンドル
+	sBulletValueDisplayFrame_->MatUpdate();
+
+	// 最大弾数表示スプライト
+	sMaxBulletUI_[0]->MatUpdate();
+	sMaxBulletUI_[1]->MatUpdate();
+
+	// 残弾数表示スプライト
+	sNowBulletUI_[0]->MatUpdate();
+	sNowBulletUI_[1]->MatUpdate();
+
+	// リロードUI
+	sReloadUI_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {
@@ -159,8 +261,17 @@ void Player::Normal()
 	// 移動操作
 	Move();
 
+	// 覗き込み
+	//Ads();
+
+	// 撃つ処理
+	Shoot();
+
 	// ジャンプ処理
 	Jump();
+
+	// リロード処理
+	Reload();
 
 	// 走行処理
 	Dash();
@@ -174,10 +285,17 @@ void Player::Air()
 	// 移動操作
 	Move();
 
-	Jump();
+	// 覗き込み
+	//Ads();
+
+	// 撃つ処理
+	Shoot();
 
 	// 落下処理
 	Fall();
+
+	// リロード処理
+	Reload();
 
 	// 走行処理
 	Dash();
@@ -196,6 +314,82 @@ void Player::Climb()
 
 	// 移動操作
 	Move();
+}
+
+void Player::Shoot()
+{
+	// フラグリセット
+	shotCol_->SetAttribute(0);
+
+	// 最後に弾を撃ってからの経過時間
+	float result = (Util::GetTimrMSec() - shotTime_) / 1000.0f;
+
+	// 残弾数が0以下ならこの後の処理を飛ばす
+	if (nowBullet_ <= 0) return;
+
+	// マウスを左クリックしていなかったらこの後の弾を飛ばす
+	if (mouse_->PushMouseButton(MouseButton::M_LEFT) == false) return;
+
+	// 経過時間が指定時間を過ぎていなかったら処理を飛ばす
+	if (!(result >= shotInterval_)) return;
+
+	// フラグを建てる
+	shotCol_->SetAttribute(COL_PLAYER_SHOT);
+
+	// 弾を撃った時間を記録
+	shotTime_ = Util::GetTimrMSec();
+
+	// 残弾を減らす
+	nowBullet_--;
+
+	Vector3 shotAngle = {
+		eyeAngle_.x + Util::GetRandomFloat(-diffusivity_, diffusivity_),
+		eyeAngle_.y + Util::GetRandomFloat(-diffusivity_, diffusivity_),
+		0.0f
+	};
+
+	Vector3 shotVec = {
+		sinf(Util::Degree2Radian(shotAngle.x)),
+		cosf(Util::Degree2Radian(shotAngle.y)),
+		cosf(Util::Degree2Radian(shotAngle.x))
+	};
+
+	shotCol_->SetDir(shotVec);
+
+	// 弾を生成
+	bullets_.emplace_front(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));
+}
+
+void Player::Reload()
+{
+	// リロード開始時間[s]
+	static uint64_t startReloadTime = 0;
+
+	// リロードUI画像の角度
+	static float rotaY = 0.0f;
+
+	// [R]キーが押されたらリロードを開始
+	if (key_->TriggerKey(DIK_R) && isReload_ == false) {
+		isReload_ = true;
+		startReloadTime = Util::GetTimeSec();
+		nowBullet_ = 0;
+	}
+
+	// リロードしていたらする処理
+	if (isReload_) {
+
+		// リロード画像を回転
+		rotaY -= 3.0f;
+		sReloadUI_->SetRotation(rotaY);
+
+		// 何秒リロードしたか
+		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
+		// リロード時間を超えたらリロードを終える
+		if (elapsedReloadTime >= reloadTime_) {
+			isReload_ = false;
+			nowBullet_ = maxBullet_;
+		}
+	}
 }
 
 void Player::Move()
