@@ -53,7 +53,7 @@ void CollisionManager::CheckAllCollision()
 					Sphere* sphere = dynamic_cast<Sphere*>(*it);
 
 					// 判定したときのデータ
-					float tempDistance = 0.0f;
+					float tempDistance = FLT_MAX;
 					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
 
 					// 衝突していなかったら除外
@@ -74,7 +74,7 @@ void CollisionManager::CheckAllCollision()
 					MeshCollider* meshCol = dynamic_cast<MeshCollider*>(*it);
 
 					// 判定したときのデータ
-					float tempDistance = 0.0f;
+					float tempDistance = FLT_MAX;
 					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
 
 					// 衝突していなかったら除外

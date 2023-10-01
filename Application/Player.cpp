@@ -47,6 +47,11 @@ void Player::Initialize()
 	legCol_->SetObject3D(oPlayer_.get());
 	legCol_->SetDir({ 0.0f, -1.0f, 0.0f });
 	colMgr_->AddCollider(legCol_.get());
+
+	climbCol_ = std::make_unique<RayCollider>();
+	climbCol_->SetAttribute(COL_CLIMB);
+	climbCol_->SetObject3D(oPlayer_.get());
+	colMgr_->AddCollider(climbCol_.get());
 #pragma endregion
 }
 
@@ -54,6 +59,13 @@ void Player::Update()
 {
 	// ó‘Ô•ÊXVˆ—
 	(this->*stateTable[state_])();
+
+	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
+
+	ImGui::Begin("Player");
+	ImGui::Text("state = %s", stateName_[state_].c_str());
+	ImGui::Text("distance = %f", legCol_->GetDistance());
+	ImGui::End();
 }
 
 void Player::Draw3D()
@@ -81,6 +93,10 @@ void Player::OnCollision()
 
 	else {
 		state_ = AIR;
+	}
+
+	if (climbCol_->GetIsHit() && climbCol_->GetDistance() <= 1.5f && key_->PushKey(DIK_W)) {
+		state_ = CLIMB;
 	}
 }
 
@@ -119,12 +135,25 @@ void Player::Air()
 	// ˆÚ“®‘€ì
 	Move();
 
+	Jump();
+
 	// —‰ºˆ—
 	Fall();
 }
 
 void Player::Climb()
 {
+	gravity_ -= 0.2f;
+	gravity_ = Util::Clamp(gravity_, 1.0f, -1.0f);
+	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+	oPlayer_->SetPosition(camera_->GetEye());
+
+	// ‹“_‘€ì
+	EyeMove();
+
+	// ˆÚ“®‘€ì
+	Move();
 }
 
 void Player::Move()
