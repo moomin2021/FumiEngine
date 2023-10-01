@@ -145,4 +145,9 @@ private:
 	void Fall();	// 落下処理
 	void Dash();	// 走行処理
 #pragma endregion
+
+#pragma region ゲッター関数
+public:
+	inline const Vector3& GetPosition() { return camera_->GetEye(); }
+#pragma endregion
 };

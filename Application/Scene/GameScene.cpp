@@ -29,6 +29,12 @@ void GameScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Initialize();
 #pragma endregion
+
+#pragma region エネミーマネージャー
+	// エネミーマネージャー生成
+	enemyMgr_ = std::make_unique<EnemyManager>();
+	enemyMgr_->Initialize();
+#pragma endregion
 }
 
 void GameScene::Update()
@@ -36,11 +42,16 @@ void GameScene::Update()
 	// プレイヤー
 	player_->Update();
 
+	// エネミーマネージャー
+	enemyMgr_->Update();
+
 	// 衝突時処理
 	OnCollision();
 
 	// 行列更新処理
 	MatUpdate();
+
+	enemyMgr_->CheckSceneChange();
 }
 
 void GameScene::Draw()
@@ -52,6 +63,9 @@ void GameScene::Draw()
 
 	// プレイヤー
 	player_->Draw3D();
+
+	// エネミーマネージャー
+	enemyMgr_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
 
@@ -66,6 +80,9 @@ void GameScene::OnCollision()
 
 	// プレイヤー
 	player_->OnCollision();
+
+	// エネミーマネージャー
+	enemyMgr_->OnCollision();
 }
 
 void GameScene::MatUpdate()
@@ -75,4 +92,7 @@ void GameScene::MatUpdate()
 
 	// プレイヤー
 	player_->MatUpdate();
+
+	// エネミーマネージャー
+	enemyMgr_->MatUpdate();
 }

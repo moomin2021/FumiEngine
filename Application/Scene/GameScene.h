@@ -7,6 +7,7 @@
 
 #include "Stage.h"
 #include "Player.h"
+#include "EnemyManager.h"
 
 #include <memory>
 
@@ -25,6 +26,9 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+
+	// エネミーマネージャー
+	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

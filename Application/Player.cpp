@@ -154,18 +154,6 @@ void Player::Update()
 
 	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
 
-	Vector3 adsPos = camera_->GetEye() + Vector3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
-	Vector3 noAdsPos = camera_->GetEye() + Vector3{0.0f, -0.2f, 0.0f} + (forwardVec_ * 0.5f) + (rightVec_ * 0.5f);
-
-	Vector3 resultPos = { 0.0f, 0.0f, 0.0f };
-
-	resultPos.x = Easing::lerp(noAdsPos.x, adsPos.x, adsRate_);
-	resultPos.y = Easing::lerp(noAdsPos.y, adsPos.y, adsRate_);
-	resultPos.z = Easing::lerp(noAdsPos.z, adsPos.z, adsRate_);
-
-	oSheriff_->SetPosition(resultPos);
-	oSheriff_->SetRotation({ (eyeAngle_.y + 90.0f), eyeAngle_.x, 180.0f });
-
 	ImGui::Begin("Player");
 	ImGui::Text("state = %s", stateName_[state_].c_str());
 	ImGui::Text("distance = %f", legCol_->GetDistance());
@@ -250,6 +238,17 @@ void Player::MatUpdate()
 	for (auto& it : bullets_) it->MatUpdate();
 
 	// e
+	Vector3 adsPos = camera_->GetEye() + Vector3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
+	Vector3 noAdsPos = camera_->GetEye() + Vector3{0.0f, -0.2f, 0.0f} + (forwardVec_ * 0.5f) + (rightVec_ * 0.5f);
+
+	Vector3 resultPos = { 0.0f, 0.0f, 0.0f };
+
+	resultPos.x = Easing::lerp(noAdsPos.x, adsPos.x, adsRate_);
+	resultPos.y = Easing::lerp(noAdsPos.y, adsPos.y, adsRate_);
+	resultPos.z = Easing::lerp(noAdsPos.z, adsPos.z, adsRate_);
+
+	oSheriff_->SetPosition(resultPos);
+	oSheriff_->SetRotation({ (eyeAngle_.y + 90.0f), eyeAngle_.x, 180.0f });
 	oSheriff_->MatUpdate();
 
 	// ƒNƒƒXƒwƒA
