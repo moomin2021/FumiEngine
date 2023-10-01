@@ -53,6 +53,7 @@ private:
 	const float maxDiffusivity_ = 5.0f;
 	float adsRate_ = 0.0f;
 	bool isAds_ = false;
+	float recoilEyeAngle_ = 0.0f;
 
 	// ƒ‚ƒfƒ‹
 	std::unique_ptr<Model> mSphere_ = nullptr;// ‹…

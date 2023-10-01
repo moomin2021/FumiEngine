@@ -166,6 +166,9 @@ void Player::Update()
 	maxBullet_ = 30 + (items_[0] * 3);
 	shotInterval_ = 0.1f * (1.0f / (0.15f * items_[1] + 1.0f));
 
+	recoilEyeAngle_ -= 0.5f;
+	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
+
 	// 状態別更新処理
 	(this->*stateTable[state_])();
 
@@ -294,6 +297,17 @@ void Player::OnCollision()
 
 void Player::MatUpdate()
 {
+#pragma region 反動分を計算
+	Vector3 recoilVec_ = {
+		sinf(Util::Degree2Radian(eyeAngle_.x)),
+		cosf(Util::Degree2Radian(eyeAngle_.y - recoilEyeAngle_)),
+		cosf(Util::Degree2Radian(eyeAngle_.x))
+	};
+
+	// カメラ設定
+	camera_->SetTarget(camera_->GetEye() + (recoilVec_) * 10.0f);
+#pragma endregion
+
 	// カメラ
 	camera_->Update();
 
@@ -476,6 +490,9 @@ void Player::Shoot()
 	};
 
 	shotCol_->SetDir(shotVec);
+
+	// 反動をつける
+	recoilEyeAngle_ = 10.0f;
 
 	// 弾を生成
 	bullets_.emplace_front(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));
