@@ -3,6 +3,7 @@
 #include "Mouse.h"
 #include "CollisionManager.h"
 #include "RayCollider.h"
+#include "SphereCollider.h"
 
 #include "Camera.h"
 
@@ -45,10 +46,12 @@ private:
 	std::unique_ptr<Model> mSphere_ = nullptr;// 球
 
 	// オブジェクト
-	std::unique_ptr<Object3D> oCol_ = nullptr;// コライダーの基準となるオブジェクト3D
+	std::unique_ptr<Object3D> oPlayer_ = nullptr;// プレイヤー
 
 	// コライダー
+	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーコライダー
 	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元コライダー
+	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度

@@ -2,12 +2,16 @@
 #include "CollisionAttribute.h"
 #include "Util.h"
 
+#include <imgui_impl_DX12.h>
+
 Player::Player()
 {
 }
 
 Player::~Player()
 {
+	colMgr_->RemoveCollider(playerCol_.get());
+	colMgr_->RemoveCollider(legCol_.get());
 }
 
 void Player::Initialize()
@@ -29,13 +33,18 @@ void Player::Initialize()
 #pragma endregion
 
 #pragma region オブジェクト
-	oCol_ = std::make_unique<Object3D>(mSphere_.get());
+	oPlayer_ = std::make_unique<Object3D>(mSphere_.get());
 #pragma endregion
 
 #pragma region コライダー
+	playerCol_ = std::make_unique<SphereCollider>();
+	playerCol_->SetAttribute(COL_PLAYER);
+	playerCol_->SetObject3D(oPlayer_.get());
+	colMgr_->AddCollider(playerCol_.get());
+
 	legCol_ = std::make_unique<RayCollider>();
 	legCol_->SetAttribute(COL_LEG);
-	legCol_->SetObject3D(oCol_.get());
+	legCol_->SetObject3D(oPlayer_.get());
 	legCol_->SetDir({ 0.0f, -1.0f, 0.0f });
 	colMgr_->AddCollider(legCol_.get());
 #pragma endregion
@@ -54,8 +63,11 @@ void Player::Draw3D()
 
 void Player::OnCollision()
 {
-	if (legCol_->GetIsHit()) {
-		int num = 0;
+	if (playerCol_->GetIsHit()) {
+		Vector3 reject = playerCol_->GetReject();
+		camera_->SetEye(camera_->GetEye() + reject);
+		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+		oPlayer_->SetPosition(camera_->GetEye());
 	}
 
 	if (legCol_->GetIsHit() && legCol_->GetDistance() <= 2.0f) {
@@ -64,7 +76,7 @@ void Player::OnCollision()
 		Vector3 reject = (2.0f - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
 		camera_->SetEye(camera_->GetEye() + reject);
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
-		oCol_->SetPosition(camera_->GetEye());
+		oPlayer_->SetPosition(camera_->GetEye());
 	}
 
 	else {
@@ -78,7 +90,7 @@ void Player::MatUpdate()
 	camera_->Update();
 
 	// オブジェクト
-	oCol_->MatUpdate();
+	oPlayer_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {
@@ -155,7 +167,7 @@ void Player::Move()
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
 	// オブジェクトの位置を更新
-	oCol_->SetPosition(camera_->GetEye());
+	oPlayer_->SetPosition(camera_->GetEye());
 }
 
 void Player::EyeMove()
@@ -188,7 +200,7 @@ void Player::EyeMove()
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
 	// オブジェクトの位置を更新
-	oCol_->SetPosition(camera_->GetEye());
+	oPlayer_->SetPosition(camera_->GetEye());
 }
 
 void Player::Jump()
@@ -203,7 +215,7 @@ void Player::Jump()
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
 		// 衝突判定用のコライダーを更新
-		oCol_->SetPosition(camera_->GetEye());
+		oPlayer_->SetPosition(camera_->GetEye());
 	}
 }
 
@@ -220,5 +232,5 @@ void Player::Fall()
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
 	// 衝突判定用のコライダーを更新
-	oCol_->SetPosition(camera_->GetEye());
+	oPlayer_->SetPosition(camera_->GetEye());
 }

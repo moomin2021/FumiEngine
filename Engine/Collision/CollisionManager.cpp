@@ -177,7 +177,7 @@ void CollisionManager::CheckAllCollision()
 					Vector3 inter = { 0.0f, 0.0f, 0.0f };
 					Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
-					if (meshCol->CheckCollisionSphere(*sphere, &inter)) {
+					if (meshCol->CheckCollisionSphere(*sphere, &inter, &reject)) {
 
 						// 衝突判定の引数のために球コライダーに変換
 						SphereCollider* sphereCol = dynamic_cast<SphereCollider*>(*itA);
