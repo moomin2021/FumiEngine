@@ -52,9 +52,11 @@ private:
 
 	// モデル
 	std::unique_ptr<Model> mSphere_ = nullptr;// 球
+	std::unique_ptr<Model> mSheriff_ = nullptr;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> oPlayer_ = nullptr;// プレイヤー
+	std::unique_ptr<Object3D> oSheriff_ = nullptr;
 
 	// コライダー
 	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーコライダー
