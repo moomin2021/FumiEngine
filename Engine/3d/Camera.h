@@ -52,6 +52,12 @@ public:
 	/// </summary>
 	/// <param name="up"> カメラの上方向ベクトル </param>
 	inline void SetUp(const Vector3& up) { up_ = up; }
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="fovAngleY"></param>
+	void SetFovAngleY(float fovAngleY);
 #pragma endregion
 
 #pragma region ゲッター関数
