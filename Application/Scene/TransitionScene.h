@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "Sprite.h"
+#include "Camera.h"
 
 #include <memory>
 
@@ -8,6 +9,8 @@ class TransitionScene : public BaseScene
 {
 #pragma region ƒƒ“ƒo•Ï”
 private:
+	std::unique_ptr<Camera> camera_ = nullptr;
+
 	uint16_t maxTimr_ = 60;
 	uint16_t time_ = 0;
 
