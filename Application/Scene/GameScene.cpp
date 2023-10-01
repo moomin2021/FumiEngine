@@ -45,11 +45,18 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
+
 	// ステージクラス
 	stage_->Draw();
 
 	// プレイヤー
 	player_->Draw3D();
+
+	PipelineManager::PreDraw("Sprite");
+
+	// プレイヤー
+	player_->DrawFront2D();
 }
 
 void GameScene::OnCollision()

@@ -1,6 +1,5 @@
 #include "Stage.h"
 #include "CollisionAttribute.h"
-#include "PipelineManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -41,9 +40,6 @@ void Stage::MatUpdate()
 
 void Stage::Draw()
 {
-	// 描画設定をオブジェクト3D用に
-	PipelineManager::PreDraw("Object3D");
-
 	// オブジェクト描画処理
 	for (auto& object : objects_) object->Draw();
 

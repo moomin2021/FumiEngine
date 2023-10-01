@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "CollisionAttribute.h"
 #include "Util.h"
+#include "WinAPI.h"
+#include "Texture.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -26,6 +28,7 @@ void Player::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 10.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
+	Sprite::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region モデル
@@ -34,6 +37,20 @@ void Player::Initialize()
 
 #pragma region オブジェクト
 	oPlayer_ = std::make_unique<Object3D>(mSphere_.get());
+#pragma endregion
+
+#pragma region スプライト
+	// クロスヘア
+	sCrossHair_ = std::make_unique<Sprite>();
+	sCrossHair_->SetAnchorPoint({ 0.5f, 0.5f });
+	sCrossHair_->SetPosition({
+		WinAPI::GetInstance()->GetWidth() / 2.0f,
+		WinAPI::GetInstance()->GetHeight() / 2.0f });
+	sCrossHair_->SetSize({ 26, 26 });
+#pragma endregion
+
+#pragma region 画像読み込み
+	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 #pragma endregion
 
 #pragma region コライダー
@@ -71,6 +88,12 @@ void Player::Update()
 void Player::Draw3D()
 {
 
+}
+
+void Player::DrawFront2D()
+{
+	// クロスヘア描画
+	sCrossHair_->Draw(crossHairHandle_);
 }
 
 void Player::OnCollision()
@@ -117,6 +140,9 @@ void Player::MatUpdate()
 
 	// オブジェクト
 	oPlayer_->MatUpdate();
+
+	// クロスヘア
+	sCrossHair_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {

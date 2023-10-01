@@ -6,6 +6,7 @@
 #include "SphereCollider.h"
 
 #include "Camera.h"
+#include "Sprite.h"
 
 #include <string>
 #include <vector>
@@ -67,6 +68,10 @@ private:
 	float gAcc_ = 0.2f;// 重力加速度
 	float jumpSpd_ = 1.5f;// ジャンプ速度
 
+	// クロスヘア
+	uint16_t crossHairHandle_ = 0;
+	std::unique_ptr<Sprite> sCrossHair_ = nullptr;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -85,6 +90,9 @@ public:
 
 	// 3D描画処理
 	void Draw3D();
+
+	// 前面2D描画処理
+	void DrawFront2D();
 
 	// 衝突判定時処理
 	void OnCollision();
