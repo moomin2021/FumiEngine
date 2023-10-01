@@ -21,6 +21,11 @@ void TransitionScene::Initialize()
 		static_cast<float>(WinAPI::GetInstance()->GetHeight())
 	};
 
+#pragma region ƒJƒƒ‰
+	camera_ = std::make_unique<Camera>();
+	Sprite::SetCamera(camera_.get());
+#pragma endregion
+
 	sLoad_ = std::make_unique<Sprite>();
 	sLoad_->SetAnchorPoint({ 0.5f, 0.5f });
 	sLoad_->SetSize({ 100.0f, 100.0f });
@@ -38,6 +43,9 @@ void TransitionScene::Update()
 	sLoad_->SetRotation(rota);
 
 	time_++;
+
+	camera_->Update();
+	sLoad_->MatUpdate();
 
 	if (time_ >= maxTimr_) {
 		SceneManager::GetInstance()->ChangeScene(SceneManager::GetInstance()->GetNextScene());

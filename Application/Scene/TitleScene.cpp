@@ -1,51 +1,51 @@
 #include "TitleScene.h"
-
+#include "Texture.h"
 #include "PipelineManager.h"
+#include "SceneManager.h"
 
 TitleScene::TitleScene() {}
 
-TitleScene::~TitleScene() {}
+TitleScene::~TitleScene()
+{
+}
 
 void TitleScene::Initialize()
 {
+#pragma region インスタンス取得
+	key_ = Key::GetInstance();// マウス
+#pragma endregion
+
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 0.0f, -10.0f });
-	Object3D::SetCamera(camera_.get());
+	Sprite::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region ライトグループ
-	lightGroup_ = std::make_unique<LightGroup>();
-	Object3D::SetLightGroup(lightGroup_.get());
-
-	dirLight_ = std::make_unique<DirectionalLight>();
-	lightGroup_->AddDirLight(dirLight_.get());
+#pragma region スプライト
+	sTitle_ = std::make_unique<Sprite>();
+	sTitle_->SetSize(Vector2{ 1920.0f, 1080.0f });
 #pragma endregion
 
-#pragma region モデル
-	model_ = std::make_unique<Model>("cube");
-#pragma endregion
-
-#pragma region オブジェクト3D
-	object_ = std::make_unique<Object3D>(model_.get());
+#pragma region テクスチャハンドル
+	hTitle_ = LoadTexture("Resources/Title.png");
 #pragma endregion
 }
 
 void TitleScene::Update()
 {
-	// 衝突時処理
-	OnCollision();
+	camera_->Update();
+	sTitle_->MatUpdate();
 
-	// 行列更新処理
-	MatUpdate();
+	if (key_->TriggerKey(DIK_SPACE)) {
+		SceneManager::GetInstance()->SceneTransition(GAME);
+	}
 }
 
 void TitleScene::Draw()
 {
-	PipelineManager::PreDraw("Object3D");
+	PipelineManager::PreDraw("Sprite");
 
-	// オブジェクト
-	object_->Draw();
+	// タイトルを描画
+	sTitle_->Draw(hTitle_);
 }
 
 void TitleScene::OnCollision()
@@ -54,9 +54,5 @@ void TitleScene::OnCollision()
 
 void TitleScene::MatUpdate()
 {
-	// カメラ
-	camera_->Update();
-
-	// オブジェクト3D
-	object_->MatUpdate();
+	
 }
