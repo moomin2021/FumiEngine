@@ -47,6 +47,8 @@ private:
 	float fovAngleY_ = 70.0f;
 	float diffusivity_ = 5.0f;
 	const float maxDiffusivity_ = 5.0f;
+	float adsRate_ = 0.0f;
+	bool isAds_ = false;
 
 	// モデル
 	std::unique_ptr<Model> mSphere_ = nullptr;// 球
@@ -132,6 +134,7 @@ private:
 	void Climb();	// 登り状態
 
 	// 行動関数
+	void Ads();		// 覗き込み
 	void Shoot();	// 弾を撃つ
 	void Reload();	// リロード処理
 	void Move();	// 移動操作

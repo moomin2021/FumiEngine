@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "CollisionAttribute.h"
 #include "Util.h"
+#include "Easing.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
@@ -262,7 +263,7 @@ void Player::Normal()
 	Move();
 
 	// ”`‚«ž‚Ý
-	//Ads();
+	Ads();
 
 	// Œ‚‚Âˆ—
 	Shoot();
@@ -286,7 +287,7 @@ void Player::Air()
 	Move();
 
 	// ”`‚«ž‚Ý
-	//Ads();
+	Ads();
 
 	// Œ‚‚Âˆ—
 	Shoot();
@@ -314,6 +315,33 @@ void Player::Climb()
 
 	// ˆÚ“®‘€ì
 	Move();
+}
+
+void Player::Ads()
+{
+	if (mouse_->PushMouseButton(MouseButton::M_RIGHT)) {
+		adsRate_ += 0.1f;
+	}
+
+	else {
+		adsRate_ -= 0.1f;
+	}
+
+	if (adsRate_ > 0.0f) {
+		isAds_ = true;
+	}
+
+	else {
+		isAds_ = false;
+	}
+
+	adsRate_ = Util::Clamp(adsRate_, 1.0f, 0.0f);
+	diffusivity_ = Easing::lerp(maxDiffusivity_, 0.0f, adsRate_);
+
+	fovAngleY_ = Easing::lerp(70.0f, 40.0f, adsRate_);
+	fovAngleY_ = Util::Clamp(fovAngleY_, 70.0f, 40.0f);
+
+	camera_->SetFovAngleY(fovAngleY_);
 }
 
 void Player::Shoot()
@@ -502,6 +530,8 @@ void Player::Fall()
 
 void Player::Dash()
 {
+	if (isAds_) return;
+
 	static float time = 1.0f;
 
 	if (isDash_) fovAngleY_ += 2.0f;
