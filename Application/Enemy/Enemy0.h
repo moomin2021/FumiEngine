@@ -98,6 +98,12 @@ public:
 	// 描画処理
 	void Draw();
 
+	// 衝突時の処理
+	void OnCollision();
+
+	// 行列更新処理
+	void MatUpdate();
+
 private:
 	// 状態別処理
 	static void (Enemy0::* stateTable[]) ();
@@ -107,9 +113,6 @@ private:
 
 	// 弾を撃つ
 	void Shoot();
-
-	// 衝突時の処理
-	void OnCollision();
 #pragma endregion
 
 #pragma region セッター関数

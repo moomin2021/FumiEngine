@@ -4,6 +4,8 @@
 #include "MeshCollider.h"
 #include "CollisionManager.h"
 
+#include "EnemyManager.h"
+
 #include <unordered_map>
 #include <string>
 #include <memory>
@@ -31,6 +33,7 @@ class Stage
 private:
 	// 衝突判定管理クラスインスタンス
 	CollisionManager* colMgr_ = nullptr;
+	EnemyManager* enemyMgr_ = nullptr;
 
 	// モデル保存用連想配列
 	std::unordered_map<std::string, std::unique_ptr<Model>> models_ = {};
@@ -65,5 +68,9 @@ public:
 
 	// ステージ情報読み込み
 	void Load(std::string fileName);
+#pragma endregion
+
+#pragma region セッター関数
+	void SetEnemyManager(EnemyManager* inst) { enemyMgr_ = inst; }
 #pragma endregion
 };

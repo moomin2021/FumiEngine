@@ -141,7 +141,7 @@ void Stage::Load(std::string fileName)
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
 			// 敵を追加
-			//enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
+			enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
 		}
 
 		else if (objectData.className == "Item") {
@@ -150,7 +150,7 @@ void Stage::Load(std::string fileName)
 		}
 
 		else if (objectData.className == "BossGenerator") {
-			//enemyMgr_->SetBossGenerator(objectData.translation);
+			enemyMgr_->SetBossGenerator(objectData.translation);
 		}
 
 		// オブジェクト追加

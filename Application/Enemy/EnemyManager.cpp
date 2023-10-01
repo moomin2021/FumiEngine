@@ -72,11 +72,15 @@ void EnemyManager::MatUpdate()
 	if (boss_) {
 		boss_->MatUpdate();
 	}
+
+	for (auto& it : enemys_) it->MatUpdate();
 }
 
 void EnemyManager::OnCollision()
 {
 	if (boss_) boss_->OnCollision();
+
+	for (auto& it : enemys_) it->OnCollision();
 }
 
 void EnemyManager::SummonBoss()

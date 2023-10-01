@@ -57,12 +57,6 @@ void Enemy0::Update()
 
 	// HPが0以下になったら生存フラグを[OFF]にする
 	if (hp_ <= 0) isAlive_ = false;
-
-	// 衝突時の処理
-	OnCollision();
-
-	// オブジェクト更新
-	object_->MatUpdate();
 }
 
 void Enemy0::Draw()
@@ -162,6 +156,12 @@ void Enemy0::OnCollision()
 	hp_ -= 1;
 	object_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
 	damageCounter_ = 0;
+}
+
+void Enemy0::MatUpdate()
+{
+	// オブジェクト更新
+	object_->MatUpdate();
 }
 
 void Enemy0::Shoot()

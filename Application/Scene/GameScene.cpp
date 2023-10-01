@@ -22,7 +22,6 @@ void GameScene::Initialize()
 #pragma region ステージクラス
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
-	stage_->Load("Resources/StageJson/stage1.json");
 #pragma endregion
 
 #pragma region プレイヤー
@@ -34,7 +33,12 @@ void GameScene::Initialize()
 	// エネミーマネージャー生成
 	enemyMgr_ = std::make_unique<EnemyManager>();
 	enemyMgr_->Initialize();
+	enemyMgr_->SetPlayer(player_.get());
+	stage_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
+
+	// ステージ読み込み
+	stage_->Load("Resources/StageJson/stage1.json");
 }
 
 void GameScene::Update()
@@ -87,12 +91,12 @@ void GameScene::OnCollision()
 
 void GameScene::MatUpdate()
 {
-	// ステージクラス
-	stage_->MatUpdate();
-
 	// プレイヤー
 	player_->MatUpdate();
 
 	// エネミーマネージャー
 	enemyMgr_->MatUpdate();
+
+	// ステージクラス
+	stage_->MatUpdate();
 }
