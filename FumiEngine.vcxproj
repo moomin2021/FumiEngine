@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Util\Easing.cpp" />
     <ClCompile Include="Engine\Collision\CircleCollider.cpp" />
     <ClCompile Include="Engine\Collision\BoxCollider.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager2D.cpp" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
+    <ClInclude Include="Engine\Util\Easing.h" />
     <ClInclude Include="Engine\Collision\CircleCollider.h" />
     <ClInclude Include="Engine\Collision\BoxCollider.h" />
     <ClInclude Include="Engine\Collision\BaseCollider2D.h" />
