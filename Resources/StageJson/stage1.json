@@ -132,6 +132,121 @@
                 ]
             },
             "file_name": "terrain"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    31.361276626586914,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.001",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -40.2952766418457,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.002",
+            "transform": {
+                "translation": [
+                    -30.740385055541992,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.003",
+            "transform": {
+                "translation": [
+                    29.182870864868164,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.004",
+            "transform": {
+                "translation": [
+                    16.87482261657715,
+                    -22.242645263671875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
         }
     ]
 }

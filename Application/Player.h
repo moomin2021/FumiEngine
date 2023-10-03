@@ -95,14 +95,14 @@ private:
 	// 弾
 	std::unique_ptr<Model> mBullet_ = nullptr;
 	std::deque<std::unique_ptr<Bullet>> bullets_ = {};
-	uint8_t maxBullet_ = 6;// 最大弾数
-	uint8_t nowBullet_ = 6;// 現在弾数
+	uint8_t maxBullet_ = 99;// 最大弾数
+	uint8_t nowBullet_ = 99;// 現在弾数
 	uint16_t bulletValueDisplayFrameHandle_ = 0;// 残弾数表示UIフレームハンドル
 	std::vector<uint16_t> numberHandle_ = {};// 数字ハンドル
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
-	float shotInterval_ = 1.0f;
+	float shotInterval_ = 0.7f;
 	uint64_t shotTime_ = 0;
 
 	// リロード

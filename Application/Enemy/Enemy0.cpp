@@ -28,7 +28,7 @@ void Enemy0::Initialize(Vector3 pos, Vector3 scale)
 	object_->SetScale(scale);
 
 	// コライダー生成
-	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 0.0f, 0.0f }, 2.0f);
+	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f);
 
 	// コライダーとオブジェクトを紐づけ
 	collider_->SetObject3D(object_.get());
@@ -73,26 +73,26 @@ void (Enemy0::* Enemy0::stateTable[]) () = {
 
 void Enemy0::Wait()
 {
-	// 経過時間
-	uint64_t elapsedTime = Util::GetTimeSec() - waitStartTime_;
+	//// 経過時間
+	//uint64_t elapsedTime = Util::GetTimeSec() - waitStartTime_;
 
-	// 待機時間開始が指定時間以上ならランダム移動状態にする
-	if (waitStartTime_ <= elapsedTime) {
-		state_ = RANDOMMOVE;
-		randomMoveVec_ = Vector3(
-			Util::GetRandomFloat(-1.0f, 1.0f), 0.0f,
-			Util::GetRandomFloat(-1.0f, 1.0f)).normalize();
-		rndMoveStartTime_ = Util::GetTimeSec();
-	}
+	//// 待機時間開始が指定時間以上ならランダム移動状態にする
+	//if (waitStartTime_ <= elapsedTime) {
+	//	state_ = RANDOMMOVE;
+	//	randomMoveVec_ = Vector3(
+	//		Util::GetRandomFloat(-1.0f, 1.0f), 0.0f,
+	//		Util::GetRandomFloat(-1.0f, 1.0f)).normalize();
+	//	rndMoveStartTime_ = Util::GetTimeSec();
+	//}
 
-	// プレイヤーとの距離
-	float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
+	//// プレイヤーとの距離
+	//float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
 
-	// プレイヤーが索敵範囲に入ったら追跡状態になる
-	if (searchRange_ >= dist) {
-		state_ = CHASE;
-		horizontalMoveStartTime_ = Util::GetTimeSec();
-	}
+	//// プレイヤーが索敵範囲に入ったら追跡状態になる
+	//if (searchRange_ >= dist) {
+	//	state_ = CHASE;
+	//	horizontalMoveStartTime_ = Util::GetTimeSec();
+	//}
 }
 
 void Enemy0::RandomMove()
@@ -154,9 +154,9 @@ void Enemy0::OnCollision()
 	// 衝突していなかったら処理を飛ばす
 	if (collider_->GetIsHit() == false) return;
 	if (collider_->GetHitCollider()->GetAttribute() != COL_PLAYER_SHOT) return;
-	hp_ -= 1;
+	//hp_ -= 1;
 	object_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
-	damageCounter_ = 0;
+	//damageCounter_ = 0;
 }
 
 void Enemy0::MatUpdate()

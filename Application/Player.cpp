@@ -147,6 +147,7 @@ void Player::Initialize()
 
 	eyeCol_ = std::make_unique<RayCollider>();
 	eyeCol_->SetAttribute(COL_PLAYER_RAY);
+	//eyeCol_->SetAttribute(COL_PLAYER_SHOT);
 	eyeCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(eyeCol_.get());
 #pragma endregion
@@ -170,7 +171,7 @@ void Player::Initialize()
 void Player::Update()
 {
 	maxBullet_ = 6 + (items_[0] * 1);
-	shotInterval_ = 1.0f * (1.0f / (0.15f * items_[1] + 1.0f));
+	shotInterval_ = 0.7f * (1.0f / (0.15f * items_[1] + 1.0f));
 
 	recoilEyeAngle_ -= 0.5f;
 	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
@@ -499,10 +500,12 @@ void Player::Shoot()
 	};
 
 	Vector3 shotVec = {
-		sinf(Util::Degree2Radian(shotAngle.x)),
-		cosf(Util::Degree2Radian(shotAngle.y)),
-		cosf(Util::Degree2Radian(shotAngle.x))
+		sinf(Util::Degree2Radian(eyeAngle_.x)),
+		cosf(Util::Degree2Radian(eyeAngle_.y)),
+		cosf(Util::Degree2Radian(eyeAngle_.x))
 	};
+
+	shotVec.normalize();
 
 	shotCol_->SetDir(shotVec);
 

@@ -55,10 +55,10 @@ void EnemyManager::Update()
 
 void EnemyManager::Draw()
 {
-	oBossGenerator_->Draw();
-	if (boss_) {
-		boss_->Draw();
-	}
+	//oBossGenerator_->Draw();
+	//if (boss_) {
+	//	boss_->Draw();
+	//}
 
 	// “G•`‰æˆ—
 	for (auto& i : enemys_) {
