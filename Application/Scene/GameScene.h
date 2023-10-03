@@ -29,6 +29,12 @@ private:
 
 	// エネミーマネージャー
 	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
+
+	// モデル
+	std::unique_ptr<Model> mCube_ = nullptr;
+
+	// 3軸を示すオブジェクト
+	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
