@@ -89,7 +89,7 @@ void GameScene::Draw()
 	player_->Draw3D();
 
 	// エネミーマネージャー
-	enemyMgr_->Draw();
+	//enemyMgr_->Draw();
 
 	// 3軸を示すオブジェクト
 	for (auto& it : oAxis_) {

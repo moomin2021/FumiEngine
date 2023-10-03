@@ -1,7 +1,7 @@
-# Blender v3.3.1 OBJ File: 'Cylinder.blend'
+# Blender v3.3.1 OBJ File: 'cylinder.blend'
 # www.blender.org
-mtllib Cylinder.mtl
-o Cylinder_円柱
+mtllib cylinder.mtl
+o cylinder_円柱
 v -0.000000 -0.000002 -5.000000
 v -0.000000 9.999998 -5.000000
 v 0.975451 -0.000002 -4.903926

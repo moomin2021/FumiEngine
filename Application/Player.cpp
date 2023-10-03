@@ -409,6 +409,11 @@ void Player::Air()
 	// Œ‚‚Âˆ—
 	Shoot();
 
+#ifdef _DEBUG
+	// ƒWƒƒƒ“ƒvˆ—
+	Jump();
+#endif
+
 	// —‰ºˆ—
 	Fall();
 

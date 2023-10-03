@@ -122,7 +122,7 @@ void Stage::Load(std::string fileName)
 
 			// 回転角
 			objectData.rotation.x = -(float)transform["rotation"][1];
-			objectData.rotation.y = -(float)transform["rotation"][2];
+			objectData.rotation.y = (float)transform["rotation"][2];
 			objectData.rotation.z = (float)transform["rotation"][0];
 
 			// スケーリング

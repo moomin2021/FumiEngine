@@ -3,12 +3,12 @@
     "objects": [
         {
             "type": "MESH",
-            "name": "Item.000",
+            "name": "terrain.000",
             "transform": {
                 "translation": [
-                    -29.248661041259766,
-                    -13.789907455444336,
-                    0.6928043961524963
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -21,17 +21,16 @@
                     1.0
                 ]
             },
-            "file_name": "cube",
-            "class_name": "Item"
+            "file_name": "terrain"
         },
         {
             "type": "MESH",
-            "name": "Item.001",
+            "name": "cylinder.000",
             "transform": {
                 "translation": [
-                    -23.9786319732666,
-                    15.722251892089844,
-                    1.1843477487564087
+                    0.0,
+                    56.20524597167969,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -44,17 +43,16 @@
                     1.0
                 ]
             },
-            "file_name": "cube",
-            "class_name": "Item"
+            "file_name": "cylinder"
         },
         {
             "type": "MESH",
-            "name": "Item.002",
+            "name": "cylinder.001",
             "transform": {
                 "translation": [
-                    10.100887298583984,
-                    -23.715126037597656,
-                    0.9373399019241333
+                    -36.35497283935547,
+                    -45.56881332397461,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -67,17 +65,16 @@
                     1.0
                 ]
             },
-            "file_name": "cube",
-            "class_name": "Item"
+            "file_name": "cylinder"
         },
         {
             "type": "MESH",
-            "name": "Item.003",
+            "name": "cylinder.002",
             "transform": {
                 "translation": [
-                    21.43144989013672,
-                    5.884864807128906,
-                    0.9337613582611084
+                    37.849483489990234,
+                    0.0,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -90,191 +87,51 @@
                     1.0
                 ]
             },
-            "file_name": "cube",
-            "class_name": "Item"
+            "file_name": "cylinder"
         },
         {
             "type": "MESH",
-            "name": "Item.004",
+            "name": "bridge.000",
             "transform": {
                 "translation": [
-                    33.12140655517578,
-                    -7.4761061668396,
-                    0.703282356262207
+                    -77.13494873046875,
+                    0.0,
+                    -0.41237300634384155
                 ],
                 "rotation": [
                     0.0,
-                    -0.0,
-                    0.0
+                    0.0,
+                    -90.00000762939453
                 ],
                 "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
+                    5.0,
+                    15.0,
+                    0.05000000074505806
                 ]
             },
-            "file_name": "cube",
-            "class_name": "Item"
+            "file_name": "bridge"
         },
         {
             "type": "MESH",
-            "name": "Enemy.000",
+            "name": "terrain.001",
             "transform": {
                 "translation": [
-                    -6.443496227264404,
-                    14.161528587341309,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "Enemy.001",
-            "transform": {
-                "translation": [
-                    -34.69575119018555,
-                    2.4782674312591553,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "Enemy.002",
-            "transform": {
-                "translation": [
-                    -13.382646560668945,
-                    -21.313100814819336,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "Enemy.003",
-            "transform": {
-                "translation": [
-                    14.37395191192627,
-                    -19.330486297607422,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "Enemy.004",
-            "transform": {
-                "translation": [
-                    13.595069885253906,
-                    17.631103515625,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "sphere",
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "platform",
-            "transform": {
-                "translation": [
-                    33.35509490966797,
-                    34.98779296875,
-                    -0.07353776693344116
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    8.0,
-                    8.0,
-                    1.0
-                ]
-            },
-            "file_name": "bossGenerator",
-            "class_name": "BossGenerator"
-        },
-        {
-            "type": "MESH",
-            "name": "stage",
-            "transform": {
-                "translation": [
-                    0.0,
+                    -131.58837890625,
                     0.0,
                     0.0
                 ],
                 "rotation": [
                     0.0,
-                    -0.0,
-                    0.0
+                    0.0,
+                    -80.65142822265625
                 ],
                 "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.5695713758468628,
+                    0.5695713758468628,
+                    0.5695713758468628
                 ]
             },
-            "file_name": "stage"
+            "file_name": "terrain"
         }
     ]
 }
