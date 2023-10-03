@@ -2,6 +2,7 @@
 #include "CollisionAttribute.h"
 #include "SceneManager.h"
 #include "Texture.h"
+#include "SceneManager.h"
 
 EnemyManager::EnemyManager() {}
 
@@ -48,8 +49,13 @@ void EnemyManager::Update()
 		else ++it;
 	}
 
+	// ƒ{ƒX‚ª¶¬‚³‚ê‚Ä‚¢‚½‚çˆ—‚ð‚·‚é
 	if (boss_) {
 		boss_->Update();
+
+		if (boss_->GetIsAlive() == false) {
+			SceneManager::GetInstance()->SceneTransition(TITLE);
+		}
 	}
 }
 
