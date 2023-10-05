@@ -13,7 +13,7 @@ private:
 #pragma region メンバ関数
 public:
 	// コンストラクタ
-	PointCollider(const Vector2& offset);
+	PointCollider(const Vector2& offset = { 0.0f, 0.0f });
 
 	// 更新処理
 	void Update() override;
