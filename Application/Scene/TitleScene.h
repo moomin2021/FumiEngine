@@ -13,6 +13,11 @@
 
 class TitleScene : public BaseScene
 {
+	enum SelectNum {
+		START,
+		END
+	};
+
 #pragma region メンバ変数
 private:
 	// インスタンス
@@ -22,12 +27,6 @@ private:
 
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
-
-	// スプライト
-	std::unique_ptr<Sprite> sTitle_ = nullptr;
-
-	// テクスチャハンドル
-	uint16_t hTitle_ = 0;
 
 	// スプライト
 	std::vector<std::unique_ptr<Sprite>> sSelectButtons_ = {};
@@ -42,6 +41,15 @@ private:
 	// コライダー
 	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
 	std::vector<std::unique_ptr<BoxCollider>> selectButtonsCol_ = {};
+
+	// セレクトボタン関連
+	bool isSelect_ = false;// ボタンを選択しているか
+	uint16_t nowSelect_ = 100;
+	std::vector<Vector2> selectButtonPos_ = {};// ボタンの座標
+	Vector2 startSelectButtonFrameSize_ = { 330.0f, 60.0f };
+	Vector2 endSelectButtonFrameSize_ = { 324.0f, 54.0f };
+	float easeTime_ = 0.5f;// [s]
+	uint64_t startEaseTime_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -65,5 +73,8 @@ private:
 	void OnCollision();
 
 	void MatUpdate();
+
+	// セレクトボタンの処理
+	void SelectButton();
 #pragma endregion
 };

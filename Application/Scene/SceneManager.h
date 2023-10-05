@@ -43,6 +43,9 @@ private:
 	// シーンを変更中か
 	bool isChangeScene_ = false;
 
+	// ゲームを終了
+	bool isEnd_ = false;
+
 	// --メンバ関数-- //
 public:
 	// インスタンス取得
@@ -77,4 +80,7 @@ public:
 
 	// 代入演算子
 	SceneManager& operator=(const SceneManager& instance) = delete;
+
+	void SetIsEnd(bool frag) { isEnd_ = frag; }
+	bool GetIsEnd() { return isEnd_; }
 };
