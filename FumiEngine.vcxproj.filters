@@ -82,11 +82,38 @@
     <Filter Include="Application\ヘッダーファイル\Scene">
       <UniqueIdentifier>{bc700068-4a65-405e-b0d7-9207897e7bba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\ソースファイル\Player">
+      <UniqueIdentifier>{6c96b209-3d44-421f-bd22-a8515e498f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ヘッダーファイル\Player">
+      <UniqueIdentifier>{656b270c-f665-486e-b0f0-92cacd353c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ソースファイル\Enemy">
+      <UniqueIdentifier>{e224c0f1-2d46-4514-b1d2-4de22d243a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ヘッダーファイル\Enemy">
+      <UniqueIdentifier>{07b742ee-86a1-48b6-9f5e-eedea49ac491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ヘッダーファイル\Stage">
+      <UniqueIdentifier>{3793f2b1-9222-4f83-8226-54bf5970d927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ソースファイル\Stage">
+      <UniqueIdentifier>{56ed0497-8796-4d58-bbfe-7bf68efd2f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ソース ファイル\Collision">
+      <UniqueIdentifier>{21fdb639-0909-479d-b7e4-b61f24b1cc40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ソース ファイル\Sound">
+      <UniqueIdentifier>{ef072369-0ad3-4a9f-9cb3-5bebd1c73559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ヘッダー ファイル\Sound">
+      <UniqueIdentifier>{8dc4651b-00b9-47a3-857b-66a611201101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ヘッダー ファイル\Collision">
+      <UniqueIdentifier>{ba92de7c-ea1f-44c0-b64d-f7ba760c7485}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinAPI.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
@@ -138,9 +165,6 @@
     <ClCompile Include="Engine\Util\Math\float4.cpp">
       <Filter>Engine\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\2d\PostEffect.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\PipelineManager.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
@@ -150,95 +174,101 @@
     <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Mesh.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\Material.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sound\Sound.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\ParticleEmitter.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Util\ImGuiManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\CollisionManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\Collision.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\MeshCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\RayCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\SphereCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\CollisionManager2D.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\PointCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+    <ClCompile Include="Application\Enemy\Boss0.cpp">
+      <Filter>Application\ソースファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\BoxCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collision\CircleCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Input\Pad.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TestScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Util\Math\Quaternion.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TitleScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\GameScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\GameOverScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Stage\Stage.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player\Player.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+      <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Application\Player\Bullet.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+      <Filter>Application\ソースファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CircleCollider.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\Collision.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionManager.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionManager2D.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Util\Easing.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+      <Filter>Engine\ソース ファイル\Util</Filter>
     </ClCompile>
     <ClCompile Include="Application\Enemy\Enemy0.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+      <Filter>Application\ソースファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Enemy\Boss0.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
+      <Filter>Application\ソースファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\TransitionScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+    <ClCompile Include="Application\Scene\GameOverScene.cpp">
+      <Filter>Application\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\GameScene.cpp">
+      <Filter>Application\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Util\ImGuiManager.cpp">
+      <Filter>Engine\ソース ファイル\Util</Filter>
     </ClCompile>
     <ClCompile Include="Application\Player\ItemManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+      <Filter>Application\ソースファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Application\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Material.cpp">
+      <Filter>Engine\ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Mesh.cpp">
+      <Filter>Engine\ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\MeshCollider.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\Pad.cpp">
+      <Filter>Engine\ソース ファイル\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\ParticleEmitter.cpp">
+      <Filter>Engine\ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Player\Player.cpp">
+      <Filter>Application\ソースファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\PointCollider.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\PostEffect.cpp">
+      <Filter>Engine\ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Util\Math\Quaternion.cpp">
+      <Filter>Engine\ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\RayCollider.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sound\Sound.cpp">
+      <Filter>Engine\ソース ファイル\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp">
+      <Filter>Engine\ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Stage\Stage.cpp">
+      <Filter>Application\ソースファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\TitleScene.cpp">
+      <Filter>Application\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\TransitionScene.cpp">
+      <Filter>Engine\ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\TestScene.cpp">
+      <Filter>Engine\ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +341,6 @@
     <ClInclude Include="Engine\Util\Math\float4.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\2d\PostEffect.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Base\PipelineManager.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
     </ClInclude>
@@ -323,107 +350,110 @@
     <ClInclude Include="Application\Scene\SceneManager.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Mesh.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\Material.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sound\Sound.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\ParticleEmitter.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\ImGuiManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+    <ClInclude Include="Engine\Collision\BaseCollider2D.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\BaseCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CollisionAttribute.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CollisionManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CollisionPrimitive.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\Collision.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\MeshCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\RayCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\SphereCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CollisionManager2D.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\BaseCollider2D.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CollisionShapeType.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\PointCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\BoxCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collision\CircleCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Input\Pad.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TestScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\Math\Quaternion.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TitleScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\GameScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\GameOverScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Stage\Stage.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\Player.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\Bullet.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\Easing.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\Enemy0.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\Boss0.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+      <Filter>Application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\TransitionScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+    <ClInclude Include="Engine\Collision\BoxCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player\Bullet.h">
+      <Filter>Application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CircleCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\Collision.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionAttribute.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionManager.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionManager2D.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionShapeType.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Util\Easing.h">
+      <Filter>Engine\ヘッダー ファイル\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\Enemy0.h">
+      <Filter>Application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\EnemyManager.h">
+      <Filter>Application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\GameScene.h">
+      <Filter>Application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\GameOverScene.h">
+      <Filter>Application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Util\ImGuiManager.h">
+      <Filter>Engine\ヘッダー ファイル\Util</Filter>
     </ClInclude>
     <ClInclude Include="Application\Player\ItemManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+      <Filter>Application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Material.h">
+      <Filter>Engine\ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Mesh.h">
+      <Filter>Engine\ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\MeshCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\Pad.h">
+      <Filter>Engine\ヘッダー ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\ParticleEmitter.h">
+      <Filter>Engine\ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player\Player.h">
+      <Filter>Application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\PointCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\2d\PostEffect.h">
+      <Filter>Engine\ヘッダー ファイル\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Util\Math\Quaternion.h">
+      <Filter>Engine\ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\RayCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sound\Sound.h">
+      <Filter>Engine\ヘッダー ファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\SphereCollider.h">
+      <Filter>Engine\ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Stage\Stage.h">
+      <Filter>Application\ヘッダーファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\TransitionScene.h">
+      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\TestScene.h">
+      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\TitleScene.h">
+      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -445,8 +475,12 @@
     <None Include="Resources\Shaders\Bloom.hlsli">
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
-    <None Include="Resources\Shaders\Particle.hlsli" />
-    <None Include="Resources\Shaders\Toon.hlsli" />
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\Toon.hlsli">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -485,10 +519,20 @@
     <FxCompile Include="Resources\Shaders\BloomVS.hlsl">
       <Filter>Engine\シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ToonVS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ToonPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ToonVS.hlsl">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ToonPS.hlsl">
+      <Filter>Engine\シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
