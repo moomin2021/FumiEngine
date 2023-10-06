@@ -54,13 +54,20 @@ void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 	winRect_ = { 0, 0, winWidth, winHeight };
 
 	// 自動でサイズを補正する
-	AdjustWindowRect(&winRect_, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&winRect_, WS_POPUP, false);
 
 	// ウィンドウオブジェクトの生成
 	CreateWindowObj();
 
 	// ウィンドウを表示状態にする
 	ShowWindow(hwnd_, SW_SHOW);
+
+	RECT rect;
+
+	GetWindowRect(hwnd_, &rect);
+
+	// 指定範囲外にマウスがいかないように
+	ClipCursor(&rect);
 }
 
 bool WinAPI::IsEndMessage()
@@ -109,9 +116,9 @@ void WinAPI::CreateWindowObj()
 	hwnd_ = CreateWindow(
 		winClass_.lpszClassName,// ------> クラス名
 		L"DirectXGame",// -------> タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,// --> 標準的なウィンドウスタイル
-		CW_USEDEFAULT,// --------> 表示X座標(OSに任せる)
-		CW_USEDEFAULT,// --------> 表示Y座標(OSに任せる)
+		WS_POPUP,// --> 標準的なウィンドウスタイル
+		0,// --------> 表示X座標(OSに任せる)
+		0,// --------> 表示Y座標(OSに任せる)
 		winRect_.right - winRect_.left,// -> ウィンドウ横幅
 		winRect_.bottom - winRect_.top,// -> ウィンドウ縦幅
 		nullptr,// --------------> 親ウィンドウハンドル

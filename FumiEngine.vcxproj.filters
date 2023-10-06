@@ -204,7 +204,40 @@
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Scene\TitleScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\GameScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\GameOverScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Stage.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Player.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Bullet.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Util\Easing.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\Enemy0.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\Boss0.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\TransitionScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\ItemManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -356,7 +389,40 @@
     <ClInclude Include="Engine\Util\Math\Quaternion.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Scene\TitleScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\GameScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\GameOverScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Stage.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Bullet.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Util\Easing.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\EnemyManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\Enemy0.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\Boss0.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\TransitionScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\ItemManager.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -380,6 +446,7 @@
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli" />
+    <None Include="Resources\Shaders\Toon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -421,5 +488,7 @@
     <FxCompile Include="Resources\Shaders\ParticlePS.hlsl" />
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl" />
     <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ToonVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\ToonPS.hlsl" />
   </ItemGroup>
 </Project>

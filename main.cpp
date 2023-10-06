@@ -16,7 +16,7 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// WinAPIの初期化
-	WinAPI::GetInstance()->Initialize(1280, 720);
+	WinAPI::GetInstance()->Initialize(1920, 1080);
 
 	// DirectX12の初期化
 	DX12Cmd::GetInstance()->Initialize();
@@ -34,6 +34,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
+		if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
+		if (SceneManager::GetInstance()->GetIsEnd() == true) break;
 
 		// キーボード入力更新処理
 		Key::GetInstance()->Update();
