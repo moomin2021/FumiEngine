@@ -7,7 +7,10 @@
 
 // シーン列挙型
 enum SCENE {
-	TEST
+	TITLE,
+	GAME,
+	GAMEOVER,
+	TRANSITION,
 };
 
 enum PostEffectType {
@@ -27,6 +30,8 @@ private:
 	// 現在のシーン
 	std::unique_ptr<BaseScene> nowScene_;
 
+	SCENE nextScene_ = TITLE;
+
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> gaussianPostEffect_;
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
@@ -34,6 +39,12 @@ private:
 
 	// ポストエフェクトの種類
 	PostEffectType postEffectType_;
+
+	// シーンを変更中か
+	bool isChangeScene_ = false;
+
+	// ゲームを終了
+	bool isEnd_ = false;
 
 	// --メンバ関数-- //
 public:
@@ -46,15 +57,21 @@ public:
 	// 描画処理
 	void Draw();
 
+	// シーン切り替え
+	void ChangeScene(SCENE changeSceneNum);
+
+	// シーン遷移
+	void SceneTransition(SCENE scene);
+
+	// 次のシーンを取得
+	SCENE GetNextScene() { return nextScene_; }
+
 private:
 	// コンストラクタ
 	SceneManager();
 
 	// デストラクタ
 	~SceneManager();
-
-	// シーン切り替え
-	void ChangeScene(int changeSceneNum);
 
 	// --禁止-- //
 public:
@@ -63,4 +80,7 @@ public:
 
 	// 代入演算子
 	SceneManager& operator=(const SceneManager& instance) = delete;
+
+	void SetIsEnd(bool frag) { isEnd_ = frag; }
+	bool GetIsEnd() { return isEnd_; }
 };
