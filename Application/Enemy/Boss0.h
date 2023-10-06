@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
@@ -7,18 +7,18 @@
 
 class Boss0
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒCƒ“ƒXƒ^ƒ“ƒX
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	CollisionManager* colMgr_ = nullptr;
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	std::unique_ptr<Model> model_ = nullptr;
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Object3D> object_ = nullptr;
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> collider_ = nullptr;
 
 	// HP
@@ -29,27 +29,27 @@ private:
 	bool isAlive_ = true;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Boss0();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Boss0();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize(const Vector3& pos);
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// ƒIƒuƒWƒFƒNƒgXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°
 	void MatUpdate();
 
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	void OnCollision();
 #pragma endregion
 

@@ -1,87 +1,87 @@
-#pragma once
+ï»¿#pragma once
 #include <Windows.h>
 #include <stdint.h>
 
 class WinAPI {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	uint16_t winWidth_;	// ‰¡•
-	uint16_t winHeight_;// c•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	uint16_t winWidth_;	// æ¨ªå¹…
+	uint16_t winHeight_;// ç¸¦å¹…
 
-	WNDCLASSEX	winClass_;	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX
-	RECT		winRect_;	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	HWND		hwnd_;		// ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹(ƒIƒuƒWƒFƒNƒg)
-	MSG			msg_;		// ƒƒbƒZ[ƒW
+	WNDCLASSEX	winClass_;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
+	RECT		winRect_;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	HWND		hwnd_;		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«(ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)
+	MSG			msg_;		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static WinAPI* GetInstance();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	void Initialize(uint16_t winWidth, uint16_t winHeight);
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚éƒƒbƒZ[ƒW‚ª—ˆ‚Ä‚¢‚é‚©
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ã¦ã„ã‚‹ã‹
 	/// </summary>
-	/// <returns> ^‹UŒ‹‰Ê </returns>
+	/// <returns> çœŸå½çµæœ </returns>
 	bool IsEndMessage();
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ì‰¡•‚ğæ“¾
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®æ¨ªå¹…ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ì‰¡• </returns>
+	/// <returns> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®æ¨ªå¹… </returns>
 	inline const uint16_t& GetWidth() { return winWidth_; }
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ìc•‚ğæ“¾
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®ç¸¦å¹…ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ìc• </returns>
+	/// <returns> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®ç¸¦å¹… </returns>
 	inline const uint16_t& GetHeight() { return winHeight_; }
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ğæ“¾
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX </returns>
+	/// <returns> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ </returns>
 	inline const WNDCLASSEX& GetWinClass() { return winClass_; }
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğæ“¾
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹ </returns>
+	/// <returns> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ« </returns>
 	inline const HWND& GetHWND() { return hwnd_; }
 
 #pragma endregion
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	WinAPI();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~WinAPI();
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒgì¬
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
 	/// </summary>
 	void CreateWindowObj();
 
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	WinAPI(const WinAPI&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	WinAPI& operator = (const WinAPI&) = delete;// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	WinAPI(const WinAPI&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	WinAPI& operator = (const WinAPI&) = delete;// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

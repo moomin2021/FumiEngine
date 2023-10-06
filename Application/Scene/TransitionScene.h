@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "Camera.h"
@@ -7,7 +7,7 @@
 
 class TransitionScene : public BaseScene
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
 	std::unique_ptr<Camera> camera_ = nullptr;
 
@@ -19,27 +19,27 @@ private:
 	uint16_t loadHandle_ = 0;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	TransitionScene();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~TransitionScene();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	void OnCollision();
 
-	// s—ñXV
+	// è¡Œåˆ—æ›´æ–°
 	void MatUpdate();
 #pragma endregion
 };

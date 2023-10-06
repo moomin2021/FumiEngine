@@ -1,4 +1,4 @@
-#include "PipelineManager.h"
+ï»¿#include "PipelineManager.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
@@ -6,31 +6,31 @@ std::map<std::string, std::unique_ptr<PipelineObj>> PipelineManager::pipelineObj
 
 PipelineManager* PipelineManager::GetInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	static PipelineManager inst;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
 	return &inst;
 }
 
 void PipelineManager::PreDraw(std::string pipelineName, D3D_PRIMITIVE_TOPOLOGY primitiveType, bool isDescHeap)
 {
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒgæ“¾
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// SRVƒq[ƒvæ“¾
+	// SRVãƒ’ãƒ¼ãƒ—å–å¾—
 	ID3D12DescriptorHeap* srvHeap = Texture::GetInstance()->GetSRVHeap();
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìİ’è
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š
 	cmdList->SetPipelineState(pipelineObj_[pipelineName]->GetPipelineState());
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’è
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®è¨­å®š
 	cmdList->SetGraphicsRootSignature(pipelineObj_[pipelineName]->GetRootSignature());
 
-	// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ğİ’è
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã‚’è¨­å®š
 	cmdList->IASetPrimitiveTopology(primitiveType);
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ‚ğƒZƒbƒg‚·‚éƒRƒ}ƒ“ƒh
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 	if (isDescHeap) {
 		std::vector<ID3D12DescriptorHeap*> ppHeaps = { srvHeap };
 		cmdList->SetDescriptorHeaps(1, ppHeaps.data());

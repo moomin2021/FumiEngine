@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include <d3dx12.h>
 #include <wrl.h>
 
 #include <vector>
 
-// ƒVƒF[ƒ_[‚Ìí—Ş
+// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡
 enum ShaderType {
 	VS,
 	PS,
@@ -14,7 +14,7 @@ enum ShaderType {
 class PipelineObj
 {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
@@ -25,87 +25,87 @@ public:
 		SUB
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg
-	ComPtr<ID3DBlob> vsBlob_ = nullptr;	// ’¸“_ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ComPtr<ID3DBlob> psBlob_ = nullptr;	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ComPtr<ID3DBlob> gsBlob_ = nullptr;	// ƒWƒIƒƒgƒŠƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ComPtr<ID3DBlob> errorBlob_;	// ƒGƒ‰[ƒIƒuƒWƒFƒNƒg
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ComPtr<ID3DBlob> vsBlob_ = nullptr;	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ComPtr<ID3DBlob> psBlob_ = nullptr;	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ComPtr<ID3DBlob> gsBlob_ = nullptr;	// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ComPtr<ID3DBlob> errorBlob_;	// ã‚¨ãƒ©ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-	// ’¸“_ƒŒƒCƒAƒEƒg
+	// é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout_;
 
-	// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^
+	// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	std::vector<CD3DX12_ROOT_PARAMETER> rootParams_;
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	ComPtr<ID3D12RootSignature> rootSignature_;
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 	ComPtr<ID3D12PipelineState> pipelineState_;
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒŒƒ“ƒW
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ¬ãƒ³ã‚¸
 	std::vector <CD3DX12_DESCRIPTOR_RANGE> descRangeSRV_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	PipelineObj();
 
 	/// <summary>
-	/// ƒVƒF[ƒ_[“Ç‚İ‚İ
+	/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	/// </summary>
-	/// <param name="fileName"> ƒVƒF[ƒ_[‚Ìƒtƒ@ƒCƒ‹–¼ </param>
-	/// <param name="shaderType"> ƒVƒF[ƒ_[‚Ìí—Ş </param>
+	/// <param name="fileName"> ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«å </param>
+	/// <param name="shaderType"> ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡ </param>
 	void LoadShader(std::string fileName, ShaderType shaderType);
 
 	/// <summary>
-	/// ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚ÉV‹Kİ’è‚ğ’Ç‰Á
+	/// ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã«æ–°è¦è¨­å®šã‚’è¿½åŠ 
 	/// </summary>
-	/// <param name="semanticName"> ƒZƒ}ƒ“ƒeƒBƒbƒN–¼ </param>
-	/// <param name="format"> ƒŠƒ\[ƒXƒf[ƒ^Œ`®(—v‘f”‚Æƒrƒbƒg”‚ğ•\‚·) </param>
-	/// <param name="index"> “¯‚¶ƒZƒ}ƒ“ƒeƒBƒbƒN–¼‚ª•¡”‚ ‚é‚Æ‚«g‚¤ƒCƒ“ƒfƒbƒNƒX </param>
+	/// <param name="semanticName"> ã‚»ãƒãƒ³ãƒ†ã‚£ãƒƒã‚¯å </param>
+	/// <param name="format"> ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿å½¢å¼(è¦ç´ æ•°ã¨ãƒ“ãƒƒãƒˆæ•°ã‚’è¡¨ã™) </param>
+	/// <param name="index"> åŒã˜ã‚»ãƒãƒ³ãƒ†ã‚£ãƒƒã‚¯åãŒè¤‡æ•°ã‚ã‚‹ã¨ãä½¿ã†ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ </param>
 	void AddInputLayout(const char* semanticName, DXGI_FORMAT format, uint16_t index = 0);
 
 	/// <summary>
-	/// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^ì¬
+	/// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ä½œæˆ
 	/// </summary>
-	/// <param name="texRegisterNum"> ƒeƒNƒXƒ`ƒƒƒŒƒWƒXƒ^” </param>
-	/// <param name="constBuffNum"> ’è”ƒoƒbƒtƒ@‚Ì” </param>
+	/// <param name="texRegisterNum"> ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¬ã‚¸ã‚¹ã‚¿æ•° </param>
+	/// <param name="constBuffNum"> å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ•° </param>
 	void CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum);
 
 	/// <summary>
-	/// ƒpƒCƒvƒ‰ƒCƒ“ì¬
+	/// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ä½œæˆ
 	/// </summary>
-	/// <param name="renderTargetNum"> ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ì” </param>
+	/// <param name="renderTargetNum"> ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®æ•° </param>
 	void CreatePipeline(uint16_t renderTargetNum,BLENDMODE blendMode = NONE, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, bool isDepth = true);
 
 private:
 	/// <summary>
-	/// ƒVƒF[ƒ_[‚Ì“Ç‚İ‚İ‚ÆƒRƒ“ƒpƒCƒ‹
+	/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿ã¨ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 	/// </summary>
-	/// <param name="fileName"> ƒVƒF[ƒ_[‚Ìƒtƒ@ƒCƒ‹–¼ </param>
-	/// <param name="target"> ƒVƒF[ƒ_[ƒ‚ƒfƒ‹w’è </param>
-	/// <param name="shaderBlob"> ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg </param>
+	/// <param name="fileName"> ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«å </param>
+	/// <param name="target"> ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ¢ãƒ‡ãƒ«æŒ‡å®š </param>
+	/// <param name="shaderBlob"> ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ </param>
 	void ShaderCompileFromFile(std::string fileName, LPCSTR target, ID3D10Blob** shaderBlob);
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼
 public:
 	/// <summary>
-	/// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgæ“¾
+	/// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆå–å¾—
 	/// </summary>
-	/// <returns> ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg </returns>
+	/// <returns> ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ </returns>
 	ID3D12PipelineState* GetPipelineState() { return pipelineState_.Get(); }
 
 	/// <summary>
-	/// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğæ“¾
+	/// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ </returns>
+	/// <returns> ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ </returns>
 	ID3D12RootSignature* GetRootSignature() { return rootSignature_.Get(); }
 #pragma endregion
 };

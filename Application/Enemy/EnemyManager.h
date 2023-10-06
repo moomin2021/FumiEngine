@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
@@ -10,76 +10,76 @@
 
 class EnemyManager
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒCƒ“ƒXƒ^ƒ“ƒX
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	CollisionManager* colMgr_ = nullptr;
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
 
-	// ƒp[ƒeƒBƒNƒ‹ƒGƒ~ƒbƒ^[
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚¨ãƒŸãƒƒã‚¿ãƒ¼
 	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
 
-	// ƒp[ƒeƒBƒNƒ‹‰æ‘œ‚Ìƒnƒ“ƒhƒ‹
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”»åƒã®ãƒãƒ³ãƒ‰ãƒ«
 	uint16_t hParticle_ = 0;
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Object3D> oBossGenerator_ = nullptr;
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> colBossGenerator_ = nullptr;
 
-	// ƒ{ƒX
+	// ãƒœã‚¹
 	std::unique_ptr<Boss0> boss_ = nullptr;
 
-	// ƒGƒlƒ~[
+	// ã‚¨ãƒãƒŸãƒ¼
 	std::deque<std::unique_ptr<Enemy0>> enemys_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	EnemyManager();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~EnemyManager();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// ƒIƒuƒWƒFƒNƒgXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°
 	void MatUpdate();
 
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	void OnCollision();
 
-	// ƒ{ƒX¢Š«
+	// ãƒœã‚¹å¬å–š
 	void SummonBoss();
 
-	// ƒGƒlƒ~[‚ğ¶¬’Ç‰Á
+	// ã‚¨ãƒãƒŸãƒ¼ã‚’ç”Ÿæˆè¿½åŠ 
 	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
 
 	void CheckSceneChange();
 
-	// ƒp[ƒeƒBƒNƒ‹¶¬
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆ
 	void AddParticle(const Vector3& pos);
 
 private:
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	void SetBossGenerator(const Vector3& pos);
 
-	// ƒvƒŒƒCƒ„[‚ğİ’è
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®š
 	void SetPlayer(Player* player);
 #pragma endregion
 };

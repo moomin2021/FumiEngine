@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Model.h"
 #include "Object3D.h"
 #include "MeshCollider.h"
@@ -13,11 +13,11 @@
 
 class Stage
 {
-	// ƒŒƒxƒ‹ƒf[ƒ^
+	// ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿
 	struct LevelData {
-		// ƒIƒuƒWƒFƒNƒg1ŒÂ•ª‚Ìƒf[ƒ^
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ1å€‹åˆ†ã®ãƒ‡ãƒ¼ã‚¿
 		struct ObjectData {
-			// ƒtƒ@ƒCƒ‹–¼
+			// ãƒ•ã‚¡ã‚¤ãƒ«å
 			int isActive;
 			std::string fileName;
 			std::string className;
@@ -29,48 +29,48 @@ class Stage
 		std::vector<ObjectData> objects;
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// Õ“Ë”»’èŠÇ—ƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX
+	// è¡çªåˆ¤å®šç®¡ç†ã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	CollisionManager* colMgr_ = nullptr;
 	EnemyManager* enemyMgr_ = nullptr;
 
-	// ƒ‚ƒfƒ‹•Û‘¶—p˜A‘z”z—ñ
+	// ãƒ¢ãƒ‡ãƒ«ä¿å­˜ç”¨é€£æƒ³é…åˆ—
 	std::unordered_map<std::string, std::unique_ptr<Model>> models_ = {};
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::forward_list<std::unique_ptr<Object3D>> objects_ = {};
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::forward_list<std::unique_ptr<MeshCollider>> colliders_ = {};
 
-	// ƒXƒJƒCƒh[ƒ€
-	std::unique_ptr<Model> mSkydome_	= nullptr;// ƒ‚ƒfƒ‹
-	std::unique_ptr<Object3D> oSkydome_	= nullptr;// ƒIƒuƒWƒFƒNƒg
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
+	std::unique_ptr<Model> mSkydome_	= nullptr;// ãƒ¢ãƒ‡ãƒ«
+	std::unique_ptr<Object3D> oSkydome_	= nullptr;// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Stage();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Stage();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
-	// •`‰æXVˆ—
+	// æç”»æ›´æ–°å‡¦ç†
 	void Draw();
 
-	// ƒXƒe[ƒWî•ñ“Ç‚İ‚İ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±èª­ã¿è¾¼ã¿
 	void Load(std::string fileName);
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 	void SetEnemyManager(EnemyManager* inst) { enemyMgr_ = inst; }
 #pragma endregion
 };

@@ -1,32 +1,32 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseCollider2D.h"
 #include "CollisionPrimitive.h"
 
 class PointCollider : public BaseCollider2D, public Point
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒIƒtƒZƒbƒg
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 	Vector2 offset_ = { 0.0f, 0.0f };
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	PointCollider(const Vector2& offset = { 0.0f, 0.0f });
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update() override;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ƒIƒtƒZƒbƒg‚ğİ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	inline void SetOffset(const Vector2& offset) { offset_ = offset; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
-	// ƒIƒtƒZƒbƒg‚ğæ“¾
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å–å¾—
 	inline const Vector2& GetOffset() { return offset_; }
 #pragma endregion
 };

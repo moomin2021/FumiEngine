@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Bullet.h"
 #include "Object3D.h"
 #include "SphereCollider.h"
@@ -9,64 +9,64 @@
 class Enemy0
 {
 	enum State {
-		WAIT,		// ‘Ò‹@ó‘Ô
-		RANDOMMOVE,	// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®ó‘Ô
-		CHASE,		// ’ÇÕó‘Ô
+		WAIT,		// å¾…æ©ŸçŠ¶æ…‹
+		RANDOMMOVE,	// ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•çŠ¶æ…‹
+		CHASE,		// è¿½è·¡çŠ¶æ…‹
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒvƒ‰ƒCƒ„[
+	// ãƒ—ãƒ©ã‚¤ãƒ¤ãƒ¼
 	static Player* player_;
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Object3D> object_;
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> collider_;
 
-	// ¶‘¶ƒtƒ‰ƒO
+	// ç”Ÿå­˜ãƒ•ãƒ©ã‚°
 	bool isAlive_ = true;
 
-	// ó‘Ô
+	// çŠ¶æ…‹
 	State state_ = WAIT;
 
-	// Šeó‘Ô‚ÌŠJnŠÔ
+	// å„çŠ¶æ…‹ã®é–‹å§‹æ™‚é–“
 	uint64_t waitStartTime_ = 0;
 	uint64_t rndMoveStartTime_ = 0;
 
-	// Šeó‘Ô‚Ì§ŒÀŠÔ
+	// å„çŠ¶æ…‹ã®åˆ¶é™æ™‚é–“
 	uint16_t waitTime_ = 3;
 	uint16_t rndMoveTime_ = 5;
 
-	// ‰¡ˆÚ“®Ø‚è‘Ö‚¦ŠÔ
+	// æ¨ªç§»å‹•åˆ‡ã‚Šæ›¿ãˆæ™‚é–“
 	uint16_t horizontalMoveSwitchTime_ = 3;
 
-	// ‰¡ˆÚ“®ŠJnŠÔ
+	// æ¨ªç§»å‹•é–‹å§‹æ™‚é–“
 	uint64_t horizontalMoveStartTime_ = 0;
 
-	// ‰¡ˆÚ“®‘¬“x
+	// æ¨ªç§»å‹•é€Ÿåº¦
 	float horizontalMoveSpd_ = 0.3f;
 
-	// ‘OŒãˆÚ“®‘¬“x
+	// å‰å¾Œç§»å‹•é€Ÿåº¦
 	float frontRearMoveSpd_ = 0.1f;
 
-	// ‰EˆÚ“®‚©
+	// å³ç§»å‹•ã‹
 	float isMoveRight_ = 1.0f;
 
-	// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®‚ÌˆÚ“®•ûŒü
+	// ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•æ™‚ã®ç§»å‹•æ–¹å‘
 	Vector3 randomMoveVec_ = {};
 
-	// õ“G”ÍˆÍ
+	// ç´¢æ•µç¯„å›²
 	float searchRange_ = 100.0f;
 
-	// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®‚Ì‘¬“x
+	// ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•æ™‚ã®é€Ÿåº¦
 	float rndMoveSpd_ = 0.1f;
 
-	// Œ‚‚ÂŠÔŠu
+	// æ’ƒã¤é–“éš”
 	uint16_t shootInterval_ = 3;
 
-	// Œ‚‚Á‚½ŠÔ
+	// æ’ƒã£ãŸæ™‚é–“
 	uint64_t shootTime_ = 0;
 
 	// HP
@@ -75,63 +75,63 @@ private:
 	uint16_t damageCounter_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
-	/// <param name="model"> ƒ‚ƒfƒ‹ </param>
+	/// <param name="model"> ãƒ¢ãƒ‡ãƒ« </param>
 	Enemy0(Model* model);
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Enemy0();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
-	/// <param name="pos"> ‰ŠúˆÊ’u </param>
+	/// <param name="pos"> åˆæœŸä½ç½® </param>
 	void Initialize(Vector3 pos, Vector3 scale);
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// Õ“Ë‚Ìˆ—
+	// è¡çªæ™‚ã®å‡¦ç†
 	void OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
 private:
-	// ó‘Ô•Êˆ—
+	// çŠ¶æ…‹åˆ¥å‡¦ç†
 	static void (Enemy0::* stateTable[]) ();
-	void Wait();		// ‘Ò‹@ó‘Ô
-	void RandomMove();	// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®ó‘Ô
-	void Chase();		// ’ÇÕó‘Ô
+	void Wait();		// å¾…æ©ŸçŠ¶æ…‹
+	void RandomMove();	// ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•çŠ¶æ…‹
+	void Chase();		// è¿½è·¡çŠ¶æ…‹
 
-	// ’e‚ğŒ‚‚Â
+	// å¼¾ã‚’æ’ƒã¤
 	void Shoot();
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒvƒŒƒCƒ„[‚ğİ’è
+	/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®š
 	/// </summary>
 	static void SetPlayer(Player* player) { player_ = player; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ¶‘¶ƒtƒ‰ƒO‚ğæ“¾
+	/// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒtƒ‰ƒO </returns>
+	/// <returns> ãƒ•ãƒ©ã‚° </returns>
 	inline bool GetIsAlive() { return isAlive_; }
 
-	// À•W‚ğæ“¾
+	// åº§æ¨™ã‚’å–å¾—
 	inline const Vector3& GetPos() { return object_->GetPosition(); }
 #pragma endregion
 };

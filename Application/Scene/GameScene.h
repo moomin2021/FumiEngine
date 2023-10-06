@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 #include "Model.h"
 #include "Object3D.h"
@@ -13,52 +13,52 @@
 
 class GameScene : public BaseScene
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒ‰ƒCƒgƒOƒ‹[ƒv
+	// ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—
 	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
-	// •½sŒõŒ¹
+	// å¹³è¡Œå…‰æº
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// ƒXƒe[ƒWƒIƒuƒWƒFƒNƒg‚ÌŠÇ—ƒNƒ‰ƒX
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç®¡ç†ã‚¯ãƒ©ã‚¹
 	std::unique_ptr<Stage> stage_ = nullptr;
 
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	std::unique_ptr<Player> player_ = nullptr;
 
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	std::unique_ptr<Model> mCube_ = nullptr;
 
-	// 3²‚ğ¦‚·ƒIƒuƒWƒFƒNƒg
+	// 3è»¸ã‚’ç¤ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	GameScene();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~GameScene();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
 private:
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	void OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 #pragma endregion
 };

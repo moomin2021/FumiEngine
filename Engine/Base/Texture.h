@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <d3d12.h>
 #include <DirectXTex.h>
 #include <wrl.h>
@@ -7,92 +7,92 @@
 
 class Texture {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// “Ç‚İ‚ñ‚¾‰ñ”
+	// èª­ã¿è¾¼ã‚“ã å›æ•°
 	uint16_t loadCounter_ = 0;
 
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
 
-	// ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	std::map<const std::string, uint16_t> texHandle_;
 
-	// SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
 
-	// SRVƒq[ƒv‚Ìƒnƒ“ƒhƒ‹
+	// SRVãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_{};
 
 	std::vector<ID3D12Resource*> intermediateResources_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static Texture* GetInstance();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	void Initialize();
 
-	// ‰æ‘œƒCƒ[ƒW‚ğ“Ç‚İæ‚é
+	// ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’èª­ã¿å–ã‚‹
 	void LoadImageFile(const std::string filePath, DirectX::ScratchImage& scratchImage, DirectX::TexMetadata& metadata);
 
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@‚ğ¶¬
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆ
 	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata, D3D12_RESOURCE_DESC& texResourceDesc);
 
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@‚Éƒf[ƒ^‚ğ“]‘—
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ã‚’è»¢é€
 	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 	ID3D12Resource* CreateBufferResource(size_t sizeInBytes);
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İAƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿ã€ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <param name="fileName"> ‰æ‘œƒtƒ@ƒCƒ‹–¼ </param>
-	/// <returns> “Ç‚İ‚ñ‚¾‰æ‘œ‚Ìƒnƒ“ƒhƒ‹ </returns>
+	/// <param name="fileName"> ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å </param>
+	/// <returns> èª­ã¿è¾¼ã‚“ã ç”»åƒã®ãƒãƒ³ãƒ‰ãƒ« </returns>
 	uint16_t LoadTexture(const std::string fileName);
 
 	void ReleaseIntermediateResources();
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// SRVƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ìæ“¾
+	/// SRVãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®å–å¾—
 	/// </summary>
-	/// <returns> SRVƒfƒXƒNƒŠƒvƒ^ƒq[ƒv </returns>
+	/// <returns> SRVãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ— </returns>
 	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
 #pragma endregion
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Texture();
 
 	/// <summary>
-	/// SRV—p‚ÅƒXƒNƒŠƒvƒ^ƒq[ƒv¶¬
+	/// SRVç”¨ã§ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ç”Ÿæˆ
 	/// </summary>
 	void CreateDescriptorHeap();
 
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	Texture(const Texture&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	Texture& operator = (const Texture&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	Texture(const Texture&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	Texture& operator = (const Texture&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };
 
 /// <summary>
-/// ƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İAƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿ã€ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 /// </summary>
-/// <param name="fileName"> ‰æ‘œƒtƒ@ƒCƒ‹–¼ </param>
-/// <returns> “Ç‚İ‚ñ‚¾‰æ‘œ‚Ìƒnƒ“ƒhƒ‹ </returns>
+/// <param name="fileName"> ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å </param>
+/// <returns> èª­ã¿è¾¼ã‚“ã ç”»åƒã®ãƒãƒ³ãƒ‰ãƒ« </returns>
 uint16_t LoadTexture(const std::string fileName);

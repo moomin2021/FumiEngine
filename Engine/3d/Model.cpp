@@ -1,4 +1,4 @@
-#include "Model.h"
+ï»¿#include "Model.h"
 #include "Texture.h"
 #include "DX12Cmd.h"
 
@@ -8,15 +8,15 @@
 using namespace std;
 
 Model::Model(string fileName) :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// ƒƒbƒVƒ…ƒf[ƒ^
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿
 	meshes_{},
 
-	// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿
 	materials_{}
 #pragma endregion
 {
-	// ƒ‚ƒfƒ‹“Ç‚İ‚İ
+	// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 	LoadModel(fileName);
 }
 
@@ -29,213 +29,213 @@ void Model::Draw() {
 
 void Model::LoadModel(string name)
 {
-	// ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	std::ifstream file;
 
-	// .objƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// .objãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	const string modelName = name;
 	const string fileName = modelName + ".obj";
 	const string directoryPath = "Resources/" + modelName + "/";
 	file.open(directoryPath + fileName);
 
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
 	assert(!file.fail());
 
-	vector<Vector3> positions;	// ’¸“_À•W
-	vector<Vector3> normals;		// –@üƒxƒNƒgƒ‹
-	vector<Vector2> texcoords;	// ƒeƒNƒXƒ`ƒƒUV
+	vector<Vector3> positions;	// é ‚ç‚¹åº§æ¨™
+	vector<Vector3> normals;		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+	vector<Vector2> texcoords;	// ãƒ†ã‚¯ã‚¹ãƒãƒ£UV
 
-	// ƒƒbƒVƒ…‚ğ¶¬‚µ‚½‚çƒJƒEƒ“ƒg
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆã—ãŸã‚‰ã‚«ã‚¦ãƒ³ãƒˆ
 	uint16_t meshCount = 0;
 	uint16_t loopCount = 0;
 
-	// 1s‚¸‚Â“Ç‚İ‚Ş
+	// 1è¡Œãšã¤èª­ã¿è¾¼ã‚€
 	string line;
 	while (getline(file, line)) {
 
-		// 1s•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚·‚é
+		// 1è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ãã™ã‚‹
 		std::istringstream line_stream(line);
 
-		// ”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ìæ“ª•¶š—ñ‚ğæ“¾
+		// åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®å…ˆé ­æ–‡å­—åˆ—ã‚’å–å¾—
 		string key;
 		getline(line_stream, key, ' ');
 
-		// æ“ª•¶š‚ª[o]‚È‚ç’¸“_ƒf[ƒ^‚ğƒŠƒZƒbƒg
+		// å…ˆé ­æ–‡å­—ãŒ[o]ãªã‚‰é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
 		if (key == "o") {
-			// ƒƒbƒVƒ…¶¬
+			// ãƒ¡ãƒƒã‚·ãƒ¥ç”Ÿæˆ
 			meshes_.emplace_back();
 			meshCount++;
 			loopCount = 0;
 		}
 
-		// æ“ª•¶š—ñ‚ª[v]‚È‚ç’¸“_À•W
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[v]ãªã‚‰é ‚ç‚¹åº§æ¨™
 		else if (key == "v") {
-			// X, Y, ZÀ•W“Ç‚İ‚İ
+			// X, Y, Zåº§æ¨™èª­ã¿è¾¼ã¿
 			Vector3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
 
-			// À•Wƒf[ƒ^‚É’Ç‰Á
+			// åº§æ¨™ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 			positions.emplace_back(position);
 		}
 
-		// æ“ª•¶š—ñ‚ª[vt]‚È‚çƒeƒNƒXƒ`ƒƒ
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[vt]ãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		else if (key == "vt") {
-			// U, V¬•ª“Ç‚İ‚İ
+			// U, Væˆåˆ†èª­ã¿è¾¼ã¿
 			Vector2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
 
-			// V•ûŒü”½“]
+			// Væ–¹å‘åè»¢
 			texcoord.y = 1.0f - texcoord.y;
 
-			// ƒeƒNƒXƒ`ƒƒÀ•Wƒf[ƒ^’Ç‰Á
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ãƒ‡ãƒ¼ã‚¿è¿½åŠ 
 			texcoords.emplace_back(texcoord);
 		}
 
-		// æ“ª•¶š—ñ‚ª[vn]‚È‚ç–@üƒxƒNƒgƒ‹
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[vn]ãªã‚‰æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 		else if (key == "vn") {
-			// X, Y, Z¬•ª“Ç‚İ‚İ
+			// X, Y, Zæˆåˆ†èª­ã¿è¾¼ã¿
 			Vector3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;
 
-			// –@üƒxƒNƒgƒ‹ƒf[ƒ^‚É’Ç‰Á
+			// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 			normals.emplace_back(normal);
 		}
 
-		// æ“ª•¶š—ñ‚ª[f]‚È‚çƒ|ƒŠƒSƒ“(OŠpŒ`)
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[f]ãªã‚‰ãƒãƒªã‚´ãƒ³(ä¸‰è§’å½¢)
 		else if (key == "f") {
-			// ”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ì‘±‚«‚ğ“Ç‚İ‚Ş
+			// åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®ç¶šãã‚’èª­ã¿è¾¼ã‚€
 			string index_string;
 			while (getline(line_stream, index_string, ' ')) {
 
-				// ’¸“_ƒCƒ“ƒfƒbƒNƒX1ŒÂ•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚·‚é
+				// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹1å€‹åˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ãã™ã‚‹
 				std::istringstream index_stream(index_string);
 				unsigned short indexPosition, indexNormal, indexTexcoord;
 				index_stream >> indexPosition;
-				index_stream.seekg(1, ios_base::cur);// -> ƒXƒ‰ƒbƒVƒ…‚ğ”ò‚Î‚·
+				index_stream.seekg(1, ios_base::cur);// -> ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’é£›ã°ã™
 				index_stream >> indexTexcoord;
-				index_stream.seekg(1, ios_base::cur);// -> ƒXƒ‰ƒbƒVƒ…‚ğ”ò‚Î‚·
+				index_stream.seekg(1, ios_base::cur);// -> ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’é£›ã°ã™
 				index_stream >> indexNormal;
 
-				// ’¸“_ƒf[ƒ^‚Ì’Ç‰Á
+				// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 				Mesh::Vertex vertex{};
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
 				meshes_[meshCount - 1].AddVertex(vertex);
 
-				// ’¸“_ƒCƒ“ƒfƒbƒNƒX‚É’Ç‰Á
+				// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«è¿½åŠ 
 				meshes_[meshCount - 1].AddIndex(loopCount);
 				loopCount++;
 			}
 		}
 
-		// æ“ª•¶š—ñ‚ª[usemtl]‚È‚çƒ}ƒeƒŠƒAƒ‹
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[usemtl]ãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«
 		else if (key == "usemtl") {
 			std::string materialName;
 			line_stream >> materialName;
 
-			// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚ğƒƒbƒVƒ…‚Éİ’è
+			// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã‚’ãƒ¡ãƒƒã‚·ãƒ¥ã«è¨­å®š
 			meshes_[meshCount - 1].SetMaterialName(materialName);
 		}
 
-		// æ“ª•¶š—ñ‚ª[mtllib]‚È‚çƒ}ƒeƒŠƒAƒ‹
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[mtllib]ãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«
 		else if (key == "mtllib") {
 			string filename;
 			line_stream >> filename;
 
-			// ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+			// ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 			LoadMaterial(directoryPath, filename);
 		}
 	}
 
-	// ¶¬‚µ‚½‚·‚×‚Ä‚ÌƒƒbƒVƒ…‚Ì’¸“_ƒoƒbƒtƒ@‚ÆƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì¶¬
+	// ç”Ÿæˆã—ãŸã™ã¹ã¦ã®ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ç”Ÿæˆ
 	for (size_t i = 0; i < meshes_.size(); i++) {
 		meshes_[i].CreateVertexBuff();
 		meshes_[i].CreateIndexBuff();
 	}
 
-	// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 }
 
 void Model::LoadMaterial(const string& directoryPath, const string& fileName) {
-	// ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	ifstream file;
 
-	// ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	file.open(directoryPath + fileName);
 
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
 	if (file.fail()) assert(0);
 
 	std::string materialName;
 
-	// 1s‚¸‚Â“Ç‚İ‚Ş
+	// 1è¡Œãšã¤èª­ã¿è¾¼ã‚€
 	string line;
 	while (getline(file, line)) {
-		// 1s•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·
+		// 1è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›
 		istringstream line_stream(line);
 
-		// ”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ìæ“ª•¶š—ñ‚ğæ“¾
+		// åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®å…ˆé ­æ–‡å­—åˆ—ã‚’å–å¾—
 		string key;
 		getline(line_stream, key, ' ');
 
-		// æ“ª‚Ìƒ^ƒu•¶š‚Í–³‹‚·‚é
+		// å…ˆé ­ã®ã‚¿ãƒ–æ–‡å­—ã¯ç„¡è¦–ã™ã‚‹
 		if (key[0] == '\t') {
 			key.erase(key.begin());
 		}
 
-		// æ“ª•¶š—ñ‚ª[newmtl]‚È‚çƒ}ƒeƒŠƒAƒ‹–¼
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[newmtl]ãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«å
 		if (key == "newmtl") {
-			// ƒ}ƒeƒŠƒAƒ‹–¼“Ç‚İ‚İ
+			// ãƒãƒ†ãƒªã‚¢ãƒ«åèª­ã¿è¾¼ã¿
 			line_stream >> materialName;
 
-			// ƒ}ƒeƒŠƒAƒ‹’Ç‰Á
+			// ãƒãƒ†ãƒªã‚¢ãƒ«è¿½åŠ 
 			materials_.emplace(materialName, Material());
 		}
 
-		// æ“ª•¶š—ñ‚ª[Ka]‚È‚çƒAƒ“ƒrƒGƒ“ƒgF
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[Ka]ãªã‚‰ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆè‰²
 		if (key == "Ka") {
 			line_stream >> materials_[materialName].ambient_.x;
 			line_stream >> materials_[materialName].ambient_.y;
 			line_stream >> materials_[materialName].ambient_.z;
 		}
 
-		// æ“ª•¶š—ñ‚ª[Kd]‚È‚çƒfƒBƒtƒF[ƒYE
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[Kd]ãªã‚‰ãƒ‡ã‚£ãƒ•ã‚§ãƒ¼ã‚ºè·
 		if (key == "Kd") {
 			line_stream >> materials_[materialName].diffuse_.x;
 			line_stream >> materials_[materialName].diffuse_.y;
 			line_stream >> materials_[materialName].diffuse_.z;
 		}
 
-		// æ“ª•¶š—ñ‚ª[Ks]‚È‚çƒXƒyƒLƒ…ƒ‰[F
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[Ks]ãªã‚‰ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		if (key == "Ks") {
 			line_stream >> materials_[materialName].specular_.x;
 			line_stream >> materials_[materialName].specular_.y;
 			line_stream >> materials_[materialName].specular_.z;
 		}
 
-		// æ“ª•¶š—ñ‚ª[map_Kd]‚È‚çƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
+		// å…ˆé ­æ–‡å­—åˆ—ãŒ[map_Kd]ãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
 		if (key == "map_Kd") {
-			// ƒeƒNƒXƒ`ƒƒ‚Ìƒtƒ@ƒCƒ‹–¼“Ç‚İ‚İ
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«åèª­ã¿è¾¼ã¿
 			std::string texName;
 			line_stream >> texName;
 
-			// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 			materials_[materialName].texHandle_ = LoadTexture(directoryPath + texName);
 		}
 	}
 
-	// ‘S‚Ä‚Ìƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ìƒoƒbƒtƒ@‚ğ¶¬
+	// å…¨ã¦ã®ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆ
 	for (auto it = materials_.begin(); it != materials_.end(); ++it) {
 		materials_[it->first].CreateMaterialBuff();
 	}
 
-	// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 }

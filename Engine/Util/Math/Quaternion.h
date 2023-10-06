@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Vector3.h"
 #include "Matrix4.h"
 
@@ -10,54 +10,54 @@ struct Quaternion {
 
 	Quaternion(float x, float y, float z, float w);
 
-	// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Quaternion operator+() const;
 	Quaternion operator-() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Quaternion& operator+=(const Quaternion& q);
 	Quaternion& operator-=(const Quaternion& q);
 	Quaternion& operator*=(float s);
 	Quaternion& operator/=(float s);
 };
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// ¦‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ßAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// â€»ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Quaternion operator+(const Quaternion& q1, const Quaternion& q2);
 const Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 const Quaternion operator*(const Quaternion& q, float s);
 const Quaternion operator*(float s, const Quaternion& q);
 const Quaternion operator/(const Quaternion& q, float s);
 
-// Quaternion‚ÌÏ
+// Quaternionã®ç©
 Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
 
-// ’PˆÊQuaternion‚ğ•Ô‚·
+// å˜ä½Quaternionã‚’è¿”ã™
 Quaternion IdentityQuaternion();
 
-// ‹¤–ğQuaternion‚ğ•Ô‚·
+// å…±å½¹Quaternionã‚’è¿”ã™
 Quaternion Conjugate(const Quaternion& q);
 
-// Quaternion‚Ìnorm‚ğ•Ô‚·
+// Quaternionã®normã‚’è¿”ã™
 float Norm(const Quaternion& q);
 
-// ³‹K‰»‚µ‚½Quaternion‚ğ•Ô‚·
+// æ­£è¦åŒ–ã—ãŸQuaternionã‚’è¿”ã™
 Quaternion Normalise(const Quaternion& q);
 
-// ‹tQuaternion‚ğ•Ô‚·
+// é€†Quaternionã‚’è¿”ã™
 Quaternion Inverse(const Quaternion& q);
 
-// ”CˆÓ²‰ñ“]‚ğ•\‚·Quaternion‚Ì¶¬
+// ä»»æ„è»¸å›è»¢ã‚’è¡¨ã™Quaternionã®ç”Ÿæˆ
 Quaternion MakeAxisAngle(const Vector3& axis, float angle);
 
-// ƒxƒNƒgƒ‹‚ğQuaternion‚Å‰ñ“]‚³‚¹‚½Œ‹‰Ê‚ÌƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+// ãƒ™ã‚¯ãƒˆãƒ«ã‚’Quaternionã§å›è»¢ã•ã›ãŸçµæœã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 
-// Quaternion‚©‚ç‰ñ“]s—ñ‚ğ‹‚ß‚é
+// Quaternionã‹ã‚‰å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 Matrix4 MakeRotateMatrix(const Quaternion& q);
 
-// ‹…–ÊüŒ`•âŠÔ
+// çƒé¢ç·šå½¢è£œé–“
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 
-// u‚©‚çv‚Ö‚Ì‰ñ“]‚Ì¶¬
+// uã‹ã‚‰vã¸ã®å›è»¢ã®ç”Ÿæˆ
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v);

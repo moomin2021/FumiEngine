@@ -1,19 +1,19 @@
-#include "Material.h"
+ï»¿#include "Material.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
 #include <cassert>
 
 Material::Material() :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^
-	name_{},				// ƒ}ƒeƒŠƒAƒ‹–¼
-	ambient_{},				// ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-	diffuse_{},				// ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-	specular_{},			// ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-	alpha_(1.0f),			// ƒAƒ‹ƒtƒ@’l
-	texHandle_(0),			// ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
-	materialBuff_(nullptr)	// ƒ}ƒeƒŠƒAƒ‹ƒoƒbƒtƒ@
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿
+	name_{},				// ãƒžãƒ†ãƒªã‚¢ãƒ«å
+	ambient_{},				// ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+	diffuse_{},				// ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+	specular_{},			// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+	alpha_(1.0f),			// ã‚¢ãƒ«ãƒ•ã‚¡å€¤
+	texHandle_(0),			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
+	materialBuff_(nullptr)	// ãƒžãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ•ã‚¡
 #pragma endregion
 {
 
@@ -21,38 +21,38 @@ Material::Material() :
 
 void Material::Draw()
 {
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒgŽæ“¾
+	// ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 	static ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static Texture* tex = Texture::GetInstance();
 
-	// SRVƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾
+	// SRVãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	// ƒnƒ“ƒhƒ‹‚ðŽw’è‚³‚ê‚½•ª‚Ü‚Åi‚ß‚é
+	// ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šã•ã‚ŒãŸåˆ†ã¾ã§é€²ã‚ã‚‹
 	srvGpuHandle.ptr += texHandle_;
 
-	// ’è”ƒoƒbƒtƒ@ƒrƒ…[iCBVj‚ÌÝ’èƒRƒ}ƒ“ƒh
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ï¼ˆCBVï¼‰ã®è¨­å®šã‚³ãƒžãƒ³ãƒ‰
 	cmdList->SetGraphicsRootConstantBufferView(2, materialBuff_->GetGPUVirtualAddress());
 
-	// Žw’è‚³‚ê‚½SRV‚ðƒ‹[ƒgƒpƒ‰ƒ[ƒ^1”Ô‚ÉÝ’è
+	// æŒ‡å®šã•ã‚ŒãŸSRVã‚’ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1ç•ªã«è¨­å®š
 	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 }
 
 void Material::CreateMaterialBuff()
 {
-	// ƒfƒoƒCƒXŽæ“¾
+	// ãƒ‡ãƒã‚¤ã‚¹å–å¾—
 	static ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-	// ŠÖ”ŽÀs‚Ì¬”Û‚ð”»•Ê—p‚Ì•Ï”
+	// é–¢æ•°å®Ÿè¡Œã®æˆå¦ã‚’åˆ¤åˆ¥ç”¨ã®å¤‰æ•°
 	HRESULT result;
 
-	// ’è”ƒoƒbƒtƒ@‚Ìƒq[ƒvÝ’è
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒ’ãƒ¼ãƒ—è¨­å®š
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 
-	// ’è”ƒoƒbƒtƒ@‚ÌƒŠƒ\[ƒXÝ’è
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	D3D12_RESOURCE_DESC resdesc{};
 	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resdesc.Width = (sizeof(MaterialBuffer) + 0xff) & ~0xff;
@@ -62,7 +62,7 @@ void Material::CreateMaterialBuff()
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -72,7 +72,7 @@ void Material::CreateMaterialBuff()
 		IID_PPV_ARGS(&materialBuff_));
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒeƒŠƒAƒ‹’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒžãƒƒãƒ”ãƒ³ã‚°
 	MaterialBuffer* materialMap;
 	result = materialBuff_->Map(0, nullptr, (void**)&materialMap);
 	assert(SUCCEEDED(result));

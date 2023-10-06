@@ -1,70 +1,70 @@
-#pragma once
+ï»¿#pragma once
 #include "Vector3.h"
 #include "Vector3.h"
 
 class DirectionalLight {
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 public:
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ 
 	struct ConstBufferData {
-		Vector3 lightVec;	// ƒ‰ƒCƒg‚Ö•ûŒü‚ğ•\‚·
+		Vector3 lightVec;	// ãƒ©ã‚¤ãƒˆã¸æ–¹å‘ã‚’è¡¨ã™
 		float pad1;
-		Vector3 lightColor;	// ƒ‰ƒCƒg‚ÌF
-		bool active;		// —LŒøƒtƒ‰ƒO
+		Vector3 lightColor;	// ãƒ©ã‚¤ãƒˆã®è‰²
+		bool active;		// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒ‰ƒCƒgŒõü•ûŒü
+	// ãƒ©ã‚¤ãƒˆå…‰ç·šæ–¹å‘
 	Vector3 lightDir_ = { 0.0f, -1.0f, 0.0f };
 
-	// ƒ‰ƒCƒgF
+	// ãƒ©ã‚¤ãƒˆè‰²
 	Vector3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
-	// —LŒøƒtƒ‰ƒO
+	// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	bool active_ = true;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌŒü‚«(XYZ)‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®å‘ã(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="lightDir"> ƒ‰ƒCƒg‚ÌŒü‚«(XYZ) </param>
+	/// <param name="lightDir"> ãƒ©ã‚¤ãƒˆã®å‘ã(XYZ) </param>
 	inline void SetLightDir(const Vector3& lightDir) { lightDir_ = Vector3Normalize(lightDir); }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌF(RGB)‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®è‰²(RGB)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="color"> ƒ‰ƒCƒg‚ÌF(RGB) </param>
+	/// <param name="color"> ãƒ©ã‚¤ãƒˆã®è‰²(RGB) </param>
 	inline void SetLightColor(const Vector3& color) { lightColor_ = color; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚Ì—LŒøƒtƒ‰ƒO‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="active"> —LŒøƒtƒ‰ƒO </param>
+	/// <param name="active"> æœ‰åŠ¹ãƒ•ãƒ©ã‚° </param>
 	inline void SetActive(bool active) { active_ = active; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒ‰ƒCƒg‚Ì•ûŒü(XYZ)‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆã®æ–¹å‘(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚Ì•ûŒü(XYZ) </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®æ–¹å‘(XYZ) </returns>
 	inline const Vector3& GetLightDir() { return lightDir_; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌF(RGB)‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆã®è‰²(RGB)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚ÌF(RGB) </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®è‰²(RGB) </returns>
 	inline const Vector3& GetLightColor() { return lightColor_; }
 
 	/// <summary>
-	/// —LŒøƒtƒ‰ƒO‚ğæ“¾
+	/// æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	/// </summary>
-	/// <returns> —LŒøƒtƒ‰ƒO </returns>
+	/// <returns> æœ‰åŠ¹ãƒ•ãƒ©ã‚° </returns>
 	inline bool GetActive() { return active_; }
 #pragma endregion
 };

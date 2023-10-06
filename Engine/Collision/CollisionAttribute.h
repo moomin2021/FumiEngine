@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <stdint.h>
 
 const uint16_t COL_STAGE_OBJ		= 0b0000000000000111;

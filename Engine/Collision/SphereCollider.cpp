@@ -1,27 +1,27 @@
-#include "SphereCollider.h"
+ï»¿#include "SphereCollider.h"
 
 SphereCollider::SphereCollider(Vector3 offset, float radius)
 {
-	// Œ`óƒ^ƒCƒv‚ð‹…‚ÉÝ’è
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’çƒã«è¨­å®š
 	shapeType_ = SHAPE_SPHERE;
 
-	// ƒIƒtƒZƒbƒg‚ðÝ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	offset_ = offset;
 
-	// ”¼Œa‚ðÝ’è
+	// åŠå¾„ã‚’è¨­å®š
 	Sphere::radius = radius;
 }
 
 void SphereCollider::Update()
 {
-	// Õ“Ëƒtƒ‰ƒO‚ð‰Šú‰»
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
 	isHit_ = false;
 
-	// Õ“Ë‚µ‚½‚Æ‚«‚Ìî•ñ‚ð‰Šú‰»
+	// è¡çªã—ãŸã¨ãã®æƒ…å ±ã‚’åˆæœŸåŒ–
 	inter_ = { 0.0f, 0.0f, 0.0f };
 	reject_ = { 0.0f, 0.0f, 0.0f };
 
-	// ƒIƒuƒWƒFƒNƒg3D‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚½‚ç
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3DãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ãŸã‚‰
 	if (object_) {
 		Sphere::center = object_->GetPosition() + offset_;
 	}

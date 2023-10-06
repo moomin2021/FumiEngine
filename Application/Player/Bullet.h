@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Model.h"
 #include "Object3D.h"
 #include "Collision.h"
@@ -12,7 +12,7 @@ enum BulletType {
 };
 
 class Bullet {
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 private:
 	struct Data {
 		std::unique_ptr<Object3D> object = nullptr;
@@ -23,56 +23,56 @@ private:
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒf[ƒ^
+	// ãƒ‡ãƒ¼ã‚¿
 	Data data_ = {};
 
-	// ¶‘¶ƒtƒ‰ƒO
+	// ç”Ÿå­˜ãƒ•ãƒ©ã‚°
 	bool isAlive_ = true;
 
-	// ¶¬‚³‚ê‚½ŠÔ
+	// ç”Ÿæˆã•ã‚ŒãŸæ™‚é–“
 	uint64_t generatedTime_ = 0;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
-	/// <param name="model"> ƒ‚ƒfƒ‹ </param>
-	/// <param name="type"> ’e‚Ìí—Ş </param>
-	/// <param name="iniPos"> ‰ŠúˆÊ’u </param>
+	/// <param name="model"> ãƒ¢ãƒ‡ãƒ« </param>
+	/// <param name="type"> å¼¾ã®ç¨®é¡ </param>
+	/// <param name="iniPos"> åˆæœŸä½ç½® </param>
 	Bullet(Model* model, BulletType type, const Vector3& iniPos, const Vector3& moveVec);
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Bullet();
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 private:
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ¶‘¶ƒtƒ‰ƒO‚ğæ“¾
+	/// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ¶‘¶ƒtƒ‰ƒO </returns>
+	/// <returns> ç”Ÿå­˜ãƒ•ãƒ©ã‚° </returns>
 	bool GetIsAlive() { return isAlive_; }
 #pragma endregion
 };

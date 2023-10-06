@@ -1,4 +1,4 @@
-#include "Util.h"
+ï»¿#include "Util.h"
 
 #include <Windows.h>
 #include <chrono>
@@ -8,25 +8,25 @@ using namespace std::chrono;
 
 int Util::Clamp(int value, int max, int min)
 {
-	// ’l‚ªÅ‘å’l‚ğã‰ñ‚Á‚Ä‚¢‚½‚çÅ‘å’l‚ğ•Ô‚·
+	// å€¤ãŒæœ€å¤§å€¤ã‚’ä¸Šå›ã£ã¦ã„ãŸã‚‰æœ€å¤§å€¤ã‚’è¿”ã™
 	if (value >= max) return max;
 
-	// ’l‚ªÅ¬’l‚ğ‰º‰ñ‚Á‚Ä‚¢‚½‚çÅ¬’l‚ğ•Ô‚·
+	// å€¤ãŒæœ€å°å€¤ã‚’ä¸‹å›ã£ã¦ã„ãŸã‚‰æœ€å°å€¤ã‚’è¿”ã™
 	if (value <= min) return min;
 
-	// ‚Ç‚¿‚ç‚É‚à“–‚Ä‚Í‚Ü‚ç‚È‚©‚Á‚½‚ç’l‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
+	// ã©ã¡ã‚‰ã«ã‚‚å½“ã¦ã¯ã¾ã‚‰ãªã‹ã£ãŸã‚‰å€¤ã‚’ãã®ã¾ã¾è¿”ã™
 	return value;
 }
 
 float Util::Clamp(float value, float max, float min)
 {
-	// ’l‚ªÅ‘å’l‚ğã‰ñ‚Á‚Ä‚¢‚½‚çÅ‘å’l‚ğ•Ô‚·
+	// å€¤ãŒæœ€å¤§å€¤ã‚’ä¸Šå›ã£ã¦ã„ãŸã‚‰æœ€å¤§å€¤ã‚’è¿”ã™
 	if (value >= max) return max;
 
-	// ’l‚ªÅ¬’l‚ğ‰º‰ñ‚Á‚Ä‚¢‚½‚çÅ¬’l‚ğ•Ô‚·
+	// å€¤ãŒæœ€å°å€¤ã‚’ä¸‹å›ã£ã¦ã„ãŸã‚‰æœ€å°å€¤ã‚’è¿”ã™
 	if (value <= min) return min;
 
-	// ‚Ç‚¿‚ç‚É‚à“–‚Ä‚Í‚Ü‚ç‚È‚©‚Á‚½‚ç’l‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
+	// ã©ã¡ã‚‰ã«ã‚‚å½“ã¦ã¯ã¾ã‚‰ãªã‹ã£ãŸã‚‰å€¤ã‚’ãã®ã¾ã¾è¿”ã™
 	return value;
 }
 
@@ -42,14 +42,14 @@ float Util::Degree2Radian(float degree)
 
 std::vector<wchar_t> Util::StringToWideChar(const std::string& str)
 {
-	// ÅI“I‚É•Ô‚·—p•Ï”
+	// æœ€çµ‚çš„ã«è¿”ã™ç”¨å¤‰æ•°
 	std::vector<wchar_t> wchar;
-	wchar.resize(128);// -> ƒTƒCƒY‚ğİ’è
+	wchar.resize(128);// -> ã‚µã‚¤ã‚ºã‚’è¨­å®š
 
-	// •ÏŠ·
+	// å¤‰æ›
 	MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, wchar.data(), static_cast<int>(wchar.size()));
 
-	// –ß‚è’l‚ğ•Ô‚·
+	// æˆ»ã‚Šå€¤ã‚’è¿”ã™
 	return wchar;
 }
 

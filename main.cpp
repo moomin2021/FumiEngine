@@ -1,58 +1,58 @@
-#pragma region Ž©ƒNƒ‰ƒX“Ç‚Ýž‚Ý(ŠÜ‚ß‚é)
+ï»¿#pragma region è‡ªã‚¯ãƒ©ã‚¹èª­ã¿è¾¼ã¿(å«ã‚ã‚‹)
 #include "WinAPI.h"// -> WinAPI
 #include "DX12Cmd.h"// -> DirectX12
 #include "Texture.h"// -> Texture
-#include "Key.h"// -> ƒL[ƒ{[ƒh“ü—Í
-#include "Mouse.h"// -> ƒ}ƒEƒXƒL[ƒ{[ƒh“ü—Í
+#include "Key.h"// -> ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
+#include "Mouse.h"// -> ãƒžã‚¦ã‚¹ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
 #include "Pad.h"
-#include "Object3D.h"// -> ƒIƒuƒWƒFƒNƒg3DƒNƒ‰ƒX
+#include "Object3D.h"// -> ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3Dã‚¯ãƒ©ã‚¹
 #include "Sound.h"
 #include "ImGuiManager.h"
 #pragma endregion
 
 #include "SceneManager.h"
 
-// --WindowsƒAƒvƒŠ‚Å‚ÌƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg(mainŠÖ”)-- //
+// --Windowsã‚¢ãƒ—ãƒªã§ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ(mainé–¢æ•°)-- //
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
-	// WinAPI‚Ì‰Šú‰»
+	// WinAPIã®åˆæœŸåŒ–
 	WinAPI::GetInstance()->Initialize(1920, 1080);
 
-	// DirectX12‚Ì‰Šú‰»
+	// DirectX12ã®åˆæœŸåŒ–
 	DX12Cmd::GetInstance()->Initialize();
 
-	// --ƒeƒNƒXƒ`ƒƒƒNƒ‰ƒX-- //
+	// --ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¯ãƒ©ã‚¹-- //
 	Texture::GetInstance()->Initialize();
 
-	// ƒTƒEƒ“ƒhƒNƒ‰ƒX
+	// ã‚µã‚¦ãƒ³ãƒ‰ã‚¯ãƒ©ã‚¹
 	Sound::GetInstance()->Initialize();
 
-	// ImGuiƒNƒ‰ƒX
+	// ImGuiã‚¯ãƒ©ã‚¹
 	ImGuiManager::GetInstance()->Initialize();
 
-	// --ƒQ[ƒ€ƒ‹[ƒv-- //
+	// --ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—-- //
 	while (true) {
-		// --I—¹ƒƒbƒZ[ƒW‚ª—ˆ‚Ä‚¢‚½‚çƒ‹[ƒvI—¹-- //
+		// --çµ‚äº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ã¦ã„ãŸã‚‰ãƒ«ãƒ¼ãƒ—çµ‚äº†-- //
 		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
 		if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
 		if (SceneManager::GetInstance()->GetIsEnd() == true) break;
 
-		// ƒL[ƒ{[ƒh“ü—ÍXVˆ—
+		// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›æ›´æ–°å‡¦ç†
 		Key::GetInstance()->Update();
 
-		// ƒ}ƒEƒX“ü—ÍXVˆ—
+		// ãƒžã‚¦ã‚¹å…¥åŠ›æ›´æ–°å‡¦ç†
 		Mouse::GetInstance()->Update();
 
-		// ƒpƒbƒh“ü—ÍXV
+		// ãƒ‘ãƒƒãƒ‰å…¥åŠ›æ›´æ–°
 		Pad::GetInstance()->Update();
 
-		// ƒTƒEƒ“ƒhXVˆ—
+		// ã‚µã‚¦ãƒ³ãƒ‰æ›´æ–°å‡¦ç†
 		Sound::GetInstance()->Update();
 
-		// ƒV[ƒ“ŠÇ—ƒNƒ‰ƒXXVˆ—
+		// ã‚·ãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹æ›´æ–°å‡¦ç†
 		SceneManager::GetInstance()->Update();
 
-		// ƒV[ƒ“ŠÇ—ƒNƒ‰ƒX•`‰æˆ—
+		// ã‚·ãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹æç”»å‡¦ç†
 		SceneManager::GetInstance()->Draw();
 	}
 

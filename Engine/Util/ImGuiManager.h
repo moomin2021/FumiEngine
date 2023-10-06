@@ -1,47 +1,47 @@
-#pragma once
+ï»¿#pragma once
 #include <wrl.h>
 #include <d3d12.h>
 
 class ImGuiManager
 {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static ImGuiManager* GetInstance();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// ImGuió•tŠJn
+	// ImGuiå—ä»˜é–‹å§‹
 	void Begin();
 
-	// ImGuió•tI—¹
+	// ImGuiå—ä»˜çµ‚äº†
 	void End();
 
-	// ‰æ–Ê‚Ö‚Ì•`‰æ
+	// ç”»é¢ã¸ã®æç”»
 	void Draw();
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ImGuiManager();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~ImGuiManager();
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	ImGuiManager(const ImGuiManager&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	ImGuiManager& operator = (const ImGuiManager&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	ImGuiManager(const ImGuiManager&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	ImGuiManager& operator = (const ImGuiManager&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

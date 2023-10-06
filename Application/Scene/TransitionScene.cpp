@@ -1,4 +1,4 @@
-#include "TransitionScene.h"
+ï»¿#include "TransitionScene.h"
 #include "WinAPI.h"
 #include "PipelineManager.h"
 #include "SceneManager.h"
@@ -21,7 +21,7 @@ void TransitionScene::Initialize()
 		static_cast<float>(WinAPI::GetInstance()->GetHeight())
 	};
 
-#pragma region ƒJƒƒ‰
+#pragma region ã‚«ãƒ¡ãƒ©
 	camera_ = std::make_unique<Camera>();
 	Sprite::SetCamera(camera_.get());
 #pragma endregion

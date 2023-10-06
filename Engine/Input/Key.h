@@ -1,66 +1,66 @@
-#pragma once
+ï»¿#pragma once
 // --DirectXInput-- //
-#define DIREXTINPUT_VERSION 0x0800// DirectInput‚Ìƒo[ƒWƒ‡ƒ“w’è
+#define DIREXTINPUT_VERSION 0x0800// DirectInputã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 #include <wrl.h>
 #include <dinput.h>
 #include <vector>
 
 class Key {
-	// namespace‚ÌÈ—ª
+	// namespaceã®çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// “ü—Íî•ñ
-	std::vector<uint8_t> keys_;		// Œ»İ‚ÌƒL[ƒ{[ƒh‚Ìî•ñ
-	std::vector<uint8_t> oldKeys_;	// ‘OƒtƒŒ[ƒ€‚ÌƒL[ƒ{[ƒh‚Ìî•ñ
+	// å…¥åŠ›æƒ…å ±
+	std::vector<uint8_t> keys_;		// ç¾åœ¨ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®æƒ…å ±
+	std::vector<uint8_t> oldKeys_;	// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®æƒ…å ±
 
-	// ƒfƒoƒCƒX
+	// ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<IDirectInputDevice8> device_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static Key* GetInstance();
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// w’è‚³‚ê‚½ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çA1‚ğ•Ô‚µA‚»‚¤‚Å‚È‚©‚Á‚½‚ç0‚ğ•Ô‚·
+	/// æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã€1ã‚’è¿”ã—ã€ãã†ã§ãªã‹ã£ãŸã‚‰0ã‚’è¿”ã™
 	/// </summary>
-	/// <param name="key"> ”»’è‚µ‚½‚¢ƒL[ </param>
+	/// <param name="key"> åˆ¤å®šã—ãŸã„ã‚­ãƒ¼ </param>
 	/// <returns></returns>
 	bool PushKey(uint16_t key) { return keys_[key]; }
 
 	/// <summary>
-	/// w’è‚³‚ê‚½ƒL[‚ª‰Ÿ‚³‚ê‚½uŠÔ‚¾‚Á‚½‚çA1‚ğ•Ô‚µA‚»‚¤‚Å‚È‚©‚Á‚½‚ç0‚ğ•Ô‚·
+	/// æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã ã£ãŸã‚‰ã€1ã‚’è¿”ã—ã€ãã†ã§ãªã‹ã£ãŸã‚‰0ã‚’è¿”ã™
 	/// </summary>
-	/// <param name="key"> ”»’è‚µ‚½‚¢ƒL[ </param>
+	/// <param name="key"> åˆ¤å®šã—ãŸã„ã‚­ãƒ¼ </param>
 	/// <returns></returns>
 	bool TriggerKey(uint16_t key) { return keys_[key] && !oldKeys_[key]; }
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Key();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~Key();
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	Key(const Key&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	Key& operator = (const Key&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	Key(const Key&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	Key& operator = (const Key&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

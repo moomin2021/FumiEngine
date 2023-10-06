@@ -1,56 +1,56 @@
-#include "Mouse.h"
+ï»¿#include "Mouse.h"
 #include <cassert>
-#define DIREXTINPUT_VERSION 0x0800// DirectInput‚Ìƒo[ƒWƒ‡ƒ“w’è
+#define DIREXTINPUT_VERSION 0x0800// DirectInputã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 
 #include "WinAPI.h"
 
 Mouse* Mouse::GetInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	static Mouse inst;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
 	return &inst;
 }
 
 void Mouse::Update() {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	WinAPI* win = WinAPI::GetInstance();
 
-	// ‘OƒtƒŒ[ƒ€‚Ìƒ}ƒEƒX‚Ì“ü—Íó‘Ô‚ğ•Û‘¶
+	// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹ã‚’ä¿å­˜
 	oldMouse_ = nowMouse_;
 
-	// ƒ}ƒEƒX‚Ì“ü—Íó‘Ô‚ğæ“¾
+	// ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
 	device_->GetDeviceState(sizeof(DIMOUSESTATE), &nowMouse_);
 
-	// ƒ}ƒEƒXƒfƒoƒCƒX§ŒäŠJn
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡é–‹å§‹
 	device_->Acquire();
 
-	// ƒ}ƒEƒX‚ÌÀ•W‚ğæ“¾
+	// ãƒã‚¦ã‚¹ã®åº§æ¨™ã‚’å–å¾—
 	GetCursorPos(&p_);
 	ScreenToClient(FindWindowW(win->GetWinClass().lpszClassName, nullptr), &p_);
 }
 
 Mouse::Mouse() :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// ƒfƒoƒCƒX
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// ãƒ‡ãƒã‚¤ã‚¹
 	device_(nullptr),
 
-	// ƒ}ƒEƒXƒf[ƒ^
-	nowMouse_{},// Œ»İ‚Ìƒ}ƒEƒX‚Ì“ü—Íó‘Ô
-	oldMouse_{},// ‘OƒtƒŒ[ƒ€‚Ìƒ}ƒEƒX‚Ì“ü—Íó‘Ô
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒ¼ã‚¿
+	nowMouse_{},// ç¾åœ¨ã®ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
+	oldMouse_{},// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
 	
-	// ƒ}ƒEƒXƒJ[ƒ\ƒ‹À•W
+	// ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«åº§æ¨™
 	p_{}
 #pragma endregion
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	WinAPI* win = WinAPI::GetInstance();
 
-	// ŠÖ”Às‚Ì¬”Û‚ğ”»•Ê—p‚Ì•Ï”
+	// é–¢æ•°å®Ÿè¡Œã®æˆå¦ã‚’åˆ¤åˆ¥ç”¨ã®å¤‰æ•°
 	HRESULT result;
 
-	// DirectInputƒfƒoƒCƒX¶¬
+	// DirectInputãƒ‡ãƒã‚¤ã‚¹ç”Ÿæˆ
 	ComPtr<IDirectInput8> directInput = nullptr;
 	result = DirectInput8Create(
 		win->GetWinClass().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
@@ -58,32 +58,32 @@ Mouse::Mouse() :
 	);
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒEƒXƒfƒoƒCƒX‚Ì¶¬
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	result = directInput->CreateDevice(GUID_SysMouse, &device_, NULL);
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒEƒX“ü—Íƒf[ƒ^‚ÌŒ`®‚ÌƒZƒbƒg
-	result = device_->SetDataFormat(&c_dfDIMouse);// •W€Œ`®
+	// ãƒã‚¦ã‚¹å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®å½¢å¼ã®ã‚»ãƒƒãƒˆ
+	result = device_->SetDataFormat(&c_dfDIMouse);// æ¨™æº–å½¢å¼
 	assert(SUCCEEDED(result));
 
-	// ”r‘¼§ŒäƒŒƒxƒ‹‚ÌƒZƒbƒg
+	// æ’ä»–åˆ¶å¾¡ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
 	result = device_->SetCooperativeLevel(
 		win->GetHWND(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY
 	);
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒEƒXƒfƒoƒCƒX§ŒäŠJn
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡é–‹å§‹
 	device_->Acquire();
 
-	// DirectInputƒfƒoƒCƒX‚Ì‰ğ•ú
+	// DirectInputãƒ‡ãƒã‚¤ã‚¹ã®è§£æ”¾
 	directInput->Release();
 }
 
 Mouse::~Mouse()
 {
-	// ƒfƒoƒCƒX§Œä
+	// ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡
 	device_->Unacquire();
 
-	// ƒfƒoƒCƒX‚Ì‰ğ•ú
+	// ãƒ‡ãƒã‚¤ã‚¹ã®è§£æ”¾
 	device_->Release();
 }

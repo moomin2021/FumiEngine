@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
@@ -8,154 +8,154 @@
 
 class DX12Cmd {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	ComPtr<ID3D12Device> device_ = nullptr;			// ƒfƒoƒCƒX
-	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;	// DXGIƒtƒ@ƒNƒgƒŠ[
+	ComPtr<ID3D12Device> device_ = nullptr;			// ãƒ‡ãƒã‚¤ã‚¹
+	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;	// DXGIãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼
 
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_ = {};		// ƒXƒƒbƒvƒ`ƒF[ƒ“İ’è
-	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;	// ƒXƒƒbƒvƒ`ƒF[ƒ“
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_ = {};		// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³è¨­å®š
+	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;	// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³
 
-	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};		// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ìİ’è
-	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_ = {};	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
-	ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®è¨­å®š
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_ = {};	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
+	ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼
 
-	ComPtr<ID3D12CommandAllocator> cmdAllocator_ = nullptr;	// ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^
-	ComPtr<ID3D12GraphicsCommandList> cmdList_ = nullptr;	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
-	ComPtr<ID3D12CommandQueue> cmdQueue_ = nullptr;			// ƒRƒ}ƒ“ƒhƒLƒ…[
+	ComPtr<ID3D12CommandAllocator> cmdAllocator_ = nullptr;	// ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
+	ComPtr<ID3D12GraphicsCommandList> cmdList_ = nullptr;	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
+	ComPtr<ID3D12CommandQueue> cmdQueue_ = nullptr;			// ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼
 
-	std::vector<ComPtr<ID3D12Resource>> backBuffers_ = {};// ƒoƒbƒNƒoƒbƒtƒ@
+	std::vector<ComPtr<ID3D12Resource>> backBuffers_ = {};// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 
-	UINT64 fenceVal_ = 0;					// ƒtƒFƒ“ƒX’l
-	ComPtr<ID3D12Fence> fence_ = nullptr;	// ƒtƒFƒ“ƒX
+	UINT64 fenceVal_ = 0;					// ãƒ•ã‚§ãƒ³ã‚¹å€¤
+	ComPtr<ID3D12Fence> fence_ = nullptr;	// ãƒ•ã‚§ãƒ³ã‚¹
 
-	// ‚±‚±‚É“Á’è‚Ì–¼‘O‚ğ‚ÂƒAƒ_ƒvƒ^[ƒIƒuƒWƒFƒNƒg‚ª“ü‚é
+	// ã“ã“ã«ç‰¹å®šã®åå‰ã‚’æŒã¤ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå…¥ã‚‹
 	ComPtr<IDXGIAdapter4> tmpAdapter_ = nullptr;
 
-	// [“xƒeƒXƒg
-	ComPtr<ID3D12Resource> depthBuff_ = nullptr;	// ƒŠƒ\[ƒXİ’è
-	ComPtr<ID3D12DescriptorHeap> dsvHeap_ = nullptr;// [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[
+	// æ·±åº¦ãƒ†ã‚¹ãƒˆ
+	ComPtr<ID3D12Resource> depthBuff_ = nullptr;	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
+	ComPtr<ID3D12DescriptorHeap> dsvHeap_ = nullptr;// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼
 
-	D3D12_RESOURCE_BARRIER barrierDesc_;// ƒŠƒ\[ƒXƒoƒŠƒA
+	D3D12_RESOURCE_BARRIER barrierDesc_;// ãƒªã‚½ãƒ¼ã‚¹ãƒãƒªã‚¢
 
-	// ‹L˜^ŠÔ(FPSŒÅ’è—p)
+	// è¨˜éŒ²æ™‚é–“(FPSå›ºå®šç”¨)
 	std::chrono::steady_clock::time_point reference_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static DX12Cmd* GetInstance();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
 	void PreDraw();
 
 	/// <summary>
-	/// •`‰æŒãˆ—
+	/// æç”»å¾Œå‡¦ç†
 	/// </summary>
 	void PostDraw();
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// ƒfƒoƒCƒX‚ğ•Ô‚·
+	/// ãƒ‡ãƒã‚¤ã‚¹ã‚’è¿”ã™
 	/// </summary>
-	/// <returns> ƒfƒoƒCƒX </returns>
+	/// <returns> ãƒ‡ãƒã‚¤ã‚¹ </returns>
 	ID3D12Device* GetDevice() { return device_.Get(); }
 
 	/// <summary>
-	/// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğ•Ô‚·
+	/// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’è¿”ã™
 	/// </summary>
-	/// <returns> ƒRƒ}ƒ“ƒhƒŠƒXƒg </returns>
+	/// <returns> ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ </returns>
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList_.Get(); }
 #pragma endregion
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	DX12Cmd();
 
 	/// <summary>
-	/// FPSŒÅ’èXVˆ—
+	/// FPSå›ºå®šæ›´æ–°å‡¦ç†
 	/// </summary>
 	void UpdateFixFPS();
 
 	/// <summary>
-	/// ƒfƒoƒbƒNƒŒƒCƒ„[‰Šúİ’è
+	/// ãƒ‡ãƒãƒƒã‚¯ãƒ¬ã‚¤ãƒ¤ãƒ¼åˆæœŸè¨­å®š
 	/// </summary>
 	void InitSetDebugLayer();
 
 	/// <summary>
-	/// ƒAƒ_ƒvƒ^‰Šúİ’è
+	/// ã‚¢ãƒ€ãƒ—ã‚¿åˆæœŸè¨­å®š
 	/// </summary>
 	void InitSetAdapter();
 
 	/// <summary>
-	/// ƒfƒoƒCƒX¶¬
+	/// ãƒ‡ãƒã‚¤ã‚¹ç”Ÿæˆ
 	/// </summary>
 	void CreateDevice();
 
 	/// <summary>
-	/// ƒGƒ‰[‚Ìİ’è
+	/// ã‚¨ãƒ©ãƒ¼æ™‚ã®è¨­å®š
 	/// </summary>
 	void ErrorSet();
 
 	/// <summary>
-	/// ƒRƒ}ƒ“ƒhƒŠƒXƒg¶¬
+	/// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆç”Ÿæˆ
 	/// </summary>
 	void CreateCmdList();
 
 	/// <summary>
-	/// ƒRƒ}ƒ“ƒhƒLƒ…[¶¬
+	/// ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ç”Ÿæˆ
 	/// </summary>
 	void CreateCmdQueue();
 
 	/// <summary>
-	/// ƒXƒƒbƒvƒ`ƒF[ƒ“¶¬
+	/// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ç”Ÿæˆ
 	/// </summary>
 	void CreateSwapChain();
 
 	/// <summary>
-	/// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[¶¬
+	/// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ç”Ÿæˆ
 	/// </summary>
 	void CreateRenderTargetView();
 
 	/// <summary>
-	/// ƒtƒFƒ“ƒX¶¬
+	/// ãƒ•ã‚§ãƒ³ã‚¹ç”Ÿæˆ
 	/// </summary>
 	void CreateFence();
 
 	/// <summary>
-	/// [“xƒoƒbƒtƒ@¶¬
+	/// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	/// </summary>
 	void CreateDepthBuffer();
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	public:
-	// ƒoƒbƒNƒoƒbƒtƒ@‚Ì”‚ğæ“¾
+	// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®æ•°ã‚’å–å¾—
 	size_t GetBackBufferNum() { return backBuffers_.size(); }
 
-	// RTV‚Ìİ’è‚ğæ“¾
+	// RTVã®è¨­å®šã‚’å–å¾—
 	const D3D12_RENDER_TARGET_VIEW_DESC& GetRTVDesc() { return rtvDesc_; }
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	DX12Cmd(const DX12Cmd&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	DX12Cmd& operator = (const DX12Cmd&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	DX12Cmd(const DX12Cmd&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	DX12Cmd& operator = (const DX12Cmd&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

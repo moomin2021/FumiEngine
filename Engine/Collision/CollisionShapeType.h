@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 enum CollisionShapeType {
-	SHAPE_UNKNOWN = -1,	// –¢Ý’è
-	SHAPE_SPHERE,		// ‹…
-	SHAPE_MESH,			// ƒƒbƒVƒ…
-	SHAPE_RAY,			// ƒŒƒC
-	SHAPE_POINT,		// “_
-	SHAPE_BOX,			// ‹éŒ`
-	SHAPE_CIRCLE		// ‰~
+	SHAPE_UNKNOWN = -1,	// æœªè¨­å®š
+	SHAPE_SPHERE,		// çƒ
+	SHAPE_MESH,			// ãƒ¡ãƒƒã‚·ãƒ¥
+	SHAPE_RAY,			// ãƒ¬ã‚¤
+	SHAPE_POINT,		// ç‚¹
+	SHAPE_BOX,			// çŸ©å½¢
+	SHAPE_CIRCLE		// å††
 };

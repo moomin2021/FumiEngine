@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 #include "Model.h"
 #include "Object3D.h"
@@ -7,29 +7,29 @@
 
 class TemplateScene : public BaseScene
 {
-	// --ƒƒ“ƒo•Ï”-- //
+	// --ãƒ¡ãƒ³ãƒå¤‰æ•°-- //
 private:
-	// ƒL[ƒ{[ƒh“ü—Í
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
 	Key* key_;
 
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	Camera* camera_;
 
-	// --ƒƒ“ƒoŠÖ”-- //
+	// --ãƒ¡ãƒ³ãƒé–¢æ•°-- //
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	TemplateScene();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~TemplateScene();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 };
 

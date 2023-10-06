@@ -1,64 +1,64 @@
-#pragma once
+ï»¿#pragma once
 #include "Vector3.h"
 #include "Vector2.h"
 
-// ‹…
+// çƒ
 struct Sphere {
-	// ’†SÀ•W
+	// ä¸­å¿ƒåº§æ¨™
 	Vector3 center = { 0.0f, 0.0f, 0.0f };
 
-	// ”¼Œa
+	// åŠå¾„
 	float radius = 1.0f;
 };
 
-// •½–Ê
+// å¹³é¢
 struct Plane {
-	// –@üƒxƒNƒgƒ‹
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal = { 0.0f, 1.0f, 0.0f };
 
-	// Œ´“_(0.0f, 0.0f, 0.0f)‚©‚ç‚Ì‹——£
+	// åŸç‚¹(0.0f, 0.0f, 0.0f)ã‹ã‚‰ã®è·é›¢
 	float distance = 0.0f;
 };
 
-// OŠpŒ`
+// ä¸‰è§’å½¢
 class Triangle {
 public:
-	// ’¸“_À•W3‚Â
+	// é ‚ç‚¹åº§æ¨™3ã¤
 	Vector3 p0;
 	Vector3 p1;
 	Vector3 p2;
 
-	// –@üƒxƒNƒgƒ‹
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal;
 
 	void ComputeNormal();
 };
 
 struct Ray {
-	// n“_À•W
+	// å§‹ç‚¹åº§æ¨™
 	Vector3 start = { 0.0f, 0.0f, 0.0f };
 
-	// •ûŒü
+	// æ–¹å‘
 	Vector3 dir = { 1.0f, 0.0f, 0.0f };
 };
 
 struct Point {
-	// À•W
+	// åº§æ¨™
 	Vector2 pos = { 0.0f, 0.0f };
 };
 
 struct Box {
-	// ’†‰›À•W
+	// ä¸­å¤®åº§æ¨™
 	Vector2 center = { 0.0f, 0.0f };
 
-	// ”¼Œa
+	// åŠå¾„
 	Vector2 radius = { 1.0f, 1.0f };
 };
 
 struct Circle {
-	// ’†‰›À•W
+	// ä¸­å¤®åº§æ¨™
 	Vector2 center = { 0.0f, 0.0f };
 
-	// ”¼Œa
+	// åŠå¾„
 	float radius = 1.0f;
 };

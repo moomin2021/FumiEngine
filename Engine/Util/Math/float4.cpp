@@ -1,9 +1,9 @@
-#include "float4.h"
+ï»¿#include "float4.h"
 
-// ˆø”‚È‚µ‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// å¼•æ•°ãªã—ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 float4::float4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 
-// ˆø”‚ ‚è‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// å¼•æ•°ã‚ã‚Šã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 float4::float4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
 float4 float4::operator+() const

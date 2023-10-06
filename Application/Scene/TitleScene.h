@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 #include "Key.h"
 #include "Mouse.h"
@@ -18,55 +18,55 @@ class TitleScene : public BaseScene
 		END
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒCƒ“ƒXƒ^ƒ“ƒX
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
 	CollisionManager2D* colMgr2D_ = nullptr;
 
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	std::unique_ptr<Camera> camera_ = nullptr;
 
-	// ƒXƒvƒ‰ƒCƒg
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::vector<std::unique_ptr<Sprite>> sSelectButtons_ = {};
 	std::unique_ptr<Sprite> sSelectButtonFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sSelectText_ = {};
 
-	// ‰æ‘œƒnƒ“ƒhƒ‹
+	// ç”»åƒãƒãƒ³ãƒ‰ãƒ«
 	uint16_t gSelectButton_ = 0;
 	uint16_t gSelectButtonFrame_ = 0;
 	std::vector<uint16_t> gSelectText_ = {};
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
 	std::vector<std::unique_ptr<BoxCollider>> selectButtonsCol_ = {};
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“ŠÖ˜A
-	bool isSelect_ = false;// ƒ{ƒ^ƒ“‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚©
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³é–¢é€£
+	bool isSelect_ = false;// ãƒœã‚¿ãƒ³ã‚’é¸æŠã—ã¦ã„ã‚‹ã‹
 	uint16_t nowSelect_ = 100;
-	std::vector<Vector2> selectButtonPos_ = {};// ƒ{ƒ^ƒ“‚ÌÀ•W
+	std::vector<Vector2> selectButtonPos_ = {};// ãƒœã‚¿ãƒ³ã®åº§æ¨™
 	Vector2 startSelectButtonFrameSize_ = { 330.0f, 60.0f };
 	Vector2 endSelectButtonFrameSize_ = { 324.0f, 54.0f };
 	float easeTime_ = 0.5f;// [s]
 	uint64_t startEaseTime_ = 0;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	TitleScene();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~TitleScene();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
 private:
@@ -74,7 +74,7 @@ private:
 
 	void MatUpdate();
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“‚Ìˆ—
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³ã®å‡¦ç†
 	void SelectButton();
 #pragma endregion
 };

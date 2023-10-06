@@ -1,48 +1,48 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
 class RayCollider : public BaseCollider, public Ray
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒIƒuƒWƒFƒNƒg’†S‚©‚ç‚ÌƒIƒtƒZƒbƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸­å¿ƒã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
 
-	// Õ“Ë‚µ‚½‚Æ‚«‚Ìî•ñ
-	Vector3 inter_ = { 0.0f, 0.0f, 0.0f };// Œğ“_
-	float minDistance_ = FLT_MAX;// Œğ“_‚Ü‚Å‚Ì‹——£
+	// è¡çªã—ãŸã¨ãã®æƒ…å ±
+	Vector3 inter_ = { 0.0f, 0.0f, 0.0f };// äº¤ç‚¹
+	float minDistance_ = FLT_MAX;// äº¤ç‚¹ã¾ã§ã®è·é›¢
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	RayCollider(Vector3 offset = { 0.0f, 0.0f, 0.0f }, Vector3 dir = { 0.0f, 0.0f, 0.0f });
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update() override;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ƒIƒtƒZƒbƒg‚ğİ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	inline void SetOffSet(const Vector3& offset) { offset_ = offset; }
 
-	// •ûŒü‚ğİ’è
+	// æ–¹å‘ã‚’è¨­å®š
 	inline void SetDir(const Vector3& aDir) { Ray::dir = aDir; }
 
-	// Œğ“_‚ğİ’è
+	// äº¤ç‚¹ã‚’è¨­å®š
 	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
-	// Œğ“_‚Ü‚Å‚Ì‹——£‚ğİ’è
+	// äº¤ç‚¹ã¾ã§ã®è·é›¢ã‚’è¨­å®š
 	inline void SetDistance(float distance) { minDistance_ = distance; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
-	// Œğ“_‚ğæ“¾
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// äº¤ç‚¹ã‚’å–å¾—
 	inline const Vector3& GetInter() { return inter_; }
 
-	// Œğ“_‚Ü‚Å‚Ì‹——£‚ğæ“¾
+	// äº¤ç‚¹ã¾ã§ã®è·é›¢ã‚’å–å¾—
 	inline float GetDistance() { return minDistance_; }
 #pragma endregion
 };

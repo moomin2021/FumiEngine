@@ -3,54 +3,54 @@
 #include "Vector3.h"
 
 class Camera {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒJƒƒ‰ƒf[ƒ^
-	Vector3 eye_	= {0.0f, 0.0f, 0.0f};// ƒJƒƒ‰‚ÌˆÊ’u
-	Vector3 target_	= {0.0f, 0.0f, 0.0f};// ƒJƒƒ‰‚Ì’‹“_
-	Vector3 up_		= {0.0f, 1.0f, 0.0f};// ƒJƒƒ‰‚Ìã•ûŒüƒxƒNƒgƒ‹
+	// ã‚«ãƒ¡ãƒ©ãƒ‡ãƒ¼ã‚¿
+	Vector3 eye_	= {0.0f, 0.0f, 0.0f};// ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+	Vector3 target_	= {0.0f, 0.0f, 0.0f};// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹
+	Vector3 up_		= {0.0f, 1.0f, 0.0f};// ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 
-	// s—ñ
-	Matrix4 matView_			= {};// ƒrƒ…[•ÏŠ·s—ñ
-	Matrix4 matPerspectivePro_	= {};// “§‹“Š‰es—ñ
-	Matrix4 matOrthoGraphicPro_	= {};// •½s“Š‰es—ñ
+	// è¡Œåˆ—
+	Matrix4 matView_			= {};// ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
+	Matrix4 matPerspectivePro_	= {};// é€è¦–æŠ•å½±è¡Œåˆ—
+	Matrix4 matOrthoGraphicPro_	= {};// å¹³è¡ŒæŠ•å½±è¡Œåˆ—
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Camera();
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
 	void Update();
 
 private:
-	// ƒrƒ…[s—ñXVˆ—
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void UpdateMatView();
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒJƒƒ‰‚ÌˆÊ’u‚ğİ’è
+	/// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="eye"> ƒJƒƒ‰‚ÌˆÊ’u </param>
+	/// <param name="eye"> ã‚«ãƒ¡ãƒ©ã®ä½ç½® </param>
 	inline void SetEye(const Vector3& eye) { eye_ = eye; }
 
 	/// <summary>
-	/// ƒJƒƒ‰‚Ì’‹“_‚ğİ’è
+	/// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="target"> ƒJƒƒ‰‚Ì’‹“_ </param>
+	/// <param name="target"> ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ </param>
 	inline void SetTarget(const Vector3& target) { target_ = target; }
 
 	/// <summary>
-	/// ƒJƒƒ‰‚Ìã•ûŒüƒxƒNƒgƒ‹
+	/// ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	/// </summary>
-	/// <param name="up"> ƒJƒƒ‰‚Ìã•ûŒüƒxƒNƒgƒ‹ </param>
+	/// <param name="up"> ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ« </param>
 	inline void SetUp(const Vector3& up) { up_ = up; }
 
 	/// <summary>
@@ -60,39 +60,39 @@ public:
 	void SetFovAngleY(float fovAngleY);
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒJƒƒ‰‚ÌˆÊ’u‚ğæ“¾
+	/// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒJƒƒ‰‚ÌˆÊ’u </returns>
+	/// <returns> ã‚«ãƒ¡ãƒ©ã®ä½ç½® </returns>
 	inline const Vector3& GetEye() { return eye_; }
 
 	/// <summary>
-	/// ƒJƒƒ‰‚Ì’‹“_‚ğæ“¾
+	/// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒJƒƒ‰‚Ì’‹“_ </returns>
+	/// <returns> ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ </returns>
 	inline const Vector3& GetTarget() { return target_; }
 
 	/// <summary>
-	/// ƒJƒƒ‰‚Ìã•ûŒü‚ğæ“¾
+	/// ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒJƒƒ‰‚Ìã•ûŒü </returns>
+	/// <returns> ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘ </returns>
 	inline const Vector3& GetUp() { return up_; }
 
 	/// <summary>
-	/// ƒrƒ…[•ÏŠ·s—ñ‚ğæ“¾
+	/// ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒrƒ…[•ÏŠ·s—ñ </returns>
+	/// <returns> ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ— </returns>
 	inline const Matrix4& GetMatView() { return matView_; }
 
 	/// <summary>
-	/// “§‹“Š‰es—ñ‚ğæ“¾
+	/// é€è¦–æŠ•å½±è¡Œåˆ—ã‚’å–å¾—
 	/// </summary>
-	/// <returns> “§‹“Š‰es—ñ </returns>
+	/// <returns> é€è¦–æŠ•å½±è¡Œåˆ— </returns>
 	inline const Matrix4& GetMatProjection() { return matPerspectivePro_; }
 
-	// •½s“Š‰es—ñ‚ğæ“¾
+	// å¹³è¡ŒæŠ•å½±è¡Œåˆ—ã‚’å–å¾—
 	inline const Matrix4& GetMatOrthoGraphicPro() { return matOrthoGraphicPro_; }
 #pragma endregion
 };

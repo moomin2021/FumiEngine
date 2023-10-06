@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Camera.h"
 #include "Vector3.h"
 #include "Matrix4.h"
@@ -18,100 +18,100 @@ enum BILLBOARD {
 class ParticleEmitter
 {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region \‘¢‘Ì
-	// ’¸“_ƒf[ƒ^
+#pragma region æ§‹é€ ä½“
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	struct Vertex {
 		Vector3 pos;
 		float scale;
 	};
 
-	// ’è”ƒoƒbƒtƒ@—p
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨
 	struct ConstBufferData {
 		Matrix4 mat;
 	};
 
-	// ƒp[ƒeƒBƒNƒ‹1—±
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«1ç²’
 	struct Particle {
-		Vector3 position = {};	// À•W
-		Vector3 velocity = {};	// ‘¬“x
-		Vector3 accel = {};		// ‰Á‘¬“x
-		uint16_t frame = 0;		// Œ»İƒtƒŒ[ƒ€
-		uint16_t num_frame = 0;	// I—¹ƒtƒŒ[ƒ€
-		float scale = 1.0f;		// ƒXƒP[ƒ‹
-		float startScale = 1.0f;// ‰Šú’l
-		float endScale = 0.0f;	// ÅI’l
+		Vector3 position = {};	// åº§æ¨™
+		Vector3 velocity = {};	// é€Ÿåº¦
+		Vector3 accel = {};		// åŠ é€Ÿåº¦
+		uint16_t frame = 0;		// ç¾åœ¨ãƒ•ãƒ¬ãƒ¼ãƒ 
+		uint16_t num_frame = 0;	// çµ‚äº†ãƒ•ãƒ¬ãƒ¼ãƒ 
+		float scale = 1.0f;		// ã‚¹ã‚±ãƒ¼ãƒ«
+		float startScale = 1.0f;// åˆæœŸå€¤
+		float endScale = 0.0f;	// æœ€çµ‚å€¤
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
-	// ƒp[ƒeƒBƒNƒ‹ƒRƒ“ƒeƒi
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚³ãƒ³ãƒ†ãƒŠ
 	std::deque<Particle> particles_;
 
-	// Å‘å’¸“_”
+	// æœ€å¤§é ‚ç‚¹æ•°
 	const uint16_t MAX_VERTEX = 1024;
 
-	// ”­¶ˆÊ’u
+	// ç™ºç”Ÿä½ç½®
 	Vector3 position_ = { 0.0f, 0.0f, 0.0f };
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> constBuff_ = nullptr;
 	ConstBufferData* constMap_ = nullptr;
 
-	// ’¸“_ƒf[ƒ^
-	D3D12_VERTEX_BUFFER_VIEW vertexView_{};	// ’¸“_ƒoƒbƒtƒ@[ƒrƒ…[
-	ComPtr<ID3D12Resource> vertexBuff_ = nullptr;		// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	D3D12_VERTEX_BUFFER_VIEW vertexView_{};	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼
+	ComPtr<ID3D12Resource> vertexBuff_ = nullptr;		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 
-	// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	D3D12_INDEX_BUFFER_VIEW indexView_{};	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-	ComPtr<ID3D12Resource> indexBuff_ = nullptr;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	D3D12_INDEX_BUFFER_VIEW indexView_{};	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+	ComPtr<ID3D12Resource> indexBuff_ = nullptr;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	static Camera* sCamera_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ParticleEmitter();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~ParticleEmitter();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update(BILLBOARD billBoard = BILLBOARD::NONE);
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw(uint16_t handle = 0);
 
 	/// <summary>
-	/// ƒp[ƒeƒBƒNƒ‹’Ç‰Á
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«è¿½åŠ 
 	/// </summary>
-	/// <param name="life"> ¶‘¶ŠÔ </param>
-	/// <param name="pos"> ‰ŠúÀ•W </param>
-	/// <param name="velocity"> ‘¬“x </param>
-	/// <param name="accel"> ‰Á‘¬“x </param>
+	/// <param name="life"> ç”Ÿå­˜æ™‚é–“ </param>
+	/// <param name="pos"> åˆæœŸåº§æ¨™ </param>
+	/// <param name="velocity"> é€Ÿåº¦ </param>
+	/// <param name="accel"> åŠ é€Ÿåº¦ </param>
 	void Add(uint16_t life, Vector3 pos, Vector3 velocity, Vector3 accel, float startScale, float endScale);
 
 private:
-	// ’è”ƒoƒbƒtƒ@¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	void CreateConstBuff();
 
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	void CreateVertexBuff();
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	void CreateIndexBuff();
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ¶¬ˆÊ’u‚ğİ’è
+	// ç”Ÿæˆä½ç½®ã‚’è¨­å®š
 	void SetSpawnPos(const Vector3& pos) { position_ = pos; }
 
-	// ƒJƒƒ‰‚ğİ’è
+	// ã‚«ãƒ¡ãƒ©ã‚’è¨­å®š
 	static void SetCamera(Camera* camera) { sCamera_ = camera; }
 #pragma endregion
 };

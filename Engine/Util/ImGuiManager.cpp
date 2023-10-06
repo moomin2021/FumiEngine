@@ -1,4 +1,4 @@
-#include "ImGuiManager.h"
+ï»¿#include "ImGuiManager.h"
 #include "WinAPI.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
@@ -16,24 +16,24 @@ ImGuiManager* ImGuiManager::GetInstance()
 
 void ImGuiManager::Initialize()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	WinAPI* winAPI = WinAPI::GetInstance();
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒvİ’è
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—è¨­å®š
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv¶¬
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ç”Ÿæˆ
 	HRESULT result = dx12->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
-	// ImGui‚ÌƒRƒ“ƒeƒLƒXƒg‚ğ¶¬
+	// ImGuiã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ç”Ÿæˆ
 	ImGui::CreateContext();
 
-	// ImGui‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+	// ImGuiã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplWin32_Init(winAPI->GetHWND());
@@ -43,13 +43,13 @@ void ImGuiManager::Initialize()
 
 	ImGuiIO& io = ImGui::GetIO();
 
-	// •W€ƒtƒHƒ“ƒg‚ğ’Ç‰Á‚·‚é
+	// æ¨™æº–ãƒ•ã‚©ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
 	io.Fonts->AddFontDefault();
 }
 
 void ImGuiManager::Begin()
 {
-	// ImGuiƒtƒŒ[ƒ€ŠJn
+	// ImGuiãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -57,7 +57,7 @@ void ImGuiManager::Begin()
 
 void ImGuiManager::End()
 {
-	// •`‰æ‘O€”õ
+	// æç”»å‰æº–å‚™
 	ImGui::Render();
 }
 
@@ -65,11 +65,11 @@ void ImGuiManager::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ‚ğƒZƒbƒg‚·‚éƒRƒ}ƒ“ƒh
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap_.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-	// •`‰æƒRƒ}ƒ“ƒh‚ğ”­s
+	// æç”»ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
 }
 
@@ -77,7 +77,7 @@ ImGuiManager::ImGuiManager() {}
 
 ImGuiManager::~ImGuiManager()
 {
-	// Œãn––
+	// å¾Œå§‹æœ«
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();

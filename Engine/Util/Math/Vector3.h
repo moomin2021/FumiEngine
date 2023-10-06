@@ -1,31 +1,31 @@
-#pragma once
+ï»¿#pragma once
 
 struct Matrix4;
 
 class Vector3
 {
 public:
-	float x;// -> x¬•ª
-	float y;// -> y¬•ª
-	float z;// -> z¬•ª
+	float x;// -> xæˆåˆ†
+	float y;// -> yæˆåˆ†
+	float z;// -> zæˆåˆ†
 
 public:
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector3();// --------------------------> —ëƒxƒNƒgƒ‹‚Æ‚·‚é
-	Vector3(float x, float y, float z);// -> x¬•ª, y¬•ª, z¬•ª ‚ğw’è‚µ‚Ä‚Ì¶¬
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Vector3();// --------------------------> é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
+	Vector3(float x, float y, float z);// -> xæˆåˆ†, yæˆåˆ†, zæˆåˆ† ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ
 
-	// ƒƒ“ƒoŠÖ”
-	float length() const;// -------------------> ƒmƒ‹ƒ€(’·‚³)‚ğ‹‚ß‚é
-	Vector3& normalize();// ------------------> ³‹K‰»
-	float dot(const Vector3& v) const;// -----> “àÏ‚ğ‹‚ß‚é
-	Vector3 cross(const Vector3& v) const;// -> ŠOÏ‚ğ‹‚ß‚é
+	// ãƒ¡ãƒ³ãƒé–¢æ•°
+	float length() const;// -------------------> ãƒãƒ«ãƒ (é•·ã•)ã‚’æ±‚ã‚ã‚‹
+	Vector3& normalize();// ------------------> æ­£è¦åŒ–
+	float dot(const Vector3& v) const;// -----> å†…ç©ã‚’æ±‚ã‚ã‚‹
+	Vector3 cross(const Vector3& v) const;// -> å¤–ç©ã‚’æ±‚ã‚ã‚‹
 
-	// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3 operator+() const;
 	Vector3 operator-() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3& operator+=(const Vector3& v);
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
@@ -37,8 +37,8 @@ Vector3 Vector3Cross(const Vector3& v0, const Vector3& v1);
 float Vector3Dot(const Vector3& v0, const Vector3& v1);
 Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// ¦‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ßAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// â€»ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Vector3 operator+(const Vector3& v1, const Vector3& v2);
 const Vector3 operator-(const Vector3& v1, const Vector3& v2);
 const Vector3 operator*(const Vector3& v, float s);

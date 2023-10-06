@@ -1,4 +1,4 @@
-#include "Stage.h"
+ï»¿#include "Stage.h"
 #include "CollisionAttribute.h"
 
 #include <iostream>
@@ -16,14 +16,14 @@ Stage::~Stage() {
 
 void Stage::Initialize()
 {
-	// Õ“Ë”»’èŠÇ—ƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX
+	// è¡çªåˆ¤å®šç®¡ç†ã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	colMgr_ = CollisionManager::GetInstance();
 
-#pragma region ƒXƒJƒCƒh[ƒ€
-	// ƒ‚ƒfƒ‹
+#pragma region ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
+	// ãƒ¢ãƒ‡ãƒ«
 	mSkydome_ = std::make_unique<Model>("skydome");
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	oSkydome_ = std::make_unique<Object3D>(mSkydome_.get());
 	oSkydome_->SetScale({ 1000.0f, 1000.0f, 1000.0f });
 #pragma endregion
@@ -31,121 +31,121 @@ void Stage::Initialize()
 
 void Stage::MatUpdate()
 {
-	// ƒIƒuƒWƒFƒNƒgs—ñXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¡Œåˆ—æ›´æ–°
 	for (auto& object : objects_) object->MatUpdate();
 
-	// ƒXƒJƒCƒh[ƒ€
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
 	oSkydome_->MatUpdate();
 }
 
 void Stage::Draw()
 {
-	// ƒIƒuƒWƒFƒNƒg•`‰æˆ—
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‡¦ç†
 	for (auto& object : objects_) object->Draw();
 
-	// ƒXƒJƒCƒh[ƒ€
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
 	oSkydome_->Draw();
 }
 
 void Stage::Load(std::string fileName)
 {
-	// ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	std::ifstream file;
 
-	// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	file.open(fileName);
 
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”sƒ`ƒFƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ãƒã‚§ãƒƒã‚¯
 	if (file.fail()) assert(0);
 
-	// JSON•¶š—ñ‚©‚ç‰ñ“š‚µ‚½ƒf[ƒ^
+	// JSONæ–‡å­—åˆ—ã‹ã‚‰å›ç­”ã—ãŸãƒ‡ãƒ¼ã‚¿
 	nlohmann::json deserialized;
 
-	// ‰ğ“€
+	// è§£å‡
 	file >> deserialized;
 
-	// ³‚µ‚¢ƒŒƒxƒ‹ƒGƒfƒBƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
+	// æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ã‚¨ãƒ‡ã‚£ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
 
-	// "name"‚ğ•¶š—ñ‚Æ‚µ‚Äæ“¾
+	// "name"ã‚’æ–‡å­—åˆ—ã¨ã—ã¦å–å¾—
 	std::string name = deserialized["name"].get<std::string>();
 
-	// ³‚µ‚¢ƒŒƒxƒ‹ƒf[ƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
+	// æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
 	assert(name.compare("scene") == 0);
 
-	// ƒŒƒxƒ‹ƒf[ƒ^Ši”[—pƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	// ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿æ ¼ç´ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	LevelData* levelData = new LevelData();
 
-	// "objects"‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğ‘–¸
+	// "objects"ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èµ°æŸ»
 	for (nlohmann::json& object : deserialized["objects"]) {
 		assert(object.contains("type"));
 
-		// í•Ê‚ğæ“¾
+		// ç¨®åˆ¥ã‚’å–å¾—
 		std::string type = object["type"].get<std::string>();
 
 		// MESH
 		if (type.compare("MESH") == 0) {
-			// —v‘f’Ç‰Á
+			// è¦ç´ è¿½åŠ 
 			levelData->objects.emplace_back(LevelData::ObjectData{});
 
-			// ¡’Ç‰Á‚µ‚½—v‘f‚ÌQÆ‚ğ“¾‚é
+			// ä»Šè¿½åŠ ã—ãŸè¦ç´ ã®å‚ç…§ã‚’å¾—ã‚‹
 			LevelData::ObjectData& objectData = levelData->objects.back();
 
-			// ƒ‚ƒfƒ‹
+			// ãƒ¢ãƒ‡ãƒ«
 			if (object.contains("file_name")) {
-				// ƒtƒ@ƒCƒ‹–¼
+				// ãƒ•ã‚¡ã‚¤ãƒ«å
 				objectData.fileName = object["file_name"];
 
-				// “¯‚¶ƒtƒ@ƒCƒ‹–¼‚Ìƒ‚ƒfƒ‹‚ª–³‚©‚Á‚½‚çƒ‚ƒfƒ‹’Ç‰Á
+				// åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«åã®ãƒ¢ãƒ‡ãƒ«ãŒç„¡ã‹ã£ãŸã‚‰ãƒ¢ãƒ‡ãƒ«è¿½åŠ 
 				if (models_.count(object["file_name"]) == 0) {
 					models_.emplace(object["file_name"], std::make_unique<Model>(object["file_name"]));
 				}
 			}
 
-			// ƒNƒ‰ƒX‚Ì–¼‘O
+			// ã‚¯ãƒ©ã‚¹ã®åå‰
 			if (object.contains("class_name")) {
 				objectData.className = object["class_name"];
 			}
 
-			// visible(•\¦”á•])
+			// visible(è¡¨ç¤ºæ‰¹è©•)
 			//objectData.isActive = object["visible"];
 
-			// ‚”ƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìƒpƒ‰ƒ[ƒ^“Ç‚İ‚İ
+			// ï½”ãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 			nlohmann::json& transform = object["transform"];
 
-			// •½sˆÚ“®
+			// å¹³è¡Œç§»å‹•
 			objectData.translation.x = (float)transform["translation"][0];
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			objectData.rotation.x = -(float)transform["rotation"][1];
 			objectData.rotation.y = (float)transform["rotation"][2];
 			objectData.rotation.z = (float)transform["rotation"][0];
 
-			// ƒXƒP[ƒŠƒ“ƒO
+			// ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
 			objectData.scaling.x = (float)transform["scaling"][0];
 			objectData.scaling.y = (float)transform["scaling"][2];
 			objectData.scaling.z = (float)transform["scaling"][1];
 		}
 
-		// ƒIƒuƒWƒFƒNƒg‘–¸‚ğÄ‹AŠÖ”‚É‚Ü‚Æ‚ßAÄ‹AŒÄo‚Å}‚ğ‘–¸‚·‚é
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆèµ°æŸ»ã‚’å†å¸°é–¢æ•°ã«ã¾ã¨ã‚ã€å†å¸°å‘¼å‡ºã§æã‚’èµ°æŸ»ã™ã‚‹
 		if (object.contains("children")) {
 
 		}
 	}
 
-	// ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ¶¬A”z’u
+	// ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã€é…ç½®
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
-			// “G‚ğ’Ç‰Á
+			// æ•µã‚’è¿½åŠ 
 			enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
 		}
 
 		else if (objectData.className == "Item") {
-			// ƒAƒCƒeƒ€‚ğ’Ç‰Á
+			// ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 			ItemManager::GetInstace()->AddItem(objectData.translation);
 		}
 
@@ -153,15 +153,15 @@ void Stage::Load(std::string fileName)
 			enemyMgr_->SetBossGenerator(objectData.translation);
 		}
 
-		// ƒIƒuƒWƒFƒNƒg’Ç‰Á
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¿½åŠ 
 		else {
-			// ƒIƒuƒWƒFƒNƒg
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 			objects_.emplace_front(std::make_unique<Object3D>(models_[objectData.fileName].get()));
 			objects_.front()->SetPosition(objectData.translation);
 			objects_.front()->SetRotation(objectData.rotation);
 			objects_.front()->SetScale(objectData.scaling);
 
-			// ƒRƒ‰ƒCƒ_[
+			// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 			colliders_.emplace_front(std::make_unique<MeshCollider>(objects_.front().get()));
 			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
 			colliders_.front()->SetObject3D(objects_.front().get());

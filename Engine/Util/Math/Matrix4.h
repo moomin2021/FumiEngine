@@ -1,35 +1,35 @@
-#pragma once
+ï»¿#pragma once
 
 class Vector3;
 
-// --Matrix4\‘¢‘Ì-- //
+// --Matrix4æ§‹é€ ä½“-- //
 struct Matrix4 {
 	float m[4][4];
 };
 
-// --’PˆÊs—ñ‚ğ‹‚ß‚é-- //
+// --å˜ä½è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4Identity();
 
-// ‹ts—ñ
+// é€†è¡Œåˆ—
 Matrix4 Matrix4Inverse(const Matrix4& m);
 
-// --Šg‘åk¬s—ñ‚Ìİ’è-- //
+// --æ‹¡å¤§ç¸®å°è¡Œåˆ—ã®è¨­å®š-- //
 Matrix4 Matrix4Scale(const Vector3& s);
 
-// --‰ñ“]s—ñ‚Ìİ’è-- //
+// --å›è»¢è¡Œåˆ—ã®è¨­å®š-- //
 Matrix4 Matrix4RotateX(float angle);
 Matrix4 Matrix4RotateY(float angle);
 Matrix4 Matrix4RotateZ(float angle);
 
-// --•½sˆÚ“®s—ñ‚Ìì¬-- //
+// --å¹³è¡Œç§»å‹•è¡Œåˆ—ã®ä½œæˆ-- //
 Matrix4 Matrix4Translate(const Vector3& t);
 
-// --À•W•ÏŠ·iƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z‚ğ‚·‚éj-- //
+// --åº§æ¨™å¤‰æ›ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—ã‚’ã™ã‚‹ï¼‰-- //
 Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m);
 
-// --‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh-- //
+// --ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰-- //
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2);
 
-// --2€‰‰ZqƒI[ƒo[ƒ[ƒh-- //
+// --2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰-- //
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 const Vector3 operator*(const Vector3& v, const Matrix4& m);

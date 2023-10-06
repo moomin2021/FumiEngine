@@ -1,4 +1,4 @@
-#include "PipelineObj.h"
+ï»¿#include "PipelineObj.h"
 #include "DX12Cmd.h"
 #include "Util.h"
 
@@ -14,13 +14,13 @@ void PipelineObj::LoadShader(std::string fileName, ShaderType shaderType)
 {
 	switch (shaderType)
 	{
-	// ’¸“_ƒVƒF[ƒ_[
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	case VS : ShaderCompileFromFile(fileName, "vs_5_0", &vsBlob_);
 		break;
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	case PS : ShaderCompileFromFile(fileName, "ps_5_0", &psBlob_);
 		break;
-		// ƒWƒIƒƒgƒŠƒVƒF[ƒ_[
+		// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	case GS: ShaderCompileFromFile(fileName, "gs_5_0", &gsBlob_);
 		break;
 	}
@@ -28,56 +28,56 @@ void PipelineObj::LoadShader(std::string fileName, ShaderType shaderType)
 
 void PipelineObj::AddInputLayout(const char* semanticName, DXGI_FORMAT format, uint16_t index)
 {
-	// ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚ğİ’è•’Ç‰Á
+	// ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’è¨­å®šï¼†è¿½åŠ 
 	inputLayout_.emplace_back(D3D12_INPUT_ELEMENT_DESC{
-		semanticName,								// ƒZƒ}ƒ“ƒeƒBƒbƒN–¼
-		index,										// “¯‚¶ƒZƒ}ƒ“ƒeƒBƒbƒN–¼‚ª•¡”‚ ‚é‚Æ‚«‚Ég‚¤ƒCƒ“ƒfƒbƒNƒXi0‚Å‚æ‚¢j
-		format,										// —v‘f”‚Æƒrƒbƒg”‚ğ•\‚·
-		0,											// “ü—ÍƒXƒƒbƒgƒCƒ“ƒfƒbƒNƒXi0‚Å‚æ‚¢j
-		D3D12_APPEND_ALIGNED_ELEMENT,				// ƒf[ƒ^‚ÌƒIƒtƒZƒbƒg’liD3D12_APPEND_ALIGNED_ELEMENT‚¾‚Æ©“®İ’èj
-		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,	// “ü—Íƒf[ƒ^‚Ìí•Êi•W€‚ÍD3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATAj
-		0											// ˆê“x‚É•`‰æ‚·‚éƒCƒ“ƒXƒ^ƒ“ƒX”i0‚Å‚æ‚¢j
+		semanticName,								// ã‚»ãƒãƒ³ãƒ†ã‚£ãƒƒã‚¯å
+		index,										// åŒã˜ã‚»ãƒãƒ³ãƒ†ã‚£ãƒƒã‚¯åãŒè¤‡æ•°ã‚ã‚‹ã¨ãã«ä½¿ã†ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ0ã§ã‚ˆã„ï¼‰
+		format,										// è¦ç´ æ•°ã¨ãƒ“ãƒƒãƒˆæ•°ã‚’è¡¨ã™
+		0,											// å…¥åŠ›ã‚¹ãƒ­ãƒƒãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ0ã§ã‚ˆã„ï¼‰
+		D3D12_APPEND_ALIGNED_ELEMENT,				// ãƒ‡ãƒ¼ã‚¿ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ï¼ˆD3D12_APPEND_ALIGNED_ELEMENTã ã¨è‡ªå‹•è¨­å®šï¼‰
+		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®ç¨®åˆ¥ï¼ˆæ¨™æº–ã¯D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATAï¼‰
+		0											// ä¸€åº¦ã«æç”»ã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹æ•°ï¼ˆ0ã§ã‚ˆã„ï¼‰
 	});
 }
 
 void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum)
 {
-	// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^‚Ì¶¬ƒJƒEƒ“ƒ^[
+	// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç”Ÿæˆã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 	uint16_t counter = 0;
 
 	rootParams_.resize(texRegisterNum + constBuffNum);
 	descRangeSRV_.resize(texRegisterNum);
 
 	for (size_t i = 0; i < texRegisterNum; i++) {
-		descRangeSRV_[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, static_cast<UINT>(i));// t i ƒŒƒWƒXƒ^
+		descRangeSRV_[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, static_cast<UINT>(i));// t i ãƒ¬ã‚¸ã‚¹ã‚¿
 
-		// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^İ’è
+		// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 		rootParams_[counter].InitAsDescriptorTable(1, &descRangeSRV_[i], D3D12_SHADER_VISIBILITY_ALL);
 
-		// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^‚ğ¶¬•İ’è‚µI‚í‚Á‚½‚½‚ßƒCƒ“ƒNƒŠƒƒ“ƒg
+		// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç”Ÿæˆï¼†è¨­å®šã—çµ‚ã‚ã£ãŸãŸã‚ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 		counter++;
 	}
 
 	for (size_t i = 0; i < constBuffNum; i++) {
-		// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^İ’è
+		// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 		rootParams_[counter].InitAsConstantBufferView(static_cast<UINT>(i), 0, D3D12_SHADER_VISIBILITY_ALL);
 
-		// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^‚ğ¶¬•İ’è‚µI‚í‚Á‚½‚½‚ßƒCƒ“ƒNƒŠƒƒ“ƒg
+		// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç”Ÿæˆï¼†è¨­å®šã—çµ‚ã‚ã£ãŸãŸã‚ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 		counter++;
 	}
 }
 
 void PipelineObj::CreatePipeline(uint16_t renderTargetNum, BLENDMODE blendMode, D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType, bool isDepth) {
-	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
+	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
 	HRESULT result;
 
-	// ƒfƒoƒCƒXæ“¾
+	// ãƒ‡ãƒã‚¤ã‚¹å–å¾—
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-	// ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“İ’è
+	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³è¨­å®š
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
-	// ƒVƒF[ƒ_[‚Ìİ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®è¨­å®š
 	pipelineDesc.VS.pShaderBytecode = vsBlob_->GetBufferPointer();
 	pipelineDesc.VS.BytecodeLength = vsBlob_->GetBufferSize();
 	pipelineDesc.PS.pShaderBytecode = psBlob_->GetBufferPointer();
@@ -88,24 +88,24 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum, BLENDMODE blendMode, 
 		pipelineDesc.GS.BytecodeLength = gsBlob_->GetBufferSize();
 	}
 
-	// ƒTƒ“ƒvƒ‹ƒ}ƒXƒN‚Ìİ’è
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // •W€İ’è
+	// ã‚µãƒ³ãƒ—ãƒ«ãƒã‚¹ã‚¯ã®è¨­å®š
+	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // æ¨™æº–è¨­å®š
 
-	// ƒ‰ƒXƒ^ƒ‰ƒCƒU‚Ìİ’è
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	// ƒJƒŠƒ“ƒO‚µ‚È‚¢
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	// ƒ|ƒŠƒSƒ““à“h‚è‚Â‚Ô‚µ
-	pipelineDesc.RasterizerState.DepthClipEnable = true;			// [“xƒNƒŠƒbƒsƒ“ƒO‚ğ—LŒø‚É
+	// ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã®è¨­å®š
+	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	// ã‚«ãƒªãƒ³ã‚°ã—ãªã„
+	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	// ãƒãƒªã‚´ãƒ³å†…å¡—ã‚Šã¤ã¶ã—
+	pipelineDesc.RasterizerState.DepthClipEnable = true;			// æ·±åº¦ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°ã‚’æœ‰åŠ¹ã«
 
-	// ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
-	pipelineDesc.DepthStencilState.DepthEnable = true;							// [“xƒeƒXƒg‚ğs‚¤
+	// ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
+	pipelineDesc.DepthStencilState.DepthEnable = true;							// æ·±åº¦ãƒ†ã‚¹ãƒˆã‚’è¡Œã†
 	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-	if (isDepth) pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	// ‘‚«‚İ‹–‰Â
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		// ¬‚³‚¯‚ê‚Î‡Ši
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;								// [“x’lƒtƒH[ƒ}ƒbƒg
+	if (isDepth) pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	// æ›¸ãè¾¼ã¿è¨±å¯
+	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		// å°ã•ã‘ã‚Œã°åˆæ ¼
+	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;								// æ·±åº¦å€¤ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌƒuƒŒƒ“ƒhİ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®š
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
-	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RGBA‘S‚Ä‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğ•`‰æ
+	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RGBAå…¨ã¦ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’æç”»
 	blendDesc.BlendEnable = true;
 	blendDesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
@@ -135,39 +135,39 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum, BLENDMODE blendMode, 
 		blendDesc.DestBlendAlpha = D3D12_BLEND_ONE;
 	}
 
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒg‚Ìİ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š
 	for (size_t i = 0; i < renderTargetNum; i++) {
 		pipelineDesc.BlendState.RenderTarget[i] = blendDesc;
 	}
 
-	// ’¸“_ƒŒƒCƒAƒEƒg‚Ìİ’è
+	// é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout_.data();
 	pipelineDesc.InputLayout.NumElements = static_cast<UINT>(inputLayout_.size());
 
-	// }Œ`‚ÌŒ`óİ’è
+	// å›³å½¢ã®å½¢çŠ¶è¨­å®š
 	pipelineDesc.PrimitiveTopologyType = primitiveType;
 
-	// ‚»‚Ì‘¼‚Ìİ’è
-	pipelineDesc.NumRenderTargets = renderTargetNum;					// •`‰æ‘ÎÛ‚Í2‚Â
+	// ãã®ä»–ã®è¨­å®š
+	pipelineDesc.NumRenderTargets = renderTargetNum;					// æç”»å¯¾è±¡ã¯2ã¤
 	for (size_t i = 0; i < renderTargetNum; i++) {
-		pipelineDesc.RTVFormats[i] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;	// 0~255w’è‚ÌRGBA
+		pipelineDesc.RTVFormats[i] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;	// 0~255æŒ‡å®šã®RGBA
 	}
-	pipelineDesc.SampleDesc.Count = 1;									// 1ƒsƒNƒZƒ‹‚É‚Â‚«1‰ñƒTƒ“ƒvƒŠƒ“ƒO
+	pipelineDesc.SampleDesc.Count = 1;									// 1ãƒ”ã‚¯ã‚»ãƒ«ã«ã¤ã1å›ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°
 
-	// ƒeƒNƒXƒ`ƒƒƒTƒ“ƒvƒ‰[‚Ìİ’è
-	// ƒXƒ^ƒeƒBƒbƒNƒTƒ“ƒvƒ‰[
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®è¨­å®š
+	// ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc =
 		CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT);
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
 	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’è
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®è¨­å®š
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(
 		static_cast<UINT>(rootParams_.size()), rootParams_.data(), 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	ComPtr<ID3DBlob> rootSigBlob = nullptr;
 	result = D3DX12SerializeVersionedRootSignature(
 		&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
@@ -177,33 +177,33 @@ void PipelineObj::CreatePipeline(uint16_t renderTargetNum, BLENDMODE blendMode, 
 		IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(result));
 
-	// ƒpƒCƒvƒ‰ƒCƒ“‚Éƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğƒZƒbƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã«ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’ã‚»ãƒƒãƒˆ
 	pipelineDesc.pRootSignature = rootSignature_.Get();
 
-	// ƒpƒCƒvƒ‰ƒ“ƒXƒe[ƒg‚Ì¶¬
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ç”Ÿæˆ
 	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
 }
 
 void PipelineObj::ShaderCompileFromFile(std::string fileName, LPCSTR target, ID3D10Blob** shaderBlob)
 {
-	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
+	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
 	HRESULT result;
 
-	// ’¸“_ƒVƒF[ƒ_‚Ì“Ç‚İ‚İ‚ÆƒRƒ“ƒpƒCƒ‹
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®èª­ã¿è¾¼ã¿ã¨ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 	result = D3DCompileFromFile(
-		Util::StringToWideChar(fileName).data(),		// ƒVƒF[ƒ_ƒtƒ@ƒCƒ‹–¼
+		Util::StringToWideChar(fileName).data(),		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ•ã‚¡ã‚¤ãƒ«å
 		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,				// ƒCƒ“ƒNƒ‹[ƒh‰Â”\‚É‚·‚é
-		"main", target,									// ƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg–¼AƒVƒF[ƒ_[ƒ‚ƒfƒ‹w’è
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,// ƒfƒoƒbƒO—pİ’è
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,				// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰å¯èƒ½ã«ã™ã‚‹
+		"main", target,									// ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆåã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ¢ãƒ‡ãƒ«æŒ‡å®š
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,// ãƒ‡ãƒãƒƒã‚°ç”¨è¨­å®š
 		0,
 		shaderBlob, errorBlob_.GetAddressOf());
 
-	// ƒGƒ‰[‚È‚ç
+	// ã‚¨ãƒ©ãƒ¼ãªã‚‰
 	if (FAILED(result))
 	{
-		// errorBlob‚©‚çƒGƒ‰[“à—e‚ğstringŒ^‚ÉƒRƒs[
+		// errorBlobã‹ã‚‰ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’stringå‹ã«ã‚³ãƒ”ãƒ¼
 		std::string error;
 		error.resize(errorBlob_->GetBufferSize());
 		std::copy_n((char*)errorBlob_->GetBufferPointer(),
@@ -211,7 +211,7 @@ void PipelineObj::ShaderCompileFromFile(std::string fileName, LPCSTR target, ID3
 			error.begin());
 		error += "\n";
 
-		// ƒGƒ‰[“à—e‚ğo—ÍƒEƒBƒ“ƒhƒE‚É•\¦
+		// ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’å‡ºåŠ›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
 		OutputDebugStringA(error.c_str());
 		assert(0);
 	}

@@ -1,4 +1,4 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 #include "Util.h"
 #include "WinAPI.h"
 
@@ -8,15 +8,15 @@ using namespace DirectX;
 
 Camera::Camera()
 {
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒYæ“¾
-	float winWidth	= static_cast<float>(WinAPI::GetInstance()->GetWidth());	// ‰¡•
-	float winHeight	= static_cast<float>(WinAPI::GetInstance()->GetHeight());	// c•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå–å¾—
+	float winWidth	= static_cast<float>(WinAPI::GetInstance()->GetWidth());	// æ¨ªå¹…
+	float winHeight	= static_cast<float>(WinAPI::GetInstance()->GetHeight());	// ç¸¦å¹…
 
-	// “§‹“Š‰es—ñ‚ÌŒvZ
+	// é€è¦–æŠ•å½±è¡Œåˆ—ã®è¨ˆç®—
 	XMMATRIX mat = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(45.0f),	// ã‰º‰æŠp45“x
-		winWidth / winHeight,		// ƒAƒXƒyƒNƒg”äi‰æ–Ê‰¡•/‰æ–Êc•j
-		0.1f, 1000.0f);				// ‘O’[A‰œ’[
+		Util::Degree2Radian(45.0f),	// ä¸Šä¸‹ç”»è§’45åº¦
+		winWidth / winHeight,		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢æ¨ªå¹…/ç”»é¢ç¸¦å¹…ï¼‰
+		0.1f, 1000.0f);				// å‰ç«¯ã€å¥¥ç«¯
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {
@@ -24,40 +24,40 @@ Camera::Camera()
 		}
 	}
 
-#pragma region •½s“Š‰eŒvZ
-	// ’PˆÊs—ñ‚ğ‘ã“ü
+#pragma region å¹³è¡ŒæŠ•å½±è¨ˆç®—
+	// å˜ä½è¡Œåˆ—ã‚’ä»£å…¥
 	matOrthoGraphicPro_ = Matrix4Identity();
 
-	// ‰æ–ÊƒTƒCƒY‚É‡‚í‚¹‚ÄŒvZ
+	// ç”»é¢ã‚µã‚¤ã‚ºã«åˆã‚ã›ã¦è¨ˆç®—
 	matOrthoGraphicPro_.m[0][0] = 2.0f / winWidth;
 	matOrthoGraphicPro_.m[1][1] = -2.0f / winHeight;
 
-	// ‰æ–Ê”¼•ªˆÚ“®‚³‚¹‚Ä‰æ–Ê¶ã‚ğŒ´“_‚É‚·‚é
+	// ç”»é¢åŠåˆ†ç§»å‹•ã•ã›ã¦ç”»é¢å·¦ä¸Šã‚’åŸç‚¹ã«ã™ã‚‹
 	matOrthoGraphicPro_.m[3][0] = -1.0f;
 	matOrthoGraphicPro_.m[3][1] = 1.0f;
 #pragma endregion
 }
 
 void Camera::Update() {
-	// ƒrƒ…[s—ñXV
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—æ›´æ–°
 	UpdateMatView();
 }
 
 void Camera::UpdateMatView()
 {
-	// Z²‚ğ‹‚ß‚é
+	// Zè»¸ã‚’æ±‚ã‚ã‚‹
 	Vector3 zAxis = target_ - eye_;
-	zAxis.normalize();// ³‹K‰»
+	zAxis.normalize();// æ­£è¦åŒ–
 
-	// X²‚ğ‹‚ß‚é
+	// Xè»¸ã‚’æ±‚ã‚ã‚‹
 	Vector3 xAxis = up_.cross(zAxis);
-	xAxis.normalize();// ³‹K‰»
+	xAxis.normalize();// æ­£è¦åŒ–
 
-	// Y²‚ğ‹‚ß‚é
+	// Yè»¸ã‚’æ±‚ã‚ã‚‹
 	Vector3 yAxis = zAxis.cross(xAxis);
-	yAxis.normalize();// ³‹K‰»
+	yAxis.normalize();// æ­£è¦åŒ–
 
-	// ‰ñ“]s—ñ‚ğ‹‚ß‚é
+	// å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	Matrix4 matRot = {
 		{
 			{xAxis.x, xAxis.y, xAxis.z, 0.0f},
@@ -67,23 +67,23 @@ void Camera::UpdateMatView()
 		}
 	};
 
-	// ‹ts—ñ‚É‚·‚é
+	// é€†è¡Œåˆ—ã«ã™ã‚‹
 	matRot = Matrix4Inverse(matRot);
 
-	// •½sˆÚ“®¬•ª‚ğ‹‚ß‚é
+	// å¹³è¡Œç§»å‹•æˆåˆ†ã‚’æ±‚ã‚ã‚‹
 	Vector3 parallelMove = {};
 
-	// ‹tƒJƒƒ‰À•W
+	// é€†ã‚«ãƒ¡ãƒ©åº§æ¨™
 	Vector3 reverseEye = -eye_;
 
-	// ŒvZ
+	// è¨ˆç®—
 	parallelMove = {
 		reverseEye.dot(xAxis),
 		reverseEye.dot(yAxis),
 		reverseEye.dot(zAxis)
 	};
 
-	// ƒrƒ…[s—ñŠ®¬
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—å®Œæˆ
 	matView_ = {
 		{
 			{matRot.m[0][0], matRot.m[0][1], matRot.m[0][2], 0.0f},
@@ -96,15 +96,15 @@ void Camera::UpdateMatView()
 
 void Camera::SetFovAngleY(float fovAngleY)
 {
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒYæ“¾
-	float winWidth = static_cast<float>(WinAPI::GetInstance()->GetWidth());	// ‰¡•
-	float winHeight = static_cast<float>(WinAPI::GetInstance()->GetHeight());	// c•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå–å¾—
+	float winWidth = static_cast<float>(WinAPI::GetInstance()->GetWidth());	// æ¨ªå¹…
+	float winHeight = static_cast<float>(WinAPI::GetInstance()->GetHeight());	// ç¸¦å¹…
 
-	// “§‹“Š‰es—ñ‚ÌŒvZ
+	// é€è¦–æŠ•å½±è¡Œåˆ—ã®è¨ˆç®—
 	XMMATRIX mat = XMMatrixPerspectiveFovLH(
-		Util::Degree2Radian(fovAngleY),	// ã‰º‰æŠp45“x
-		winWidth / winHeight,		// ƒAƒXƒyƒNƒg”äi‰æ–Ê‰¡•/‰æ–Êc•j
-		0.1f, 2000.0f);				// ‘O’[A‰œ’[
+		Util::Degree2Radian(fovAngleY),	// ä¸Šä¸‹ç”»è§’45åº¦
+		winWidth / winHeight,		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢æ¨ªå¹…/ç”»é¢ç¸¦å¹…ï¼‰
+		0.1f, 2000.0f);				// å‰ç«¯ã€å¥¥ç«¯
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {

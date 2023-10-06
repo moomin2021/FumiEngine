@@ -1,4 +1,4 @@
-#include "Enemy0.h"
+ï»¿#include "Enemy0.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "EnemyManager.h"
@@ -11,38 +11,38 @@ Enemy0::Enemy0(Model* model) :
 
 	damageCounter_(0)
 {
-	// ƒIƒuƒWƒFƒNƒg¶¬
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	object_ = std::make_unique<Object3D>(model);
 }
 
 Enemy0::~Enemy0()
 {
-	// ƒRƒ‰ƒCƒ_[‚ğíœ
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å‰Šé™¤
 	CollisionManager::GetInstance()->RemoveCollider(collider_.get());
 }
 
 void Enemy0::Initialize(Vector3 pos, Vector3 scale)
 {
-	// ‰ŠúˆÊ’uİ’è
+	// åˆæœŸä½ç½®è¨­å®š
 	object_->SetPosition(pos);
 	object_->SetScale(scale);
 
-	// ƒRƒ‰ƒCƒ_[¶¬
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ç”Ÿæˆ
 	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f);
 
-	// ƒRƒ‰ƒCƒ_[‚ÆƒIƒuƒWƒFƒNƒg‚ğ•R‚Ã‚¯
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç´ã¥ã‘
 	collider_->SetObject3D(object_.get());
 
-	// ƒRƒ‰ƒCƒ_[‚É‘®«‚ğ’Ç‰Á
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã«å±æ€§ã‚’è¿½åŠ 
 	collider_->SetAttribute(COL_ENEMY);
 
-	// ƒRƒ‰ƒCƒ_[‚ğ’Ç‰Á
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¿½åŠ 
 	CollisionManager::GetInstance()->AddCollider(collider_.get());
 }
 
 void Enemy0::Update()
 {
-	// ¶‘¶ƒtƒ‰ƒO‚ª[OFF]‚È‚ç‚±‚ÌŒã‚Ìˆ—‚ğ”ò‚Î‚·
+	// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ãŒ[OFF]ãªã‚‰ã“ã®å¾Œã®å‡¦ç†ã‚’é£›ã°ã™
 	if (isAlive_ == false) return;
 
 	if (damageCounter_ >= 3) {
@@ -52,31 +52,31 @@ void Enemy0::Update()
 		damageCounter_++;
 	}
 
-	// ó‘Ô•ÊXVˆ—
+	// çŠ¶æ…‹åˆ¥æ›´æ–°å‡¦ç†
 	(this->*stateTable[state_])();
 
-	// HP‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç¶‘¶ƒtƒ‰ƒO‚ğ[OFF]‚É‚·‚é
+	// HPãŒ0ä»¥ä¸‹ã«ãªã£ãŸã‚‰ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã‚’[OFF]ã«ã™ã‚‹
 	if (hp_ <= 0) isAlive_ = false;
 }
 
 void Enemy0::Draw()
 {
-	// ƒIƒuƒWƒFƒNƒg•`‰æ
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 	if (isAlive_) object_->Draw();
 }
 
 void (Enemy0::* Enemy0::stateTable[]) () = {
-	&Enemy0::Wait,		// ‘Ò‹@ó‘Ô
-	&Enemy0::RandomMove,// ƒ‰ƒ“ƒ_ƒ€ˆÚ“®ó‘Ô
-	&Enemy0::Chase,		// ’ÇÕó‘Ô
+	&Enemy0::Wait,		// å¾…æ©ŸçŠ¶æ…‹
+	&Enemy0::RandomMove,// ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•çŠ¶æ…‹
+	&Enemy0::Chase,		// è¿½è·¡çŠ¶æ…‹
 };
 
 void Enemy0::Wait()
 {
-	//// Œo‰ßŠÔ
+	//// çµŒéæ™‚é–“
 	//uint64_t elapsedTime = Util::GetTimeSec() - waitStartTime_;
 
-	//// ‘Ò‹@ŠÔŠJn‚ªw’èŠÔˆÈã‚È‚çƒ‰ƒ“ƒ_ƒ€ˆÚ“®ó‘Ô‚É‚·‚é
+	//// å¾…æ©Ÿæ™‚é–“é–‹å§‹ãŒæŒ‡å®šæ™‚é–“ä»¥ä¸Šãªã‚‰ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•çŠ¶æ…‹ã«ã™ã‚‹
 	//if (waitStartTime_ <= elapsedTime) {
 	//	state_ = RANDOMMOVE;
 	//	randomMoveVec_ = Vector3(
@@ -85,10 +85,10 @@ void Enemy0::Wait()
 	//	rndMoveStartTime_ = Util::GetTimeSec();
 	//}
 
-	//// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
+	//// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢
 	//float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
 
-	//// ƒvƒŒƒCƒ„[‚ªõ“G”ÍˆÍ‚É“ü‚Á‚½‚ç’ÇÕó‘Ô‚É‚È‚é
+	//// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç´¢æ•µç¯„å›²ã«å…¥ã£ãŸã‚‰è¿½è·¡çŠ¶æ…‹ã«ãªã‚‹
 	//if (searchRange_ >= dist) {
 	//	state_ = CHASE;
 	//	horizontalMoveStartTime_ = Util::GetTimeSec();
@@ -97,23 +97,23 @@ void Enemy0::Wait()
 
 void Enemy0::RandomMove()
 {
-	// Œo‰ßŠÔ
+	// çµŒéæ™‚é–“
 	uint64_t elapsedTime = Util::GetTimeSec() - rndMoveStartTime_;
 
-	// À•WXV
+	// åº§æ¨™æ›´æ–°
 	Vector3 pos = object_->GetPosition() + (randomMoveVec_ * rndMoveSpd_);
 	object_->SetPosition(pos);
 
-	// Œo‰ßŠÔ‚ªw’è‚ÌŠÔ‚ğ‚·‚¬‚½‚çƒ‰ƒ“ƒ_ƒ€ˆÚ“®‚ğ‚â‚ß‚é
+	// çµŒéæ™‚é–“ãŒæŒ‡å®šã®æ™‚é–“ã‚’ã™ããŸã‚‰ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•ã‚’ã‚„ã‚ã‚‹
 	if (rndMoveTime_ <= elapsedTime) {
 		state_ = WAIT;
 		waitStartTime_ = Util::GetTimeSec();
 	}
 
-	// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢
 	float dist = Vector3(object_->GetPosition() - player_->GetPosition()).length();
 
-	// ƒvƒŒƒCƒ„[‚ªõ“G”ÍˆÍ‚É“ü‚Á‚½‚ç’ÇÕó‘Ô‚É‚È‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç´¢æ•µç¯„å›²ã«å…¥ã£ãŸã‚‰è¿½è·¡çŠ¶æ…‹ã«ãªã‚‹
 	if (searchRange_ >= dist) {
 		state_ = CHASE;
 		horizontalMoveStartTime_ = Util::GetTimeSec();
@@ -122,21 +122,21 @@ void Enemy0::RandomMove()
 
 void Enemy0::Chase()
 {
-	// ‰¡ˆÚ“®Œo‰ßŠÔ
+	// æ¨ªç§»å‹•çµŒéæ™‚é–“
 	uint64_t elapsedTime = Util::GetTimeSec() - horizontalMoveStartTime_;
 
-	// ƒGƒlƒ~[‚©‚çƒvƒŒƒCƒ„[‚Ü‚Å‚Ì•ûŒü
+	// ã‚¨ãƒãƒŸãƒ¼ã‹ã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¾ã§ã®æ–¹å‘
 	Vector3 s = player_->GetPosition() - object_->GetPosition();
 	Vector3 enemy2Player = Vector3(player_->GetPosition() - object_->GetPosition());
 	enemy2Player.y = 0.0f;
 	enemy2Player.normalize();
 
-	// ‰EƒxƒNƒgƒ‹‚ÌŒvZ
+	// å³ãƒ™ã‚¯ãƒˆãƒ«ã®è¨ˆç®—
 	Vector3 rightVec = Vector3(enemy2Player.x, 0.0f, enemy2Player.z);
 	rightVec = -rightVec.cross(rightVec + Vector3(0.0f, 1.0f, 0.0f));
 	rightVec.normalize();
 
-	// ‰¡ˆÚ“®Œo‰ßŠÔ‚ªw’èŠÔ‚ğ‰ß‚¬‚½‚ç‰¡ˆÚ“®•ûŒü‚ğØ‚è‘Ö‚¦‚é
+	// æ¨ªç§»å‹•çµŒéæ™‚é–“ãŒæŒ‡å®šæ™‚é–“ã‚’éããŸã‚‰æ¨ªç§»å‹•æ–¹å‘ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 	if (horizontalMoveSwitchTime_ <= elapsedTime) {
 		isMoveRight_ *= -1.0f;
 		horizontalMoveStartTime_ = Util::GetTimeSec();
@@ -145,13 +145,13 @@ void Enemy0::Chase()
 	Vector3 pos = object_->GetPosition() + (enemy2Player * frontRearMoveSpd_) + (rightVec * horizontalMoveSpd_ * isMoveRight_);
 	object_->SetPosition(pos);
 
-	// ’e‚ğŒ‚‚Âˆ—
+	// å¼¾ã‚’æ’ƒã¤å‡¦ç†
 	Shoot();
 }
 
 void Enemy0::OnCollision()
 {
-	// Õ“Ë‚µ‚Ä‚¢‚È‚©‚Á‚½‚çˆ—‚ğ”ò‚Î‚·
+	// è¡çªã—ã¦ã„ãªã‹ã£ãŸã‚‰å‡¦ç†ã‚’é£›ã°ã™
 	if (collider_->GetIsHit() == false) return;
 	if (collider_->GetHitCollider()->GetAttribute() != COL_PLAYER_SHOT) return;
 	//hp_ -= 1;
@@ -161,21 +161,21 @@ void Enemy0::OnCollision()
 
 void Enemy0::MatUpdate()
 {
-	// ƒIƒuƒWƒFƒNƒgXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°
 	object_->MatUpdate();
 }
 
 void Enemy0::Shoot()
 {
-	//// Œ‚‚Á‚Ä‚©‚ç‚ÌŒo‰ßŠÔ
+	//// æ’ƒã£ã¦ã‹ã‚‰ã®çµŒéæ™‚é–“
 	//uint64_t elapsedTime = Util::GetTimeSec() - shootTime_;
 
-	//// Œo‰ßŠÔ‚ªw’èŠÔ‚ğ‰ß‚¬‚½‚çŒ‚‚Â
+	//// çµŒéæ™‚é–“ãŒæŒ‡å®šæ™‚é–“ã‚’éããŸã‚‰æ’ƒã¤
 	//if (elapsedTime >= shootInterval_) {
-	//	// Œ‚‚Á‚½ŠÔ‚ğ‹L˜^
+	//	// æ’ƒã£ãŸæ™‚é–“ã‚’è¨˜éŒ²
 	//	shootTime_ = Util::GetTimeSec();
 
-	//	// ’e‚ğ¶¬
+	//	// å¼¾ã‚’ç”Ÿæˆ
 	//	EnemyManager::AddBullet(ENEMY0, object_->GetPosition(), player_->GetPosition() - object_->GetPosition());
 	//}
 }

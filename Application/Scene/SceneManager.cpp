@@ -1,4 +1,4 @@
-#include "SceneManager.h"
+ï»¿#include "SceneManager.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 #include "ImGuiManager.h"
@@ -8,36 +8,36 @@
 #include "GameOverScene.h"
 #include "TransitionScene.h"
 
-// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 SceneManager* SceneManager::GetInstance()
 {
-	// ŠÖ”“àstatic•Ï”‚Æ‚µ‚ÄéŒ¾
+	// é–¢æ•°å†…staticå¤‰æ•°ã¨ã—ã¦å®£è¨€
 	static SceneManager instance;
 	return &instance;
 }
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 SceneManager::SceneManager() :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// ƒL[ƒ{[ƒh“ü—ÍƒNƒ‰ƒX
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ã‚¯ãƒ©ã‚¹
 	key_(nullptr),
 
-	// Œ»İ‚ÌƒV[ƒ“
+	// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³
 	nowScene_(nullptr),
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	gaussianPostEffect_(nullptr),
 	highLumiPostEffect_(nullptr),
 	bloomPostEffect_(nullptr),
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ìí—Ş
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç¨®é¡
 	postEffectType_(PostEffectType::NORMAL)
 #pragma endregion
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	key_ = Key::GetInstance();
 
-	// Å‰‚ÌƒV[ƒ“
+	// æœ€åˆã®ã‚·ãƒ¼ãƒ³
 	nowScene_ = std::make_unique<TitleScene>();
 	nowScene_->Initialize();
 
@@ -48,7 +48,7 @@ SceneManager::SceneManager() :
 	PipelineManager::GetInstance();
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 SceneManager::~SceneManager() {
 
 }
@@ -86,7 +86,7 @@ void SceneManager::SceneTransition(SCENE scene)
 	nowScene_->Initialize();
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 void SceneManager::Update() {
 
 	//if (key_->TriggerKey(DIK_1)) postEffectType_ = PostEffectType::NORMAL;
@@ -102,11 +102,11 @@ void SceneManager::Update() {
 	nowScene_->Update();
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void SceneManager::Draw()
 {
 	if (PostEffectType::NORMAL == postEffectType_) {
-		// --•`‰æ‘Oˆ—-- //
+		// --æç”»å‰å‡¦ç†-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
 		nowScene_->Draw();
@@ -114,7 +114,7 @@ void SceneManager::Draw()
 		ImGuiManager::GetInstance()->End();
 		ImGuiManager::GetInstance()->Draw();
 
-		// --•`‰æŒãˆ—-- //
+		// --æç”»å¾Œå‡¦ç†-- //
 		DX12Cmd::GetInstance()->PostDraw();
 	}
 
@@ -125,14 +125,14 @@ void SceneManager::Draw()
 
 		gaussianPostEffect_->PostDraw();
 
-		// --•`‰æ‘Oˆ—-- //
+		// --æç”»å‰å‡¦ç†-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
 		PipelineManager::GetInstance()->PreDraw("Gaussian");
 
 		gaussianPostEffect_->Draw();
 
-		// --•`‰æŒãˆ—-- //
+		// --æç”»å¾Œå‡¦ç†-- //
 		DX12Cmd::GetInstance()->PostDraw();
 	}
 
@@ -150,14 +150,14 @@ void SceneManager::Draw()
 
 		bloomPostEffect_->PostDraw();
 
-		// --•`‰æ‘Oˆ—-- //
+		// --æç”»å‰å‡¦ç†-- //
 		DX12Cmd::GetInstance()->PreDraw();
 
 		PipelineManager::GetInstance()->PreDraw("Bloom");
 
 		bloomPostEffect_->Draw();
 
-		// --•`‰æŒãˆ—-- //
+		// --æç”»å¾Œå‡¦ç†-- //
 		DX12Cmd::GetInstance()->PostDraw();
 	}
 }

@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 // DirectXInput
 #include <dinput.h>
 
-// ComPtr—p
+// ComPtrç”¨
 #include <wrl.h>
 
 // Vector2
@@ -16,76 +16,76 @@ enum MouseButton {
 
 class Mouse {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒfƒoƒCƒX
+	// ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<IDirectInputDevice8> device_;
 
-	// ƒ}ƒEƒXƒf[ƒ^
-	DIMOUSESTATE nowMouse_;// Œ»İ‚Ìƒ}ƒEƒX‚Ì“ü—Íó‘Ô
-	DIMOUSESTATE oldMouse_;// ‘OƒtƒŒ[ƒ€‚Ìƒ}ƒEƒX‚Ì“ü—Íó‘Ô
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒ¼ã‚¿
+	DIMOUSESTATE nowMouse_;// ç¾åœ¨ã®ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
+	DIMOUSESTATE oldMouse_;// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
 
-	// ƒ}ƒEƒXƒJ[ƒ\ƒ‹À•W
+	// ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«åº§æ¨™
 	POINT p_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static Mouse* GetInstance();
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// w’è‚³‚ê‚½ƒ}ƒEƒX‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çA1‚ğ•Ô‚µA‚»‚¤‚Å‚È‚©‚Á‚½ê‡0‚ğ•Ô‚·
+	/// æŒ‡å®šã•ã‚ŒãŸãƒã‚¦ã‚¹ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã€1ã‚’è¿”ã—ã€ãã†ã§ãªã‹ã£ãŸå ´åˆ0ã‚’è¿”ã™
 	/// </summary>
-	/// <param name="button"> ”»’è‚µ‚½‚¢ƒ}ƒEƒXƒ{ƒ^ƒ“ </param>
+	/// <param name="button"> åˆ¤å®šã—ãŸã„ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ </param>
 	/// <returns></returns>
 	bool PushMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80); }
 
 	/// <summary>
-	/// w’è‚³‚ê‚½ƒ}ƒEƒX‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ‚¾‚Á‚½‚çA1‚ğ•Ô‚µA‚»‚¤‚Å‚È‚©‚Á‚½ê‡0‚ğ•Ô‚·
+	/// æŒ‡å®šã•ã‚ŒãŸãƒã‚¦ã‚¹ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã ã£ãŸã‚‰ã€1ã‚’è¿”ã—ã€ãã†ã§ãªã‹ã£ãŸå ´åˆ0ã‚’è¿”ã™
 	/// </summary>
-	/// <param name="button"> ”»’è‚µ‚½‚¢ƒ}ƒEƒXƒ{ƒ^ƒ“ </param>
+	/// <param name="button"> åˆ¤å®šã—ãŸã„ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ </param>
 	/// <returns></returns>
 	bool TriggerMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80) && !(oldMouse_.rgbButtons[button] == (0x80)); }
 
 	/// <summary>
-	/// ƒ}ƒEƒX‚ÌˆÊ’uÀ•W
+	/// ãƒã‚¦ã‚¹ã®ä½ç½®åº§æ¨™
 	/// </summary>
-	/// <returns> ƒ}ƒEƒX‚ÌˆÊ’uÀ•W </returns>
+	/// <returns> ãƒã‚¦ã‚¹ã®ä½ç½®åº§æ¨™ </returns>
 	Vector2 MousePos() { return Vector2(static_cast<float>(p_.x), static_cast<float>(p_.y)); }
 
 	/// <summary>
-	/// ƒ}ƒEƒX‚ÌˆÚ“®—Ê
+	/// ãƒã‚¦ã‚¹ã®ç§»å‹•é‡
 	/// </summary>
-	/// <returns> ƒ}ƒEƒX‚ÌˆÚ“®—Ê </returns>
+	/// <returns> ãƒã‚¦ã‚¹ã®ç§»å‹•é‡ </returns>
 	Vector2 GetMouseVelosity() { return Vector2((float)nowMouse_.lX, (float)nowMouse_.lY); }
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Mouse();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~Mouse();
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	Mouse(const Mouse&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	Mouse& operator = (const Mouse&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	Mouse(const Mouse&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	Mouse& operator = (const Mouse&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

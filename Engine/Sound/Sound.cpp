@@ -1,4 +1,4 @@
-#include "Sound.h"
+ï»¿#include "Sound.h"
 
 #include <cassert>
 
@@ -13,11 +13,11 @@ void Sound::Initialize()
 {
 	HRESULT result;
 
-	// XAudioƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬
+	// XAudioã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆ
 	result = XAudio2Create(&pXAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒXƒ^ƒŠƒ“ƒO‰¹º‚ğì¬
+	// ãƒã‚¹ã‚¿ãƒªãƒ³ã‚°éŸ³å£°ã‚’ä½œæˆ
 	result = pXAudio2_->CreateMasteringVoice(&pMasterVoice_);
 	assert(SUCCEEDED(result));
 }
@@ -47,53 +47,53 @@ uint16_t Sound::LoadWave(std::string fileName, float volume)
 
 	soundCounter_++;
 
-	// ƒtƒ@ƒCƒ‹“ü—ÍƒXƒgƒŠ[ƒ€‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// ãƒ•ã‚¡ã‚¤ãƒ«å…¥åŠ›ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	std::ifstream file;
 
-	// .wavƒtƒ@ƒCƒ‹‚ğƒoƒCƒiƒŠƒ‚[ƒh‚ÅŠJ‚­
+	// .wavãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§é–‹ã
 	file.open(fileName, std::ios_base::binary);
 
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğŒŸo‚·‚é
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’æ¤œå‡ºã™ã‚‹
 	assert(file.is_open());
 
-	// RIFFƒwƒbƒ_[‚Ì“Ç‚İ‚İ
+	// RIFFãƒ˜ãƒƒãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 
-	// ƒtƒ@ƒCƒ‹‚ªRIFF‚©ƒ`ƒFƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒRIFFã‹ãƒã‚§ãƒƒã‚¯
 	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
 		assert(0);
 	}
 
-	// ƒ^ƒCƒv‚ªWAVE‚©ƒ`ƒFƒbƒN
+	// ã‚¿ã‚¤ãƒ—ãŒWAVEã‹ãƒã‚§ãƒƒã‚¯
 	if (strncmp(riff.type, "WAVE", 4) != 0) {
 		assert(0);
 	}
 
-	// Formatƒ`ƒFƒbƒN‚Ì“Ç‚İ‚İ
+	// Formatãƒã‚§ãƒƒã‚¯ã®èª­ã¿è¾¼ã¿
 	FormatChunk format = {};
 
-	// ƒ`ƒƒƒ“ƒNƒwƒbƒ_[‚ÌŠm”F
+	// ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€ãƒ¼ã®ç¢ºèª
 	file.read((char*)&format, sizeof(ChunkHeader));
 	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
 		assert(0);
 	}
 
-	// ƒ`ƒƒƒ“ƒN–{‘Ì‚Ì“Ç‚İ‚İ
+	// ãƒãƒ£ãƒ³ã‚¯æœ¬ä½“ã®èª­ã¿è¾¼ã¿
 	assert(format.chunk.size <= sizeof(format.fmt));
 	file.read((char*)&format.fmt, format.chunk.size);
 
-	// Dataƒ`ƒƒƒ“ƒN‚Ì“Ç‚İ‚İ
+	// Dataãƒãƒ£ãƒ³ã‚¯ã®èª­ã¿è¾¼ã¿
 	ChunkHeader data{};
 	file.read((char*)&data, sizeof(data));
 
-	// JUNKƒ`ƒƒƒ“ƒN‚ğŒŸo‚µ‚½ê‡
+	// JUNKãƒãƒ£ãƒ³ã‚¯ã‚’æ¤œå‡ºã—ãŸå ´åˆ
 	if (strncmp(data.id, "JUNK", 4) == 0)
 	{
-		// “Ç‚İæ‚èˆÊ’u‚ğJUNKƒ`ƒƒƒ“ƒN‚ÌI‚í‚è‚Ü‚Åi‚ß‚é
+		// èª­ã¿å–ã‚Šä½ç½®ã‚’JUNKãƒãƒ£ãƒ³ã‚¯ã®çµ‚ã‚ã‚Šã¾ã§é€²ã‚ã‚‹
 		file.seekg(data.size, std::ios_base::cur);
 
-		// Ä“Ç‚İ‚İ
+		// å†èª­ã¿è¾¼ã¿
 		file.read((char*)&data, sizeof(data));
 	}
 
@@ -101,21 +101,21 @@ uint16_t Sound::LoadWave(std::string fileName, float volume)
 		assert(0);
 	}
 
-	// Dataƒ`ƒƒƒ“ƒN‚Ìƒf[ƒ^•”i”gŒ`ƒf[ƒ^j‚Ì“Ç‚İ‚İ
+	// Dataãƒãƒ£ãƒ³ã‚¯ã®ãƒ‡ãƒ¼ã‚¿éƒ¨ï¼ˆæ³¢å½¢ãƒ‡ãƒ¼ã‚¿ï¼‰ã®èª­ã¿è¾¼ã¿
 	char* pBuffer = new char[data.size];
 	file.read(pBuffer, data.size);
 
-	// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 
-	// return‚·‚éˆ×‚Ì‰¹ºƒf[ƒ^
+	// returnã™ã‚‹ç‚ºã®éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 	SoundData soundData = {};
 	soundData.wfex = format.fmt;
 	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
 	soundData.bufferSize = data.size;
 	soundData.volume = volume;
 
-	// ‰¹ºƒf[ƒ^•Û‘¶
+	// éŸ³å£°ãƒ‡ãƒ¼ã‚¿ä¿å­˜
 	soundDatas_.emplace(soundCounter_, soundData);
 	soundHandles_.emplace(fileName, soundCounter_);
 
@@ -136,12 +136,12 @@ void Sound::Play(uint16_t handle, bool isLoop)
 		}
 	}
 
-	// ƒ\[ƒX‰¹º‚ğì¬
+	// ã‚½ãƒ¼ã‚¹éŸ³å£°ã‚’ä½œæˆ
 	IXAudio2SourceVoice* sourceVoices = nullptr;
 	result = pXAudio2_->CreateSourceVoice(&sourceVoices, &soundDatas_[handle].wfex);
 	assert(SUCCEEDED(result));
 
-	// ƒ\[ƒX‰¹º‚Éƒoƒbƒtƒ@‚ğ‘—M
+	// ã‚½ãƒ¼ã‚¹éŸ³å£°ã«ãƒãƒƒãƒ•ã‚¡ã‚’é€ä¿¡
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundDatas_[handle].pBuffer;
 	buf.AudioBytes = soundDatas_[handle].bufferSize;
@@ -149,7 +149,7 @@ void Sound::Play(uint16_t handle, bool isLoop)
 	if (isLoop) buf.LoopCount = XAUDIO2_LOOP_INFINITE;
 	result = sourceVoices->SubmitSourceBuffer(&buf);
 
-	// Ä¶
+	// å†ç”Ÿ
 	result = sourceVoices->SetVolume(soundDatas_[handle].volume);
 	result = sourceVoices->Start(0);
 	assert(SUCCEEDED(result));

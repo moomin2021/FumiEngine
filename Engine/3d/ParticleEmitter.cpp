@@ -1,4 +1,4 @@
-#include "ParticleEmitter.h"
+﻿#include "ParticleEmitter.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
@@ -11,9 +11,9 @@ Camera* ParticleEmitter::sCamera_ = nullptr;
 
 ParticleEmitter::ParticleEmitter()
 {
-	CreateConstBuff();// �萔�o�b�t�@����
-	CreateVertexBuff();// ���_�o�b�t�@����
-	CreateIndexBuff();// �C���f�b�N�X�o�b�t�@����
+	CreateConstBuff();// 定数バッファ生成
+	CreateVertexBuff();// 頂点バッファ生成
+	CreateIndexBuff();// インデックスバッファ生成
 }
 
 ParticleEmitter::~ParticleEmitter()
@@ -23,49 +23,49 @@ ParticleEmitter::~ParticleEmitter()
 
 void ParticleEmitter::Update(BILLBOARD billBoard)
 {
-	// �֐��������������ǂ����𔻕ʂ���p�ϐ�
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
-	// �������s�����p�[�e�B�N����S�폜
+	// 寿命が尽きたパーティクルを全削除
 	for (auto it = particles_.begin(); it != particles_.end();) {
-		// ������v�����v�f���폜����
+		// 条件一致した要素を削除する
 		if ((*it).frame >= (*it).num_frame) {
-			// �폜���ꂽ�v�f�̎����w���C�e���[�^���Ԃ����B
+			// 削除された要素の次を指すイテレータが返される。
 			it = particles_.erase(it);
 		}
 
-		// �v�f�폜�����Ȃ��ꍇ�ɁA�C�e���[�^��i�߂�
+		// 要素削除をしない場合に、イテレータを進める
 		else {
 			++it;
 		}
 	}
 
-	// �S�p�[�e�B�N���X�V
+	// 全パーティクル更新
 	for (auto& it : particles_) {
-		// �o�߃t���[�������J�E���g
+		// 経過フレーム数をカウント
 		it.frame++;
 
-		// ���x�ɉ����x�����Z
+		// 速度に加速度を加算
 		it.velocity = it.velocity + it.accel;
 
-		// ���x�ɂ��ړ�
+		// 速度による移動
 		it.position = it.position + it.velocity;
 
-		// �i�s�x��0~1�͈̔͂Ɋ��Z
+		// 進行度を0~1の範囲に換算
 		float f = (float)it.frame / it.num_frame;
 
-		// �X�P�[���̐��`���
+		// スケールの線形補間
 		it.scale = (it.endScale - it.startScale) * f;
 		it.scale += it.startScale;
 	}
 
-	// ���_�o�b�t�@�փf�[�^�]��
+	// 頂点バッファへデータ転送
 	Vertex* vertMap = nullptr;
 	result = vertexBuff_->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
-		// �p�[�e�B�N���̏���1�����f
+		// パーティクルの情報を1つずつ反映
 		for (auto& it : particles_) {
-			// ���W
+			// 座標
 			vertMap->pos = it.position;
 			vertMap->scale = it.scale;
 
@@ -75,67 +75,67 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 		vertexBuff_->Unmap(0, nullptr);
 	}
 
-#pragma region ���[���h�s��v�Z
-	// �s�񏉊���
+#pragma region ワールド行列計算
+	// 行列初期化
 	Matrix4 matWorld = Matrix4Identity();
 
 	XMFLOAT3 eye = { sCamera_->GetEye().x, sCamera_->GetEye().y , sCamera_->GetEye().z };
 	XMFLOAT3 target = { sCamera_->GetTarget().x, sCamera_->GetTarget().y , sCamera_->GetTarget().z };
 	XMFLOAT3 up = { sCamera_->GetUp().x, sCamera_->GetUp().y , sCamera_->GetUp().z };
 
-	// ���_���W //
+	// 視点座標 //
 	XMVECTOR eyePosition = XMLoadFloat3(&eye);
 
-	// �����_���W //
+	// 注視点座標 //
 	XMVECTOR targetPosition = XMLoadFloat3(&target);
 
-	// (����)����� //
+	// (仮の)上方向 //
 	XMVECTOR upVector = XMLoadFloat3(&up);
 
-	// �J����Z��(��������) //
+	// カメラZ軸(視線方向) //
 	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
 
 	XMMATRIX matBillboard = XMMatrixIdentity();
 	Matrix4 mMatBillboard = Matrix4Identity();
 
-	// 0�x�N�g�����ƌ�������܂�Ȃ��̂ŏ��O //
+	// 0ベクトルだと向きが定まらないので除外 //
 	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
 	assert(!XMVector3IsInfinite(cameraAxisZ));
 	assert(!XMVector3Equal(upVector, XMVectorZero()));
 	assert(!XMVector3IsInfinite(upVector));
 
-	// �x�N�g���𐳋K�� //
+	// ベクトルを正規化 //
 	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
 
-	// �J������X��(�E����) //
+	// カメラのX軸(右方向) //
 	XMVECTOR cameraAxisX;
 
-	// X���͏������Z���̊O�ςŋ��܂� //
+	// X軸は上方向→Z軸の外積で求まる //
 	cameraAxisX = XMVector3Cross(upVector, cameraAxisZ);
 
-	// �x�N�g���𐳋K�� //
+	// ベクトルを正規化 //
 	cameraAxisX = XMVector3Normalize(cameraAxisX);
 
-	// �J������Y��(�����) //
+	// カメラのY軸(上方向) //
 	XMVECTOR cameraAxisY;
 
-	// Y����Z����X���̊O�ςŋ��܂� //
+	// Y軸はZ軸→X軸の外積で求まる //
 	cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
 
 	if (billBoard == Y) {
-		// �J����X���AY���AZ�� //
+		// カメラX軸、Y軸、Z軸 //
 		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
 
-		// X���͋��� //
+		// X軸は共通 //
 		ybillCameraAxisX = cameraAxisX;
 
-		// Y���̓��[���h���W�n��Y�� //
+		// Y軸はワールド座標系のY軸 //
 		ybillCameraAxisY = XMVector3Normalize(upVector);
 
-		// Z����X����Y���̊O�ςŋ��܂� //
+		// Z軸はX軸→Y軸の外積で求まる //
 		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
 
-		// Y�����̃r���{�[�h�s�� //
+		// Y軸回りのビルボード行列 //
 		matBillboard.r[0] = ybillCameraAxisX;
 		matBillboard.r[1] = ybillCameraAxisY;
 		matBillboard.r[2] = ybillCameraAxisZ;
@@ -149,19 +149,19 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 	}
 
 	else if (billBoard == ALL) {
-		// �J����X���AY���AZ�� //
+		// カメラX軸、Y軸、Z軸 //
 		XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
 
-		// X���͋��� //
+		// X軸は共通 //
 		ybillCameraAxisX = cameraAxisX;
 
-		// Y���̓��[���h���W�n��Y�� //
+		// Y軸はワールド座標系のY軸 //
 		ybillCameraAxisY = XMVector3Normalize(upVector);
 
-		// Z����X����Y���̊O�ςŋ��܂� //
+		// Z軸はX軸→Y軸の外積で求まる //
 		ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
 
-		// �S�����r���{�[�h�s��̌v�Z //
+		// 全方向ビルボード行列の計算 //
 		matBillboard.r[0] = cameraAxisX;
 		matBillboard.r[1] = cameraAxisY;
 		matBillboard.r[2] = cameraAxisZ;
@@ -176,54 +176,54 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 
 	if (billBoard != NONE) matWorld *= mMatBillboard;
 
-	// ���[���h�s��ɕ��s�ړ��𔽉f
+	// ワールド行列に平行移動を反映
 	matWorld *= Matrix4Translate(position_);
 
 #pragma endregion
 
-#pragma region �萔�o�b�t�@�ւ̃f�[�^�]��
-	// �s��
+#pragma region 定数バッファへのデータ転送
+	// 行列
 	constMap_->mat = matWorld * sCamera_->GetMatView() * sCamera_->GetMatProjection();
 #pragma endregion
 }
 
 void ParticleEmitter::Draw(uint16_t handle)
 {
-	// �R�}���h���X�g�擾
+	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// �C���X�^���X�擾
+	// インスタンス取得
 	Texture* tex = Texture::GetInstance();
 
-	// SRV�q�[�v�̃n���h�����擾
+	// SRVヒープのハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	// �n���h�����w�肳�ꂽ���܂Ői�߂�
+	// ハンドルを指定された分まで進める
 	srvGpuHandle.ptr += handle;
 
-	// �w�肳�ꂽSRV�����[�g�p�����[�^1�Ԃɐݒ�
+	// 指定されたSRVをルートパラメータ1番に設定
 	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 
-	// �萔�o�b�t�@�r���[�iCBV�j�̐ݒ�R�}���h
+	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());
 
-	// ���_�o�b�t�@�r���[�̐ݒ�R�}���h
+	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vertexView_);
 
-	// �C���f�b�N�X�o�b�t�@�r���[�̐ݒ�R�}���h
+	// インデックスバッファビューの設定コマンド
 	cmdList->IASetIndexBuffer(&indexView_);
 
-	// �`��R�}���h
+	// 描画コマンド
 	cmdList->DrawInstanced(static_cast<UINT>(std::distance(particles_.begin(), particles_.end())), 1, 0, 0);
 }
 
 void ParticleEmitter::Add(uint16_t life, Vector3 pos, Vector3 velocity, Vector3 accel, float startScale, float endScale)
 {
-	// ���X�g�ɗv�f��ǉ�
+	// リストに要素を追加
 	particles_.emplace_front();
-	// �ǉ������v�f�̎Q��
+	// 追加した要素の参照
 	Particle& p = particles_.front();
-	// �l�̃Z�b�g
+	// 値のセット
 	p.position = pos;
 	p.velocity = velocity;
 	p.accel = accel;
@@ -234,18 +234,18 @@ void ParticleEmitter::Add(uint16_t life, Vector3 pos, Vector3 velocity, Vector3 
 
 void ParticleEmitter::CreateConstBuff()
 {
-	// �֐��������������ǂ����𔻕ʂ���p�ϐ�
+	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
-	// �f�o�C�X�擾
+	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-#pragma region �萔�o�b�t�@����
-	// �萔�o�b�t�@�̃q�[�v�ݒ�
-	D3D12_HEAP_PROPERTIES heapProp{};		// �q�[�v�ݒ�
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPU�ւ̓]���p
+#pragma region 定数バッファ生成
+	// 定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// �萔�o�b�t�@�̃��\�[�X�ݒ�
+	// 定数バッファのリソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;
@@ -255,7 +255,7 @@ void ParticleEmitter::CreateConstBuff()
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// �萔�o�b�t�@�̐���
+	// 定数バッファの生成
 	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -266,7 +266,7 @@ void ParticleEmitter::CreateConstBuff()
 	assert(SUCCEEDED(result));
 #pragma endregion
 
-#pragma region �萔�o�b�t�@�ւ̃f�[�^�]��
+#pragma region 定数バッファへのデータ転送
 	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
 	assert(SUCCEEDED(result));
 #pragma endregion
@@ -274,91 +274,91 @@ void ParticleEmitter::CreateConstBuff()
 
 void ParticleEmitter::CreateVertexBuff()
 {
-	// �f�o�C�X�擾
+	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-	// �֐����s�̐��ۂ𔻕ʗp�̕ϐ�
+	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
-	// ���_�f�[�^�S�̂̃T�C�Y = ���_�f�[�^����̃T�C�Y * ���_�f�[�^�̗v�f��
+	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * MAX_VERTEX);
 
-	// ���_�o�b�t�@�̐ݒ�
-	D3D12_HEAP_PROPERTIES heapProp{};		// �q�[�v�ݒ�
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPU�ւ̓]���p
+	// 頂点バッファの設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// ���\�[�X�ݒ�
+	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB; // ���_�f�[�^�S�̂̃T�C�Y
+	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
 	resDesc.Height = 1;
 	resDesc.DepthOrArraySize = 1;
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// ���_�o�b�t�@�̐���
+	// 頂点バッファの生成
 	result = device->CreateCommittedResource(
-		&heapProp, // �q�[�v�ݒ�
+		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // ���\�[�X�ݒ�
+		&resDesc, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertexBuff_));
 	assert(SUCCEEDED(result));
 
-	// ���_�o�b�t�@�r���[�̍쐬
-	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// GPU���z�A�h���X
-	vertexView_.SizeInBytes = sizeVB;				// ���_�o�b�t�@�̃T�C�Y
-	vertexView_.StrideInBytes = sizeof(Vertex);	// ���_1���̃f�[�^�T�C�Y
+	// 頂点バッファビューの作成
+	vertexView_.BufferLocation = vertexBuff_->GetGPUVirtualAddress();// GPU仮想アドレス
+	vertexView_.SizeInBytes = sizeVB;				// 頂点バッファのサイズ
+	vertexView_.StrideInBytes = sizeof(Vertex);	// 頂点1つ分のデータサイズ
 }
 
 void ParticleEmitter::CreateIndexBuff()
 {
-	// �f�o�C�X�擾
+	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-	// �֐����s�̐��ۂ𔻕ʗp�̕ϐ�
+	// 関数実行の成否を判別用の変数
 	HRESULT result;
 
-	// �C���f�b�N�X�f�[�^�S�̂̃T�C�Y
+	// インデックスデータ全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * 6);
 
-	// ���_�o�b�t�@�̐ݒ�
-	D3D12_HEAP_PROPERTIES heapProp{};		// �q�[�v�ݒ�
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPU�ւ̓]���p
+	// 頂点バッファの設定
+	D3D12_HEAP_PROPERTIES heapProp{};		// ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUへの転送用
 
-	// ���\�[�X�ݒ�
+	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeIB; // ���_�f�[�^�S�̂̃T�C�Y
+	resDesc.Width = sizeIB; // 頂点データ全体のサイズ
 	resDesc.Height = 1;
 	resDesc.DepthOrArraySize = 1;
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// �C���f�b�N�X�o�b�t�@�̐���
+	// インデックスバッファの生成
 	result = device->CreateCommittedResource(
-		&heapProp,// �q�[�v�ݒ�
+		&heapProp,// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc,// ���\�[�X�ݒ�
+		&resDesc,// リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&indexBuff_)
 	);
 
-	// �C���f�b�N�X�o�b�t�@�r���[�쐬
+	// インデックスバッファビュー作成
 	indexView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 	indexView_.Format = DXGI_FORMAT_R16_UINT;
 	indexView_.SizeInBytes = sizeIB;
 
-	// �C���f�b�N�X�o�b�t�@���}�b�s���O
+	// インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	assert(SUCCEEDED(result));
 
-	// �C���f�b�N�X���𑗐M
+	// インデックス情報を送信
 	indexMap[0] = 0;
 	indexMap[1] = 1;
 	indexMap[2] = 2;
@@ -366,6 +366,6 @@ void ParticleEmitter::CreateIndexBuff()
 	indexMap[4] = 1;
 	indexMap[5] = 3;
 
-	// �}�b�s���O����
+	// マッピング解除
 	indexBuff_->Unmap(0, nullptr);
 }

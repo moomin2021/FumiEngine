@@ -1,4 +1,4 @@
-#include "Boss0.h"
+ï»¿#include "Boss0.h"
 #include "CollisionAttribute.h"
 
 Boss0::Boss0()
@@ -12,21 +12,21 @@ Boss0::~Boss0()
 
 void Boss0::Initialize(const Vector3& pos)
 {
-#pragma region ƒCƒ“ƒXƒ^ƒ“ƒX
+#pragma region ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	colMgr_ = CollisionManager::GetInstance();
 #pragma endregion
 
-#pragma region ƒ‚ƒfƒ‹
+#pragma region ãƒ¢ãƒ‡ãƒ«
 	model_ = std::make_unique<Model>("boss0");
 #pragma endregion
 
-#pragma region ƒIƒuƒWƒFƒNƒg
+#pragma region ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	object_ = std::make_unique<Object3D>(model_.get());
 	object_->SetPosition(pos);
 	object_->SetScale({ 5.0f, 5.0f, 5.0f });
 #pragma endregion
 
-#pragma region ƒRƒ‰ƒCƒ_[
+#pragma region ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 7.5f * 5.0, 0.0f }, 5.0f);
 	collider_->SetAttribute(COL_ENEMY);
 	collider_->SetObject3D(object_.get());

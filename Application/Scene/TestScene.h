@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 #include "Camera.h"
 #include "Model.h"
@@ -10,46 +10,46 @@
 
 class TestScene : public BaseScene
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	std::unique_ptr<Camera> camera_ = nullptr;
 
-	// ƒ‰ƒCƒgƒOƒ‹[ƒv
+	// ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—
 	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
-	// •½sŒõŒ¹
+	// å¹³è¡Œå…‰æº
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	std::unique_ptr<Model> model_ = nullptr;
 
-	// ƒIƒuƒWƒFƒNƒg3D
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3D
 	std::unique_ptr<Object3D> object_ = nullptr;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	TestScene();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~TestScene();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
 private:
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	void OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 #pragma endregion
 };

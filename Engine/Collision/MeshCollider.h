@@ -1,66 +1,66 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
 class MeshCollider : public BaseCollider
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// OŠpŒ`
+	// ä¸‰è§’å½¢
 	std::vector<Triangle> triangles_;
 
-	// Õ“Ë‚µ‚½‚Æ‚«‚Ìî•ñ
-	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// Œğ“_
-	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹
+	// è¡çªã—ãŸã¨ãã®æƒ…å ±
+	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// äº¤ç‚¹
+	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	MeshCollider(Object3D* object);
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update() override;
 
 	/// <summary>
-	/// ‹…‚Æ‚Ì“–‚½‚è”»’è
+	/// çƒã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="sphere"> ‹… </param>
-	/// <param name="inter"> Œğ“_(o—Í—p) </param>
-	/// <returns> Œğ·‚µ‚Ä‚¢‚é‚©”Û‚© </returns>
+	/// <param name="sphere"> çƒ </param>
+	/// <param name="inter"> äº¤ç‚¹(å‡ºåŠ›ç”¨) </param>
+	/// <returns> äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹ </returns>
 	bool CheckCollisionSphere(const Sphere& sphere, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
 	/// <summary>
-	/// ƒŒƒC‚Æ‚Ì“–‚½‚è”»’è
+	/// ãƒ¬ã‚¤ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="ray"> ƒŒƒC </param>
-	/// <param name="distance"> ‹——£(o—Í—p) </param>
-	/// <param name="inter"> Œğ“_(o—Í—p) </param>
-	/// <returns> Œğ·‚µ‚Ä‚¢‚é‚©”Û‚© </returns>
+	/// <param name="ray"> ãƒ¬ã‚¤ </param>
+	/// <param name="distance"> è·é›¢(å‡ºåŠ›ç”¨) </param>
+	/// <param name="inter"> äº¤ç‚¹(å‡ºåŠ›ç”¨) </param>
+	/// <returns> äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹ </returns>
 	bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, Vector3* inter = nullptr);
 
 private:
 	/// <summary>
-	/// OŠpŒ`‚Ì”z—ñ‚ğ\’z‚·‚é
+	/// ä¸‰è§’å½¢ã®é…åˆ—ã‚’æ§‹ç¯‰ã™ã‚‹
 	/// </summary>
-	/// <param name="model"> ƒ‚ƒfƒ‹ </param>
+	/// <param name="model"> ãƒ¢ãƒ‡ãƒ« </param>
 	void ConstructTriangles(Model* model);
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// Œğ“_‚ğİ’è
+	// äº¤ç‚¹ã‚’è¨­å®š
 	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
-	// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹‚ğ‰ÁZ
+	// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«ã‚’åŠ ç®—
 	inline void AddReject(const Vector3& reject) { reject_ += reject; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
-	// Œğ“_‚ğæ“¾
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// äº¤ç‚¹ã‚’å–å¾—
 	inline const Vector3& GetInter() { return inter_; }
 
-	// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹‚ğæ“¾
+	// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

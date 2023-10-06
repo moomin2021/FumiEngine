@@ -1,39 +1,39 @@
-#include "CollisionManager2D.h"
+ï»¿#include "CollisionManager2D.h"
 #include "Collision.h"
 
 CollisionManager2D::~CollisionManager2D()
 {
-	// ƒRƒ‰ƒCƒ_[íœ
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å‰Šé™¤
 	colliders_.clear();
 }
 
 void CollisionManager2D::CheckAllCollision()
 {
-	// ƒRƒ‰ƒCƒ_[XV
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ›´æ–°
 	for (auto& it : colliders_) {
 		it->Update();
 	}
 
-	// ‘“–‚½‚è‚·‚é‚½‚ß‚É—pˆÓ
+	// ç·å½“ãŸã‚Šã™ã‚‹ãŸã‚ã«ç”¨æ„
 	std::forward_list<BaseCollider2D*>::iterator itA = colliders_.begin();;
 	std::forward_list<BaseCollider2D*>::iterator itB;
 
-	// ‘“–‚½‚èƒ`ƒFƒbƒN
+	// ç·å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	for (; itA != colliders_.end(); ++itA) {
 		itB = itA;
 		++itB;
 
 		for (; itB != colliders_.end(); ++itB) {
-			// ‘®«‚ª‡‚í‚È‚¯‚ê‚ÎœŠO
+			// å±æ€§ãŒåˆã‚ãªã‘ã‚Œã°é™¤å¤–
 			if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
 
-			// ‚Æ‚à‚É‹éŒ`
+			// ã¨ã‚‚ã«çŸ©å½¢
 			if ((*itA)->GetShapeType() == SHAPE_BOX && (*itB)->GetShapeType() == SHAPE_BOX) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Box* boxA = dynamic_cast<Box*>(*itA);
 				Box* boxB = dynamic_cast<Box*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckBox2Box(*boxA, *boxB)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -43,13 +43,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// ‚Æ‚à‚É‰~
+			// ã¨ã‚‚ã«å††
 			else if ((*itA)->GetShapeType() == SHAPE_CIRCLE && (*itB)->GetShapeType() == SHAPE_CIRCLE) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Circle* cirA = dynamic_cast<Circle*>(*itA);
 				Circle* cirB = dynamic_cast<Circle*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckCircle2Circle(*cirA, *cirB)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -59,13 +59,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// “_‚Æ‹éŒ`
+			// ç‚¹ã¨çŸ©å½¢
 			else if ((*itA)->GetShapeType() == SHAPE_POINT && (*itB)->GetShapeType() == SHAPE_BOX) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Point* point = dynamic_cast<Point*>(*itA);
 				Box* box = dynamic_cast<Box*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckPoint2Box(*point, *box)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -75,13 +75,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// ‹éŒ`‚Æ“_
+			// çŸ©å½¢ã¨ç‚¹
 			else if ((*itA)->GetShapeType() == SHAPE_BOX && (*itB)->GetShapeType() == SHAPE_POINT) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Box* box = dynamic_cast<Box*>(*itA);
 				Point* point = dynamic_cast<Point*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckPoint2Box(*point, *box)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -91,13 +91,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// “_‚Æ‰~
+			// ç‚¹ã¨å††
 			else if ((*itA)->GetShapeType() == SHAPE_POINT && (*itB)->GetShapeType() == SHAPE_CIRCLE) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Point* point = dynamic_cast<Point*>(*itA);
 				Circle* cir = dynamic_cast<Circle*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckPoint2Circle(*point, *cir)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -107,13 +107,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// ‰~‚Æ“_
+			// å††ã¨ç‚¹
 			else if ((*itA)->GetShapeType() == SHAPE_CIRCLE && (*itB)->GetShapeType() == SHAPE_POINT) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Circle* cir = dynamic_cast<Circle*>(*itA);
 				Point* point = dynamic_cast<Point*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckPoint2Circle(*point, *cir)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -123,13 +123,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// ‹éŒ`‚Æ‰~
+			// çŸ©å½¢ã¨å††
 			else if ((*itA)->GetShapeType() == SHAPE_BOX && (*itB)->GetShapeType() == SHAPE_CIRCLE) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Box* box = dynamic_cast<Box*>(*itA);
 				Circle* cir = dynamic_cast<Circle*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckCircle2Box(*cir, *box)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -139,13 +139,13 @@ void CollisionManager2D::CheckAllCollision()
 				}
 			}
 
-			// ‰~‚Æ‹éŒ`
+			// å††ã¨çŸ©å½¢
 			else if ((*itA)->GetShapeType() == SHAPE_CIRCLE && (*itB)->GetShapeType() == SHAPE_BOX) {
-				// Õ“Ë”»’è‚Ìˆø”‚Ì‚½‚ß‚É‹…‚É•ÏŠ·
+				// è¡çªåˆ¤å®šã®å¼•æ•°ã®ãŸã‚ã«çƒã«å¤‰æ›
 				Circle* cir = dynamic_cast<Circle*>(*itA);
 				Box* box = dynamic_cast<Box*>(*itB);
 
-				// Õ“Ë”»’è
+				// è¡çªåˆ¤å®š
 				if (Collision::CheckCircle2Box(*cir, *box)) {
 					(*itA)->SetIsHit(true);
 					(*itA)->SetHitCollider(*itB);
@@ -160,9 +160,9 @@ void CollisionManager2D::CheckAllCollision()
 
 CollisionManager2D* CollisionManager2D::GetInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	static CollisionManager2D inst;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
 	return &inst;
 }

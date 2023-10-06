@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace Easing {
 	float lerp(float start, float end, float t);

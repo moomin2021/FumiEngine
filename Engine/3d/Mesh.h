@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Vector2.h"
 #include "Vector3.h"
 
@@ -9,98 +9,98 @@
 
 class Mesh
 {
-#pragma region ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+#pragma region ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #pragma endregion
 
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 public:
-	// ’¸“_ƒf[ƒ^
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	struct Vertex {
-		Vector3 pos;		// À•W(XYZ)
-		Vector3 normal;	// –@ü(XYZ)
-		Vector2 uv;		// UVÀ•W(XY)
+		Vector3 pos;		// åº§æ¨™(XYZ)
+		Vector3 normal;	// æ³•ç·š(XYZ)
+		Vector2 uv;		// UVåº§æ¨™(XY)
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ’¸“_ƒf[ƒ^
-	std::vector<Vertex> vertices_;			// ’¸“_ƒf[ƒ^
-	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// ’¸“_ƒoƒbƒtƒ@[ƒrƒ…[
-	ComPtr<ID3D12Resource> vertexBuff_;		// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<Vertex> vertices_;			// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼
+	ComPtr<ID3D12Resource> vertexBuff_;		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 
-	// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	std::vector<uint16_t> indexes_;		// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	D3D12_INDEX_BUFFER_VIEW indexView_;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-	ComPtr<ID3D12Resource> indexBuff_;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<uint16_t> indexes_;		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	D3D12_INDEX_BUFFER_VIEW indexView_;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+	ComPtr<ID3D12Resource> indexBuff_;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 
-	// “K—p‚³‚ê‚éƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O
+	// é©ç”¨ã•ã‚Œã‚‹ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰
 	std::string materialName_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Mesh();
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ’¸“_ƒf[ƒ^‚ğ’Ç‰Á
+	/// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 	/// </summary>
-	/// <param name="vertex"> ’¸“_ƒf[ƒ^ </param>
+	/// <param name="vertex"> é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ </param>
 	void AddVertex(const Vertex& vertex) { vertices_.emplace_back(vertex); }
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ğ’Ç‰Á
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 	/// </summary>
-	/// <param name="index"> ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ </param>
+	/// <param name="index"> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ </param>
 	void AddIndex(uint16_t index) { indexes_.emplace_back(index); }
 
 	/// <summary>
-	/// ’¸“_ƒoƒbƒtƒ@ì¬
+	/// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateVertexBuff();
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ì¬
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateIndexBuff();
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚ğİ’è
+	/// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="name"> ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O </param>
+	/// <param name="name"> ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ </param>
 	void SetMaterialName(const std::string& name) { materialName_ = name; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚ğæ“¾
+	/// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O </returns>
+	/// <returns> ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ </returns>
 	const std::string& GetMaterialName() { return materialName_; }
 
 	/// <summary>
-	/// ’¸“_ƒf[ƒ^ƒRƒ“ƒeƒi‚ğæ“¾
+	/// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠã‚’å–å¾—
 	/// </summary>
-	/// <returns> ’¸“_ƒf[ƒ^ </returns>
+	/// <returns> é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ </returns>
 	inline const std::vector<Vertex>& GetVertex() { return vertices_; }
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ƒRƒ“ƒeƒi‚ğæ“¾
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ƒRƒ“ƒeƒi </returns>
+	/// <returns> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠ </returns>
 	inline const std::vector<uint16_t>& GetIndex() { return indexes_; }
 #pragma endregion
 };

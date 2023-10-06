@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
@@ -9,83 +9,83 @@
 
 class LightGroup {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region ’è”ƒƒ“ƒo•Ï”
-	// Šeƒ‰ƒCƒgãŒÀ
+#pragma region å®šæ•°ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// å„ãƒ©ã‚¤ãƒˆä¸Šé™
 	static const uint16_t DIR_LIGHT_LIMIT = 1;
 	static const uint16_t POINT_LIGHT_LIMIT = 10;
 	static const uint16_t SPOT_LIGHT_LIMIT = 10;
 	static const uint16_t CIRCLE_SHADOW_LIMIT = 1;
 #pragma endregion
 
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 public:
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Vector3 ambientColor;// ŠÂ‹«Œõ‚ÌF
+		Vector3 ambientColor;// ç’°å¢ƒå…‰ã®è‰²
 		float pad1;
-		DirectionalLight::ConstBufferData dirLights[DIR_LIGHT_LIMIT];		// •½sŒõŒ¹—p
-		PointLight::ConstBufferData pointLights[POINT_LIGHT_LIMIT];			// “_ŒõŒ¹—p
-		SpotLight::ConstBufferData spotLights[SPOT_LIGHT_LIMIT];			// ƒXƒ|ƒbƒgƒ‰ƒCƒg—p
-		CircleShadow::ConstBufferData circleShadows[CIRCLE_SHADOW_LIMIT];	// ŠÛ‰e—p
+		DirectionalLight::ConstBufferData dirLights[DIR_LIGHT_LIMIT];		// å¹³è¡Œå…‰æºç”¨
+		PointLight::ConstBufferData pointLights[POINT_LIGHT_LIMIT];			// ç‚¹å…‰æºç”¨
+		SpotLight::ConstBufferData spotLights[SPOT_LIGHT_LIMIT];			// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆç”¨
+		CircleShadow::ConstBufferData circleShadows[CIRCLE_SHADOW_LIMIT];	// ä¸¸å½±ç”¨
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ’è”ƒoƒbƒtƒ@
-	ComPtr<ID3D12Resource> constBuff_;// ƒ‰ƒCƒgƒf[ƒ^
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ComPtr<ID3D12Resource> constBuff_;// ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿
 
-	// ŠÂ‹«Œõ‚ÌF
+	// ç’°å¢ƒå…‰ã®è‰²
 	Vector3 ambientColor_;
 	
-	// ƒ‰ƒCƒgƒf[ƒ^
-	std::vector<DirectionalLight*> dirLights_;	// •½sŒõŒ¹‚Ì”z—ñ
-	std::vector<PointLight*> pointLights_;		// “_ŒõŒ¹‚Ì”z—ñ
-	std::vector<SpotLight*> spotLights_;			// ƒXƒ|ƒbƒgƒ‰ƒCƒg—p
-	std::vector<CircleShadow*> circleShadows_;	// ŠÛ‰e‚Ì”z—ñ
+	// ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿
+	std::vector<DirectionalLight*> dirLights_;	// å¹³è¡Œå…‰æºã®é…åˆ—
+	std::vector<PointLight*> pointLights_;		// ç‚¹å…‰æºã®é…åˆ—
+	std::vector<SpotLight*> spotLights_;			// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆç”¨
+	std::vector<CircleShadow*> circleShadows_;	// ä¸¸å½±ã®é…åˆ—
 
-	// ƒ_[ƒeƒBƒtƒ‰ƒO
+	// ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°
 	bool dirty_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	LightGroup();
 
 	/// <summary>
-	/// ƒ‰ƒCƒg•`‰æ
+	/// ãƒ©ã‚¤ãƒˆæç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// •½sŒõŒ¹’Ç‰Á
+	/// å¹³è¡Œå…‰æºè¿½åŠ 
 	/// </summary>
 	void AddDirLight(DirectionalLight* light);
 
 	/// <summary>
-	/// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg’Ç‰Á
+	/// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆè¿½åŠ 
 	/// </summary>
 	void AddPointLight(PointLight* light);
 
 	/// <summary>
-	/// ƒXƒ|ƒbƒgƒ‰ƒCƒg’Ç‰Á
+	/// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆè¿½åŠ 
 	/// </summary>
 	void AddSpotLight(SpotLight* light);
 
 	/// <summary>
-	/// ŠÛ‰e’Ç‰Á
+	/// ä¸¸å½±è¿½åŠ 
 	/// </summary>
 	void AddCircleShadow(CircleShadow* shadow);
 
 private:
 	/// <summary>
-	/// ’è”ƒoƒbƒtƒ@“]‘—
+	/// å®šæ•°ãƒãƒƒãƒ•ã‚¡è»¢é€
 	/// </summary>
 	void TransferConstBuffer();
 #pragma endregion

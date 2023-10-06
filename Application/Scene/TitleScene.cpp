@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+ï»¿#include "TitleScene.h"
 #include "Texture.h"
 #include "PipelineManager.h"
 #include "SceneManager.h"
@@ -18,18 +18,18 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-#pragma region ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
-	key_ = Key::GetInstance();// ƒL[ƒ{[ƒh
-	mouse_ = Mouse::GetInstance();// ƒ}ƒEƒX
-	colMgr2D_ = CollisionManager2D::GetInstance();// Õ“Ëƒ}ƒl[ƒWƒƒ[2D
+#pragma region ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
+	key_ = Key::GetInstance();// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
+	mouse_ = Mouse::GetInstance();// ãƒã‚¦ã‚¹
+	colMgr2D_ = CollisionManager2D::GetInstance();// è¡çªãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼2D
 #pragma endregion
 
-#pragma region ƒJƒƒ‰
+#pragma region ã‚«ãƒ¡ãƒ©
 	camera_ = std::make_unique<Camera>();
 	Sprite::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region ƒXƒvƒ‰ƒCƒg
+#pragma region ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sSelectButtons_.resize(2);
 	for (uint16_t i = 0; i < sSelectButtons_.size(); i++) {
 		sSelectButtons_[i] = std::make_unique<Sprite>();
@@ -51,7 +51,7 @@ void TitleScene::Initialize()
 	}
 #pragma endregion
 
-#pragma region ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+#pragma region ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	gSelectButton_ = LoadTexture("Resources/titleSelectButton.png");
 	gSelectButtonFrame_ = LoadTexture("Resources/titleSelectButtonFrame.png");
 
@@ -60,7 +60,7 @@ void TitleScene::Initialize()
 	gSelectText_[1] = LoadTexture("resources/titleSelectText1.png");
 #pragma endregion
 
-#pragma region ƒRƒ‰ƒCƒ_[
+#pragma region ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	mouseCol_ = std::make_unique<PointCollider>();
 	mouseCol_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(mouseCol_.get());
@@ -74,7 +74,7 @@ void TitleScene::Initialize()
 	}
 #pragma endregion
 
-#pragma region ƒ{ƒ^ƒ“ŠÖ˜A
+#pragma region ãƒœã‚¿ãƒ³é–¢é€£
 	selectButtonPos_.resize(2);
 	for (uint8_t i = 0; i < selectButtonPos_.size();i++) {
 		selectButtonPos_[i] = {250.0f, 525.0f + (i * 50.0f)};
@@ -84,16 +84,16 @@ void TitleScene::Initialize()
 
 void TitleScene::Update()
 {
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“‚Ìˆ—
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³ã®å‡¦ç†
 	SelectButton();
 
-	// ƒ}ƒEƒX‚ÌƒRƒ‰ƒCƒ_[XV
+	// ãƒã‚¦ã‚¹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æ›´æ–°
 	mouseCol_->SetOffset(mouse_->MousePos());
 
-	// Õ“Ëˆ—2D
+	// è¡çªå‡¦ç†2D
 	OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	MatUpdate();
 
 	ImGui::Begin("Debug");
@@ -119,34 +119,34 @@ void TitleScene::Draw()
 {
 	PipelineManager::PreDraw("Sprite");
 
-	// ƒ^ƒCƒgƒ‹‚ğ•`‰æ
+	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’æç”»
 	//sTitle_->Draw(hTitle_);
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“•`‰æ
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³æç”»
 	for (auto& it : sSelectButtons_) it->Draw(gSelectButton_);
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“‚Ì˜g
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³ã®æ 
 	if (isSelect_) sSelectButtonFrame_->Draw(gSelectButtonFrame_);
 
-	// ƒZƒŒƒNƒgƒeƒLƒXƒg
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒ†ã‚­ã‚¹ãƒˆ
 	for (uint16_t i = 0; i < sSelectText_.size(); i++) sSelectText_[i]->Draw(gSelectText_[i]);
 }
 
 void TitleScene::OnCollision()
 {
-	// Õ“Ë‘Sƒ`ƒFƒbƒN
+	// è¡çªå…¨ãƒã‚§ãƒƒã‚¯
 	colMgr2D_->CheckAllCollision();
 
-#pragma region ƒ{ƒ^ƒ“‚Æƒ}ƒEƒX‚Ì”»’è
+#pragma region ãƒœã‚¿ãƒ³ã¨ãƒã‚¦ã‚¹ã®åˆ¤å®š
 	bool result = false;
 	for (uint16_t i = 0; i < selectButtonsCol_.size();i++) {
 		sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		if (selectButtonsCol_[i]->GetIsHit()) {
-			if (isSelect_ == false) startEaseTime_ = Util::GetTimrMSec();// ƒC[ƒWƒ“ƒOŠJnŠÔ‚ğ‹L˜^
-			if (nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// ƒC[ƒWƒ“ƒOŠJnŠÔ‚ğ‹L˜^
-			result = true;// ‘I‘ğ’†ƒtƒ‰ƒO‚ğ[ON]
-			sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// F‚ğ•Ï‚¦‚é
-			nowSelect_ = i;// ‘I‘ğ‚µ‚Ä‚¢‚é‚à‚Ì‚ğ•Û‘¶
+			if (isSelect_ == false) startEaseTime_ = Util::GetTimrMSec();// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–‹å§‹æ™‚é–“ã‚’è¨˜éŒ²
+			if (nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–‹å§‹æ™‚é–“ã‚’è¨˜éŒ²
+			result = true;// é¸æŠä¸­ãƒ•ãƒ©ã‚°ã‚’[ON]
+			sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// è‰²ã‚’å¤‰ãˆã‚‹
+			nowSelect_ = i;// é¸æŠã—ã¦ã„ã‚‹ã‚‚ã®ã‚’ä¿å­˜
 			sSelectButtonFrame_->SetPosition(selectButtonPos_[i]);
 		}
 	}
@@ -158,16 +158,16 @@ void TitleScene::OnCollision()
 
 void TitleScene::MatUpdate()
 {
-	// ƒJƒƒ‰XV
+	// ã‚«ãƒ¡ãƒ©æ›´æ–°
 	camera_->Update();
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“XV
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³æ›´æ–°
 	for (auto& it : sSelectButtons_) it->MatUpdate();
 
-	// ƒZƒŒƒNƒgƒ{ƒ^ƒ“‚Ì˜g
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³ã®æ 
 	sSelectButtonFrame_->MatUpdate();
 
-	// ƒZƒŒƒNƒgƒeƒLƒXƒg
+	// ã‚»ãƒ¬ã‚¯ãƒˆãƒ†ã‚­ã‚¹ãƒˆ
 	for (auto& it : sSelectText_) it->MatUpdate();
 }
 

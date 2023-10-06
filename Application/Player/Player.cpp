@@ -1,4 +1,4 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include "CollisionAttribute.h"
 #include "Util.h"
 #include "Easing.h"
@@ -25,44 +25,44 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ğæ“¾
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‚’å–å¾—
 	Vector2 winSize = {
 		static_cast<float>(WinAPI::GetInstance()->GetWidth()),
 		static_cast<float>(WinAPI::GetInstance()->GetHeight()) };
 
-#pragma region ƒCƒ“ƒXƒ^ƒ“ƒX
+#pragma region ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
 	colMgr_ = CollisionManager::GetInstance();
 	sound_ = Sound::GetInstance();
 #pragma endregion
 
-#pragma region ƒTƒEƒ“ƒh
+#pragma region ã‚µã‚¦ãƒ³ãƒ‰
 	shotSE_ = sound_->LoadWave("Resources/Sound/shot.wav", 0.1f);
 #pragma endregion
 
-#pragma region ƒJƒƒ‰
+#pragma region ã‚«ãƒ¡ãƒ©
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 10.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 	Sprite::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region ƒ‚ƒfƒ‹
+#pragma region ãƒ¢ãƒ‡ãƒ«
 	mSphere_ = std::make_unique<Model>("sphere");
 	mBullet_ = std::make_unique<Model>("sphere");
 	mSheriff_ = std::make_unique<Model>("Sheriff");
 #pragma endregion
 
-#pragma region ƒIƒuƒWƒFƒNƒg
+#pragma region ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	oPlayer_ = std::make_unique<Object3D>(mSphere_.get());
 
 	oSheriff_ = std::make_unique<Object3D>(mSheriff_.get());
 	oSheriff_->SetScale(Vector3{ 0.1f, 0.1f, 0.1f });
 #pragma endregion
 
-#pragma region ƒXƒvƒ‰ƒCƒg
-	// ƒNƒƒXƒwƒA
+#pragma region ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+	// ã‚¯ãƒ­ã‚¹ãƒ˜ã‚¢
 	sCrossHair_ = std::make_unique<Sprite>();
 	sCrossHair_->SetAnchorPoint({ 0.5f, 0.5f });
 	sCrossHair_->SetPosition({
@@ -70,19 +70,19 @@ void Player::Initialize()
 		WinAPI::GetInstance()->GetHeight() / 2.0f });
 	sCrossHair_->SetSize({ 26, 26 });
 
-	// ƒŠƒ[ƒhUI
+	// ãƒªãƒ­ãƒ¼ãƒ‰UI
 	sReloadUI_ = std::make_unique<Sprite>();
 	sReloadUI_->SetAnchorPoint({ 0.5f, 0.5f });
 	sReloadUI_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
 	sReloadUI_->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
 
-	// c’e”•\¦UI—p‚ÌƒXƒvƒ‰ƒCƒg‚ğ¶¬
+	// æ®‹å¼¾æ•°è¡¨ç¤ºUIç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’ç”Ÿæˆ
 	sBulletValueDisplayFrame_ = std::make_unique<Sprite>();
 	sBulletValueDisplayFrame_->SetAnchorPoint({ 0.5f, 0.5f });
 	sBulletValueDisplayFrame_->SetSize({ 300.0f, 140.0f });
 	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 70.0f });
 
-	// Å‘å’e”•\¦—pƒXƒvƒ‰ƒCƒg¶¬
+	// æœ€å¤§å¼¾æ•°è¡¨ç¤ºç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”Ÿæˆ
 	sMaxBulletUI_.resize(2);
 	sMaxBulletUI_[0] = std::make_unique<Sprite>();
 	sMaxBulletUI_[1] = std::make_unique<Sprite>();
@@ -93,7 +93,7 @@ void Player::Initialize()
 	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 30.0f });
 	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 30.0f });
 
-	// c’e”•\¦ƒXƒvƒ‰ƒCƒg
+	// æ®‹å¼¾æ•°è¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sNowBulletUI_.resize(2);
 	sNowBulletUI_[0] = std::make_unique<Sprite>();
 	sNowBulletUI_[1] = std::make_unique<Sprite>();
@@ -105,7 +105,7 @@ void Player::Initialize()
 	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 30.0f });
 #pragma endregion
 
-#pragma region ‰æ‘œ“Ç‚İ‚İ
+#pragma region ç”»åƒèª­ã¿è¾¼ã¿
 	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
 	reloadUIHandle_ = LoadTexture("Resources/reloadUI.png");
 	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
@@ -122,7 +122,7 @@ void Player::Initialize()
 	numberHandle_[9] = LoadTexture("Resources/number9.png");
 #pragma endregion
 
-#pragma region ƒRƒ‰ƒCƒ_[
+#pragma region ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	playerCol_ = std::make_unique<SphereCollider>();
 	playerCol_->SetAttribute(COL_PLAYER);
 	playerCol_->SetObject3D(oPlayer_.get());
@@ -139,7 +139,7 @@ void Player::Initialize()
 	climbCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(climbCol_.get());
 
-	// ’e‚ğŒ‚‚Á‚½‚Ég‚¤ƒRƒ‰ƒCƒ_[
+	// å¼¾ã‚’æ’ƒã£ãŸæ™‚ã«ä½¿ã†ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	shotCol_ = std::make_unique<RayCollider>();
 	shotCol_->SetAttribute(COL_PLAYER_SHOT);
 	shotCol_->SetObject3D(oPlayer_.get());
@@ -152,14 +152,14 @@ void Player::Initialize()
 	colMgr_->AddCollider(eyeCol_.get());
 #pragma endregion
 
-#pragma region ƒAƒCƒeƒ€
+#pragma region ã‚¢ã‚¤ãƒ†ãƒ 
 	itemManager_ = ItemManager::GetInstace();
 	itemManager_->Initialize();
 
 	items_.resize(2);
 #pragma endregion
 
-#pragma region ‘€ìƒqƒ“ƒg
+#pragma region æ“ä½œãƒ’ãƒ³ãƒˆ
 	opeTips_ = std::make_unique<Sprite>();
 	opeTips_->SetPosition({ 950.0f, 550.0f });
 	opeTips_->SetSize({ 250.0f, 50.0f });
@@ -176,14 +176,14 @@ void Player::Update()
 	recoilEyeAngle_ -= 0.5f;
 	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
 
-	// ó‘Ô•ÊXVˆ—
+	// çŠ¶æ…‹åˆ¥æ›´æ–°å‡¦ç†
 	(this->*stateTable[state_])();
 
 	for (auto it = bullets_.begin(); it != bullets_.end();) {
-		// ’e‚ÌXV
+		// å¼¾ã®æ›´æ–°
 		(*it)->Update();
 
-		// ’e‚Ì¶‘¶ƒtƒ‰ƒO‚ª[OFF]‚É‚È‚Á‚½‚ç’e‚ğíœ
+		// å¼¾ã®ç”Ÿå­˜ãƒ•ãƒ©ã‚°ãŒ[OFF]ã«ãªã£ãŸã‚‰å¼¾ã‚’å‰Šé™¤
 		if ((*it)->GetIsAlive() == false) it = bullets_.erase(it);
 		else ++it;
 	}
@@ -199,15 +199,15 @@ void Player::Update()
 
 void Player::Draw3D()
 {
-	// ’e
+	// å¼¾
 	for (auto& it : bullets_) it->Draw();
 
-	// ƒAƒCƒeƒ€
+	// ã‚¢ã‚¤ãƒ†ãƒ 
 	itemManager_->Draw();
 
 	PipelineManager::PreDraw("Toon");
 
-	// e
+	// éŠƒ
 	oSheriff_->Draw();
 
 	PipelineManager::PreDraw("Object3D");
@@ -215,24 +215,24 @@ void Player::Draw3D()
 
 void Player::DrawFront2D()
 {
-	// ƒNƒƒXƒwƒA•`‰æ
+	// ã‚¯ãƒ­ã‚¹ãƒ˜ã‚¢æç”»
 	sCrossHair_->Draw(crossHairHandle_);
 
-	// ƒŠƒ[ƒhUI•`‰æ
+	// ãƒªãƒ­ãƒ¼ãƒ‰UIæç”»
 	if (isReload_) sReloadUI_->Draw(reloadUIHandle_);
 
-	// Å‘å’e”‚ğ•\¦
+	// æœ€å¤§å¼¾æ•°ã‚’è¡¨ç¤º
 	sMaxBulletUI_[0]->Draw(numberHandle_[maxBullet_ / 10]);
 	sMaxBulletUI_[1]->Draw(numberHandle_[maxBullet_ % 10]);
 
-	// c’e”‚ğ•\¦
+	// æ®‹å¼¾æ•°ã‚’è¡¨ç¤º
 	sNowBulletUI_[0]->Draw(numberHandle_[nowBullet_ / 10]);
 	sNowBulletUI_[1]->Draw(numberHandle_[nowBullet_ % 10]);
 
-	// c’e”•\¦˜g‚ğ•`‰æ
+	// æ®‹å¼¾æ•°è¡¨ç¤ºæ ã‚’æç”»
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
 
-	// ‘€ìƒqƒ“ƒg•`‰æ
+	// æ“ä½œãƒ’ãƒ³ãƒˆæç”»
 	if (isHitItem_ || isBossGen_) opeTips_->Draw(opeTipsHandle_);
 }
 
@@ -262,7 +262,7 @@ void Player::OnCollision()
 		state_ = CLIMB;
 	}
 
-#pragma region ƒ_ƒbƒVƒ…‚·‚é
+#pragma region ãƒ€ãƒƒã‚·ãƒ¥ã™ã‚‹
 	if (key_->PushKey(DIK_LSHIFT) && key_->PushKey(DIK_W)) {
 		isDash_ = true;
 	}
@@ -272,7 +272,7 @@ void Player::OnCollision()
 	}
 #pragma endregion
 
-#pragma region ƒAƒCƒeƒ€
+#pragma region ã‚¢ã‚¤ãƒ†ãƒ 
 	isHitItem_ = false;
 	SphereCollider* it = nullptr;
 
@@ -291,7 +291,7 @@ void Player::OnCollision()
 	}
 #pragma endregion
 
-#pragma region ƒ{ƒXƒWƒFƒlƒŒ[ƒ^
+#pragma region ãƒœã‚¹ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿
 	isBossGen_ = false;
 
 	if (eyeCol_->GetIsHit()) {
@@ -308,30 +308,30 @@ void Player::OnCollision()
 
 void Player::MatUpdate()
 {
-#pragma region ”½“®•ª‚ğŒvZ
+#pragma region åå‹•åˆ†ã‚’è¨ˆç®—
 	Vector3 recoilVec_ = {
 		sinf(Util::Degree2Radian(eyeAngle_.x)),
 		cosf(Util::Degree2Radian(eyeAngle_.y - recoilEyeAngle_)),
 		cosf(Util::Degree2Radian(eyeAngle_.x))
 	};
 
-	// ƒJƒƒ‰İ’è
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
 	camera_->SetTarget(camera_->GetEye() + (recoilVec_) * 10.0f);
 #pragma endregion
 
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	camera_->Update();
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	oPlayer_->MatUpdate();
 
-	// ’e
+	// å¼¾
 	for (auto& it : bullets_) it->MatUpdate();
 
-	// ƒAƒCƒeƒ€
+	// ã‚¢ã‚¤ãƒ†ãƒ 
 	itemManager_->MatUpdate();
 
-	// e
+	// éŠƒ
 	Vector3 adsPos = camera_->GetEye() + Vector3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
 	Vector3 noAdsPos = camera_->GetEye() + Vector3{0.0f, -0.2f, 0.0f} + (forwardVec_ * 0.5f) + (rightVec_ * 0.5f);
 
@@ -345,83 +345,83 @@ void Player::MatUpdate()
 	oSheriff_->SetRotation({ (eyeAngle_.y + 90.0f), eyeAngle_.x, 180.0f });
 	oSheriff_->MatUpdate();
 
-	// ƒNƒƒXƒwƒA
+	// ã‚¯ãƒ­ã‚¹ãƒ˜ã‚¢
 	sCrossHair_->MatUpdate();
 
-	// c’e”•\¦UIƒnƒ“ƒhƒ‹
+	// æ®‹å¼¾æ•°è¡¨ç¤ºUIãƒãƒ³ãƒ‰ãƒ«
 	sBulletValueDisplayFrame_->MatUpdate();
 
-	// Å‘å’e”•\¦ƒXƒvƒ‰ƒCƒg
+	// æœ€å¤§å¼¾æ•°è¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sMaxBulletUI_[0]->MatUpdate();
 	sMaxBulletUI_[1]->MatUpdate();
 
-	// c’e”•\¦ƒXƒvƒ‰ƒCƒg
+	// æ®‹å¼¾æ•°è¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sNowBulletUI_[0]->MatUpdate();
 	sNowBulletUI_[1]->MatUpdate();
 
-	// ƒŠƒ[ƒhUI
+	// ãƒªãƒ­ãƒ¼ãƒ‰UI
 	sReloadUI_->MatUpdate();
 
-	// ‘€ìƒqƒ“ƒg
+	// æ“ä½œãƒ’ãƒ³ãƒˆ
 	opeTips_->MatUpdate();
 }
 
 void (Player::* Player::stateTable[]) () = {
-	&Player::Normal,// ’Êíó‘Ô
-	&Player::Air,	// ‹ó’†ó‘Ô
-	&Player::Climb,	// “o‚èó‘Ô
+	&Player::Normal,// é€šå¸¸çŠ¶æ…‹
+	&Player::Air,	// ç©ºä¸­çŠ¶æ…‹
+	&Player::Climb,	// ç™»ã‚ŠçŠ¶æ…‹
 };
 
 void Player::Normal()
 {
-	// ‹“_‘€ì
+	// è¦–ç‚¹æ“ä½œ
 	EyeMove();
 
-	// ˆÚ“®‘€ì
+	// ç§»å‹•æ“ä½œ
 	Move();
 
-	// ”`‚«‚İ
+	// è¦—ãè¾¼ã¿
 	Ads();
 
-	// Œ‚‚Âˆ—
+	// æ’ƒã¤å‡¦ç†
 	Shoot();
 
-	// ƒWƒƒƒ“ƒvˆ—
+	// ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
 	Jump();
 
-	// ƒŠƒ[ƒhˆ—
+	// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
 	Reload();
 
-	// ‘–sˆ—
+	// èµ°è¡Œå‡¦ç†
 	Dash();
 }
 
 void Player::Air()
 {
-	// ‹“_‘€ì
+	// è¦–ç‚¹æ“ä½œ
 	EyeMove();
 
-	// ˆÚ“®‘€ì
+	// ç§»å‹•æ“ä½œ
 	Move();
 
-	// ”`‚«‚İ
+	// è¦—ãè¾¼ã¿
 	Ads();
 
-	// Œ‚‚Âˆ—
+	// æ’ƒã¤å‡¦ç†
 	Shoot();
 
 #ifdef _DEBUG
-	// ƒWƒƒƒ“ƒvˆ—
+	// ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
 	Jump();
 #endif
 
-	// —‰ºˆ—
+	// è½ä¸‹å‡¦ç†
 	Fall();
 
-	// ƒŠƒ[ƒhˆ—
+	// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
 	Reload();
 
-	// ‘–sˆ—
+	// èµ°è¡Œå‡¦ç†
 	Dash();
 }
 
@@ -433,10 +433,10 @@ void Player::Climb()
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 	oPlayer_->SetPosition(camera_->GetEye());
 
-	// ‹“_‘€ì
+	// è¦–ç‚¹æ“ä½œ
 	EyeMove();
 
-	// ˆÚ“®‘€ì
+	// ç§»å‹•æ“ä½œ
 	Move();
 }
 
@@ -469,28 +469,28 @@ void Player::Ads()
 
 void Player::Shoot()
 {
-	// ƒtƒ‰ƒOƒŠƒZƒbƒg
+	// ãƒ•ãƒ©ã‚°ãƒªã‚»ãƒƒãƒˆ
 	shotCol_->SetAttribute(0);
 
-	// ÅŒã‚É’e‚ğŒ‚‚Á‚Ä‚©‚ç‚ÌŒo‰ßŠÔ
+	// æœ€å¾Œã«å¼¾ã‚’æ’ƒã£ã¦ã‹ã‚‰ã®çµŒéæ™‚é–“
 	float result = (Util::GetTimrMSec() - shotTime_) / 1000.0f;
 
-	// c’e”‚ª0ˆÈ‰º‚È‚ç‚±‚ÌŒã‚Ìˆ—‚ğ”ò‚Î‚·
+	// æ®‹å¼¾æ•°ãŒ0ä»¥ä¸‹ãªã‚‰ã“ã®å¾Œã®å‡¦ç†ã‚’é£›ã°ã™
 	if (nowBullet_ <= 0) return;
 
-	// ƒ}ƒEƒX‚ğ¶ƒNƒŠƒbƒN‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç‚±‚ÌŒã‚Ì’e‚ğ”ò‚Î‚·
+	// ãƒã‚¦ã‚¹ã‚’å·¦ã‚¯ãƒªãƒƒã‚¯ã—ã¦ã„ãªã‹ã£ãŸã‚‰ã“ã®å¾Œã®å¼¾ã‚’é£›ã°ã™
 	if (mouse_->PushMouseButton(MouseButton::M_LEFT) == false) return;
 
-	// Œo‰ßŠÔ‚ªw’èŠÔ‚ğ‰ß‚¬‚Ä‚¢‚È‚©‚Á‚½‚çˆ—‚ğ”ò‚Î‚·
+	// çµŒéæ™‚é–“ãŒæŒ‡å®šæ™‚é–“ã‚’éãã¦ã„ãªã‹ã£ãŸã‚‰å‡¦ç†ã‚’é£›ã°ã™
 	if (!(result >= shotInterval_)) return;
 
-	// ƒtƒ‰ƒO‚ğŒš‚Ä‚é
+	// ãƒ•ãƒ©ã‚°ã‚’å»ºã¦ã‚‹
 	shotCol_->SetAttribute(COL_PLAYER_SHOT);
 
-	// ’e‚ğŒ‚‚Á‚½ŠÔ‚ğ‹L˜^
+	// å¼¾ã‚’æ’ƒã£ãŸæ™‚é–“ã‚’è¨˜éŒ²
 	shotTime_ = Util::GetTimrMSec();
 
-	// c’e‚ğŒ¸‚ç‚·
+	// æ®‹å¼¾ã‚’æ¸›ã‚‰ã™
 	nowBullet_--;
 
 	Vector3 shotAngle = {
@@ -509,41 +509,41 @@ void Player::Shoot()
 
 	shotCol_->SetDir(shotVec);
 
-	// ”½“®‚ğ‚Â‚¯‚é
+	// åå‹•ã‚’ã¤ã‘ã‚‹
 	recoilEyeAngle_ = 10.0f;
 
-	// SEÄ¶
+	// SEå†ç”Ÿ
 	sound_->Play(shotSE_);
 
-	// ’e‚ğ¶¬
+	// å¼¾ã‚’ç”Ÿæˆ
 	bullets_.emplace_front(std::make_unique<Bullet>(mBullet_.get(), BulletType::PLAYER, camera_->GetEye(), shotVec));
 }
 
 void Player::Reload()
 {
-	// ƒŠƒ[ƒhŠJnŠÔ[s]
+	// ãƒªãƒ­ãƒ¼ãƒ‰é–‹å§‹æ™‚é–“[s]
 	static uint64_t startReloadTime = 0;
 
-	// ƒŠƒ[ƒhUI‰æ‘œ‚ÌŠp“x
+	// ãƒªãƒ­ãƒ¼ãƒ‰UIç”»åƒã®è§’åº¦
 	static float rotaY = 0.0f;
 
-	// [R]ƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒŠƒ[ƒh‚ğŠJn
+	// [R]ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒªãƒ­ãƒ¼ãƒ‰ã‚’é–‹å§‹
 	if (key_->TriggerKey(DIK_R) && isReload_ == false) {
 		isReload_ = true;
 		startReloadTime = Util::GetTimeSec();
 		nowBullet_ = 0;
 	}
 
-	// ƒŠƒ[ƒh‚µ‚Ä‚¢‚½‚ç‚·‚éˆ—
+	// ãƒªãƒ­ãƒ¼ãƒ‰ã—ã¦ã„ãŸã‚‰ã™ã‚‹å‡¦ç†
 	if (isReload_) {
 
-		// ƒŠƒ[ƒh‰æ‘œ‚ğ‰ñ“]
+		// ãƒªãƒ­ãƒ¼ãƒ‰ç”»åƒã‚’å›è»¢
 		rotaY -= 3.0f;
 		sReloadUI_->SetRotation(rotaY);
 
-		// ‰½•bƒŠƒ[ƒh‚µ‚½‚©
+		// ä½•ç§’ãƒªãƒ­ãƒ¼ãƒ‰ã—ãŸã‹
 		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
-		// ƒŠƒ[ƒhŠÔ‚ğ’´‚¦‚½‚çƒŠƒ[ƒh‚ğI‚¦‚é
+		// ãƒªãƒ­ãƒ¼ãƒ‰æ™‚é–“ã‚’è¶…ãˆãŸã‚‰ãƒªãƒ­ãƒ¼ãƒ‰ã‚’çµ‚ãˆã‚‹
 		if (elapsedReloadTime >= reloadTime_) {
 			isReload_ = false;
 			nowBullet_ = maxBullet_;
@@ -553,109 +553,109 @@ void Player::Reload()
 
 void Player::Move()
 {
-	// “ü—Í•ûŒü
+	// å…¥åŠ›æ–¹å‘
 	Vector3 inputVec = {
 		static_cast<float>(key_->PushKey(DIK_D) - key_->PushKey(DIK_A)),
 		0.0f,
 		static_cast<float>(key_->PushKey(DIK_W) - key_->PushKey(DIK_S))
 	};
 
-	// ˆÚ“®“ü—Í‚ª‚³‚ê‚Ä‚¢‚½‚ç‰Á‘¬‚³‚¹‚é
+	// ç§»å‹•å…¥åŠ›ãŒã•ã‚Œã¦ã„ãŸã‚‰åŠ é€Ÿã•ã›ã‚‹
 	if (inputVec.length() > 0.0f)	moveSpd_ += moveAcc_;
 	else							moveSpd_ -= moveAcc_;
 
-	// ‘¬“x§ŒÀ
+	// é€Ÿåº¦åˆ¶é™
 	if (isDash_) moveSpd_ = Util::Clamp(moveSpd_, dashSpd_, 0.0f);
 	else moveSpd_ = Util::Clamp(moveSpd_, maxMoveSpd_, 0.0f);
 
-	// ³–ÊƒxƒNƒgƒ‹‚ÌˆÚ“®—Ê
+	// æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«ã®ç§»å‹•é‡
 	Vector3 forwardMoveVec = {
 		inputVec.z * forwardVec_.x,
 		0.0f,
 		inputVec.z * forwardVec_.z
 	};
 
-	// ‰E•ûŒüƒxƒNƒgƒ‹‚ÌˆÚ“®—Ê
+	// å³æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®ç§»å‹•é‡
 	Vector3 rightMoveVec = {
 		inputVec.x * rightVec_.x,
 		0.0f,
 		inputVec.x * rightVec_.z
 	};
 
-	// ˆÚ“®ƒxƒNƒgƒ‹‚ÌŒ‹‰Ê
+	// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã®çµæœ
 	Vector3 resultVec = forwardMoveVec + rightMoveVec;
 	resultVec.normalize();
 
-	// ƒJƒƒ‰‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã‚’æ›´æ–°
 	camera_->SetEye(camera_->GetEye() + resultVec * moveSpd_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
-	// ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’æ›´æ–°
 	oPlayer_->SetPosition(camera_->GetEye());
 }
 
 void Player::EyeMove()
 {
-	// ƒ}ƒEƒX‚ÌˆÚ“®—Ê•ª‹“_‚ÌŠp“x‚É‰ÁZ
+	// ãƒã‚¦ã‚¹ã®ç§»å‹•é‡åˆ†è¦–ç‚¹ã®è§’åº¦ã«åŠ ç®—
 	eyeAngle_.x += mouse_->GetMouseVelosity().x * sencivity_;
 	eyeAngle_.y += mouse_->GetMouseVelosity().y * sencivity_;
 
-	// ‹“_ˆÚ“®‚Ìã‰º‚É§ŒÀ‚ğ•t‚¯‚é
+	// è¦–ç‚¹ç§»å‹•ã®ä¸Šä¸‹ã«åˆ¶é™ã‚’ä»˜ã‘ã‚‹
 	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 120.0f, 60.0f);
 
-	// ‘O•ûƒxƒNƒgƒ‹ŒvZ
+	// å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«è¨ˆç®—
 	forwardVec_ = {
 		sinf(Util::Degree2Radian(eyeAngle_.x)),
 		cosf(Util::Degree2Radian(eyeAngle_.y)),
 		cosf(Util::Degree2Radian(eyeAngle_.x))
 	};
 
-	// ‘O•ûƒxƒNƒgƒ‹³‹K‰»
+	// å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«æ­£è¦åŒ–
 	forwardVec_.normalize();
 
-	// ‰EƒxƒNƒgƒ‹ŒvZ
+	// å³ãƒ™ã‚¯ãƒˆãƒ«è¨ˆç®—
 	rightVec_ = Vector3(forwardVec_.x, 0.0f, forwardVec_.z);
 	rightVec_ = -rightVec_.cross(rightVec_ + Vector3(0.0f, 1.0f, 0.0f));
 
-	// ‰EƒxƒNƒgƒ‹ŒvZ
+	// å³ãƒ™ã‚¯ãƒˆãƒ«è¨ˆç®—
 	rightVec_.normalize();
 
-	// ƒJƒƒ‰İ’è
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
-	// ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğXV
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’æ›´æ–°
 	oPlayer_->SetPosition(camera_->GetEye());
 }
 
 void Player::Jump()
 {
-	// [SPACE]‚ª‰Ÿ‚³‚ê‚½‚çã•ûŒü‚É‰Á‘¬‚³‚¹‚é
+	// [SPACE]ãŒæŠ¼ã•ã‚ŒãŸã‚‰ä¸Šæ–¹å‘ã«åŠ é€Ÿã•ã›ã‚‹
 	if (key_->TriggerKey(DIK_SPACE)) {
-		// d—Í‚ğXV
+		// é‡åŠ›ã‚’æ›´æ–°
 		gravity_ = -jumpSpd_;
 
-		// ƒJƒƒ‰‚ÌˆÊ’u‚ğXV
+		// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’æ›´æ–°
 		camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
-		// Õ“Ë”»’è—p‚ÌƒRƒ‰ƒCƒ_[‚ğXV
+		// è¡çªåˆ¤å®šç”¨ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æ›´æ–°
 		oPlayer_->SetPosition(camera_->GetEye());
 	}
 }
 
 void Player::Fall()
 {
-	// d—Í‰Á‘¬“x‚ğ‰ÁZ
-	gravity_ += gAcc_;// d—Í‰Á‘¬“x‚ğ‰ÁZ
+	// é‡åŠ›åŠ é€Ÿåº¦ã‚’åŠ ç®—
+	gravity_ += gAcc_;// é‡åŠ›åŠ é€Ÿåº¦ã‚’åŠ ç®—
 
-	// Å‘åd—Í‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
+	// æœ€å¤§é‡åŠ›ã‚’è¶…ãˆãªã„ã‚ˆã†ã«
 	gravity_ = Util::Clamp(gravity_, maxGravity_, -1000.0f);
 
-	// ƒJƒƒ‰‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã‚’æ›´æ–°
 	camera_->SetEye(camera_->GetEye() + Vector3(0.0f, -1.0f, 0.0f) * gravity_);
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 
-	// Õ“Ë”»’è—p‚ÌƒRƒ‰ƒCƒ_[‚ğXV
+	// è¡çªåˆ¤å®šç”¨ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æ›´æ–°
 	oPlayer_->SetPosition(camera_->GetEye());
 }
 

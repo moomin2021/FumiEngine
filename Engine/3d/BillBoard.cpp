@@ -1,57 +1,57 @@
-//#include "BillBoard.h"
+ï»¿//#include "BillBoard.h"
 //
 //// --DirextX12-- //
 //#include "DX12Cmd.h"
 //
-//// --ƒeƒNƒXƒ`ƒƒƒNƒ‰ƒX-- //
+//// --ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¯ãƒ©ã‚¹-- //
 //#include "Texture.h"
 //
-//// --•Ö—˜ŒnŠÖ”-- //
+//// --ä¾¿åˆ©ç³»é–¢æ•°-- //
 //#include "Util.h"
 //
-//// --ƒ‚ƒfƒ‹“Ç‚İ‚İ‚Ì‚½‚ß-- //
+//// --ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿ã®ãŸã‚-- //
 //#include <fstream>
 //#include <sstream>
 //#include <string>
 //using namespace std;
 //
 //BillBoard::BillBoard() :
-//#pragma region ‰Šú‰»ƒŠƒXƒg
-//	// À•WA‰ñ“]ŠpAƒXƒP[ƒ‹
+//#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+//	// åº§æ¨™ã€å›è»¢è§’ã€ã‚¹ã‚±ãƒ¼ãƒ«
 //	position_{ 0.0f, 0.0f, 0.0f },
 //	rotation_(0.0f),
 //	scale_{ 1.0f, 1.0f },
 //
-//	// F
+//	// è‰²
 //	color_{ 1.0f, 1.0f, 1.0f, 1.0f },
 //
-//	// --“§‹“Š‰es—ñ‚ÌŒvZ-- //
+//	// --é€è¦–æŠ•å½±è¡Œåˆ—ã®è¨ˆç®—-- //
 //	matProjection_{},
 //
-//	// --’¸“_ƒf[ƒ^-- //
-//	vertices_{},// -> ’¸“_ƒf[ƒ^
-//	vbView_{},// -> ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
-//	vertBuff_(nullptr),// -> ’¸“_ƒoƒbƒtƒ@
+//	// --é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿-- //
+//	vertices_{},// -> é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+//	vbView_{},// -> é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+//	vertBuff_(nullptr),// -> é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 //
-//	// --ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^-- //
-//	indices_{},// -> ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-//	ibView_{},// -> ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-//	indexBuff_(nullptr),// -> ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿-- //
+//	indices_{},// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+//	ibView_{},// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+//	indexBuff_(nullptr),// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 //
-//	// --’è”ƒoƒbƒtƒ@-- //
+//	// --å®šæ•°ãƒãƒƒãƒ•ã‚¡-- //
 //	constBuff_(nullptr)
 //#pragma endregion
 //{
-//#pragma region ’è”ƒoƒbƒtƒ@‰Šú‰»ˆ—
-//	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
-//	// ¦DirectX‚ÌŠÖ”‚ÍAHRESULTŒ^‚Å¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·‚à‚Ì‚ª‘½‚¢‚Ì‚Å‚±‚Ì•Ï”‚ğì¬
+//#pragma region å®šæ•°ãƒãƒƒãƒ•ã‚¡åˆæœŸåŒ–å‡¦ç†
+//	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
+//	// â€»DirectXã®é–¢æ•°ã¯ã€HRESULTå‹ã§æˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’è¿”ã™ã‚‚ã®ãŒå¤šã„ã®ã§ã“ã®å¤‰æ•°ã‚’ä½œæˆ
 ////	HRESULT result;
 ////
-////	// ’è”ƒoƒbƒtƒ@‚Ìƒq[ƒvİ’è
+////	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒ’ãƒ¼ãƒ—è¨­å®š
 ////	D3D12_HEAP_PROPERTIES heapProp{};
 ////	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 ////
-////	// ’è”ƒoƒbƒtƒ@‚ÌƒŠƒ\[ƒXİ’è
+////	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 ////	D3D12_RESOURCE_DESC resdesc{};
 ////	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 ////	resdesc.Width = (sizeof(ObjectBuff) + 0xff) & ~0xff;
@@ -61,7 +61,7 @@
 ////	resdesc.SampleDesc.Count = 1;
 ////	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 ////
-////	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+////	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 ////	result = DX12Cmd::GetDevice()->CreateCommittedResource(
 ////		&heapProp,
 ////		D3D12_HEAP_FLAG_NONE,
@@ -71,68 +71,68 @@
 ////		IID_PPV_ARGS(&constBuff_));
 ////	assert(SUCCEEDED(result));
 ////
-////	// ’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO
+////	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ”ãƒ³ã‚°
 ////	ObjectBuff* constMap;
 ////	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 ////	assert(SUCCEEDED(result));
 ////
-////	// ƒ}ƒbƒsƒ“ƒOI—¹
+////	// ãƒãƒƒãƒ”ãƒ³ã‚°çµ‚äº†
 ////	constBuff_->Unmap(0, nullptr);
 ////#pragma endregion
 ////
-////	// --“§‹“Š‰es—ñ‚ÌŒvZ-- //
+////	// --é€è¦–æŠ•å½±è¡Œåˆ—ã®è¨ˆç®—-- //
 ////	matProjection_ = XMMatrixPerspectiveFovLH(
-////		Util::Degree2Radian(45.0f),// -----------> ã‰º‰æŠp45“x
-////		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> ƒAƒXƒyƒNƒg”äi‰æ–Ê‰¡•/‰æ–Êc•j
-////		0.1f, 1000.0f// ------------------------> ‘O’[A‰œ’[
+////		Util::Degree2Radian(45.0f),// -----------> ä¸Šä¸‹ç”»è§’45åº¦
+////		(float)WinAPI::GetWidth() / WinAPI::GetHeight(),// -> ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆç”»é¢æ¨ªå¹…/ç”»é¢ç¸¦å¹…ï¼‰
+////		0.1f, 1000.0f// ------------------------> å‰ç«¯ã€å¥¥ç«¯
 ////	);
 ////
-////	// lŠpŒ`‚Ì’¸“_ƒf[ƒ^‚ÆƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ğì¬
+////	// å››è§’å½¢ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ
 ////	CreateSquare();
 //}
 //
 //void BillBoard::Update(Camera* camera, BillBoardType type)
 //{
-//	// ‹“_À•W
+//	// è¦–ç‚¹åº§æ¨™
 //	//XMVECTOR eyePos = XMLoadFloat3(&camera->eye_);
 //
-//	//// ’‹“_À•W
+//	//// æ³¨è¦–ç‚¹åº§æ¨™
 //	//XMVECTOR targetPos = XMLoadFloat3(&camera->target_);
 //
-//	//// ã•ûŒü
+//	//// ä¸Šæ–¹å‘
 //	//XMVECTOR upVec = XMLoadFloat3(&camera->up_);
 //
-//	//// ƒJƒƒ‰Z²
+//	//// ã‚«ãƒ¡ãƒ©Zè»¸
 //	//XMVECTOR cameraAxisZ = XMVectorSubtract(targetPos, eyePos);
 //
-//	//// 0ƒxƒNƒgƒ‹‚¾‚ÆŒü‚«‚ª’è‚Ü‚ç‚È‚¢‚Ì‚ÅœŠO //
+//	//// 0ãƒ™ã‚¯ãƒˆãƒ«ã ã¨å‘ããŒå®šã¾ã‚‰ãªã„ã®ã§é™¤å¤– //
 //	//assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
 //	//assert(!XMVector3IsInfinite(cameraAxisZ));
 //	//assert(!XMVector3Equal(upVec, XMVectorZero()));
 //	//assert(!XMVector3IsInfinite(upVec));
 //
-//	//// ƒxƒNƒgƒ‹‚ğ³‹K‰» //
+//	//// ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ– //
 //	//cameraAxisZ = XMVector3Normalize(cameraAxisZ);
 //
-//	//// ƒJƒƒ‰‚ÌX²(‰E•ûŒü) //
+//	//// ã‚«ãƒ¡ãƒ©ã®Xè»¸(å³æ–¹å‘) //
 //	//XMVECTOR cameraAxisX;
 //
-//	//// X²‚Íã•ûŒü¨Z²‚ÌŠOÏ‚Å‹‚Ü‚é //
+//	//// Xè»¸ã¯ä¸Šæ–¹å‘â†’Zè»¸ã®å¤–ç©ã§æ±‚ã¾ã‚‹ //
 //	//cameraAxisX = XMVector3Cross(upVec, cameraAxisZ);
 //
-//	//// ƒxƒNƒgƒ‹‚ğ³‹K‰» //
+//	//// ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ– //
 //	//cameraAxisX = XMVector3Normalize(cameraAxisX);
 //
-//	//// ƒJƒƒ‰‚ÌY²(ã•ûŒü) //
+//	//// ã‚«ãƒ¡ãƒ©ã®Yè»¸(ä¸Šæ–¹å‘) //
 //	//XMVECTOR cameraAxisY;
 //
-//	//// Y²‚ÍZ²¨X²‚ÌŠOÏ‚Å‹‚Ü‚é //
+//	//// Yè»¸ã¯Zè»¸â†’Xè»¸ã®å¤–ç©ã§æ±‚ã¾ã‚‹ //
 //	//cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
 //
-//	//// ƒJƒƒ‰‰ñ“]s—ñ //
+//	//// ã‚«ãƒ¡ãƒ©å›è»¢è¡Œåˆ— //
 //	//XMMATRIX matCameraRot;
 //
-//	//// ƒJƒƒ‰À•WŒn¨ƒ[ƒ‹ƒhÀ•WŒn‚Ì•ÏŠ·s—ñ //
+//	//// ã‚«ãƒ¡ãƒ©åº§æ¨™ç³»â†’ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã®å¤‰æ›è¡Œåˆ— //
 //	//matCameraRot.r[0] = cameraAxisX;
 //	//matCameraRot.r[1] = cameraAxisY;
 //	//matCameraRot.r[2] = cameraAxisZ;
@@ -145,19 +145,19 @@
 //	//}
 //
 //	//else if (type == BILLBOARDY) {
-//	//	// ƒJƒƒ‰X²AY²AZ² //
+//	//	// ã‚«ãƒ¡ãƒ©Xè»¸ã€Yè»¸ã€Zè»¸ //
 //	//	XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
 //
-//	//	// X²‚Í‹¤’Ê //
+//	//	// Xè»¸ã¯å…±é€š //
 //	//	ybillCameraAxisX = cameraAxisX;
 //
-//	//	// Y²‚Íƒ[ƒ‹ƒhÀ•WŒn‚ÌY² //
+//	//	// Yè»¸ã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã®Yè»¸ //
 //	//	ybillCameraAxisY = XMVector3Normalize(upVec);
 //
-//	//	// Z²‚ÍX²¨Y²‚ÌŠOÏ‚Å‹‚Ü‚é //
+//	//	// Zè»¸ã¯Xè»¸â†’Yè»¸ã®å¤–ç©ã§æ±‚ã¾ã‚‹ //
 //	//	ybillCameraAxisZ = XMVector3Cross(cameraAxisX, cameraAxisY);
 //
-//	//	// Y²‰ñ‚è‚Ìƒrƒ‹ƒ{[ƒhs—ñ //
+//	//	// Yè»¸å›ã‚Šã®ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ— //
 //	//	matBillboard.r[0] = ybillCameraAxisX;
 //	//	matBillboard.r[1] = ybillCameraAxisY;
 //	//	matBillboard.r[2] = ybillCameraAxisZ;
@@ -169,252 +169,252 @@
 //	//}
 //
 //	//else if (type == BILLBOARDALL) {
-//	//	// ‘S•ûŒüƒrƒ‹ƒ{[ƒhs—ñ‚ÌŒvZ //
+//	//	// å…¨æ–¹å‘ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—ã®è¨ˆç®— //
 //	//	matBillboard.r[0] = cameraAxisX;
 //	//	matBillboard.r[1] = cameraAxisY;
 //	//	matBillboard.r[2] = cameraAxisZ;
 //	//	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
 //	//}
 //
-//	// “]’u‚É‚æ‚è‹ts—ñ(‹t‰ñ“])‚ğŒvZ //
+//	// è»¢ç½®ã«ã‚ˆã‚Šé€†è¡Œåˆ—(é€†å›è»¢)ã‚’è¨ˆç®— //
 //	//matView = XMMatrixTranspose(matCameraRot);
 //
-//	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
-//	// ¦DirectX‚ÌŠÖ”‚ÍAHRESULTŒ^‚Å¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·‚à‚Ì‚ª‘½‚¢‚Ì‚Å‚±‚Ì•Ï”‚ğì¬
+//	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
+//	// â€»DirectXã®é–¢æ•°ã¯ã€HRESULTå‹ã§æˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’è¿”ã™ã‚‚ã®ãŒå¤šã„ã®ã§ã“ã®å¤‰æ•°ã‚’ä½œæˆ
 //	//HRESULT result;
 //
-//	// --ƒXƒP[ƒ‹A‰ñ“]A•½sˆÚ“®s—ñ‚ÌŒvZ-- //
+//	// --ã‚¹ã‚±ãƒ¼ãƒ«ã€å›è»¢ã€å¹³è¡Œç§»å‹•è¡Œåˆ—ã®è¨ˆç®—-- //
 //	XMMATRIX matScale, matRot, matTrans;
 //	matScale = XMMatrixScaling(scale_.x, scale_.y, 1.0f);
 //	matRot = XMMatrixIdentity();
 //	matRot *= XMMatrixRotationZ(Util::Degree2Radian(rotation_));
 //	matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 //
-//	// --ƒ[ƒ‹ƒhs—ñ‚Ì‡¬-- //
-//	XMMATRIX matWorld = XMMatrixIdentity();// -> •ÏŒ`‚ÌƒŠƒZƒbƒg
+//	// --ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åˆæˆ-- //
+//	XMMATRIX matWorld = XMMatrixIdentity();// -> å¤‰å½¢ã®ãƒªã‚»ãƒƒãƒˆ
 //	//matWorld *= matBillboard;
-//	matWorld *= matScale;// -> ƒ[ƒ‹ƒhs—ñ‚ÉƒXƒP[ƒŠƒ“ƒO‚ğ”½‰f
-//	matWorld *= matRot;// -> ƒ[ƒ‹ƒhs—ñ‚É‰ñ“]‚ğ”½‰f
-//	matWorld *= matTrans;// -> ƒ[ƒ‹ƒhs—ñ‚É•½sˆÚ“®‚ğ”½‰f
+//	matWorld *= matScale;// -> ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã‚’åæ˜ 
+//	matWorld *= matRot;// -> ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«å›è»¢ã‚’åæ˜ 
+//	matWorld *= matTrans;// -> ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«å¹³è¡Œç§»å‹•ã‚’åæ˜ 
 //
-//	// --ƒ}ƒbƒsƒ“ƒO-- //
+//	// --ãƒãƒƒãƒ”ãƒ³ã‚°-- //
 //	//ObjectBuff* constMap = nullptr;
 //	//result = constBuff_->Map(0, nullptr, (void**)&constMap);
 //	//assert(SUCCEEDED(result));
 //
-//	// --’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—-- //
-//	//constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> s—ñ
+//	// --å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€-- //
+//	//constMap->mat = matWorld * camera->GetMatView() * matProjection_;// -> è¡Œåˆ—
 //
-//	// --Œq‚ª‚è‚ğ‰ğœ-- //
+//	// --ç¹‹ãŒã‚Šã‚’è§£é™¤-- //
 //	//constBuff_->Unmap(0, nullptr);
 //}
 //
 //void BillBoard::Draw(int textureHandle)
 //{
-//	// ƒRƒ}ƒ“ƒhƒŠƒXƒgæ“¾
+//	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 //	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 //
-//	// SRVƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+//	// SRVãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 //	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 //
-//	// ƒnƒ“ƒhƒ‹‚ğw’è‚³‚ê‚½•ª‚Ü‚Åi‚ß‚é
+//	// ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šã•ã‚ŒãŸåˆ†ã¾ã§é€²ã‚ã‚‹
 //	srvGpuHandle.ptr += textureHandle;
 //
-//	// w’è‚³‚ê‚½SRV‚ğƒ‹[ƒgƒpƒ‰ƒ[ƒ^1”Ô‚Éİ’è
+//	// æŒ‡å®šã•ã‚ŒãŸSRVã‚’ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1ç•ªã«è¨­å®š
 //	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 //
-//	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
+//	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 //	cmdList->IASetVertexBuffers(0, 1, &vbView_);
 //
-//	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
+//	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 //	cmdList->IASetIndexBuffer(&ibView_);
 //
-//	// ’è”ƒoƒbƒtƒ@ƒrƒ…[iCBVj‚Ìİ’èƒRƒ}ƒ“ƒh
+//	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ï¼ˆCBVï¼‰ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 //	cmdList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
 //
-//	// •`‰æƒRƒ}ƒ“ƒh
+//	// æç”»ã‚³ãƒãƒ³ãƒ‰
 //	cmdList->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
 //}
 //
 //void BillBoard::PreDraw()
 //{
-//	//// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìİ’è
+//	//// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š
 //	//DX12Cmd::GetCmdList()->SetPipelineState(DX12Cmd::GetBillBoardPipeline().pipelineState.Get());
-//	//// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’è
+//	//// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®è¨­å®š
 //	//DX12Cmd::GetCmdList()->SetGraphicsRootSignature(DX12Cmd::GetBillBoardPipeline().rootSignature.Get());
-//	//// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ğİ’è
+//	//// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã‚’è¨­å®š
 //	//DX12Cmd::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 //
-//	//// --ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ‚ğƒZƒbƒg‚·‚éƒRƒ}ƒ“ƒh-- //
+//	//// --ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰-- //
 //	//ID3D12DescriptorHeap* ppHeaps[] = { Texture::GetSRVHeap() };
 //	//DX12Cmd::GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
 //}
 //
 //void BillBoard::CreateSquare()
 //{
-//	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
-//	// ¦DirectX‚ÌŠÖ”‚ÍAHRESULTŒ^‚Å¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·‚à‚Ì‚ª‘½‚¢‚Ì‚Å‚±‚Ì•Ï”‚ğì¬
+//	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
+//	// â€»DirectXã®é–¢æ•°ã¯ã€HRESULTå‹ã§æˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’è¿”ã™ã‚‚ã®ãŒå¤šã„ã®ã§ã“ã®å¤‰æ•°ã‚’ä½œæˆ
 //	//HRESULT result;
 //
-//#pragma region ’¸“_ƒf[ƒ^ì¬
-//	// —§•û‘Ì’¸“_ƒf[ƒ^
+//#pragma region é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä½œæˆ
+//	// ç«‹æ–¹ä½“é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 //	Vertex3D vertices[] = {
-//		// ‘O–Ê
-//		{{ -0.5f, -0.5f, -0.5f}, {}, {0.0f, 1.0f}},// -> ¶‰º 0
-//		{{ -0.5f,  0.5f, -0.5f}, {}, {0.0f, 0.0f}},// -> ¶ã 1
-//		{{  0.5f, -0.5f, -0.5f}, {}, {1.0f, 1.0f}},// -> ‰E‰º 2
-//		{{  0.5f,  0.5f, -0.5f}, {}, {1.0f, 0.0f}},// -> ‰Eã 3
+//		// å‰é¢
+//		{{ -0.5f, -0.5f, -0.5f}, {}, {0.0f, 1.0f}},// -> å·¦ä¸‹ 0
+//		{{ -0.5f,  0.5f, -0.5f}, {}, {0.0f, 0.0f}},// -> å·¦ä¸Š 1
+//		{{  0.5f, -0.5f, -0.5f}, {}, {1.0f, 1.0f}},// -> å³ä¸‹ 2
+//		{{  0.5f,  0.5f, -0.5f}, {}, {1.0f, 0.0f}},// -> å³ä¸Š 3
 //	};
 //
-//	// ’¸“_ƒf[ƒ^‚ğƒRƒs[
+//	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
 //	for (size_t i = 0; i < _countof(vertices); i++) {
 //		vertices_.push_back(vertices[i]);
 //	}
 //#pragma endregion
 //
-//#pragma region ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ì¬
-//	// —§•û‘ÌƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
+//#pragma region ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ä½œæˆ
+//	// ç«‹æ–¹ä½“ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
 //	uint16_t indices[] = {
-//		// ‘O–Ê
-//		0, 1, 2,// -> OŠpŒ`1‚Â–Ú
-//		2, 1, 3,// -> OŠpŒ`2‚Â–Ú
+//		// å‰é¢
+//		0, 1, 2,// -> ä¸‰è§’å½¢1ã¤ç›®
+//		2, 1, 3,// -> ä¸‰è§’å½¢2ã¤ç›®
 //	};
 //
-//	// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ğƒRƒs[
+//	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
 //	for (size_t i = 0; i < _countof(indices); i++) {
 //		indices_.push_back(indices[i]);
 //	}
 //#pragma endregion
 //
-//#pragma region –@üŒvZ
+//#pragma region æ³•ç·šè¨ˆç®—
 //	for (size_t i = 0; i < indices_.size() / 3; i++) {
-//		// --OŠpŒ`‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ‚èo‚µ‚ÄAˆê“I‚È•Ï”‚É“ü‚ê‚é
+//		// --ä¸‰è§’å½¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–ã‚Šå‡ºã—ã¦ã€ä¸€æ™‚çš„ãªå¤‰æ•°ã«å…¥ã‚Œã‚‹
 //		unsigned short index0 = indices_[i * 3 + 0];
 //		unsigned short index1 = indices_[i * 3 + 1];
 //		unsigned short index2 = indices_[i * 3 + 2];
 //
-//		// --OŠpŒ`‚ğ\¬‚·‚é’¸“_À•W‚ğƒxƒNƒgƒ‹‚É‘ã“ü
+//		// --ä¸‰è§’å½¢ã‚’æ§‹æˆã™ã‚‹é ‚ç‚¹åº§æ¨™ã‚’ãƒ™ã‚¯ãƒˆãƒ«ã«ä»£å…¥
 //		XMVECTOR p0 = XMLoadFloat3(&vertices_[index0].pos);
 //		XMVECTOR p1 = XMLoadFloat3(&vertices_[index1].pos);
 //		XMVECTOR p2 = XMLoadFloat3(&vertices_[index2].pos);
 //
-//		// --p0->p1ƒxƒNƒgƒ‹Ap0->p2ƒxƒNƒgƒ‹‚ğŒvZiƒxƒNƒgƒ‹‚ÌŒ¸Zj
+//		// --p0->p1ãƒ™ã‚¯ãƒˆãƒ«ã€p0->p2ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã®æ¸›ç®—ï¼‰
 //		XMVECTOR v1 = XMVectorSubtract(p1, p0);
 //		XMVECTOR v2 = XMVectorSubtract(p2, p0);
 //
-//		// --ŠOÏ‚Í—¼•û‚©‚ç‚’¼‚ÈƒxƒNƒgƒ‹
+//		// --å¤–ç©ã¯ä¸¡æ–¹ã‹ã‚‰å‚ç›´ãªãƒ™ã‚¯ãƒˆãƒ«
 //		XMVECTOR normal = XMVector3Cross(v1, v2);
 //
-//		// --³‹K‰»
+//		// --æ­£è¦åŒ–
 //		normal = XMVector3Normalize(normal);
 //
-//		// --‹‚ß‚½–@ü‚ğ’¸“_ƒf[ƒ^‚É‘ã“ü
+//		// --æ±‚ã‚ãŸæ³•ç·šã‚’é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«ä»£å…¥
 //		XMStoreFloat3(&vertices_[index0].normal, normal);
 //		XMStoreFloat3(&vertices_[index1].normal, normal);
 //		XMStoreFloat3(&vertices_[index2].normal, normal);
 //	}
 //#pragma endregion
 //
-//	// ’¸“_ƒoƒbƒtƒ@‚ÆƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìì¬
+//	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 //	CreateBuffer();
 //}
 //
 //void BillBoard::CreateBuffer()
 //{
-//	// ƒfƒoƒCƒXæ“¾
+//	// ãƒ‡ãƒã‚¤ã‚¹å–å¾—
 //	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 //
-//	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
+//	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
 //	HRESULT result;
 //
-//#pragma region ’¸“_ƒoƒbƒtƒ@ì¬
-//	// ’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY = ’¸“_ƒf[ƒ^ˆê‚Â•ª‚ÌƒTƒCƒY * ’¸“_ƒf[ƒ^‚Ì—v‘f”
+//#pragma region é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
+//	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º = é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä¸€ã¤åˆ†ã®ã‚µã‚¤ã‚º * é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¦ç´ æ•°
 //	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 //
-//	// --’¸“_ƒoƒbƒtƒ@‚Ìİ’è-- //
-//	D3D12_HEAP_PROPERTIES heapProp{}; // ƒq[ƒvİ’è
-//	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPU‚Ö‚Ì“]‘——p
+//	// --é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š-- //
+//	D3D12_HEAP_PROPERTIES heapProp{}; // ãƒ’ãƒ¼ãƒ—è¨­å®š
+//	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUã¸ã®è»¢é€ç”¨
 //
-//	// --ƒŠƒ\[ƒXİ’è-- //
+//	// --ãƒªã‚½ãƒ¼ã‚¹è¨­å®š-- //
 //	D3D12_RESOURCE_DESC resDesc{};
 //	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	resDesc.Width = sizeVB; // ’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY
+//	resDesc.Width = sizeVB; // é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º
 //	resDesc.Height = 1;
 //	resDesc.DepthOrArraySize = 1;
 //	resDesc.MipLevels = 1;
 //	resDesc.SampleDesc.Count = 1;
 //	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 //
-//	// --’¸“_ƒoƒbƒtƒ@‚Ì¶¬-- //
+//	// --é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ-- //
 //	result = device->CreateCommittedResource(
-//		&heapProp, // ƒq[ƒvİ’è
+//		&heapProp, // ãƒ’ãƒ¼ãƒ—è¨­å®š
 //		D3D12_HEAP_FLAG_NONE,
-//		&resDesc, // ƒŠƒ\[ƒXİ’è
+//		&resDesc, // ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 //		D3D12_RESOURCE_STATE_GENERIC_READ,
 //		nullptr,
 //		IID_PPV_ARGS(&vertBuff_));
 //	assert(SUCCEEDED(result));
 //
-//	// --’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬-- //
-//	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();// -> GPU‰¼‘zƒAƒhƒŒƒX
-//	vbView_.SizeInBytes = sizeVB;// -> ’¸“_ƒoƒbƒtƒ@‚ÌƒTƒCƒY
-//	vbView_.StrideInBytes = sizeof(vertices_[0]);// -> ’¸“_1‚Â•ª‚Ìƒf[ƒ^ƒTƒCƒY
+//	// --é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ-- //
+//	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();// -> GPUä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹
+//	vbView_.SizeInBytes = sizeVB;// -> é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+//	vbView_.StrideInBytes = sizeof(vertices_[0]);// -> é ‚ç‚¹1ã¤åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
 //
-//	// --Mapˆ—‚ÅƒƒCƒ“ƒƒ‚ƒŠ‚ÆGPU‚Ìƒƒ‚ƒŠ‚ğ•R‚Ã‚¯‚é-- //
+//	// --Mapå‡¦ç†ã§ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªã¨GPUã®ãƒ¡ãƒ¢ãƒªã‚’ç´ã¥ã‘ã‚‹-- //
 //	Vertex3D* vertMap = nullptr;
 //	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 //	assert(SUCCEEDED(result));
 //
-//	// --‘S’¸“_‚É‘Î‚µ‚Ä-- //
+//	// --å…¨é ‚ç‚¹ã«å¯¾ã—ã¦-- //
 //	for (int i = 0; i < vertices_.size(); i++)
 //	{
-//		vertMap[i] = vertices_[i]; // À•W‚ğƒRƒs[
+//		vertMap[i] = vertices_[i]; // åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
 //	}
 //
-//	// --Œq‚ª‚è‚ğ‰ğœ-- //
+//	// --ç¹‹ãŒã‚Šã‚’è§£é™¤-- //
 //	vertBuff_->Unmap(0, nullptr);
 //#pragma endregion
 //
-//#pragma region ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ì¬
-//	// --ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY-- //
+//#pragma region ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º-- //
 //	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indices_.size());
 //
-//	// --ƒŠƒ\[ƒXİ’è-- //
+//	// --ãƒªã‚½ãƒ¼ã‚¹è¨­å®š-- //
 //	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	resDesc.Width = sizeIB; // ƒCƒ“ƒfƒbƒNƒXî•ñ‚ª“ü‚é•ª‚ÌƒTƒCƒY
+//	resDesc.Width = sizeIB; // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æƒ…å ±ãŒå…¥ã‚‹åˆ†ã®ã‚µã‚¤ã‚º
 //	resDesc.Height = 1;
 //	resDesc.DepthOrArraySize = 1;
 //	resDesc.MipLevels = 1;
 //	resDesc.SampleDesc.Count = 1;
 //	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 //
-//	// --ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì¶¬-- //
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ-- //
 //	result = device->CreateCommittedResource(
-//		&heapProp,// -> ƒq[ƒvİ’è
+//		&heapProp,// -> ãƒ’ãƒ¼ãƒ—è¨­å®š
 //		D3D12_HEAP_FLAG_NONE,
-//		&resDesc,// -> ƒŠƒ\[ƒXİ’è
+//		&resDesc,// -> ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 //		D3D12_RESOURCE_STATE_GENERIC_READ,
 //		nullptr,
 //		IID_PPV_ARGS(&indexBuff_)
 //	);
 //
-//	// --ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[ì¬-- //
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ä½œæˆ-- //
 //	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 //	ibView_.Format = DXGI_FORMAT_R16_UINT;
 //	ibView_.SizeInBytes = sizeIB;
 //
-//	// --ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒ}ƒbƒsƒ“ƒO-- //
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°-- //
 //	uint16_t* indexMap = nullptr;
 //	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 //	assert(SUCCEEDED(result));
 //
-//	// --‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚Ä-- //
+//	// --å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦-- //
 //	for (size_t i = 0; i < indices_.size(); i++)
 //	{
 //		indexMap[i] = indices_[i];
 //	}
 //
-//	// --ƒ}ƒbƒsƒ“ƒO‰ğœ-- //
+//	// --ãƒãƒƒãƒ”ãƒ³ã‚°è§£é™¤-- //
 //	indexBuff_->Unmap(0, nullptr);
 //#pragma endregion
 //}

@@ -1,47 +1,47 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseCollider.h"
 
 #include <forward_list>
 
 class CollisionManager
 {
-#pragma region ƒƒ“ƒo•Ï”
-	// ƒRƒ‰ƒCƒ_[
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::forward_list<BaseCollider*> colliders_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	CollisionManager() = default;
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~CollisionManager();
 
-	// ‘S‚Ä‚ÌÕ“Ëƒ`ƒFƒbƒN
+	// å…¨ã¦ã®è¡çªãƒã‚§ãƒƒã‚¯
 	void CheckAllCollision();
 
 	/// <summary>
-	/// ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+	/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	/// </summary>
-	/// <param name="collider"> ƒRƒ‰ƒCƒ_[ </param>
+	/// <param name="collider"> ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ </param>
 	inline void AddCollider(BaseCollider* collider) { colliders_.push_front(collider); }
 
 	/// <summary>
-	/// ƒRƒ‰ƒCƒ_[‚Ìíœ
+	/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å‰Šé™¤
 	/// </summary>
 	/// <param name="collider"></param>
 	inline void RemoveCollider(BaseCollider* collider) { colliders_.remove(collider); }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static CollisionManager* GetInstance();
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	CollisionManager(const CollisionManager&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	CollisionManager& operator = (const CollisionManager&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	CollisionManager(const CollisionManager&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	CollisionManager& operator = (const CollisionManager&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

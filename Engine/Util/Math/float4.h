@@ -1,26 +1,26 @@
-#pragma once
+ï»¿#pragma once
 struct float4
 {
-	// x¬•ªAy¬•ªAz¬•ªAw¬•ª
+	// xæˆåˆ†ã€yæˆåˆ†ã€zæˆåˆ†ã€wæˆåˆ†
 	float x, y, z, w;
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	float4();// -----------------------------------> ˆø”‚È‚µ
-	float4(float x, float y, float z, float w);// -> ˆø”‚ ‚è
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	float4();// -----------------------------------> å¼•æ•°ãªã—
+	float4(float x, float y, float z, float w);// -> å¼•æ•°ã‚ã‚Š
 
-	// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	float4 operator+() const;
 	float4 operator-() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	float4& operator+=(const float4& f);
 	float4& operator-=(const float4& f);
 	float4& operator*=(float s);
 	float4& operator/=(float s);
 };
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// ¦‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ßAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// â€»ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const float4 operator+(const float4& f1, const float4& f2);
 const float4 operator-(const float4& f1, const float4& f2);
 const float4 operator*(const float4& f, float s);

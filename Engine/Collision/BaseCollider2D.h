@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CollisionShapeType.h"
 #include "Sprite.h"
 
@@ -8,61 +8,61 @@ class BaseCollider2D {
 public:
 	friend class CollisionManager2D;
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 protected:
-	// Œ`óƒ^ƒCƒv
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—
 	CollisionShapeType shapeType_ = SHAPE_UNKNOWN;
 
-	// Õ“Ë”»’è‘®«
+	// è¡çªåˆ¤å®šå±æ€§
 	uint16_t attribute_ = 0;
 
-	// ”CˆÓ‚Å•R•t‚¯‚éƒXƒvƒ‰ƒCƒg
+	// ä»»æ„ã§ç´ä»˜ã‘ã‚‹ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	Sprite* sprite_ = nullptr;
 
-	// Õ“Ëƒtƒ‰ƒO
+	// è¡çªãƒ•ãƒ©ã‚°
 	bool isHit_ = false;
 
-	// Õ“Ë‚µ‚½ƒRƒ‰ƒCƒ_[
+	// è¡çªã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	BaseCollider2D* hitCol_ = nullptr;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~BaseCollider2D() = default;
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	virtual void Update() = 0;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
-	// Œ`óƒ^ƒCƒv‚ğİ’è
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
 	inline void SetShapeType(CollisionShapeType shapeType) { shapeType_ = shapeType; }
 
-	// Õ“Ë”»’è‘®«‚ğİ’è
+	// è¡çªåˆ¤å®šå±æ€§ã‚’è¨­å®š
 	inline void SetAttribute(uint16_t attribute) { attribute_ = attribute; }
 
-	// ƒXƒvƒ‰ƒCƒg‚ğİ’è
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’è¨­å®š
 	inline void SetSprite(Sprite* sprite) { sprite_ = sprite; }
 
-	// Õ“Ëƒtƒ‰ƒO‚ğİ’è
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	inline void SetIsHit(bool flag) { isHit_ = flag; }
 
-	// Õ“Ë‚µ‚½ƒRƒ‰ƒCƒ_[‚ğİ’è
+	// è¡çªã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¨­å®š
 	inline void SetHitCollider(BaseCollider2D* collider) { hitCol_ = collider; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
-	// Œ`óƒ^ƒCƒv‚ğæ“¾
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’å–å¾—
 	inline CollisionShapeType GetShapeType() { return shapeType_; }
 
-	// Õ“Ë”»’è‘®«‚ğæ“¾
+	// è¡çªåˆ¤å®šå±æ€§ã‚’å–å¾—
 	inline uint16_t GetAttribute() { return attribute_; }
 
-	// Õ“Ëƒtƒ‰ƒO‚ğæ“¾
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	inline bool GetIsHit() { return isHit_; }
 
-	// Õ“Ë‚µ‚½ƒRƒ‰ƒCƒ_[‚ğæ“¾
+	// è¡çªã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—
 	inline BaseCollider2D* GetHitCollider() { return hitCol_; }
 #pragma endregion
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Mesh.h"
 #include "Material.h"
 
@@ -8,53 +8,53 @@
 #include <wrl.h>
 
 class Model {
-#pragma region ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+#pragma region ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒƒbƒVƒ…ƒf[ƒ^
+	// ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿
 	std::vector<Mesh> meshes_;
 
-	// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿
 	std::map<std::string, Material> materials_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
-	/// <param name="fileName"> ƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹–¼ </param>
+	/// <param name="fileName"> ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«å </param>
 	Model(std::string fileName);
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw();
 
 private:
 	/// <summary>
-	/// ƒ‚ƒfƒ‹“Ç‚İ‚İ
+	/// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 	/// </summary>
-	/// <param name="name"> ƒtƒ@ƒCƒ‹–¼ </param>
+	/// <param name="name"> ãƒ•ã‚¡ã‚¤ãƒ«å </param>
 	void LoadModel(std::string name);
 
 	/// <summary>
-	/// ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+	/// ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 	/// </summary>
-	/// <param name="directoryPath"> ƒtƒ@ƒCƒ‹–¼ </param>
-	/// <param name="fileName"> ƒtƒ@ƒCƒ‹–¼ </param>
+	/// <param name="directoryPath"> ãƒ•ã‚¡ã‚¤ãƒ«å </param>
+	/// <param name="fileName"> ãƒ•ã‚¡ã‚¤ãƒ«å </param>
 	void LoadMaterial(const std::string& directoryPath, const std::string& fileName);
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒƒbƒVƒ…ƒRƒ“ƒeƒi‚ğæ“¾
+	/// ãƒ¡ãƒƒã‚·ãƒ¥ã‚³ãƒ³ãƒ†ãƒŠã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒƒbƒVƒ…ƒRƒ“ƒeƒi </returns>
+	/// <returns> ãƒ¡ãƒƒã‚·ãƒ¥ã‚³ãƒ³ãƒ†ãƒŠ </returns>
 	inline const std::vector<Mesh>& GetMesh() { return meshes_; }
 #pragma endregion
 };

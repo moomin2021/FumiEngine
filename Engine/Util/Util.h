@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <string>
 
@@ -6,74 +6,74 @@ namespace Util {
 
 	const float PI = 3.141592654f;
 
-	// --�������玩��֐�-- //
+	// --ここから自作関数-- //
 
 	/// <summary>
-	/// ���ꂽ�l���ő�l�������Ă�����ő�l��Ԃ��A�ŏ��l��������Ă�����ŏ��l��Ԃ��B
-	/// �ǂ���ɂ����Ă͂܂�Ȃ��ꍇ�́A�l�����̂܂ܕԂ�
+	/// 入れた値が最大値を上回っていたら最大値を返し、最小値を下回っていたら最小値を返す。
+	/// どちらにも当てはまらない場合は、値をそのまま返す
 	/// </summary>
-	/// <param name="value"> �l </param>
-	/// <param name="max"> �ő�l </param>
-	/// <param name="min"> �ŏ��l </param>
+	/// <param name="value"> 値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <param name="min"> 最小値 </param>
 	/// <returns></returns>
 	int Clamp(int value, int max, int min);
 
 	/// <summary>
-	/// ���ꂽ�l���ő�l�������Ă�����ő�l��Ԃ��A�ŏ��l��������Ă�����ŏ��l��Ԃ��B
-	/// �ǂ���ɂ����Ă͂܂�Ȃ��ꍇ�́A�l�����̂܂ܕԂ�
+	/// 入れた値が最大値を上回っていたら最大値を返し、最小値を下回っていたら最小値を返す。
+	/// どちらにも当てはまらない場合は、値をそのまま返す
 	/// </summary>
-	/// <param name="value"> �l </param>
-	/// <param name="max"> �ő�l </param>
-	/// <param name="min"> �ŏ��l </param>
+	/// <param name="value"> 値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <param name="min"> 最小値 </param>
 	/// <returns></returns>
 	float Clamp(float value, float max, float min);
 
 	/// <summary>
-	/// �ʓx�@�̒l��x���@�ɂ��ĕԂ�
+	/// 弧度法の値を度数法にして返す
 	/// </summary>
-	/// <param name="radian"> �ʓx�@�̒l </param>
+	/// <param name="radian"> 弧度法の値 </param>
 	/// <returns></returns>
 	float Radian2Degree(float radian);
 
 	/// <summary>
-	/// �x���@�̒l���ʓx�@�ɂ��ĕԂ�
+	/// 度数法の値を弧度法にして返す
 	/// </summary>
-	/// <param name="degree"> �x���@�̒l </param>
+	/// <param name="degree"> 度数法の値 </param>
 	/// <returns></returns>
 	float Degree2Radian(float degree);
 
 	/// <summary>
-	/// std::string����WideChar�ɕϊ�
+	/// std::stringからWideCharに変換
 	/// </summary>
 	/// <param name="str"></param>
 	/// <returns></returns>
 	std::vector<wchar_t> StringToWideChar(const std::string& str);
 
 	/// <summary>
-	/// �w�肳�ꂽ�͈͓��Ń����_���Ȑ�����Ԃ�
+	/// 指定された範囲内でランダムな整数を返す
 	/// </summary>
-	/// <param name="min"> �ŏ��l </param>
-	/// <param name="max"> �ő�l </param>
-	/// <returns> �����l </returns>
+	/// <param name="min"> 最小値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <returns> 整数値 </returns>
 	uint16_t GetRandomInt(uint16_t min, uint16_t max);
 
 	/// <summary>
-	/// �w�肳�ꂽ�͈͓��Ń����_���ȏ����l��Ԃ�
+	/// 指定された範囲内でランダムな少数値を返す
 	/// </summary>
-	/// <param name="min"> �ŏ��l </param>
-	/// <param name="max"> �ő�l </param>
-	/// <returns> �����l </returns>
+	/// <param name="min"> 最小値 </param>
+	/// <param name="max"> 最大値 </param>
+	/// <returns> 小数値 </returns>
 	float GetRandomFloat(float min, float max);
 
 	/// <summary>
-	/// ���ݎ������擾[s]
+	/// 現在時刻を取得[s]
 	/// </summary>
-	/// <returns> ����(s) </returns>
+	/// <returns> 時間(s) </returns>
 	uint64_t GetTimeSec();
 
 	/// <summary>
-	/// ���ݎ������擾[ms]
+	/// 現在時刻を取得[ms]
 	/// </summary>
-	/// <returns> ����(ms) </returns>
+	/// <returns> 時間(ms) </returns>
 	uint64_t GetTimrMSec();
 } // namespace MathUtility

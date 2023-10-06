@@ -1,128 +1,128 @@
-#include "WinAPI.h"
+ï»¿#include "WinAPI.h"
 
 #include <imgui_impl_win32.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒƒvƒƒgƒ^ƒCƒvéŒ¾
-// ¦ƒVƒXƒeƒ€ƒƒbƒZ[ƒW‚ðˆ—‚·‚é‚½‚ß‚ÌŠÖ”
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// â€»ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã®é–¢æ•°
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	// ImGui—pƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒŒÄ‚Ño‚µ
+	// ImGuiç”¨ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£å‘¼ã³å‡ºã—
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) return true;
 
-	// ƒƒbƒZ[ƒW‚É‰ž‚¶‚ÄƒQ[ƒ€ŒÅ—L‚Ìˆ—‚ðs‚¤
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«å¿œã˜ã¦ã‚²ãƒ¼ãƒ å›ºæœ‰ã®å‡¦ç†ã‚’è¡Œã†
 	switch (msg)
 	{
-		// ƒEƒBƒ“ƒhƒE‚ª”jŠü‚³‚ê‚½
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒç ´æ£„ã•ã‚ŒãŸ
 	case WM_DESTROY:
-		// OS‚É‘Î‚µ‚ÄAƒAƒvƒŠ‚ÌI—¹‚ð“`‚¦‚é
+		// OSã«å¯¾ã—ã¦ã€ã‚¢ãƒ—ãƒªã®çµ‚äº†ã‚’ä¼ãˆã‚‹
 		PostQuitMessage(0);
 		return 0;
 	}
 
-	// •W€‚ÌƒƒbƒZ[ƒWˆ—‚ðs‚¤
+	// æ¨™æº–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†ã‚’è¡Œã†
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
 WinAPI* WinAPI::GetInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	static WinAPI inst;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ð•Ô‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
 	return &inst;
 }
 
 void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 {
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY•Û‘¶
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºä¿å­˜
 	winWidth_ = winWidth;
 	winHeight_ = winHeight;
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ÌÝ’è
-	winClass_.cbSize = sizeof(WNDCLASSEX);// -> WNDCLASSEX\‘¢‘Ì‚ÌƒTƒCƒY
-	winClass_.lpfnWndProc = (WNDPROC)WindowProc; // ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ðÝ’è(ƒAƒhƒŒƒX‚ð‘ã“ü)
-	winClass_.lpszClassName = L"DirectXGame"; // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX–¼
-	winClass_.hInstance = GetModuleHandle(nullptr); // ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	winClass_.hCursor = LoadCursor(NULL, IDC_ARROW); // ƒ}ƒEƒXƒJ[ƒ\ƒ‹Žw’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
+	winClass_.cbSize = sizeof(WNDCLASSEX);// -> WNDCLASSEXæ§‹é€ ä½“ã®ã‚µã‚¤ã‚º
+	winClass_.lpfnWndProc = (WNDPROC)WindowProc; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’è¨­å®š(ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ä»£å…¥)
+	winClass_.lpszClassName = L"DirectXGame"; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å
+	winClass_.hInstance = GetModuleHandle(nullptr); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	winClass_.hCursor = LoadCursor(NULL, IDC_ARROW); // ãƒžã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«æŒ‡å®š
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ðOS‚É“o˜^‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’OSã«ç™»éŒ²ã™ã‚‹
 	RegisterClassEx(&winClass_);
 
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY{ XÀ•W YÀ•W ‰¡• c• }
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º{ Xåº§æ¨™ Yåº§æ¨™ æ¨ªå¹… ç¸¦å¹… }
 	winRect_ = { 0, 0, winWidth, winHeight };
 
-	// Ž©“®‚ÅƒTƒCƒY‚ð•â³‚·‚é
+	// è‡ªå‹•ã§ã‚µã‚¤ã‚ºã‚’è£œæ­£ã™ã‚‹
 	AdjustWindowRect(&winRect_, WS_POPUP, false);
 
-	// ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	CreateWindowObj();
 
-	// ƒEƒBƒ“ƒhƒE‚ð•\Ž¦ó‘Ô‚É‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºçŠ¶æ…‹ã«ã™ã‚‹
 	ShowWindow(hwnd_, SW_SHOW);
 
 	RECT rect;
 
 	GetWindowRect(hwnd_, &rect);
 
-	// Žw’è”ÍˆÍŠO‚Éƒ}ƒEƒX‚ª‚¢‚©‚È‚¢‚æ‚¤‚É
+	// æŒ‡å®šç¯„å›²å¤–ã«ãƒžã‚¦ã‚¹ãŒã„ã‹ãªã„ã‚ˆã†ã«
 	ClipCursor(&rect);
 }
 
 bool WinAPI::IsEndMessage()
 {
-	// ƒƒbƒZ[ƒW‚ª‚ ‚é‚©
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚‹ã‹
 	if (PeekMessage(&msg_, nullptr, 0, 0, PM_REMOVE))
 	{
-		// ƒL[“ü—ÍƒƒbƒZ[ƒW‚Ìˆ—
+		// ã‚­ãƒ¼å…¥åŠ›ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
 		TranslateMessage(&msg_);
 
-		// ƒvƒƒV[ƒWƒƒ‚ÉƒƒbƒZ[ƒW‚ð‘—‚é
+		// ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹
 		DispatchMessage(&msg_);
 	}
 
-	// ~ƒ{ƒ^ƒ“‚ÅI—¹ƒƒbƒZ[ƒW‚ª—ˆ‚½‚çu^v‚ð•Ô‚·
+	// Ã—ãƒœã‚¿ãƒ³ã§çµ‚äº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸã‚‰ã€ŒçœŸã€ã‚’è¿”ã™
 	if (msg_.message == WM_QUIT)
 	{
 		return true;
 	}
 
-	// u‹Uv‚ð•Ô‚·
+	// ã€Œå½ã€ã‚’è¿”ã™
 	return false;
 }
 
 WinAPI::WinAPI() :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
 	winWidth_(0), winHeight_(0),
 
-	// ƒEƒBƒ“ƒhƒEÝ’èŠÖ˜A
-	winClass_{},// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX
-	winRect_{},	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	hwnd_{},	// ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹(ƒIƒuƒWƒFƒNƒg)
-	msg_{}		// ƒƒbƒZ[ƒW
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¨­å®šé–¢é€£
+	winClass_{},// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
+	winRect_{},	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	hwnd_{},	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«(ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)
+	msg_{}		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 #pragma endregion
 {}
 
 WinAPI::~WinAPI() {
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX“o˜^‰ðœ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ç™»éŒ²è§£é™¤
 	UnregisterClass(winClass_.lpszClassName, winClass_.hInstance);
 }
 
 void WinAPI::CreateWindowObj()
 {
-	// ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	hwnd_ = CreateWindow(
-		winClass_.lpszClassName,// ------> ƒNƒ‰ƒX–¼
-		L"DirectXGame",// -------> ƒ^ƒCƒgƒ‹ƒo[‚Ì•¶Žš
-		WS_POPUP,// --> •W€“I‚ÈƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
-		0,// --------> •\Ž¦XÀ•W(OS‚É”C‚¹‚é)
-		0,// --------> •\Ž¦YÀ•W(OS‚É”C‚¹‚é)
-		winRect_.right - winRect_.left,// -> ƒEƒBƒ“ƒhƒE‰¡•
-		winRect_.bottom - winRect_.top,// -> ƒEƒBƒ“ƒhƒEc•
-		nullptr,// --------------> eƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-		nullptr,// --------------> ƒƒjƒ…[ƒnƒ“ƒhƒ‹
-		winClass_.hInstance,// ----------> ŒÄ‚Ño‚µƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹
-		nullptr);// -------------> ƒIƒvƒVƒ‡ƒ“
+		winClass_.lpszClassName,// ------> ã‚¯ãƒ©ã‚¹å
+		L"DirectXGame",// -------> ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã®æ–‡å­—
+		WS_POPUP,// --> æ¨™æº–çš„ãªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
+		0,// --------> è¡¨ç¤ºXåº§æ¨™(OSã«ä»»ã›ã‚‹)
+		0,// --------> è¡¨ç¤ºYåº§æ¨™(OSã«ä»»ã›ã‚‹)
+		winRect_.right - winRect_.left,// -> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
+		winRect_.bottom - winRect_.top,// -> ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
+		nullptr,// --------------> è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+		nullptr,// --------------> ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«
+		winClass_.hInstance,// ----------> å‘¼ã³å‡ºã—ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«
+		nullptr);// -------------> ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 }

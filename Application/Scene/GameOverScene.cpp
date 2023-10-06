@@ -1,4 +1,4 @@
-#include "GameOverScene.h"
+ï»¿#include "GameOverScene.h"
 
 #include "PipelineManager.h"
 
@@ -8,13 +8,13 @@ GameOverScene::~GameOverScene() {}
 
 void GameOverScene::Initialize()
 {
-#pragma region ƒJƒƒ‰
+#pragma region ã‚«ãƒ¡ãƒ©
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 0.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region ƒ‰ƒCƒgƒOƒ‹[ƒv
+#pragma region ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—
 	lightGroup_ = std::make_unique<LightGroup>();
 	Object3D::SetLightGroup(lightGroup_.get());
 
@@ -22,21 +22,21 @@ void GameOverScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region ƒ‚ƒfƒ‹
+#pragma region ãƒ¢ãƒ‡ãƒ«
 	model_ = std::make_unique<Model>("cube");
 #pragma endregion
 
-#pragma region ƒIƒuƒWƒFƒNƒg3D
+#pragma region ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3D
 	object_ = std::make_unique<Object3D>(model_.get());
 #pragma endregion
 }
 
 void GameOverScene::Update()
 {
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	MatUpdate();
 }
 
@@ -44,7 +44,7 @@ void GameOverScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	object_->Draw();
 }
 
@@ -54,9 +54,9 @@ void GameOverScene::OnCollision()
 
 void GameOverScene::MatUpdate()
 {
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	camera_->Update();
 
-	// ƒIƒuƒWƒFƒNƒg3D
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3D
 	object_->MatUpdate();
 }

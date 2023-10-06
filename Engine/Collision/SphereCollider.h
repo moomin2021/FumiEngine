@@ -1,48 +1,48 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
 class SphereCollider : public BaseCollider, public Sphere
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒIƒuƒWƒFƒNƒg’†S‚©‚ç‚ÌƒIƒtƒZƒbƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸­å¿ƒã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
 
-	// Õ“Ë‚µ‚½‚Æ‚«‚Ìî•ñ
-	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// Œğ“_
-	Vector3 reject_	= { 0.0f, 0.0f, 0.0f };// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹
+	// è¡çªã—ãŸã¨ãã®æƒ…å ±
+	Vector3 inter_	= { 0.0f, 0.0f, 0.0f };// äº¤ç‚¹
+	Vector3 reject_	= { 0.0f, 0.0f, 0.0f };// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SphereCollider(Vector3 offset = { 0.0f, 0.0f, 0.0f }, float radius = 1.0f);
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update() override;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ƒIƒtƒZƒbƒg‚ğİ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	inline void SetOffset(const Vector3& offset) { offset_ = offset; }
 
-	// Œğ“_‚ğİ’è
+	// äº¤ç‚¹ã‚’è¨­å®š
 	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
-	// ”¼Œa‚ğİ’è
+	// åŠå¾„ã‚’è¨­å®š
 	inline void SetRadius(float aRadius) { Sphere::radius = aRadius; }
 
-	// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹‚ğ‰ÁZ
+	// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«ã‚’åŠ ç®—
 	inline void AddReject(const Vector3& reject) { reject_ += reject; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
-	// Œğ“_‚ğæ“¾
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
+	// äº¤ç‚¹ã‚’å–å¾—
 	inline const Vector3& GetInter() { return inter_; }
 
-	// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹‚ğæ“¾
+	// æŠ¼ã—å‡ºã—ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

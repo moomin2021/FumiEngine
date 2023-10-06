@@ -1,43 +1,43 @@
-#include "Key.h"
+ï»¿#include "Key.h"
 #include "WinAPI.h"
 #include <cassert>
 
 Key* Key::GetInstance() {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	static Key inst;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™
 	return &inst;
 }
 
 void Key::Update() {
-	// ‘OƒtƒŒ[ƒ€‚ÌƒL[‚Ìó‘Ô‚ğ•Û‘¶
+	// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’ä¿å­˜
 	for (size_t i = 0; i < 256; i++) oldKeys_[i] = keys_[i];
 
-	// ƒ}ƒEƒXƒfƒoƒCƒX§ŒäŠJn
+	// ãƒã‚¦ã‚¹ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡é–‹å§‹
 	device_->Acquire();
 
-	// ‘SƒL[‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
+	// å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 	device_->GetDeviceState(static_cast<DWORD>(keys_.size()), keys_.data());
 }
 
 Key::Key() :
-#pragma region ‰Šú‰»ƒŠƒXƒg
-	// “ü—Íî•ñ
-	keys_(256),		// Œ»İ‚ÌƒL[ƒ{[ƒh‚Ìî•ñ
-	oldKeys_(256),	// ‘OƒtƒŒ[ƒ€‚ÌƒL[ƒ{[ƒh‚Ìî•ñ
+#pragma region åˆæœŸåŒ–ãƒªã‚¹ãƒˆ
+	// å…¥åŠ›æƒ…å ±
+	keys_(256),		// ç¾åœ¨ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®æƒ…å ±
+	oldKeys_(256),	// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®æƒ…å ±
 
-	// ƒfƒoƒCƒX
+	// ãƒ‡ãƒã‚¤ã‚¹
 	device_(nullptr)
 #pragma endregion
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	WinAPI* win = WinAPI::GetInstance();
 
-	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é—p•Ï”
+	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
 	HRESULT result;
 
-#pragma region DirectInput‚Ì‰Šú‰»
+#pragma region DirectInputã®åˆæœŸåŒ–
 
 	ComPtr<IDirectInput8> directInput = nullptr;
 	result = DirectInput8Create(
@@ -48,32 +48,32 @@ Key::Key() :
 
 #pragma endregion
 
-#pragma region ƒfƒoƒCƒX‚Ì¶¬
+#pragma region ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 
-	// ƒfƒoƒCƒX‚Ì¶¬
+	// ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	result = directInput->CreateDevice(GUID_SysKeyboard, &device_, NULL);
 	assert(SUCCEEDED(result));
 
-	// ƒL[ƒ{[ƒh“ü—Íƒf[ƒ^‚ÌŒ`®‚ÌƒZƒbƒg
-	result = device_->SetDataFormat(&c_dfDIKeyboard);// •W€Œ`®
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®å½¢å¼ã®ã‚»ãƒƒãƒˆ
+	result = device_->SetDataFormat(&c_dfDIKeyboard);// æ¨™æº–å½¢å¼
 	assert(SUCCEEDED(result));
 
-	// ”r‘¼§ŒäƒŒƒxƒ‹‚ÌƒZƒbƒg
+	// æ’ä»–åˆ¶å¾¡ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
 	result = device_->SetCooperativeLevel(
 		win->GetHWND(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY
 	);
 	assert(SUCCEEDED(result));
 
-	// ƒfƒoƒCƒX§ŒäŠJn
+	// ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡é–‹å§‹
 	device_->Acquire();
 
 #pragma endregion
 }
 
 Key::~Key() {
-	// ƒL[ƒ{[ƒhƒfƒoƒCƒX‚Ì§Œä§Œä
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®åˆ¶å¾¡åˆ¶å¾¡
 	device_->Unacquire();
 
-	// ƒL[ƒ{[ƒhƒfƒoƒCƒX‚Ì‰ğ•ú
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®è§£æ”¾
 	device_->Release();
 }

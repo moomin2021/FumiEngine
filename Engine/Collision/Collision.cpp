@@ -1,4 +1,4 @@
-#include "Collision.h"
+ï»¿#include "Collision.h"
 
 #include <math.h>
 
@@ -10,7 +10,7 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1)
 
 	float r = sphere0.radius + sphere1.radius;
 
-	// ^‚È‚çÕ“Ë‚µ‚Ä‚¢‚é
+	// çœŸãªã‚‰è¡çªã—ã¦ã„ã‚‹
 	if ((x * x) + (y * y) + (z * z) <= (r * r)) return true;
 
 	return false;
@@ -18,18 +18,18 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphere0, const Sphere& sphere1)
 
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3* inter)
 {
-	// À•WŒn‚ÌŒ´“_‚©‚ç‹…‚Ì’†SÀ•W‚Ö‚Ì‹——£
+	// åº§æ¨™ç³»ã®åŸç‚¹ã‹ã‚‰çƒã®ä¸­å¿ƒåº§æ¨™ã¸ã®è·é›¢
 	float distV = Vector3Dot(sphere.center, plane.normal);
 
-	// •½–Ê‚ÌŒ´“_‹——£‚ğŒ¸Z‚·‚é‚±‚Æ‚ÅA•½–Ê‚Æ‹…‚’†S‚Æ‚Ì‹——£‚ªo‚é
+	// å¹³é¢ã®åŸç‚¹è·é›¢ã‚’æ¸›ç®—ã™ã‚‹ã“ã¨ã§ã€å¹³é¢ã¨çƒï½ä¸­å¿ƒã¨ã®è·é›¢ãŒå‡ºã‚‹
 	float dist = distV - plane.distance;
 
-	// ‹——£‚Ìâ‘Î’l‚ª”¼Œa‚æ‚è‘å‚«‚¯‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢
+	// è·é›¢ã®çµ¶å¯¾å€¤ãŒåŠå¾„ã‚ˆã‚Šå¤§ãã‘ã‚Œã°å½“ãŸã£ã¦ã„ãªã„
 	if (fabsf(dist) > sphere.radius) return false;
 
-	// ‹^—Œğ“_‚ğŒvZ
+	// ç–‘ä¼¼äº¤ç‚¹ã‚’è¨ˆç®—
 	if (inter) {
-		// •½–Êã‚ÌÅ‹ßÚ“_‚ğA‹^—Œğ“_‚Æ‚·‚é
+		// å¹³é¢ä¸Šã®æœ€è¿‘æ¥ç‚¹ã‚’ã€ç–‘ä¼¼äº¤ç‚¹ã¨ã™ã‚‹
 		*inter = -dist * plane.normal + sphere.center;
 	}
 
@@ -38,7 +38,7 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vect
 
 void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& triangle, Vector3* closest)
 {
-	// point‚ªp0‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp0ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p0_p1 = triangle.p1 - triangle.p0;
 	Vector3 p0_p2 = triangle.p2 - triangle.p0;
 	Vector3 p0_pt = point - triangle.p0;
@@ -48,12 +48,12 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 
 	if (d1 <= 0.0f && d2 <= 0.0f)
 	{
-		// p0‚ªÅ‹ß–T
+		// p0ãŒæœ€è¿‘å‚
 		*closest = triangle.p0;
 		return;
 	}
 
-	// point‚ªp1‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp1ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p1_pt = point - triangle.p1;
 
 	float d3 = Vector3Dot(p0_p1, p1_pt);
@@ -61,12 +61,12 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 
 	if (d3 >= 0.0f && d4 <= d3)
 	{
-		// p1‚ªÅ‹ß–T
+		// p1ãŒæœ€è¿‘å‚
 		*closest = triangle.p1;
 		return;
 	}
 
-	// point‚ªp0_p1‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp0_p1ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp0_p1ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p0_p1ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float vc = d1 * d4 - d3 * d2;
 	if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
 	{
@@ -75,7 +75,7 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 		return;
 	}
 
-	// point‚ªp2‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp2ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p2_pt = point - triangle.p2;
 
 	float d5 = Vector3Dot(p0_p1, p2_pt);
@@ -86,7 +86,7 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 		return;
 	}
 
-	// point‚ªp0_p2‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp0_p2ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp0_p2ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p0_p2ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float vb = d5 * d2 - d1 * d6;
 	if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
 	{
@@ -95,7 +95,7 @@ void Collision::ClosestPtPoint2Triangle(const Vector3& point, const Triangle& tr
 		return;
 	}
 
-	// point‚ªp1_p2‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp1_p2ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp1_p2ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p1_p2ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float va = d3 * d6 - d5 * d4;
 	if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
 	{
@@ -114,23 +114,23 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 {
 	Vector3 p;
 
-	// ‹…‚Ì’†S‚É‘Î‚·‚éÅ‹ßÚ“_‚Å‚ ‚éOŠpŒ`ã‚É‚ ‚é“_p‚ğŒ©‚Â‚¯‚é
+	// çƒã®ä¸­å¿ƒã«å¯¾ã™ã‚‹æœ€è¿‘æ¥ç‚¹ã§ã‚ã‚‹ä¸‰è§’å½¢ä¸Šã«ã‚ã‚‹ç‚¹pã‚’è¦‹ã¤ã‘ã‚‹
 	ClosestPtPoint2Triangle(sphere.center, triangle, &p);
 
-	// “_p‚Æ‹…‚Ì’†S‚Ì·•ªƒxƒNƒgƒ‹
+	// ç‚¹pã¨çƒã®ä¸­å¿ƒã®å·®åˆ†ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 v = p - sphere.center;
 
-	// ‹——£‚Ì“ñæ‚ğ‹‚ß‚é
-	// (“¯‚¶ƒxƒNƒgƒ‹“¯m‚Ì“àÏ‚ÍO•½•û‚Ì’è—‚Ìƒ‹[ƒg“à•”‚Ì®‚Æˆê’v‚·‚é)
+	// è·é›¢ã®äºŒä¹—ã‚’æ±‚ã‚ã‚‹
+	// (åŒã˜ãƒ™ã‚¯ãƒˆãƒ«åŒå£«ã®å†…ç©ã¯ä¸‰å¹³æ–¹ã®å®šç†ã®ãƒ«ãƒ¼ãƒˆå†…éƒ¨ã®å¼ã¨ä¸€è‡´ã™ã‚‹)
 	float d = Vector3Dot(v, v);
 
-	// ‹…‚ÆOŠpŒ`‚Ì‹——£‚ª”¼ŒaˆÈ‰º‚È‚ç“–‚½‚Á‚Ä‚È‚¢
+	// çƒã¨ä¸‰è§’å½¢ã®è·é›¢ãŒåŠå¾„ä»¥ä¸‹ãªã‚‰å½“ãŸã£ã¦ãªã„
 	if (d > sphere.radius * sphere.radius) return false;
 
-	// ‹^—Œğ“_‚ğŒvZ
+	// ç–‘ä¼¼äº¤ç‚¹ã‚’è¨ˆç®—
 	if (inter) *inter = p;
 
-	// ‰Ÿ‚µo‚·ƒxƒNƒgƒ‹‚ğŒvZ
+	// æŠ¼ã—å‡ºã™ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	if (reject) {
 		float ds = Vector3Dot(sphere.center, triangle.normal);
 		float dt = Vector3Dot(triangle.p0, triangle.normal);
@@ -143,32 +143,32 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 
 bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, Vector3* inter)
 {
-	// Œë·‹zû—p‚Ì”÷¬‚È’l
+	// èª¤å·®å¸åç”¨ã®å¾®å°ãªå€¤
 	const float epsilon = static_cast<float>(1.0e-5);
 
-	// –Ê–@ü‚ÆƒŒƒC‚Ì•ûŒüƒxƒNƒgƒ‹‚Ì“àÏ
+	// é¢æ³•ç·šã¨ãƒ¬ã‚¤ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 	float d1 = Vector3Dot(plane.normal, ray.dir);
 
-	// — –Ê‚É‚Í“–‚½‚ç‚È‚¢
+	// è£é¢ã«ã¯å½“ãŸã‚‰ãªã„
 	if (d1 > -epsilon) return false;
 
-	// n“_‚ÆŒ´“_‚Ì‹——£(•½–Ê‚Ì–@ü•ûŒü)
-	// –Ê–@ü‚ÆƒŒƒC‚Ìn“_À•W
+	// å§‹ç‚¹ã¨åŸç‚¹ã®è·é›¢(å¹³é¢ã®æ³•ç·šæ–¹å‘)
+	// é¢æ³•ç·šã¨ãƒ¬ã‚¤ã®å§‹ç‚¹åº§æ¨™
 	float d2 = Vector3Dot(plane.normal, ray.start);
 
-	// n“_‚Æ•½–Ê‚Ì‹——£(•½–Ê‚Ì–@ü•ûŒü)
+	// å§‹ç‚¹ã¨å¹³é¢ã®è·é›¢(å¹³é¢ã®æ³•ç·šæ–¹å‘)
 	float dist = d2 - plane.distance;
 
-	// n“_‚Æ•½–Ê‚Ì‹——£(ƒŒƒC•ûŒü)
+	// å§‹ç‚¹ã¨å¹³é¢ã®è·é›¢(ãƒ¬ã‚¤æ–¹å‘)
 	float t = dist / -d1;
 
-	// Œğ“_‚ªn“_‚æ‚èŒã‚ë‚É‚ ‚é‚Ì‚Å“–‚½‚ç‚È‚¢
+	// äº¤ç‚¹ãŒå§‹ç‚¹ã‚ˆã‚Šå¾Œã‚ã«ã‚ã‚‹ã®ã§å½“ãŸã‚‰ãªã„
 	if (t < 0) return false;
 
-	// ‹——£‚ğ‘‚«‚Ş
+	// è·é›¢ã‚’æ›¸ãè¾¼ã‚€
 	if (distance) *distance = t;
 
-	// Œğ“_‚ğŒvZ
+	// äº¤ç‚¹ã‚’è¨ˆç®—
 	if (inter) *inter = ray.start + t * ray.dir;
 
 	return true;
@@ -176,46 +176,46 @@ bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distan
 
 bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, float* distance, Vector3* inter)
 {
-	// OŠpŒ`‚ªæ‚Á‚Ä‚¢‚é•½–Ê‚ğZo
+	// ä¸‰è§’å½¢ãŒä¹—ã£ã¦ã„ã‚‹å¹³é¢ã‚’ç®—å‡º
 	Plane plane;
 	Vector3 interPlane;
 	plane.normal = triangle.normal;
 	plane.distance = Vector3Dot(triangle.normal, triangle.p0);
 
-	// ƒŒƒC‚Æ•½–Ê‚ª“–‚½‚Á‚Ä‚¢‚È‚¯‚ê‚ÎA“–‚½‚Á‚Ä‚¢‚È‚¢
+	// ãƒ¬ã‚¤ã¨å¹³é¢ãŒå½“ãŸã£ã¦ã„ãªã‘ã‚Œã°ã€å½“ãŸã£ã¦ã„ãªã„
 	if (!CheckRay2Plane(ray, plane, distance, &interPlane)) return false;
 
-	// ƒŒƒC‚Æ•½–Ê‚ª“–‚½‚Á‚Ä‚¢‚½‚Ì‚ÅA‹——£‚ÆŒğ“_‚ª‘‚«‚Ü‚ê‚½
-	// ƒŒƒC‚Æ•½–Ê‚ÌŒğ“_‚ªOŠpŒ`‚Ì“à‘¤‚É‚ ‚é‚©”»’è
-	const float epsilon = static_cast<float>(1.0e-5);// Œë·‹zû—Ê‚Ì”÷¬‚È’l
+	// ãƒ¬ã‚¤ã¨å¹³é¢ãŒå½“ãŸã£ã¦ã„ãŸã®ã§ã€è·é›¢ã¨äº¤ç‚¹ãŒæ›¸ãè¾¼ã¾ã‚ŒãŸ
+	// ãƒ¬ã‚¤ã¨å¹³é¢ã®äº¤ç‚¹ãŒä¸‰è§’å½¢ã®å†…å´ã«ã‚ã‚‹ã‹åˆ¤å®š
+	const float epsilon = static_cast<float>(1.0e-5);// èª¤å·®å¸åé‡ã®å¾®å°ãªå€¤
 
 	Vector3 m;
 
-	// •Óp0_p1‚É‚Â‚¢‚Ä
+	// è¾ºp0_p1ã«ã¤ã„ã¦
 	Vector3 pt_p0 = triangle.p0 - interPlane;
 	Vector3 p0_p1 = triangle.p1 - triangle.p0;
 	m = Vector3Cross(pt_p0, p0_p1);
 
-	// •Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
+	// è¾ºã®å¤–å´ã§ã‚ã‚Œã°å½“ãŸã£ã¦ã„ãªã„ã®ã§åˆ¤å®šã‚’æ‰“ã¡åˆ‡ã‚‹
 	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
-	// •Óp1_p2‚É‚Â‚¢‚Ä
+	// è¾ºp1_p2ã«ã¤ã„ã¦
 	Vector3 pt_p1 = triangle.p1 - interPlane;
 	Vector3 p1_p2 = triangle.p2 - triangle.p1;
 	m = Vector3Cross(pt_p1, p1_p2);
 
-	// •Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
+	// è¾ºã®å¤–å´ã§ã‚ã‚Œã°å½“ãŸã£ã¦ã„ãªã„ã®ã§åˆ¤å®šã‚’æ‰“ã¡åˆ‡ã‚‹
 	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
-	// •Óp2_p0‚É‚Â‚¢‚Ä
+	// è¾ºp2_p0ã«ã¤ã„ã¦
 	Vector3 pt_p2 = triangle.p2 - interPlane;
 	Vector3 p2_p0 = triangle.p0 - triangle.p2;
 	m = Vector3Cross(pt_p2, p2_p0);
 
-	// •Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
+	// è¾ºã®å¤–å´ã§ã‚ã‚Œã°å½“ãŸã£ã¦ã„ãªã„ã®ã§åˆ¤å®šã‚’æ‰“ã¡åˆ‡ã‚‹
 	if (Vector3Dot(m, triangle.normal) < -epsilon) return false;
 
-	// “à‘¤‚È‚Ì‚ÅA“–‚½‚Á‚Ä‚¢‚é
+	// å†…å´ãªã®ã§ã€å½“ãŸã£ã¦ã„ã‚‹
 	if (inter) *inter = interPlane;
 
 	return true;
@@ -227,19 +227,19 @@ bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* dis
 	float b = Vector3Dot(m, ray.dir);
 	float c = Vector3Dot(m, m) - sphere.radius * sphere.radius;
 
-	// ray‚Ìn“_‚ªsphere‚ÌŠO‘¤‚É‚ ‚è(c > 0)Aray‚ªsphere‚©‚ç—£‚ê‚Ä‚¢‚­•ûŒü‚ğw‚µ‚Ä‚¢‚éê‡(b > 0)A“–‚½‚ç‚È‚¢
+	// rayã®å§‹ç‚¹ãŒsphereã®å¤–å´ã«ã‚ã‚Š(c > 0)ã€rayãŒsphereã‹ã‚‰é›¢ã‚Œã¦ã„ãæ–¹å‘ã‚’æŒ‡ã—ã¦ã„ã‚‹å ´åˆ(b > 0)ã€å½“ãŸã‚‰ãªã„
 	if (c > 0.0f && b > 0.0f) return false;
 
 	float discr = b * b - c;
 
-	// •‰‚Ì”»’è®‚ÍƒŒƒC‚ª‹…‚ğŠO‚ê‚Ä‚¢‚é‚±‚Æ‚Éˆê’v
+	// è² ã®åˆ¤å®šå¼ã¯ãƒ¬ã‚¤ãŒçƒã‚’å¤–ã‚Œã¦ã„ã‚‹ã“ã¨ã«ä¸€è‡´
 	if (discr < 0.0f) return false;
 
-	// ƒŒƒC‚Í‹…‚ÆŒğ·‚µ‚Ä‚¢‚é
-	// Œğ·‚·‚éÅ¬‚Ì’l‚ğŒvZ
+	// ãƒ¬ã‚¤ã¯çƒã¨äº¤å·®ã—ã¦ã„ã‚‹
+	// äº¤å·®ã™ã‚‹æœ€å°ã®å€¤ã‚’è¨ˆç®—
 	float t = -b - static_cast<float>(sqrt(discr));
 
-	// t‚ª•‰‚Å‚ ‚éê‡AƒŒƒC‚Í‹…‚Ì“à‘¤‚©‚çŠJn‚µ‚Ä‚¢‚é‚Ì‚Åt‚ğƒ[ƒ‚ÉƒNƒ‰ƒ“ƒv
+	// tãŒè² ã§ã‚ã‚‹å ´åˆã€ãƒ¬ã‚¤ã¯çƒã®å†…å´ã‹ã‚‰é–‹å§‹ã—ã¦ã„ã‚‹ã®ã§tã‚’ã‚¼ãƒ­ã«ã‚¯ãƒ©ãƒ³ãƒ—
 	if (t < 0) t = 0.0f;
 	if (distance) *distance = t;
 

@@ -1,26 +1,26 @@
-#include "Object3D.h"
+ï»¿#include "Object3D.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 #include "Util.h"
 
-// Ã“Iƒƒ“ƒo•Ï”‚ÌŽÀ‘Ô
-Camera*		Object3D::sCamera_		= nullptr;// ƒJƒƒ‰
-LightGroup* Object3D::sLightGroup_	= nullptr;// ƒ‰ƒCƒg
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿæ…‹
+Camera*		Object3D::sCamera_		= nullptr;// ã‚«ãƒ¡ãƒ©
+LightGroup* Object3D::sLightGroup_	= nullptr;// ãƒ©ã‚¤ãƒˆ
 
 Object3D::Object3D(Model* model) : model_(model)
 {
-	// ŠÖ”‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ð”»•Ê‚·‚é—p•Ï”
+	// é–¢æ•°ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’åˆ¤åˆ¥ã™ã‚‹ç”¨å¤‰æ•°
 	HRESULT result;
 
-	// ƒfƒoƒCƒXŽæ“¾
+	// ãƒ‡ãƒã‚¤ã‚¹å–å¾—
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-#pragma region ’è”ƒoƒbƒtƒ@¶¬
-	// ’è”ƒoƒbƒtƒ@‚Ìƒq[ƒvÝ’è
-	D3D12_HEAP_PROPERTIES heapProp{};		// ƒq[ƒvÝ’è
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPU‚Ö‚Ì“]‘——p
+#pragma region å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒ’ãƒ¼ãƒ—è¨­å®š
+	D3D12_HEAP_PROPERTIES heapProp{};		// ãƒ’ãƒ¼ãƒ—è¨­å®š
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	// GPUã¸ã®è»¢é€ç”¨
 
-	// ’è”ƒoƒbƒtƒ@‚ÌƒŠƒ\[ƒXÝ’è
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;
@@ -30,7 +30,7 @@ Object3D::Object3D(Model* model) : model_(model)
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -41,7 +41,7 @@ Object3D::Object3D(Model* model) : model_(model)
 	assert(SUCCEEDED(result));
 #pragma endregion
 
-#pragma region ’è”ƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+#pragma region å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
 	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
 	assert(SUCCEEDED(result));
 #pragma endregion
@@ -49,53 +49,53 @@ Object3D::Object3D(Model* model) : model_(model)
 
 void Object3D::MatUpdate()
 {
-	// ƒIƒuƒWƒFƒNƒgƒf[ƒ^‚ª•ÏX‚³‚ê‚Ä‚¢‚½‚çˆ—‚·‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚Œã¦ã„ãŸã‚‰å‡¦ç†ã™ã‚‹
 	if (hasChanget_) {
-#pragma region ƒ[ƒ‹ƒhs—ñŒvŽZ
-		// s—ñ‰Šú‰»
+#pragma region ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—è¨ˆç®—
+		// è¡Œåˆ—åˆæœŸåŒ–
 		matWorld_ = Matrix4Identity();
 
-		// ƒ[ƒ‹ƒhs—ñ‚ÉƒXƒP[ƒŠƒ“ƒO‚ð”½‰f
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã‚’åæ˜ 
 		matWorld_ *= Matrix4Scale(scale_);
 
-		// ƒ[ƒ‹ƒhs—ñ‚É‰ñ“]‚ð”½‰f
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«å›žè»¢ã‚’åæ˜ 
 		matWorld_ *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
 		matWorld_ *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
 		matWorld_ *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
 
-		// ƒ[ƒ‹ƒhs—ñ‚É•½sˆÚ“®‚ð”½‰f
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«å¹³è¡Œç§»å‹•ã‚’åæ˜ 
 		matWorld_ *= Matrix4Translate(position_);
 #pragma endregion
 
-		// •ÏX‚µ‚½‚Ì‚Åƒtƒ‰ƒO‚ð[OFF]‚É‚·‚é
+		// å¤‰æ›´ã—ãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’[OFF]ã«ã™ã‚‹
 		hasChanget_ = false;
 	}
 
-#pragma region ’è”ƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
-	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ““]‘—
+#pragma region å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
+	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è»¢é€
 	constMap_->viewProj = sCamera_->GetMatView() * sCamera_->GetMatProjection();
 
-	// ƒ[ƒ‹ƒhs—ñ“]‘—
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—è»¢é€
 	constMap_->world = matWorld_;
 
-	// ƒJƒƒ‰‚ÌˆÊ’uÀ•W(XYZ)“]‘—
+	// ã‚«ãƒ¡ãƒ©ã®ä½ç½®åº§æ¨™(XYZ)è»¢é€
 	constMap_->cameraPos = sCamera_->GetEye();
 
-	// F(RGBA)“]‘—
+	// è‰²(RGBA)è»¢é€
 	constMap_->color = color_;
 #pragma endregion
 }
 
 void Object3D::Draw() {
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒgŽæ“¾
+	// ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 
-	// ’è”ƒoƒbƒtƒ@ƒrƒ…[iCBVj‚ÌÝ’èƒRƒ}ƒ“ƒh
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ï¼ˆCBVï¼‰ã®è¨­å®šã‚³ãƒžãƒ³ãƒ‰
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());
 
-	// ƒ‰ƒCƒg‚Ì•`‰æ
+	// ãƒ©ã‚¤ãƒˆã®æç”»
 	sLightGroup_->Draw();
 
-	// ƒ‚ƒfƒ‹‚Ìî•ñ‚ðŒ³‚É•`‰æ
+	// ãƒ¢ãƒ‡ãƒ«ã®æƒ…å ±ã‚’å…ƒã«æç”»
 	model_->Draw();
 }

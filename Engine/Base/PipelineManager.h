@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "PipelineObj.h"
 
 #include <map>
@@ -7,42 +7,42 @@
 
 class PipelineManager
 {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
 	static std::map<std::string, std::unique_ptr<PipelineObj>> pipelineObj_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	/// </summary>
-	/// <returns> ƒCƒ“ƒXƒ^ƒ“ƒX </returns>
+	/// <returns> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </returns>
 	static PipelineManager* GetInstance();
 
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
-	/// <param name="pipelineName"> ƒpƒCƒvƒ‰ƒCƒ“–¼‘O </param>
+	/// <param name="pipelineName"> ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³åå‰ </param>
 	static void PreDraw(std::string pipelineName, D3D_PRIMITIVE_TOPOLOGY primitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, bool isDescHeap = true);
 
 private:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	PipelineManager();
 
 	/// <summary>
-	/// ƒpƒCƒvƒ‰ƒCƒ“‚ğ’Ç‰Á
+	/// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’è¿½åŠ 
 	/// </summary>
-	/// <param name="pipelineName"> ƒpƒCƒvƒ‰ƒCƒ“‚Ì–¼‘O </param>
+	/// <param name="pipelineName"> ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®åå‰ </param>
 	void AddPipeline(std::string pipelineName);
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	PipelineManager(const PipelineManager&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	PipelineManager& operator = (const PipelineManager&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	PipelineManager(const PipelineManager&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	PipelineManager& operator = (const PipelineManager&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

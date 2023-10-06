@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <xaudio2.h>
 #include <fstream>
 #include <memory>
@@ -7,79 +7,79 @@
 #include <string>
 #include <vector>
 
-// ƒ`ƒƒƒ“ƒNƒwƒbƒ_
+// ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€
 struct ChunkHeader {
-	char id[4];		// ƒ`ƒƒƒ“ƒN–ˆ‚ÌID
-	uint32_t size;	// ƒ`ƒƒƒ“ƒNƒTƒCƒY
+	char id[4];		// ãƒãƒ£ãƒ³ã‚¯æ¯ã®ID
+	uint32_t size;	// ãƒãƒ£ãƒ³ã‚¯ã‚µã‚¤ã‚º
 };
 
-// RIFFƒwƒbƒ_ƒ`ƒƒƒ“ƒN
+// RIFFãƒ˜ãƒƒãƒ€ãƒãƒ£ãƒ³ã‚¯
 struct RiffHeader {
 	ChunkHeader chunk;	// RIFF
 	char type[4];		// WAVE
 };
 
-// FMTƒ`ƒƒƒ“ƒN
+// FMTãƒãƒ£ãƒ³ã‚¯
 struct FormatChunk {
 	ChunkHeader chunk;	// fmt
-	WAVEFORMATEX fmt;	// ”gŒ`ƒtƒH[ƒ}ƒbƒg
+	WAVEFORMATEX fmt;	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 };
 
-// ‰¹ºƒf[ƒ^
+// éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 struct SoundData {
-	WAVEFORMATEX wfex;	// ”gŒ`ƒtƒH[ƒ}ƒbƒg
-	BYTE* pBuffer;		// ƒoƒbƒtƒ@‚Ìæ“ªƒAƒhƒŒƒX
-	uint32_t bufferSize;// ƒoƒbƒtƒ@ƒTƒCƒY
+	WAVEFORMATEX wfex;	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+	BYTE* pBuffer;		// ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+	uint32_t bufferSize;// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 	float volume = 0;
 };
 
 class Sound {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// XAudio2ƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// XAudio2ã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	ComPtr<IXAudio2> pXAudio2_ = nullptr;
 
-	// ƒ}ƒXƒ^ƒŠƒ“ƒO‰¹º
+	// ãƒã‚¹ã‚¿ãƒªãƒ³ã‚°éŸ³å£°
 	IXAudio2MasteringVoice* pMasterVoice_ = nullptr;
 
-	// “Ç‚İ‚ñ‚¾‰¹ºƒf[ƒ^
+	// èª­ã¿è¾¼ã‚“ã éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 	std::map<uint16_t, SoundData> soundDatas_ = {};
 
-	// ‰¹ºƒnƒ“ƒhƒ‹‚ğ•Û‘¶
+	// éŸ³å£°ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
 	std::map<std::string, uint16_t> soundHandles_ = {};
 
-	// Ä¶’†‚Ì‰¹
+	// å†ç”Ÿä¸­ã®éŸ³
 	std::map<uint16_t, IXAudio2SourceVoice*> isPlaySounds_ = {};
 
-	// ‰¹º“Ç‚İ‚İƒJƒEƒ“ƒ^[
+	// éŸ³å£°èª­ã¿è¾¼ã¿ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 	uint16_t soundCounter_ = 0;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static Sound* GetInstance();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// ƒTƒEƒ“ƒh“Ç‚İ‚İ
+	// ã‚µã‚¦ãƒ³ãƒ‰èª­ã¿è¾¼ã¿
 	// volume = 0.0f ~ 1.0f
 	uint16_t LoadWave(std::string fileName, float volume = 1.0f);
 
-	// Ä¶
+	// å†ç”Ÿ
 	void Play(uint16_t handle, bool isLoop = false);
 
-	// ’â~
+	// åœæ­¢
 	void Stop(uint16_t handle);
 
-	// ‰ğ•ú
+	// è§£æ”¾
 	void Release();
 #pragma endregion
 };

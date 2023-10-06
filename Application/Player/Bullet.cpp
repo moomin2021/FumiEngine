@@ -1,16 +1,16 @@
-#include "Bullet.h"
+ï»¿#include "Bullet.h"
 #include "CollisionAttribute.h"
 #include "CollisionManager.h"
 
 Bullet::Bullet(Model* model, BulletType type, const Vector3& iniPos, const Vector3& moveVec)
 {
-	// ƒIƒuƒWƒFƒNƒg¶¬•¶¬
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆï¼†ç”Ÿæˆ
 	data_.object = std::make_unique<Object3D>(model);
 
-	// ¶¬‚³‚ê‚½ŠÔ‚ğ‹L˜^
+	// ç”Ÿæˆã•ã‚ŒãŸæ™‚é–“ã‚’è¨˜éŒ²
 	generatedTime_ = Util::GetTimeSec();
 
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	if (type == PLAYER) {
 		data_.object->SetPosition(iniPos);
 		data_.object->SetScale({ 0.1f, 0.1f, 0.1f });
@@ -43,16 +43,16 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-	// ¶‘¶ƒtƒ‰ƒO‚ª[OFF]‚È‚ç‚±‚ÌŒã‚Ìˆ—‚ğ”ò‚Î‚·
+	// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ãŒ[OFF]ãªã‚‰ã“ã®å¾Œã®å‡¦ç†ã‚’é£›ã°ã™
 	if (isAlive_ == false) return;
 
-	// ’e‚ğˆÚ“®‚³‚¹‚é
+	// å¼¾ã‚’ç§»å‹•ã•ã›ã‚‹
 	data_.object->SetPosition(data_.object->GetPosition() + data_.moveVec * data_.bulletSpd);
 
-	// ¶¬‚³‚ê‚Ä‚©‚ç‚ÌŒo‰ßŠÔ
+	// ç”Ÿæˆã•ã‚Œã¦ã‹ã‚‰ã®çµŒéæ™‚é–“
 	uint64_t elapsedTime = Util::GetTimeSec() - generatedTime_;
 
-	// Œo‰ßŠÔ‚ªw’è‚ÌŠÔ‚ğ‰ß‚¬‚½‚ç¶‘¶ƒtƒ‰ƒO‚ğ[OFF]‚É‚·‚é
+	// çµŒéæ™‚é–“ãŒæŒ‡å®šã®æ™‚é–“ã‚’éããŸã‚‰ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã‚’[OFF]ã«ã™ã‚‹
 	if (elapsedTime >= data_.aliveTime) {
 		isAlive_ = false;
 	}
@@ -60,12 +60,12 @@ void Bullet::Update()
 
 void Bullet::Draw()
 {
-	// ƒIƒuƒWƒFƒNƒg‚Ì•`‰æˆ—
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»å‡¦ç†
 	data_.object->Draw();
 }
 
 void Bullet::MatUpdate()
 {
-	// ƒIƒuƒWƒFƒNƒg‚ÌXVˆ—
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°å‡¦ç†
 	data_.object->MatUpdate();
 }

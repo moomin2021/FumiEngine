@@ -11,131 +11,131 @@
 
 class PostEffect {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 private:
-	// ’¸“_ƒf[ƒ^
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	struct Vertex {
-		Vector2 pos;	// À•W(XYZ)
-		Vector2 uv;	// UVÀ•W(XY)
+		Vector2 pos;	// åº§æ¨™(XYZ)
+		Vector2 uv;	// UVåº§æ¨™(XY)
 	};
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Matrix4 mat;	// s—ñ
-		float4 color;	// F(RGBA)
+		Matrix4 mat;	// è¡Œåˆ—
+		float4 color;	// è‰²(RGBA)
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒyƒ‰ƒ|ƒŠƒSƒ“ƒf[ƒ^
-	Vector2 scale_;// Šgk(‰æ–Ê‚Ì‘å‚«‚³‚É‘Î‚µ‚Ä)
+	// ãƒšãƒ©ãƒãƒªã‚´ãƒ³ãƒ‡ãƒ¼ã‚¿
+	Vector2 scale_;// æ‹¡ç¸®(ç”»é¢ã®å¤§ãã•ã«å¯¾ã—ã¦)
 
-	// ƒyƒ‰ƒ|ƒŠƒSƒ“ƒf[ƒ^‚ğ•ÏX‚µ‚½‚©‚Ç‚¤‚©
+	// ãƒšãƒ©ãƒãƒªã‚´ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’å¤‰æ›´ã—ãŸã‹ã©ã†ã‹
 	bool hasChanget_;
 
-	// ’è”ƒoƒbƒtƒ@
-	ComPtr<ID3D12Resource> constBuff_;	// ’è”ƒoƒbƒtƒ@
-	ConstBufferData* constMap_;			// ƒ}ƒbƒsƒ“ƒOˆ——p
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ComPtr<ID3D12Resource> constBuff_;	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ConstBufferData* constMap_;			// ãƒãƒƒãƒ”ãƒ³ã‚°å‡¦ç†ç”¨
 
-	// ’¸“_ƒf[ƒ^
-	std::vector<Vertex> vertex_;			// ’¸“_ƒf[ƒ^
-	ComPtr<ID3D12Resource> vertexBuff_;		// ’¸“_ƒoƒbƒtƒ@
-	Vertex* vertexMap_;						// ƒ}ƒbƒsƒ“ƒOˆ——p
-	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<Vertex> vertex_;			// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	ComPtr<ID3D12Resource> vertexBuff_;		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	Vertex* vertexMap_;						// ãƒãƒƒãƒ”ãƒ³ã‚°å‡¦ç†ç”¨
+	D3D12_VERTEX_BUFFER_VIEW vertexView_;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 
-	// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	std::vector<uint16_t> index_;		// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	ComPtr<ID3D12Resource> indexBuff_;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
-	D3D12_INDEX_BUFFER_VIEW indexView_;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<uint16_t> index_;		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	ComPtr<ID3D12Resource> indexBuff_;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
+	D3D12_INDEX_BUFFER_VIEW indexView_;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	std::vector<ComPtr<ID3D12Resource>> texBuff_;
 
-	// SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV_;
 
-	// [“xƒoƒbƒtƒ@
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> depthBuff_;
 
-	// RTV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// RTVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> descHeapRTV_;
 
-	// DSV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// DSVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV_;
 
-	// ‰æ–ÊƒNƒŠƒAƒJƒ‰[
+	// ç”»é¢ã‚¯ãƒªã‚¢ã‚«ãƒ©ãƒ¼
 	static const std::vector<float> clearColor_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	PostEffect();
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw(bool isDescHeap = true);
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
 	void PreDraw();
 
 	/// <summary>
-	/// •`‰æŒãˆ—
+	/// æç”»å¾Œå‡¦ç†
 	/// </summary>
 	void PostDraw();
 
 private:
 	/// <summary>
-	/// ƒyƒ‰ƒ|ƒŠƒSƒ“ƒf[ƒ^‚ÌXV
+	/// ãƒšãƒ©ãƒãƒªã‚´ãƒ³ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 	/// </summary>
 	void UpdateData();
 
 	/// <summary>
-	/// ’¸“_ƒoƒbƒtƒ@ì¬
+	/// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateVertexBuff();
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ì¬
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateIndexBuff();
 
 	/// <summary>
-	/// ’è”ƒoƒbƒtƒ@ì¬
+	/// å®šæ•°ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateConstBuff();
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@ì¬
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateTextureBuff();
 
 	/// <summary>
-	/// SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒvì¬
+	/// SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 	/// </summary>
 	void CreateSRVDescHeap();
 
 	/// <summary>
-	/// RTV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒvì¬
+	/// RTVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 	/// </summary>
 	void CreateRTVDescHeap();
 
 	/// <summary>
-	/// [“xƒoƒbƒtƒ@ì¬
+	/// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateDepthBuff();
 
 	/// <summary>
-	/// DSV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒvì¬
+	/// DSVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 	/// </summary>
 	void CreateDSVDescHeap();
 #pragma endregion

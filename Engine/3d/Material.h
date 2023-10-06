@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Vector3.h"
 
 #include <d3d12.h>
@@ -7,45 +7,45 @@
 
 class Material
 {
-#pragma region ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+#pragma region ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #pragma endregion
 
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 private:
 	struct MaterialBuffer {
-		Vector3 ambient;	// ƒAƒ“ƒrƒGƒ“ƒgŒW”
-		float pad1;		// ƒpƒfƒBƒ“ƒO
-		Vector3 diffuse;	// ƒfƒBƒtƒF[ƒYŒW”
-		float pad2;		// ƒpƒfƒBƒ“ƒO
-		Vector3 specular;// ƒXƒyƒLƒ…ƒ‰[ŒW”
-		float alpha;	// ƒAƒ‹ƒtƒ@
+		Vector3 ambient;	// ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆä¿‚æ•°
+		float pad1;		// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 diffuse;	// ãƒ‡ã‚£ãƒ•ã‚§ãƒ¼ã‚ºä¿‚æ•°
+		float pad2;		// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 specular;// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ä¿‚æ•°
+		float alpha;	// ã‚¢ãƒ«ãƒ•ã‚¡
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 public:
-	// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^
-	std::string name_;	// ƒ}ƒeƒŠƒAƒ‹–¼
-	Vector3 ambient_;	// ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-	Vector3 diffuse_;	// ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-	Vector3 specular_;	// ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-	float alpha_;		// ƒAƒ‹ƒtƒ@’l
-	uint16_t texHandle_;// ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
-	ComPtr<ID3D12Resource> materialBuff_;	// ƒ}ƒeƒŠƒAƒ‹ƒoƒbƒtƒ@
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿
+	std::string name_;	// ãƒãƒ†ãƒªã‚¢ãƒ«å
+	Vector3 ambient_;	// ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+	Vector3 diffuse_;	// ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+	Vector3 specular_;	// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+	float alpha_;		// ã‚¢ãƒ«ãƒ•ã‚¡å€¤
+	uint16_t texHandle_;// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
+	ComPtr<ID3D12Resource> materialBuff_;	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ•ã‚¡
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Material();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
 	/// <summary>
-	/// ƒ}ƒeƒŠƒAƒ‹ƒoƒbƒtƒ@ì¬
+	/// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	/// </summary>
 	void CreateMaterialBuff();
 #pragma endregion

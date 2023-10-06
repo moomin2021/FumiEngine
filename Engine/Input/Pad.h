@@ -1,5 +1,5 @@
-#pragma once
-// DirectInputƒo[ƒWƒ‡ƒ“w’è
+ï»¿#pragma once
+// DirectInputãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <Xinput.h>
@@ -8,81 +8,81 @@
 
 #include "Vector2.h"
 
-// ƒ{ƒ^ƒ“ƒ}ƒXƒN
+// ãƒœã‚¿ãƒ³ãƒã‚¹ã‚¯
 enum BUTTON {
-	PAD_UP			= 0x0001,// \šƒL[ã
-	PAD_DOWN		= 0x0002,// \šƒL[‰º
-	PAD_LEFT		= 0x0004,// \šƒL[¶
-	PAD_RIGHT		= 0x0008,// \šƒL[‰E
-	PAD_START		= 0x0010,// Startƒ{ƒ^ƒ“
-	PAD_BACK		= 0x0020,// Backƒ{ƒ^ƒ“
-	PAD_LSTICK		= 0x0040,// LƒXƒeƒBƒbƒN‰Ÿ‚µ‚İ
-	PAD_RSTICK		= 0x0080,// RƒXƒeƒBƒbƒN‰Ÿ‚µ‚İ
-	PAD_LB			= 0x0100,// LBƒ{ƒ^ƒ“
-	PAD_RB			= 0x0200,// RBƒ{ƒ^ƒ“
-	PAD_A			= 0x1000,// Aƒ{ƒ^ƒ“
-	PAD_B			= 0x2000,// Bƒ{ƒ^ƒ“
-	PAD_X			= 0x4000,// Xƒ{ƒ^ƒ“
-	PAD_Y			= 0x8000,// ‚xƒ{ƒ^ƒ“
+	PAD_UP			= 0x0001,// åå­—ã‚­ãƒ¼ä¸Š
+	PAD_DOWN		= 0x0002,// åå­—ã‚­ãƒ¼ä¸‹
+	PAD_LEFT		= 0x0004,// åå­—ã‚­ãƒ¼å·¦
+	PAD_RIGHT		= 0x0008,// åå­—ã‚­ãƒ¼å³
+	PAD_START		= 0x0010,// Startãƒœã‚¿ãƒ³
+	PAD_BACK		= 0x0020,// Backãƒœã‚¿ãƒ³
+	PAD_LSTICK		= 0x0040,// Lã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿
+	PAD_RSTICK		= 0x0080,// Rã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿
+	PAD_LB			= 0x0100,// LBãƒœã‚¿ãƒ³
+	PAD_RB			= 0x0200,// RBãƒœã‚¿ãƒ³
+	PAD_A			= 0x1000,// Aãƒœã‚¿ãƒ³
+	PAD_B			= 0x2000,// Bãƒœã‚¿ãƒ³
+	PAD_X			= 0x4000,// Xãƒœã‚¿ãƒ³
+	PAD_Y			= 0x8000,// ï¼¹ãƒœã‚¿ãƒ³
 };
 
 class Pad
 {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
 	XINPUT_STATE state_ = {};
 	XINPUT_STATE oldState_ = {};
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static Pad* GetInstance();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// w’è‚µ‚½ƒ{ƒ^ƒ“‚Ì“ü—Íó‘Ô‚ğæ“¾
+	// æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
 	bool GetPushButton(BUTTON button) { return state_.Gamepad.wButtons & button; }
 
-	// w’è‚µ‚½ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½uŠÔ‚©‚Ç‚¤‚©
+	// æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸç¬é–“ã‹ã©ã†ã‹
 	bool GetTriggerButton(BUTTON button) { return (state_.Gamepad.wButtons & button) && !(oldState_.Gamepad.wButtons & button); }
 
 	bool GetReleasButton(BUTTON button) { return !(state_.Gamepad.wButtons & button) && (oldState_.Gamepad.wButtons & button); }
 
-	// LƒgƒŠƒK[‚ÌŒ»İ‚Ì’l‚ğ•Ô‚·(“|‚¹‚Î“|‚·‚Ù‚Ç’l‚ª‘å‚«‚­‚È‚é0 ~ 255)
+	// Lãƒˆãƒªã‚¬ãƒ¼ã®ç¾åœ¨ã®å€¤ã‚’è¿”ã™(å€’ã›ã°å€’ã™ã»ã©å€¤ãŒå¤§ãããªã‚‹0 ~ 255)
 	uint8_t GetLTrigger() { return state_.Gamepad.bLeftTrigger; }
 
-	// RƒgƒŠƒK[‚ÌŒ»İ‚Ì’l‚ğ•Ô‚·(“|‚¹‚Î“|‚·‚Ù‚Ç’l‚ª‘å‚«‚­‚È‚é0 ~ 255)
+	// Rãƒˆãƒªã‚¬ãƒ¼ã®ç¾åœ¨ã®å€¤ã‚’è¿”ã™(å€’ã›ã°å€’ã™ã»ã©å€¤ãŒå¤§ãããªã‚‹0 ~ 255)
 	uint8_t GetRTrigger() { return state_.Gamepad.bLeftTrigger; }
 
-	// ¶ƒXƒeƒBƒbƒN‚Ì‰¡²(X)‚Æc²(Y)‚ğ•Ô‚·(-1.0f ~ 1.0f)
+	// å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®æ¨ªè»¸(X)ã¨ç¸¦è»¸(Y)ã‚’è¿”ã™(-1.0f ~ 1.0f)
 	Vector2 GetLStick(int16_t deadZone = 5000);
 
-	// ‰EƒXƒeƒBƒbƒN‚Ì‰¡²(X)‚Æc²(Y)‚ğ•Ô‚·(-1.0f ~ 1.0f)
+	// å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®æ¨ªè»¸(X)ã¨ç¸¦è»¸(Y)ã‚’è¿”ã™(-1.0f ~ 1.0f)
 	Vector2 GetRStick(int16_t deadZone = 5000);
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Pad();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Pad();
 #pragma endregion
 
-#pragma region “ÁêŠÖ”
-	// ‹Ö~
-	Pad(const Pad&) = delete;				// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‹Ö~
-	Pad& operator = (const Pad&) = delete;	// ƒRƒs[‘ã“ü‰‰Zq‹Ö~
+#pragma region ç‰¹æ®Šé–¢æ•°
+	// ç¦æ­¢
+	Pad(const Pad&) = delete;				// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç¦æ­¢
+	Pad& operator = (const Pad&) = delete;	// ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­ç¦æ­¢
 #pragma endregion
 };

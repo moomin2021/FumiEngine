@@ -1,120 +1,120 @@
-#pragma once
+ï»¿#pragma once
 
 class CircleShadow {
-#pragma region \‘z‘Ì
+#pragma region æ§‹æƒ³ä½“
 public:
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Vector3 dir;				// •ûŒü
-		Vector3 casterPos;			// ƒLƒƒƒXƒ^[À•W
-		float distCasterLight;	// ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£
-		Vector3 atten;				// ‹——£Œ¸ŠŒW”
-		float pad3;// ƒpƒfƒBƒ“ƒO
-		Vector2 factorAngleCos;		// Œ¸ŠŠp“x
-		bool active;				// —LŒøƒtƒ‰ƒO
-		float pad4;// ƒpƒfƒBƒ“ƒO
+		Vector3 dir;				// æ–¹å‘
+		Vector3 casterPos;			// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼åº§æ¨™
+		float distCasterLight;	// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢
+		Vector3 atten;				// è·é›¢æ¸›è¡°ä¿‚æ•°
+		float pad3;// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector2 factorAngleCos;		// æ¸›è¡°è§’åº¦
+		bool active;				// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
+		float pad4;// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// •ûŒü(XYZ)
+	// æ–¹å‘(XYZ)
 	Vector3 dir_ = { 1.0f, 0.0f, 0.0f };
 
-	// ƒLƒƒƒXƒ^[À•W(XYZ)
+	// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼åº§æ¨™(XYZ)
 	Vector3 casterPos_ = { 0.0f, 0.0f, 0.0f };
 
-	// ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£
+	// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢
 	float distCasterLight_ = 100.0f;
 
-	// ‹——£Œ¸ŠŒW”(XYZ)
+	// è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)
 	Vector3 atten_ = { 0.5f, 0.6f, 0.0f };
 
-	// Œ¸ŠŠp“x(ŠJnŠp“xAI—¹Šp“x)
+	// æ¸›è¡°è§’åº¦(é–‹å§‹è§’åº¦ã€çµ‚äº†è§’åº¦)
 	Vector2 factorAngleCos_ = { 0.2f, 0.5f };
 
-	// —LŒøƒtƒ‰ƒO
+	// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	bool active_ = true;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// •ûŒü(XYZ)‚ğİ’è
+	/// æ–¹å‘(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="dir"> •ûŒü(XYZ) </param>
+	/// <param name="dir"> æ–¹å‘(XYZ) </param>
 	inline void SetDir(const Vector3& dir) { dir_ = Vector3Normalize(dir); }
 
 	/// <summary>
-	/// ƒLƒƒƒXƒ^[À•W(XYZ)‚ğİ’è
+	/// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼åº§æ¨™(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="casterPos"> ƒLƒƒƒXƒ^[À•W(XYZ) </param>
+	/// <param name="casterPos"> ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼åº§æ¨™(XYZ) </param>
 	inline void SetCasterPos(const Vector3& casterPos) { casterPos_ = casterPos; }
 
 	/// <summary>
-	/// ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£‚ğİ’è
+	/// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="distCasterLight"> ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£ </param>
+	/// <param name="distCasterLight"> ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢ </param>
 	inline void SetDistCasterLight(float distCasterLight) { distCasterLight_ = distCasterLight; }
 
 	/// <summary>
-	/// ‹——£Œ¸ŠŒW”(XYZ)‚ğİ’è
+	/// è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)ã‚’è¨­å®š
 	/// </summary>
 	/// <param name="atten"></param>
 	inline void SetAtten(const Vector3& atten) { atten_ = atten; }
 
 	/// <summary>
-	/// Œ¸ŠŠp“x(ŠJnŠp“xAI—¹Šp“x)‚ğİ’è
+	/// æ¸›è¡°è§’åº¦(é–‹å§‹è§’åº¦ã€çµ‚äº†è§’åº¦)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="factorAngle"> Œ¸ŠŠp“x(ŠJnŠp“x, I—¹Šp“x) </param>
+	/// <param name="factorAngle"> æ¸›è¡°è§’åº¦(é–‹å§‹è§’åº¦, çµ‚äº†è§’åº¦) </param>
 	inline void SetFactorAngle(const Vector2& factorAngle) {
 		factorAngleCos_.x = cosf(Util::Degree2Radian(factorAngle.x));
 		factorAngleCos_.y = cosf(Util::Degree2Radian(factorAngle.y));
 	}
 
 	/// <summary>
-	/// —LŒøƒtƒ‰ƒO‚ğİ’è
+	/// æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="active"> —LŒøƒtƒ‰ƒO </param>
+	/// <param name="active"> æœ‰åŠ¹ãƒ•ãƒ©ã‚° </param>
 	inline void SetActive(bool active) { active_ = active; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// •ûŒü(XYZ)‚ğæ“¾
+	/// æ–¹å‘(XYZ)ã‚’å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	inline const Vector3& GetDir() { return dir_; }
 
 	/// <summary>
-	/// ƒLƒƒƒXƒ^[‚ÌÀ•W(XYZ)‚ğæ“¾
+	/// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã®åº§æ¨™(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒLƒƒƒXƒ^[‚ÌÀ•W(XYZ) </returns>
+	/// <returns> ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã®åº§æ¨™(XYZ) </returns>
 	inline const Vector3& GetCasterPos() { return casterPos_; }
 
 	/// <summary>
-	/// ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£‚ğæ“¾
+	/// ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒLƒƒƒXƒ^[‚Æƒ‰ƒCƒg‚Ì‹——£ </returns>
+	/// <returns> ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®è·é›¢ </returns>
 	inline float GetDistCasterLight() { return distCasterLight_; }
 
 	/// <summary>
-	/// ‹——£Œ¸ŠŒW”(XYZ)‚ğæ“¾
+	/// è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ‹——£Œ¸ŠŒW”(XYZ) </returns>
+	/// <returns> è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ) </returns>
 	inline const Vector3& GetAtten() { return atten_; }
 
 	/// <summary>
-	/// Œ¸ŠŠp“x(ŠJnŠp“xAI—¹Šp“x)‚ğæ“¾
+	/// æ¸›è¡°è§’åº¦(é–‹å§‹è§’åº¦ã€çµ‚äº†è§’åº¦)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> Œ¸ŠŠp“x(ŠJnŠp“xAI—¹Šp“x) </returns>
+	/// <returns> æ¸›è¡°è§’åº¦(é–‹å§‹è§’åº¦ã€çµ‚äº†è§’åº¦) </returns>
 	inline const Vector2& GetFactorAngleCos() { return factorAngleCos_; }
 
 	/// <summary>
-	/// —LŒøƒtƒ‰ƒO‚ğæ“¾
+	/// æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	/// </summary>
-	/// <returns> —LŒøƒtƒ‰ƒO </returns>
+	/// <returns> æœ‰åŠ¹ãƒ•ãƒ©ã‚° </returns>
 	inline bool GetActive() { return active_; }
 #pragma endregion
 };

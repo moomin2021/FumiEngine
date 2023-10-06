@@ -1,23 +1,23 @@
-#include "BoxCollider.h"
+ï»¿#include "BoxCollider.h"
 
 BoxCollider::BoxCollider(const Vector2& offset, const Vector2& radius)
 {
-	// Œ`óƒ^ƒCƒv‚ð‹…‚ÉÝ’è
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’çƒã«è¨­å®š
 	shapeType_ = SHAPE_BOX;
 
-	// ƒIƒtƒZƒbƒg‚ðÝ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	offset_ = offset;
 
-	// ”¼Œa‚ðÝ’è
+	// åŠå¾„ã‚’è¨­å®š
 	Box::radius = radius;
 }
 
 void BoxCollider::Update()
 {
-	// Õ“Ëƒtƒ‰ƒO‚ð‰Šú‰»
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
 	isHit_ = false;
 
-	// ƒXƒvƒ‰ƒCƒg‚ð•R‚Ã‚¯‚Ä‚¢‚½‚ç
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’ç´ã¥ã‘ã¦ã„ãŸã‚‰
 	if (sprite_) {
 		Box::center = offset_ + sprite_->GetPosition();
 	}

@@ -1,4 +1,4 @@
-#include "EnemyManager.h"
+ï»¿#include "EnemyManager.h"
 #include "CollisionAttribute.h"
 #include "SceneManager.h"
 #include "Texture.h"
@@ -13,27 +13,27 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Initialize()
 {
-#pragma region ƒCƒ“ƒXƒ^ƒ“ƒX
+#pragma region ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	colMgr_ = CollisionManager::GetInstance();
 #pragma endregion
 
-#pragma region ƒ‚ƒfƒ‹
+#pragma region ãƒ¢ãƒ‡ãƒ«
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("sphere");
 #pragma endregion
 
-#pragma region ƒIƒuƒWƒFƒNƒg
+#pragma region ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	oBossGenerator_ = std::make_unique<Object3D>(mBossGenerator_.get());
 #pragma endregion
 
-#pragma region ƒRƒ‰ƒCƒ_[
+#pragma region ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	colBossGenerator_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 3.0f, 0.0f });
 	colBossGenerator_->SetAttribute(COL_BOSSGENERATOR);
 	colBossGenerator_->SetObject3D(oBossGenerator_.get());
 	colMgr_->AddCollider(colBossGenerator_.get());
 #pragma endregion
 
-#pragma region ƒnƒ“ƒhƒ‹
+#pragma region ãƒãƒ³ãƒ‰ãƒ«
 	hParticle_ = LoadTexture("Resources/effect1.png");
 #pragma endregion
 }
@@ -41,15 +41,15 @@ void EnemyManager::Initialize()
 void EnemyManager::Update()
 {
 	for (auto it = enemys_.begin(); it != enemys_.end();) {
-		// “G‚ÌXV
+		// æ•µã®æ›´æ–°
 		(*it)->Update();
 
-		// “G‚Ì¶‘¶ƒtƒ‰ƒO‚ª[OFF]‚É‚È‚Á‚½‚çÁ‚·
+		// æ•µã®ç”Ÿå­˜ãƒ•ãƒ©ã‚°ãŒ[OFF]ã«ãªã£ãŸã‚‰æ¶ˆã™
 		if ((*it)->GetIsAlive() == false) it = enemys_.erase(it);
 		else ++it;
 	}
 
-	// ƒ{ƒX‚ª¶¬‚³‚ê‚Ä‚¢‚½‚çˆ—‚ğ‚·‚é
+	// ãƒœã‚¹ãŒç”Ÿæˆã•ã‚Œã¦ã„ãŸã‚‰å‡¦ç†ã‚’ã™ã‚‹
 	if (boss_) {
 		boss_->Update();
 
@@ -66,7 +66,7 @@ void EnemyManager::Draw()
 	//	boss_->Draw();
 	//}
 
-	// “G•`‰æˆ—
+	// æ•µæç”»å‡¦ç†
 	for (auto& i : enemys_) {
 		i->Draw();
 	}
@@ -98,11 +98,11 @@ void EnemyManager::SummonBoss()
 
 void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& scale)
 {
-	// “G‚Ì¶¬
+	// æ•µã®ç”Ÿæˆ
 	std::unique_ptr<Enemy0> newEnemy = std::make_unique<Enemy0>(mEnemy0_.get());
 	newEnemy->Initialize(pos, scale);
 
-	// ƒGƒlƒ~[”z—ñ‚É’Ç‰Á
+	// ã‚¨ãƒãƒŸãƒ¼é…åˆ—ã«è¿½åŠ 
 	enemys_.emplace_back(std::move(newEnemy));
 }
 

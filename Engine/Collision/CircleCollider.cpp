@@ -1,23 +1,23 @@
-#include "CircleCollider.h"
+ï»¿#include "CircleCollider.h"
 
 CircleCollider::CircleCollider(Vector2 offset, float radius)
 {
-	// Œ`óƒ^ƒCƒv‚ð‹…‚ÉÝ’è
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’çƒã«è¨­å®š
 	shapeType_ = SHAPE_CIRCLE;
 
-	// ƒIƒtƒZƒbƒg‚ðÝ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	offset_ = offset;
 
-	// ”¼Œa‚ðÝ’è
+	// åŠå¾„ã‚’è¨­å®š
 	Circle::radius = radius;
 }
 
 void CircleCollider::Update()
 {
-	// Õ“Ëƒtƒ‰ƒO‚ð‰Šú‰»
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
 	isHit_ = false;
 
-	// ƒXƒvƒ‰ƒCƒg‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚½‚ç
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ãŸã‚‰
 	if (sprite_) {
 		Circle::center = offset_ + sprite_->GetPosition();
 	}

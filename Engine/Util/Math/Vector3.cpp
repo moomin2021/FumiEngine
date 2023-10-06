@@ -1,8 +1,8 @@
-#include "Vector3.h"
+ï»¿#include "Vector3.h"
 #include "Matrix4.h"
 #include <cmath>    // sqrt
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Vector3::Vector3() : x(0), y(0), z(0) {}
 
 Vector3::Vector3(float x, float y, float z)
@@ -12,9 +12,9 @@ Vector3::Vector3(float x, float y, float z)
 	this->z = z;
 }
 
-// ƒƒ“ƒoŠÖ”
+// ãƒ¡ãƒ³ãƒé–¢æ•°
 
-// ƒmƒ‹ƒ€(’·‚³)‚ğ‹‚ß‚é
+// ãƒãƒ«ãƒ (é•·ã•)ã‚’æ±‚ã‚ã‚‹
 float Vector3::length() const
 {
 	return sqrt((x * x) + (y * y) + (z * z));
@@ -30,19 +30,19 @@ Vector3& Vector3::normalize()
 	return *this;
 }
 
-// “àÏ‚ğ‹‚ß‚é
+// å†…ç©ã‚’æ±‚ã‚ã‚‹
 float Vector3::dot(const Vector3& v) const
 {
 	return x * v.x + y * v.y + z * v.z;
 }
 
-// ŠOÏ‚ğ‹‚ß‚é
+// å¤–ç©ã‚’æ±‚ã‚ã‚‹
 Vector3 Vector3::cross(const Vector3& v) const
 {
 	return Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
 
-// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector3 Vector3::operator+() const
 {
 	return *this;
@@ -53,7 +53,7 @@ Vector3 Vector3::operator-() const
 	return Vector3(-x, -y, -z);
 }
 
-// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector3& Vector3::operator+=(const Vector3& v)
 {
 	x += v.x;
@@ -116,8 +116,8 @@ Vector3 Vector3Transform(const Vector3& v, const Matrix4& m) {
 	return result;
 }
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// ¦‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ßAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// â€»ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 temp(v1);

@@ -1,4 +1,4 @@
-#include "TemplateScene.h"
+ï»¿#include "TemplateScene.h"
 
 TemplateScene::TemplateScene() :
 	key_(nullptr),
@@ -13,17 +13,17 @@ TemplateScene::~TemplateScene()
 
 void TemplateScene::Initialize()
 {
-	// ƒL[ƒ{[ƒh“ü—ÍƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	key_ = Key::GetInstance();
 
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	camera_ = new Camera();
 	//camera_->eye_ = { 0.0f, 10.0f, -30.0f };
 }
 
 void TemplateScene::Update()
 {
-	// ƒJƒƒ‰‚ÌXV
+	// ã‚«ãƒ¡ãƒ©ã®æ›´æ–°
 	camera_->Update();
 }
 

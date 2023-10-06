@@ -1,20 +1,20 @@
-#include "PointCollider.h"
+ï»¿#include "PointCollider.h"
 
 PointCollider::PointCollider(const Vector2& offset)
 {
-	// Œ`óƒ^ƒCƒv‚ð‹…‚ÉÝ’è
+	// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã‚’çƒã«è¨­å®š
 	shapeType_ = SHAPE_POINT;
 
-	// ƒIƒtƒZƒbƒg‚ðÝ’è
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 	offset_ = offset;
 }
 
 void PointCollider::Update()
 {
-	// Õ“Ëƒtƒ‰ƒO‚ð‰Šú‰»
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
 	isHit_ = false;
 	
-	// ƒXƒvƒ^ƒCƒg‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚½‚ç
+	// ã‚¹ãƒ—ã‚¿ã‚¤ãƒˆãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ãŸã‚‰
 	if (sprite_) {
 		Point::pos = offset_ + sprite_->GetPosition();
 	}

@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+ï»¿#include "Quaternion.h"
 #include <math.h>
 #include <cmath>
 
@@ -185,18 +185,18 @@ Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 	t0 = t0.normalize();
 	t1 = t1.normalize();
 
-	// u‚Æv‚ğ³‹K‰»‚µ‚Ä“àÏ‚ğ‹‚ß‚é
+	// uã¨vã‚’æ­£è¦åŒ–ã—ã¦å†…ç©ã‚’æ±‚ã‚ã‚‹
 	float dot = t0.dot(t1);
 
-	// u, v‚ÌŠOÏ‚ğ‚Æ‚é
+	// u, vã®å¤–ç©ã‚’ã¨ã‚‹
 	Vector3 cross = t0.cross(t1);
 
-	// u‚Æv‚ª’PˆÊƒxƒNƒgƒ‹‚Å‚ ‚Á‚Ä‚àAŠOÏ‚ª’PˆÊƒxƒNƒgƒ‹‚Æ‚ÍŒÀ‚ç‚È‚¢‚Ì‚Å³‹K‰»‚Í•K{
+	// uã¨vãŒå˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã§ã‚ã£ã¦ã‚‚ã€å¤–ç©ãŒå˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã¨ã¯é™ã‚‰ãªã„ã®ã§æ­£è¦åŒ–ã¯å¿…é ˆ
 	Vector3 axis = cross.normalize();
 
-	// ’PˆÊƒxƒNƒgƒ‹‚Å“àÏ‚ğæ‚Á‚Ä‚¢‚é‚Ì‚Åacos‚ÅŠp“x‚ğ‹‚ß‚é
+	// å˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã§å†…ç©ã‚’å–ã£ã¦ã„ã‚‹ã®ã§acosã§è§’åº¦ã‚’æ±‚ã‚ã‚‹
 	float theta = acosf(dot);
 
-	// axis‚Ætheta‚Å”CˆÓ²‰ñ“]‚ğì‚Á‚Ä•Ô‚·
+	// axisã¨thetaã§ä»»æ„è»¸å›è»¢ã‚’ä½œã£ã¦è¿”ã™
 	return MakeAxisAngle(axis, theta);
 }

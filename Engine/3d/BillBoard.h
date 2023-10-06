@@ -1,23 +1,23 @@
-//#pragma once
-//// --Direct3D 12 —p-- //
+ï»¿//#pragma once
+//// --Direct3D 12 ç”¨-- //
 //#include <d3d12.h>
 //#pragma comment(lib, "d3d12.lib")
 //
-//// --”ŠwŠÖ”-- //
+//// --æ•°å­¦é–¢æ•°-- //
 //#include <DirectXMath.h>
 //using namespace DirectX;
 //
-//// --ComPtr—p-- //
+//// --ComPtrç”¨-- //
 //#include <wrl.h>
 //using namespace Microsoft::WRL;
 //
-//// --ƒV[ƒPƒ“ƒXƒRƒ“ƒeƒi‚Ìˆêí-- //
+//// --ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã‚³ãƒ³ãƒ†ãƒŠã®ä¸€ç¨®-- //
 //#include <vector>
 //
-//// --ƒJƒƒ‰ƒNƒ‰ƒX-- //
+//// --ã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹-- //
 //#include "Camera.h"
 //
-//// --ƒIƒuƒWƒFƒNƒg3DƒNƒ‰ƒX-- //
+//// --ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3Dã‚¯ãƒ©ã‚¹-- //
 //#include "Object3D.h"
 //
 //enum BillBoardType {
@@ -28,51 +28,51 @@
 //};
 //
 //class BillBoard {
-//	/// ƒƒ“ƒo•Ï”
+//	/// ãƒ¡ãƒ³ãƒå¤‰æ•°
 //public:
-//	// À•WA‰ñ“]ŠpAƒXƒP[ƒ‹
+//	// åº§æ¨™ã€å›è»¢è§’ã€ã‚¹ã‚±ãƒ¼ãƒ«
 //	XMFLOAT3 position_;
 //	float rotation_;
 //	XMFLOAT2 scale_;
 //
-//	// F
+//	// è‰²
 //	XMFLOAT4 color_;
 //
 //private:
-//	// --’¸“_ƒf[ƒ^-- //
-//	std::vector<Vertex3D> vertices_;// -> ’¸“_ƒf[ƒ^
-//	D3D12_VERTEX_BUFFER_VIEW vbView_;// -> ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
-//	ComPtr<ID3D12Resource> vertBuff_;// -> ’¸“_ƒoƒbƒtƒ@
+//	// --é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿-- //
+//	std::vector<Vertex3D> vertices_;// -> é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+//	D3D12_VERTEX_BUFFER_VIEW vbView_;// -> é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+//	ComPtr<ID3D12Resource> vertBuff_;// -> é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 //
-//	// --ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^-- //
-//	std::vector<uint16_t> indices_;// -> ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-//	D3D12_INDEX_BUFFER_VIEW ibView_;// -> ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-//	ComPtr<ID3D12Resource> indexBuff_;// -> ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+//	// --ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿-- //
+//	std::vector<uint16_t> indices_;// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+//	D3D12_INDEX_BUFFER_VIEW ibView_;// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+//	ComPtr<ID3D12Resource> indexBuff_;// -> ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 //
-//	// --’è”ƒoƒbƒtƒ@-- //
+//	// --å®šæ•°ãƒãƒƒãƒ•ã‚¡-- //
 //	ComPtr<ID3D12Resource> constBuff_;
 //
-//	// --“§‹“Š‰es—ñ‚ÌŒvZ-- //
+//	// --é€è¦–æŠ•å½±è¡Œåˆ—ã®è¨ˆç®—-- //
 //	XMMATRIX matProjection_;
 //
-//	/// ƒƒ“ƒoŠÖ”
+//	/// ãƒ¡ãƒ³ãƒé–¢æ•°
 //public:
-//	// --ƒRƒ“ƒXƒgƒ‰ƒNƒ^-- //
+//	// --ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿-- //
 //	BillBoard();
 //
-//	// ’¸“_ƒoƒbƒtƒ@‚ÆƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìì¬
+//	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 //	void CreateBuffer();
 //
-//	// --XVˆ—-- //
+//	// --æ›´æ–°å‡¦ç†-- //
 //	void Update(Camera* camera, BillBoardType type);
 //
-//	// --•`‰æˆ—-- //
+//	// --æç”»å‡¦ç†-- //
 //	void Draw(int textureHandle = 0);
 //
-//	// --•`‰æ‘Oˆ—-- //
+//	// --æç”»å‰å‡¦ç†-- //
 //	static void PreDraw();
 //
 //private:
-//	// --lŠpŒ`‚Ì’¸“_ƒf[ƒ^‚ÆƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ğì¬-- //
+//	// --å››è§’å½¢ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ-- //
 //	void CreateSquare();
 //};

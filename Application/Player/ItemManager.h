@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "RayCollider.h"
@@ -7,54 +7,54 @@
 #include <memory>
 
 enum ItemNumber {
-	ExtendedMagazine,// Šg’£ƒ}ƒKƒWƒ“
-	Syringe,// ’ËŠí
+	ExtendedMagazine,// æ‹¡å¼µãƒã‚¬ã‚¸ãƒ³
+	Syringe,// æ³¨å°„å™¨
 };
 
 struct Item {
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Object3D> obj = nullptr;
 
-	// ƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> col = nullptr;
 
-	// ƒAƒCƒeƒ€”Ô†
+	// ã‚¢ã‚¤ãƒ†ãƒ ç•ªå·
 	uint8_t itemNum = 0;
 };
 
 class ItemManager {
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ŠeƒAƒCƒeƒ€‚Ìƒ‚ƒfƒ‹
+	// å„ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¢ãƒ‡ãƒ«
 	std::vector<std::unique_ptr<Model>> mItems_;
 
-	// ŠeƒAƒCƒeƒ€‚ÌƒIƒuƒWƒFƒNƒg
+	// å„ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::vector<Item> items_;
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	static ItemManager* GetInstace();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~ItemManager();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// ƒAƒCƒeƒ€’Ç‰Á
+	// ã‚¢ã‚¤ãƒ†ãƒ è¿½åŠ 
 	void AddItem(const Vector3& pos);
 
 	void DeleteItem(SphereCollider* collider);
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ItemManager();
 #pragma endregion
 };

@@ -11,119 +11,119 @@
 
 class Sprite {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma region \‘¢‘Ì
-	// ’¸“_ƒf[ƒ^
+#pragma region æ§‹é€ ä½“
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	struct Vertex {
-		Vector2 pos;// À•W(XYZ)
-		Vector2 uv;	// UVÀ•W(XY)
+		Vector2 pos;// åº§æ¨™(XYZ)
+		Vector2 uv;	// UVåº§æ¨™(XY)
 	};
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Matrix4 mat;	// s—ñ
-		float4 color;	// F(RGBA)
+		Matrix4 mat;	// è¡Œåˆ—
+		float4 color;	// è‰²(RGBA)
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	static Camera* sCamera_;
 
-	// ƒXƒvƒ‰ƒCƒgƒf[ƒ^
-	Vector2 position_	= {0.0f, 0.0f};				// À•W(XY)
-	float rotation_		= 0.0f;						// ‰ñ“](Z)
-	Vector2 size_		= {100.0f, 100.0f};			// ƒTƒCƒY(XY)
-	float4 color_		= {1.0f, 1.0f, 1.0f, 1.0f};	// F(RGBA)
-	Vector2 anchorPoint_= {0.0f, 0.0f};				// ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒgÀ•W(XY)
-	bool isFlipX_		= false;					// ¶‰E”½“]
-	bool isFlipY_		= false;					// ã‰º”½“]
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿
+	Vector2 position_ = { 0.0f, 0.0f };				// åº§æ¨™(XY)
+	float rotation_ = 0.0f;						// å›è»¢(Z)
+	Vector2 size_ = { 100.0f, 100.0f };			// ã‚µã‚¤ã‚º(XY)
+	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// è‰²(RGBA)
+	Vector2 anchorPoint_ = { 0.0f, 0.0f };				// ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆåº§æ¨™(XY)
+	bool isFlipX_ = false;					// å·¦å³åè»¢
+	bool isFlipY_ = false;					// ä¸Šä¸‹åè»¢
 
-	// ƒ[ƒ‹ƒhs—ñ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 	Matrix4 matWorld_ = {};
 
-	// ’è”ƒoƒbƒtƒ@
-	ComPtr<ID3D12Resource> constBuff_	= nullptr;	// ’è”ƒoƒbƒtƒ@
-	ConstBufferData* constMap_			= nullptr;	// ƒ}ƒbƒsƒ“ƒOˆ——p
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ComPtr<ID3D12Resource> constBuff_ = nullptr;	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ConstBufferData* constMap_ = nullptr;	// ãƒãƒƒãƒ”ãƒ³ã‚°å‡¦ç†ç”¨
 
-	// ’¸“_ƒf[ƒ^
-	std::vector<Vertex> vertex_			= {};		// ’¸“_ƒf[ƒ^
-	ComPtr<ID3D12Resource> vertexBuff_	= nullptr;	// ’¸“_ƒoƒbƒtƒ@
-	Vertex* vertexMap_					= nullptr;	// ƒ}ƒbƒsƒ“ƒOˆ——p
-	D3D12_VERTEX_BUFFER_VIEW vertexView_= {};		// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<Vertex> vertex_ = {};		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
+	ComPtr<ID3D12Resource> vertexBuff_ = nullptr;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	Vertex* vertexMap_ = nullptr;	// ãƒãƒƒãƒ”ãƒ³ã‚°å‡¦ç†ç”¨
+	D3D12_VERTEX_BUFFER_VIEW vertexView_ = {};		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 
-	// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	std::vector<uint16_t> index_		= {};		// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
-	ComPtr<ID3D12Resource> indexBuff_	= nullptr;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
-	D3D12_INDEX_BUFFER_VIEW indexView_	= {};		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	std::vector<uint16_t> index_ = {};		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	ComPtr<ID3D12Resource> indexBuff_ = nullptr;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
+	D3D12_INDEX_BUFFER_VIEW indexView_ = {};		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Sprite();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
-	/// <param name="textureHandle"> ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹ </param>
+	/// <param name="textureHandle"> ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ« </param>
 	void Draw(int textureHandle = 0);
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// ƒJƒƒ‰‚ğİ’è
+	// ã‚«ãƒ¡ãƒ©ã‚’è¨­å®š
 	static void SetCamera(Camera* camera) { sCamera_ = camera; }
 
-	// À•W(XY)‚ğİ’è
+	// åº§æ¨™(XY)ã‚’è¨­å®š
 	inline void SetPosition(const Vector2& position) { position_ = position; }
 
-	// ‰ñ“](Z)(“x”–@)‚ğİ’è
+	// å›è»¢(Z)(åº¦æ•°æ³•)ã‚’è¨­å®š
 	inline void SetRotation(float rotation) { rotation_ = rotation; }
 
-	// ƒTƒCƒY(XY)‚ğİ’è
+	// ã‚µã‚¤ã‚º(XY)ã‚’è¨­å®š
 	inline void SetSize(const Vector2& size) { size_ = size; }
 
-	// F(RGBA)‚ğİ’è
+	// è‰²(RGBA)ã‚’è¨­å®š
 	inline void SetColor(const float4& color) { color_ = color; }
 
-	// ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg(XY)‚ğİ’è
+	// ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ(XY)ã‚’è¨­å®š
 	inline void SetAnchorPoint(const Vector2& anchorPoint) { anchorPoint_ = anchorPoint; }
 
-	// ¶‰E”»’è‚ğİ’è
+	// å·¦å³åˆ¤å®šã‚’è¨­å®š
 	inline void SetFlipX(bool flag) { isFlipX_ = flag; }
 
-	// ã‰º”»’è‚ğİ’è
+	// ä¸Šä¸‹åˆ¤å®šã‚’è¨­å®š
 	inline void SetFlipY(bool flag) { isFlipY_ = flag; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
-	// À•W(XY)‚ğæ“¾
+	// åº§æ¨™(XY)ã‚’å–å¾—
 	inline const Vector2& GetPosition() { return position_; }
 
-	// ‰ñ“](Z)(“x”–@)‚ğæ“¾
+	// å›è»¢(Z)(åº¦æ•°æ³•)ã‚’å–å¾—
 	inline float GetRotation() { return rotation_; }
 
-	// ƒTƒCƒY(XY)‚ğæ“¾
+	// ã‚µã‚¤ã‚º(XY)ã‚’å–å¾—
 	inline const Vector2& GetSize() { return size_; }
 
-	// F(RGBA)‚ğæ“¾
+	// è‰²(RGBA)ã‚’å–å¾—
 	inline const float4& GetColor() { return color_; }
 
-	// ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg(XY)‚ğæ“¾
+	// ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ(XY)ã‚’å–å¾—
 	inline const Vector2& GetAnchorPoint() { return anchorPoint_; }
 
-	// ¶‰E”»’è‚ğæ“¾
+	// å·¦å³åˆ¤å®šã‚’å–å¾—
 	inline bool GetFlipX() { return isFlipX_; }
 
-	// ã‰º”»’è‚ğæ“¾
+	// ä¸Šä¸‹åˆ¤å®šã‚’å–å¾—
 	inline bool GetFlipY() { return isFlipY_; }
 #pragma endregion
 };

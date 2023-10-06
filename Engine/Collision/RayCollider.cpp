@@ -1,4 +1,4 @@
-#include "RayCollider.h"
+ï»¿#include "RayCollider.h"
 
 RayCollider::RayCollider(Vector3 offset, Vector3 dir)
 {
@@ -11,16 +11,16 @@ RayCollider::RayCollider(Vector3 offset, Vector3 dir)
 
 void RayCollider::Update()
 {
-	// Õ“Ëƒtƒ‰ƒO‚ð‰Šú‰»
+	// è¡çªãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
 	isHit_ = false;
 
-	// Õ“Ë‚µ‚½‚Æ‚«‚Ìî•ñ‚ð‰Šú‰»
+	// è¡çªã—ãŸã¨ãã®æƒ…å ±ã‚’åˆæœŸåŒ–
 	inter_ = { 0.0f, 0.0f, 0.0f };
 	minDistance_ = FLT_MAX;
 
-	// ƒIƒuƒWƒFƒNƒg3D‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚½‚ç
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ3DãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ãŸã‚‰
 	if (object_) {
-		// ƒ[ƒ‹ƒhs—ñ‚©‚çƒ[ƒ‹ƒhÀ•W‚ð’Šo
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’æŠ½å‡º
 		const Vector3 objPos = object_->GetPosition();
 		Ray::start = objPos + offset_;
 	}

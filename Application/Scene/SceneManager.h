@@ -1,11 +1,11 @@
-#pragma once
-#include "BaseScene.h"// -> ŠeƒV[ƒ“‚Ìƒx[ƒX
-#include "Key.h"// -> ƒL[ƒ{[ƒh“ü—Í
+ï»¿#pragma once
+#include "BaseScene.h"// -> å„ã‚·ãƒ¼ãƒ³ã®ãƒ™ãƒ¼ã‚¹
+#include "Key.h"// -> ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
 #include "PostEffect.h"
 
 #include <memory>
 
-// ƒV[ƒ“—ñ‹“Œ^
+// ã‚·ãƒ¼ãƒ³åˆ—æŒ™å‹
 enum SCENE {
 	TITLE,
 	GAME,
@@ -20,65 +20,65 @@ enum PostEffectType {
 };
 
 class SceneManager {
-	// --ƒƒ“ƒo•Ï”-- //
+	// --ãƒ¡ãƒ³ãƒå¤‰æ•°-- //
 public:
 
 private:
-	// ƒL[ƒ{[ƒh“ü—ÍƒNƒ‰ƒX
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ã‚¯ãƒ©ã‚¹
 	Key* key_;
 
-	// Œ»İ‚ÌƒV[ƒ“
+	// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³
 	std::unique_ptr<BaseScene> nowScene_;
 
 	SCENE nextScene_ = TITLE;
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<PostEffect> gaussianPostEffect_;
 	std::unique_ptr<PostEffect> highLumiPostEffect_;
 	std::unique_ptr<PostEffect> bloomPostEffect_;
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ìí—Ş
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç¨®é¡
 	PostEffectType postEffectType_;
 
-	// ƒV[ƒ“‚ğ•ÏX’†‚©
+	// ã‚·ãƒ¼ãƒ³ã‚’å¤‰æ›´ä¸­ã‹
 	bool isChangeScene_ = false;
 
-	// ƒQ[ƒ€‚ğI—¹
+	// ã‚²ãƒ¼ãƒ ã‚’çµ‚äº†
 	bool isEnd_ = false;
 
-	// --ƒƒ“ƒoŠÖ”-- //
+	// --ãƒ¡ãƒ³ãƒé–¢æ•°-- //
 public:
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	static SceneManager* GetInstance();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// ƒV[ƒ“Ø‚è‘Ö‚¦
+	// ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
 	void ChangeScene(SCENE changeSceneNum);
 
-	// ƒV[ƒ“‘JˆÚ
+	// ã‚·ãƒ¼ãƒ³é·ç§»
 	void SceneTransition(SCENE scene);
 
-	// Ÿ‚ÌƒV[ƒ“‚ğæ“¾
+	// æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’å–å¾—
 	SCENE GetNextScene() { return nextScene_; }
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SceneManager();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~SceneManager();
 
-	// --‹Ö~-- //
+	// --ç¦æ­¢-- //
 public:
-	// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SceneManager(const SceneManager& instance) = delete;
 
-	// ‘ã“ü‰‰Zq
+	// ä»£å…¥æ¼”ç®—å­
 	SceneManager& operator=(const SceneManager& instance) = delete;
 
 	void SetIsEnd(bool frag) { isEnd_ = frag; }

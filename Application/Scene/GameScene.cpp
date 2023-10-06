@@ -1,4 +1,4 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 #include "CollisionManager.h"
 
 #include "PipelineManager.h"
@@ -9,7 +9,7 @@ GameScene::~GameScene() {}
 
 void GameScene::Initialize()
 {
-#pragma region ƒ‰ƒCƒgƒOƒ‹[ƒv
+#pragma region ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—
 	lightGroup_ = std::make_unique<LightGroup>();
 	Object3D::SetLightGroup(lightGroup_.get());
 
@@ -19,18 +19,18 @@ void GameScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region ƒXƒe[ƒWƒNƒ‰ƒX
+#pragma region ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
 #pragma endregion
 
-#pragma region ƒvƒŒƒCƒ„[
+#pragma region ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_ = std::make_unique<Player>();
 	player_->Initialize();
 #pragma endregion
 
-#pragma region ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[¶¬
+#pragma region ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	enemyMgr_ = std::make_unique<EnemyManager>();
 	enemyMgr_->Initialize();
 	enemyMgr_->SetPlayer(player_.get());
@@ -38,11 +38,11 @@ void GameScene::Initialize()
 	player_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
-#pragma region ƒ‚ƒfƒ‹
+#pragma region ãƒ¢ãƒ‡ãƒ«
 	mCube_ = std::make_unique<Model>("cube");
 #pragma endregion
 
-#pragma region 3²‚ğ¦‚·ƒIƒuƒWƒFƒNƒg
+#pragma region 3è»¸ã‚’ç¤ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	oAxis_.resize(3);
 	oAxis_[0] = std::make_unique<Object3D>(mCube_.get());
 	oAxis_[1] = std::make_unique<Object3D>(mCube_.get());
@@ -57,22 +57,22 @@ void GameScene::Initialize()
 	oAxis_[2]->SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
 #pragma endregion
 
-	// ƒXƒe[ƒW“Ç‚İ‚İ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã¿
 	stage_->Load("Resources/StageJson/stage1.json");
 }
 
 void GameScene::Update()
 {
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_->Update();
 
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	enemyMgr_->Update();
 
-	// Õ“Ëˆ—
+	// è¡çªæ™‚å‡¦ç†
 	OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	MatUpdate();
 
 	enemyMgr_->CheckSceneChange();
@@ -82,50 +82,50 @@ void GameScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
-	// ƒXƒe[ƒWƒNƒ‰ƒX
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	stage_->Draw();
 
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_->Draw3D();
 
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	enemyMgr_->Draw();
 
-	// 3²‚ğ¦‚·ƒIƒuƒWƒFƒNƒg
+	// 3è»¸ã‚’ç¤ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	for (auto& it : oAxis_) {
 		it->Draw();
 	}
 
 	PipelineManager::PreDraw("Sprite");
 
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_->DrawFront2D();
 }
 
 void GameScene::OnCollision()
 {
-	// Õ“Ë”»’è‚ğ‚Æ‚é
+	// è¡çªåˆ¤å®šã‚’ã¨ã‚‹
 	CollisionManager::GetInstance()->CheckAllCollision();
 
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_->OnCollision();
 
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	enemyMgr_->OnCollision();
 }
 
 void GameScene::MatUpdate()
 {
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_->MatUpdate();
 
-	// ƒGƒlƒ~[ƒ}ƒl[ƒWƒƒ[
+	// ã‚¨ãƒãƒŸãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	enemyMgr_->MatUpdate();
 
-	// ƒXƒe[ƒWƒNƒ‰ƒX
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	stage_->MatUpdate();
 
-	// 3²‚ğ¦‚·ƒIƒuƒWƒFƒNƒg
+	// 3è»¸ã‚’ç¤ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	for (auto& it : oAxis_) {
 		it->MatUpdate();
 	}

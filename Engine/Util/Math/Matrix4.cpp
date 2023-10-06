@@ -1,8 +1,8 @@
-#include "Matrix4.h"
+ï»¿#include "Matrix4.h"
 #include "Vector3.h"
 #include <cmath>
 
-// --’PˆÊs—ñ‚ğ‹‚ß‚é-- //
+// --å˜ä½è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4Identity() {
 	static const Matrix4 result{
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -19,23 +19,23 @@ Matrix4 Matrix4Inverse(const Matrix4& m)
 	float sweepMat[4][8] = {};
 	float tmepNum = 0;
 
-	// ‘|‚«o‚µs—ñ‚Ì‰Šú‰»
+	// æƒãå‡ºã—è¡Œåˆ—ã®åˆæœŸåŒ–
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			// ˆø”‚Å‚à‚ç‚Á‚½s—ñi¶ 4 * 4j
+			// å¼•æ•°ã§ã‚‚ã‚‰ã£ãŸè¡Œåˆ—ï¼ˆå·¦ 4 * 4ï¼‰
 			sweepMat[i][j] = m.m[i][j];
 
-			// ’PˆÊs—ñi‰E 4 * 4j
+			// å˜ä½è¡Œåˆ—ï¼ˆå³ 4 * 4ï¼‰
 			sweepMat[i][j + 4] = (i == j) ? 1.0f : 0.0f;
 		}
 	}
 
-	// ‘|‚«o‚µ–@
+	// æƒãå‡ºã—æ³•
 	for (int i = 0; i < 4; i++)
 	{
-		// Å‘å¬•ª‚ğ’Tõ‚·‚é
+		// æœ€å¤§æˆåˆ†ã‚’æ¢ç´¢ã™ã‚‹
 		float max = fabsf(sweepMat[i][i]);
 		int maxIndex = i;
 		for (int j = i + 1; j < 4; j++)
@@ -46,22 +46,22 @@ Matrix4 Matrix4Inverse(const Matrix4& m)
 				maxIndex = j;
 			}
 		}
-		// ‹ts—ñ‹‚ß‚é‚©‚Ç‚¤‚©
+		// é€†è¡Œåˆ—æ±‚ã‚ã‚‹ã‹ã©ã†ã‹
 		if (fabsf(sweepMat[maxIndex][i]) <= 1.e-50)
 		{
-			// ‹‚ß‚ê‚È‚¢ê‡‚Í’PˆÊs—ñ‚ğ•Ô‚·
+			// æ±‚ã‚ã‚Œãªã„å ´åˆã¯å˜ä½è¡Œåˆ—ã‚’è¿”ã™
 			Matrix4 identity = Matrix4Identity();
 			return identity;
 		}
 
-		// ‘ÎÛ‚Æ‚È‚és—ñ‚Ì‘ÎŠp¬•ª‚ğ1‚É‚·‚é
+		// å¯¾è±¡ã¨ãªã‚‹è¡Œåˆ—ã®å¯¾è§’æˆåˆ†ã‚’1ã«ã™ã‚‹
 		tmepNum = 1 / sweepMat[i][i];
 		for (int j = 0; j < 8; j++)
 		{
 			sweepMat[i][j] *= tmepNum;
 		}
 
-		// ‘ÎÛ‚Æ‚È‚és—ñ‚Ì‘ÎŠp¬•ªˆÈŠO‚ğ0‚É‚·‚é‚½‚ß
+		// å¯¾è±¡ã¨ãªã‚‹è¡Œåˆ—ã®å¯¾è§’æˆåˆ†ä»¥å¤–ã‚’0ã«ã™ã‚‹ãŸã‚
 		for (int j = 0; j < 4; j++)
 		{
 			if (i == j) continue;
@@ -74,7 +74,7 @@ Matrix4 Matrix4Inverse(const Matrix4& m)
 		}
 	}
 
-	// ‹ts—ñ‚ğ•Ô‚·
+	// é€†è¡Œåˆ—ã‚’è¿”ã™
 	Matrix4 inverseMat = Matrix4Identity();
 	for (int i = 0; i < 4; i++)
 	{
@@ -87,7 +87,7 @@ Matrix4 Matrix4Inverse(const Matrix4& m)
 	return inverseMat;
 }
 
-// --Šg‘åk¬s—ñ‚ğ‹‚ß‚é-- //
+// --æ‹¡å¤§ç¸®å°è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4Scale(const Vector3& s) {
 	Matrix4 result{
 		s.x, 0.0f, 0.0f, 0.0f,
@@ -99,7 +99,7 @@ Matrix4 Matrix4Scale(const Vector3& s) {
 	return result;
 }
 
-// --X²‚Ü‚í‚è‚Ì‰ñ“]s—ñ‚ğ‹‚ß‚é-- //
+// --Xè»¸ã¾ã‚ã‚Šã®å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4RotateX(float angle) {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -114,7 +114,7 @@ Matrix4 Matrix4RotateX(float angle) {
 	return result;
 }
 
-// --Y²‚Ü‚í‚è‚Ì‰ñ“]s—ñ‚ğ‹‚ß‚é-- //
+// --Yè»¸ã¾ã‚ã‚Šã®å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4RotateY(float angle) {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -129,7 +129,7 @@ Matrix4 Matrix4RotateY(float angle) {
 	return result;
 }
 
-// --Z²‚Ü‚í‚è‚Ì‰ñ“]s—ñ‚ğ‹‚ß‚é-- //
+// --Zè»¸ã¾ã‚ã‚Šã®å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4RotateZ(float angle) {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -144,7 +144,7 @@ Matrix4 Matrix4RotateZ(float angle) {
 	return result;
 }
 
-// --•½sˆÚ“®s—ñ‚ğ‹‚ß‚é-- //
+// --å¹³è¡Œç§»å‹•è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹-- //
 Matrix4 Matrix4Translate(const Vector3& t) {
 	Matrix4 result{
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -156,7 +156,7 @@ Matrix4 Matrix4Translate(const Vector3& t) {
 	return result;
 }
 
-// --À•W•ÏŠ·iƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Zj‚ğs‚¤transformŠÖ”‚ğì¬‚·‚éBi“§‹•ÏŠ·‚É‚à‘Î‰‚µ‚Ä‚¢‚éj-- //
+// --åº§æ¨™å¤‰æ›ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—ï¼‰ã‚’è¡Œã†transformé–¢æ•°ã‚’ä½œæˆã™ã‚‹ã€‚ï¼ˆé€è¦–å¤‰æ›ã«ã‚‚å¯¾å¿œã—ã¦ã„ã‚‹ï¼‰-- //
 Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m) {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 
@@ -169,7 +169,7 @@ Vector3 Matrix4Transform(const Vector3& v, const Matrix4& m) {
 	return result;
 }
 
-// --‘ã“ü‰‰Zq *= ‚ÌƒI[ƒo[ƒ[ƒhŠÖ”is—ñ‚Æs—ñ‚ÌÏj-- //
+// --ä»£å…¥æ¼”ç®—å­ *= ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰é–¢æ•°ï¼ˆè¡Œåˆ—ã¨è¡Œåˆ—ã®ç©ï¼‰-- //
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2) {
 	Matrix4 result{ 0 };
 
@@ -184,13 +184,13 @@ Matrix4& operator*=(Matrix4& m1, const Matrix4& m2) {
 	return m1;
 }
 
-// --2€‰‰Zq*‚ÌƒI[ƒo[ƒ[ƒhŠÖ”is—ñ‚Æs—ñ‚ÌÏj-- //
+// --2é …æ¼”ç®—å­*ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰é–¢æ•°ï¼ˆè¡Œåˆ—ã¨è¡Œåˆ—ã®ç©ï¼‰-- //
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2) {
 	Matrix4 result = m1;
 	return result *= m2;
 }
 
-// --2€‰‰Zq*‚ÌƒI[ƒo[ƒ[ƒhŠÖ”iƒxƒNƒgƒ‹‚Æs—ñ‚ÌÏj-- //
+// --2é …æ¼”ç®—å­*ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰é–¢æ•°ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®ç©ï¼‰-- //
 const Vector3 operator*(const Vector3& v, const Matrix4& m) {
 	return Matrix4Transform(v, m);
 }

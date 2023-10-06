@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Matrix4.h"
 #include "float4.h"
 #include "Vector3.h"
@@ -8,127 +8,127 @@
 
 class Object3D {
 private:
-	// ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	// ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Matrix4 viewProj;	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“
-		Matrix4 world;		// ƒ[ƒ‹ƒhs—ñ
-		Vector3 cameraPos;	// ƒJƒƒ‰À•W(ƒ[ƒ‹ƒhÀ•W)
-		float pad1;			// ƒpƒfƒBƒ“ƒO
-		float4 color;		// F(RGBA)
+		Matrix4 viewProj;	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³
+		Matrix4 world;		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
+		Vector3 cameraPos;	// ã‚«ãƒ¡ãƒ©åº§æ¨™(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™)
+		float pad1;			// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		float4 color;		// è‰²(RGBA)
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒIƒuƒWƒFƒNƒgƒf[ƒ^
-	Vector3 position_ = { 0.0f, 0.0f, 0.0f };	// ˆÊ’u(XYZ)
-	Vector3 rotation_ = { 0.0f, 0.0f, 0.0f };	// ‰ñ“](XYZ)
-	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };		// Šgk(XYZ)
-	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// F(RGBA)
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿
+	Vector3 position_ = { 0.0f, 0.0f, 0.0f };	// ä½ç½®(XYZ)
+	Vector3 rotation_ = { 0.0f, 0.0f, 0.0f };	// å›è»¢(XYZ)
+	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };		// æ‹¡ç¸®(XYZ)
+	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// è‰²(RGBA)
 
-	// ƒIƒuƒWƒFƒNƒgƒf[ƒ^‚ğ•ÏX‚µ‚½‚©‚Ç‚¤‚©
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å¤‰æ›´ã—ãŸã‹ã©ã†ã‹
 	bool hasChanget_ = true;
 
-	// ƒ[ƒ‹ƒhs—ñ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 	Matrix4 matWorld_ = {};
 
-	// ’è”ƒoƒbƒtƒ@
-	ComPtr<ID3D12Resource>	constBuff_	= nullptr;// ’è”ƒoƒbƒtƒ@
-	ConstBufferData*		constMap_	= nullptr;// ƒ}ƒbƒsƒ“ƒOˆ——p
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ComPtr<ID3D12Resource>	constBuff_	= nullptr;// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ConstBufferData*		constMap_	= nullptr;// ãƒãƒƒãƒ”ãƒ³ã‚°å‡¦ç†ç”¨
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* model_ = nullptr;
 
-	// Ã“Iƒƒ“ƒo•Ï”
-	static Camera*		sCamera_;		// ƒJƒƒ‰
-	static LightGroup*	sLightGroup_;	// ƒ‰ƒCƒg
+	// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
+	static Camera*		sCamera_;		// ã‚«ãƒ¡ãƒ©
+	static LightGroup*	sLightGroup_;	// ãƒ©ã‚¤ãƒˆ
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Object3D(Model* model);
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw();
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// À•W(XYZ)‚ğİ’è
+	/// åº§æ¨™(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="position"> À•W(XYZ) </param>
+	/// <param name="position"> åº§æ¨™(XYZ) </param>
 	inline void SetPosition(const Vector3& position) { position_ = position, hasChanget_ = true; }
 
 	/// <summary>
-	/// ‰ñ“](XYZ)‚ğİ’è
+	/// å›è»¢(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="rotation"> ‰ñ“](XYZ) </param>
+	/// <param name="rotation"> å›è»¢(XYZ) </param>
 	inline void SetRotation(const Vector3& rotation) { rotation_ = rotation, hasChanget_ = true; }
 
 	/// <summary>
-	/// Šgk(XYZ)‚ğİ’è
+	/// æ‹¡ç¸®(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="scale"> Šgk(XYZ) </param>
+	/// <param name="scale"> æ‹¡ç¸®(XYZ) </param>
 	inline void SetScale(const Vector3& scale) { scale_ = scale, hasChanget_ = true; }
 
 	/// <summary>
-	/// F(RGBA)‚ğİ’è
+	/// è‰²(RGBA)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="color"> F(RGBA) </param>
+	/// <param name="color"> è‰²(RGBA) </param>
 	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
 
 	/// <summary>
-	/// ƒ‚ƒfƒ‹‚ğİ’è
+	/// ãƒ¢ãƒ‡ãƒ«ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="model"> ƒ‚ƒfƒ‹ </param>
+	/// <param name="model"> ãƒ¢ãƒ‡ãƒ« </param>
 	inline void SetModel(Model* model) { model_ = model; }
 
 	/// <summary>
-	/// ƒJƒƒ‰‚ğİ’è
+	/// ã‚«ãƒ¡ãƒ©ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="camera"> ƒJƒƒ‰ </param>
+	/// <param name="camera"> ã‚«ãƒ¡ãƒ© </param>
 	static inline void SetCamera(Camera* camera) { sCamera_ = camera; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒgƒOƒ‹[ƒv‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="lightGroup"> ƒ‰ƒCƒgƒOƒ‹[ƒv </param>
+	/// <param name="lightGroup"> ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ— </param>
 	static inline void SetLightGroup(LightGroup* lightGroup) { sLightGroup_ = lightGroup; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 	/// <summary>
-	/// À•W(XYZ)‚ğæ“¾
+	/// åº§æ¨™(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> À•W(XYZ) </returns>
+	/// <returns> åº§æ¨™(XYZ) </returns>
 	inline const Vector3& GetPosition() { return position_; }
 
 	/// <summary>
-	/// Šgk(XYZ)‚ğæ“¾
+	/// æ‹¡ç¸®(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> Šgk(XYZ) </returns>
+	/// <returns> æ‹¡ç¸®(XYZ) </returns>
 	inline const Vector3& GetScale() { return scale_; }
 
 	/// <summary>
-	/// ƒ[ƒ‹ƒhs—ñ‚ğæ“¾
+	/// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ[ƒ‹ƒhs—ñ </returns>
+	/// <returns> ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ— </returns>
 	inline const Matrix4& GetMatWorld() { return matWorld_; }
 
 	/// <summary>
-	/// ƒ‚ƒfƒ‹‚ğæ“¾
+	/// ãƒ¢ãƒ‡ãƒ«ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‚ƒfƒ‹ </returns>
+	/// <returns> ãƒ¢ãƒ‡ãƒ« </returns>
 	inline Model* GetModel() { return model_; }
 #pragma endregion
 };

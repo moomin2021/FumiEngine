@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Key.h"
 #include "Mouse.h"
 #include "CollisionManager.h"
@@ -21,9 +21,9 @@ class EnemyManager;
 class Player
 {
 	enum State {
-		NORMAL,	// ’Êíó‘Ô
-		AIR,	// ‹ó’†ó‘Ô
-		CLIMB,	// “o‚èó‘Ô
+		NORMAL,	// é€šå¸¸çŠ¶æ…‹
+		AIR,	// ç©ºä¸­çŠ¶æ…‹
+		CLIMB,	// ç™»ã‚ŠçŠ¶æ…‹
 	};
 
 	std::vector<std::string> stateName_ = {
@@ -32,27 +32,27 @@ class Player
 		"CLIMB"
 	};
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒCƒ“ƒXƒ^ƒ“ƒX
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
 	CollisionManager* colMgr_ = nullptr;
 	EnemyManager* enemyMgr_ = nullptr;
 	Sound* sound_ = nullptr;
 
-	// ó‘Ô
+	// çŠ¶æ…‹
 	State state_ = NORMAL;
 
-	// ƒTƒEƒ“ƒh
+	// ã‚µã‚¦ãƒ³ãƒ‰
 	uint16_t shotSE_ = 0;
 
-	// ƒJƒƒ‰ŠÖ˜A
-	std::unique_ptr<Camera> camera_ = nullptr;// ƒJƒƒ‰–{‘Ì
-	float sencivity_ = 0.1f;// ƒJƒƒ‰Š´“x
-	Vector3 eyeAngle_	= { 0.0f, 0.0f, 0.0f };// ƒJƒƒ‰Šp“x
-	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// ³–ÊƒxƒNƒgƒ‹
-	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// ‰EƒxƒNƒgƒ‹
+	// ã‚«ãƒ¡ãƒ©é–¢é€£
+	std::unique_ptr<Camera> camera_ = nullptr;// ã‚«ãƒ¡ãƒ©æœ¬ä½“
+	float sencivity_ = 0.1f;// ã‚«ãƒ¡ãƒ©æ„Ÿåº¦
+	Vector3 eyeAngle_	= { 0.0f, 0.0f, 0.0f };// ã‚«ãƒ¡ãƒ©è§’åº¦
+	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«
+	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// å³ãƒ™ã‚¯ãƒˆãƒ«
 	float fovAngleY_ = 70.0f;
 	float diffusivity_ = 5.0f;
 	const float maxDiffusivity_ = 5.0f;
@@ -60,62 +60,62 @@ private:
 	bool isAds_ = false;
 	float recoilEyeAngle_ = 0.0f;
 
-	// ƒ‚ƒfƒ‹
-	std::unique_ptr<Model> mSphere_ = nullptr;// ‹…
+	// ãƒ¢ãƒ‡ãƒ«
+	std::unique_ptr<Model> mSphere_ = nullptr;// çƒ
 	std::unique_ptr<Model> mSheriff_ = nullptr;
 
-	// ƒIƒuƒWƒFƒNƒg
-	std::unique_ptr<Object3D> oPlayer_ = nullptr;// ƒvƒŒƒCƒ„[
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	std::unique_ptr<Object3D> oPlayer_ = nullptr;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	std::unique_ptr<Object3D> oSheriff_ = nullptr;
 
-	// ƒRƒ‰ƒCƒ_[
-	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// ƒvƒŒƒCƒ„[ƒRƒ‰ƒCƒ_[
-	std::unique_ptr<RayCollider> legCol_ = nullptr;// ‘«Œ³ƒRƒ‰ƒCƒ_[
-	std::unique_ptr<RayCollider> climbCol_ = nullptr;// •Ç“o‚è‚Ég‚¤ƒRƒ‰ƒCƒ_[
-	std::unique_ptr<RayCollider> shotCol_ = nullptr;// ’e‚ğŒ‚‚Á‚½‚Ég‚¤ƒRƒ‰ƒCƒ_[
-	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// ‹üƒRƒ‰ƒCƒ_[
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unique_ptr<RayCollider> legCol_ = nullptr;// è¶³å…ƒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unique_ptr<RayCollider> climbCol_ = nullptr;// å£ç™»ã‚Šã«ä½¿ã†ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unique_ptr<RayCollider> shotCol_ = nullptr;// å¼¾ã‚’æ’ƒã£ãŸæ™‚ã«ä½¿ã†ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// è¦–ç·šã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 
-	// ˆÚ“®ŠÖ˜A
-	float moveSpd_ = 0.0f;// ˆÚ“®‘¬“x
-	float maxMoveSpd_ = 0.5f;// Å‘åˆÚ“®‘¬“x
-	float moveAcc_ = 0.05f;// ˆÚ“®‰Á‘¬“x
-	bool isDash_ = false;// ƒ_ƒbƒVƒ…ƒtƒ‰ƒO
-	float dashSpd_ = 1.0f;// ƒ_ƒbƒVƒ…‘¬“x
+	// ç§»å‹•é–¢é€£
+	float moveSpd_ = 0.0f;// ç§»å‹•é€Ÿåº¦
+	float maxMoveSpd_ = 0.5f;// æœ€å¤§ç§»å‹•é€Ÿåº¦
+	float moveAcc_ = 0.05f;// ç§»å‹•åŠ é€Ÿåº¦
+	bool isDash_ = false;// ãƒ€ãƒƒã‚·ãƒ¥ãƒ•ãƒ©ã‚°
+	float dashSpd_ = 1.0f;// ãƒ€ãƒƒã‚·ãƒ¥é€Ÿåº¦
 
-	// ƒWƒƒƒ“ƒvŠÖ˜A
-	float gravity_ = 0.0f;// d—Í
-	float maxGravity_ = 1.5f;// Å‘åd—Í
-	float gAcc_ = 0.2f;// d—Í‰Á‘¬“x
-	float jumpSpd_ = 1.5f;// ƒWƒƒƒ“ƒv‘¬“x
+	// ã‚¸ãƒ£ãƒ³ãƒ—é–¢é€£
+	float gravity_ = 0.0f;// é‡åŠ›
+	float maxGravity_ = 1.5f;// æœ€å¤§é‡åŠ›
+	float gAcc_ = 0.2f;// é‡åŠ›åŠ é€Ÿåº¦
+	float jumpSpd_ = 1.5f;// ã‚¸ãƒ£ãƒ³ãƒ—é€Ÿåº¦
 
-	// ƒNƒƒXƒwƒA
+	// ã‚¯ãƒ­ã‚¹ãƒ˜ã‚¢
 	uint16_t crossHairHandle_ = 0;
 	std::unique_ptr<Sprite> sCrossHair_ = nullptr;
 
-	// ’e
+	// å¼¾
 	std::unique_ptr<Model> mBullet_ = nullptr;
 	std::deque<std::unique_ptr<Bullet>> bullets_ = {};
-	uint8_t maxBullet_ = 99;// Å‘å’e”
-	uint8_t nowBullet_ = 99;// Œ»İ’e”
-	uint16_t bulletValueDisplayFrameHandle_ = 0;// c’e”•\¦UIƒtƒŒ[ƒ€ƒnƒ“ƒhƒ‹
-	std::vector<uint16_t> numberHandle_ = {};// ”šƒnƒ“ƒhƒ‹
+	uint8_t maxBullet_ = 99;// æœ€å¤§å¼¾æ•°
+	uint8_t nowBullet_ = 99;// ç¾åœ¨å¼¾æ•°
+	uint16_t bulletValueDisplayFrameHandle_ = 0;// æ®‹å¼¾æ•°è¡¨ç¤ºUIãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒ³ãƒ‰ãƒ«
+	std::vector<uint16_t> numberHandle_ = {};// æ•°å­—ãƒãƒ³ãƒ‰ãƒ«
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
-	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// Å‘å’e”•\¦ƒXƒvƒ‰ƒCƒg
-	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// c’e”•\¦ƒXƒvƒ‰ƒCƒg
+	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// æœ€å¤§å¼¾æ•°è¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// æ®‹å¼¾æ•°è¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	float shotInterval_ = 0.7f;
 	uint64_t shotTime_ = 0;
 
-	// ƒŠƒ[ƒh
-	bool isReload_ = false;	// ƒŠƒ[ƒh‚µ‚Ä‚¢‚é‚©
-	uint8_t reloadTime_ = 3;// ƒŠƒ[ƒhŠÔ
-	uint16_t reloadUIHandle_ = 0;// ƒŠƒ[ƒhUIƒnƒ“ƒhƒ‹
-	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// ƒŠƒ[ƒhUIƒXƒvƒ‰ƒCƒg
+	// ãƒªãƒ­ãƒ¼ãƒ‰
+	bool isReload_ = false;	// ãƒªãƒ­ãƒ¼ãƒ‰ã—ã¦ã„ã‚‹ã‹
+	uint8_t reloadTime_ = 3;// ãƒªãƒ­ãƒ¼ãƒ‰æ™‚é–“
+	uint16_t reloadUIHandle_ = 0;// ãƒªãƒ­ãƒ¼ãƒ‰UIãƒãƒ³ãƒ‰ãƒ«
+	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// ãƒªãƒ­ãƒ¼ãƒ‰UIã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 
-	// ƒAƒCƒeƒ€
+	// ã‚¢ã‚¤ãƒ†ãƒ 
 	std::vector<uint8_t> items_;
 	ItemManager* itemManager_ = nullptr;
 
-	// ‘€ìƒqƒ“ƒg
+	// æ“ä½œãƒ’ãƒ³ãƒˆ
 	std::unique_ptr<Sprite> opeTips_ = nullptr;
 	uint16_t opeTipsHandle_ = 0;
 	bool isHitItem_ = false;
@@ -123,56 +123,56 @@ private:
 
 #pragma endregion
 
-#pragma region ƒƒ“ƒoŠÖ”
+#pragma region ãƒ¡ãƒ³ãƒé–¢æ•°
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Player();
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Player();
 
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// 3D•`‰æˆ—
+	// 3Dæç”»å‡¦ç†
 	void Draw3D();
 
-	// ‘O–Ê2D•`‰æˆ—
+	// å‰é¢2Dæç”»å‡¦ç†
 	void DrawFront2D();
 
-	// Õ“Ë”»’èˆ—
+	// è¡çªåˆ¤å®šæ™‚å‡¦ç†
 	void OnCollision();
 
-	// s—ñXVˆ—
+	// è¡Œåˆ—æ›´æ–°å‡¦ç†
 	void MatUpdate();
 
 private:
-	// ó‘Ô•Êˆ—
+	// çŠ¶æ…‹åˆ¥å‡¦ç†
 	static void (Player::* stateTable[]) ();
-	void Normal();	// ’Êíó‘Ô
-	void Air();		// ‹ó’†ó‘Ô
-	void Climb();	// “o‚èó‘Ô
+	void Normal();	// é€šå¸¸çŠ¶æ…‹
+	void Air();		// ç©ºä¸­çŠ¶æ…‹
+	void Climb();	// ç™»ã‚ŠçŠ¶æ…‹
 
-	// s“®ŠÖ”
-	void Ads();		// ”`‚«‚İ
-	void Shoot();	// ’e‚ğŒ‚‚Â
-	void Reload();	// ƒŠƒ[ƒhˆ—
-	void Move();	// ˆÚ“®‘€ì
-	void EyeMove();	// ‹“_‘€ì
-	void Jump();	// ƒWƒƒƒ“ƒvˆ—
-	void Fall();	// —‰ºˆ—
-	void Dash();	// ‘–sˆ—
+	// è¡Œå‹•é–¢æ•°
+	void Ads();		// è¦—ãè¾¼ã¿
+	void Shoot();	// å¼¾ã‚’æ’ƒã¤
+	void Reload();	// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
+	void Move();	// ç§»å‹•æ“ä½œ
+	void EyeMove();	// è¦–ç‚¹æ“ä½œ
+	void Jump();	// ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
+	void Fall();	// è½ä¸‹å‡¦ç†
+	void Dash();	// èµ°è¡Œå‡¦ç†
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 	public:
 	void SetEnemyManager(EnemyManager* inst) { enemyMgr_ = inst; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	inline const Vector3& GetPosition() { return camera_->GetEye(); }
 #pragma endregion

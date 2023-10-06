@@ -1,85 +1,85 @@
-#pragma once
+ï»¿#pragma once
 
 class PointLight {
-#pragma region \‘¢‘Ì
+#pragma region æ§‹é€ ä½“
 public:
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData {
-		Vector3 lightPos;	// ƒ‰ƒCƒg‚ÌÀ•W(XYZ)
-		float pad1;// ƒpƒfƒBƒ“ƒO
-		Vector3 lightColor;	// ƒ‰ƒCƒg‚ÌF(XYZ)
-		float pad2;// ƒpƒfƒBƒ“ƒO
-		Vector3 lightAtten;	// ƒ‰ƒCƒg‹——£Œ¸ŠŒW”(XYZ)
-		bool active;		// ƒ‰ƒCƒg—LŒøƒtƒ‰ƒO
+		Vector3 lightPos;	// ãƒ©ã‚¤ãƒˆã®åº§æ¨™(XYZ)
+		float pad1;// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 lightColor;	// ãƒ©ã‚¤ãƒˆã®è‰²(XYZ)
+		float pad2;// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 lightAtten;	// ãƒ©ã‚¤ãƒˆè·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)
+		bool active;		// ãƒ©ã‚¤ãƒˆæœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	};
 #pragma endregion
 
-#pragma region ƒƒ“ƒo•Ï”
+#pragma region ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
-	// ƒ‰ƒCƒgÀ•W(ƒ[ƒ‹ƒhÀ•WŒn)
+	// ãƒ©ã‚¤ãƒˆåº§æ¨™(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»)
 	Vector3 lightPos_ = { 0.0f, 0.0f, 0.0f };
 
-	// ƒ‰ƒCƒgF
+	// ãƒ©ã‚¤ãƒˆè‰²
 	Vector3 lightColor_ = { 1.0f, 1.0f, 1.0f };
 
-	// ƒ‰ƒCƒg‹——£Œ¸ŠŒW”
+	// ãƒ©ã‚¤ãƒˆè·é›¢æ¸›è¡°ä¿‚æ•°
 	Vector3 lightAtten_ = { 1.0f, 1.0f, 1.0f };
 
-	// —LŒøƒtƒ‰ƒO
+	// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	bool active_ = true;
 #pragma endregion
 
-#pragma region ƒZƒbƒ^[ŠÖ”
+#pragma region ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌÀ•W(XYZ)‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®åº§æ¨™(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="lightPos"> ƒ‰ƒCƒg‚ÌÀ•W(XYZ) </param>
+	/// <param name="lightPos"> ãƒ©ã‚¤ãƒˆã®åº§æ¨™(XYZ) </param>
 	inline void SetLightPos(const Vector3& lightPos) { lightPos_ = lightPos; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌF(RGB)‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®è‰²(RGB)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="lightColor"> ƒ‰ƒCƒg‚ÌF(RGB) </param>
+	/// <param name="lightColor"> ãƒ©ã‚¤ãƒˆã®è‰²(RGB) </param>
 	inline void SetLightColor(const Vector3& lightColor) { lightColor_ = lightColor; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚Ì‹——£Œ¸ŠŒW”(XYZ)‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆã®è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="lightAtten"> ƒ‰ƒCƒg‚Ì‹——£Œ¸ŠŒW”(XYZ) </param>
+	/// <param name="lightAtten"> ãƒ©ã‚¤ãƒˆã®è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ) </param>
 	inline void SetLightAtten(const Vector3& lightAtten) { lightAtten_ = lightAtten; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg—LŒøƒtƒ‰ƒO‚ğİ’è
+	/// ãƒ©ã‚¤ãƒˆæœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	/// </summary>
-	/// <param name="active"> ƒ‰ƒCƒg—LŒøƒtƒ‰ƒO </param>
+	/// <param name="active"> ãƒ©ã‚¤ãƒˆæœ‰åŠ¹ãƒ•ãƒ©ã‚° </param>
 	inline void SetActive(bool active) { active_ = active; }
 #pragma endregion
 
-#pragma region ƒQƒbƒ^[ŠÖ”
+#pragma region ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 public:
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌÀ•W(XYZ)‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆã®åº§æ¨™(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚ÌÀ•W(XYZ) </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®åº§æ¨™(XYZ) </returns>
 	inline const Vector3& GetLightPos() { return lightPos_; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚ÌF(RGB)‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆã®è‰²(RGB)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚ÌF(RGB) </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®è‰²(RGB) </returns>
 	inline const Vector3& GetLightColor() { return lightColor_; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg‚Ì‹——£Œ¸ŠŒW”(XYZ)‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆã®è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ)ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚Ì‹——£Œ¸ŠŒW”(XYZ) </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®è·é›¢æ¸›è¡°ä¿‚æ•°(XYZ) </returns>
 	inline const Vector3& GetLightAtten() { return lightAtten_; }
 
 	/// <summary>
-	/// ƒ‰ƒCƒg—LŒøƒtƒ‰ƒO‚ğæ“¾
+	/// ãƒ©ã‚¤ãƒˆæœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’å–å¾—
 	/// </summary>
-	/// <returns> ƒ‰ƒCƒg‚Ì—LŒøƒtƒ‰ƒO </returns>
+	/// <returns> ãƒ©ã‚¤ãƒˆã®æœ‰åŠ¹ãƒ•ãƒ©ã‚° </returns>
 	inline bool GetActive() { return active_; }
 #pragma endregion
 };
