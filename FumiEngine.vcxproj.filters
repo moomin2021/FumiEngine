@@ -213,13 +213,13 @@
     <ClCompile Include="Application\Scene\GameOverScene.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Stage.cpp">
+    <ClCompile Include="Application\Stage\Stage.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Player.cpp">
+    <ClCompile Include="Application\Player\Player.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Bullet.cpp">
+    <ClCompile Include="Application\Player\Bullet.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Util\Easing.cpp">
@@ -237,7 +237,7 @@
     <ClCompile Include="Application\Scene\TransitionScene.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\ItemManager.cpp">
+    <ClCompile Include="Application\Player\ItemManager.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -398,13 +398,13 @@
     <ClInclude Include="Application\Scene\GameOverScene.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Stage.h">
+    <ClInclude Include="Application\Stage\Stage.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Player.h">
+    <ClInclude Include="Application\Player\Player.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Bullet.h">
+    <ClInclude Include="Application\Player\Bullet.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\Easing.h">
@@ -422,7 +422,7 @@
     <ClInclude Include="Application\Scene\TransitionScene.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\ItemManager.h">
+    <ClInclude Include="Application\Player\ItemManager.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

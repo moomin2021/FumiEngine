@@ -145,11 +145,11 @@ void Model::LoadModel(string name)
 
 		// 先頭文字列が[mtllib]ならマテリアル
 		else if (key == "mtllib") {
-			string fileName;
-			line_stream >> fileName;
+			string filename;
+			line_stream >> filename;
 
 			// マテリアル読み込み
-			LoadMaterial(directoryPath, fileName);
+			LoadMaterial(directoryPath, filename);
 		}
 	}
 
