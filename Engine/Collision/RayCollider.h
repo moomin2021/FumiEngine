@@ -29,7 +29,7 @@ public:
 	inline void SetOffSet(const Vector3& offset) { offset_ = offset; }
 
 	// •ûŒü‚ğİ’è
-	inline void SetDir(const Vector3& dir) { Ray::dir = dir; }
+	inline void SetDir(const Vector3& aDir) { Ray::dir = aDir; }
 
 	// Œğ“_‚ğİ’è
 	inline void SetInter(const Vector3& inter) { inter_ = inter; }

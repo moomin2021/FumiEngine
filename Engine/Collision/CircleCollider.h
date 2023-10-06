@@ -25,7 +25,7 @@ public:
 	inline void SetOffset(const Vector2& offset) { offset_ = offset; }
 
 	// ”¼Œa‚ğİ’è
-	inline void SetRadius(float radius) { Circle::radius = radius; }
+	inline void SetRadius(float aRadius) { Circle::radius = aRadius; }
 #pragma endregion
 
 #pragma region ƒQƒbƒ^[ŠÖ”

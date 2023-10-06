@@ -19,7 +19,6 @@ void ImGuiManager::Initialize()
 	// インスタンス取得
 	WinAPI* winAPI = WinAPI::GetInstance();
 	DX12Cmd* dx12 = DX12Cmd::GetInstance();
-	Texture* tex = Texture::GetInstance();
 
 	// デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};

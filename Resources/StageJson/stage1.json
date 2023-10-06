@@ -1,0 +1,252 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "terrain.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "terrain"
+        },
+        {
+            "type": "MESH",
+            "name": "cylinder.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    56.20524597167969,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "cylinder.001",
+            "transform": {
+                "translation": [
+                    -36.35497283935547,
+                    -45.56881332397461,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "cylinder.002",
+            "transform": {
+                "translation": [
+                    37.849483489990234,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "bridge.000",
+            "transform": {
+                "translation": [
+                    -77.13494873046875,
+                    0.0,
+                    -0.41237300634384155
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    5.0,
+                    15.0,
+                    0.05000000074505806
+                ]
+            },
+            "file_name": "bridge"
+        },
+        {
+            "type": "MESH",
+            "name": "terrain.001",
+            "transform": {
+                "translation": [
+                    -131.58837890625,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -80.65142822265625
+                ],
+                "scaling": [
+                    0.5695713758468628,
+                    0.5695713758468628,
+                    0.5695713758468628
+                ]
+            },
+            "file_name": "terrain"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    31.361276626586914,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.001",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -40.2952766418457,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.002",
+            "transform": {
+                "translation": [
+                    -30.740385055541992,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.003",
+            "transform": {
+                "translation": [
+                    29.182870864868164,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.004",
+            "transform": {
+                "translation": [
+                    16.87482261657715,
+                    -22.242645263671875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        }
+    ]
+}

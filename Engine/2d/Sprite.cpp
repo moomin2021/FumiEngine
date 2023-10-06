@@ -15,9 +15,6 @@ Sprite::Sprite()
 	// デバイス取得
 	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
 
-	// インスタンス取得
-	WinAPI* winAPI = WinAPI::GetInstance();
-
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 

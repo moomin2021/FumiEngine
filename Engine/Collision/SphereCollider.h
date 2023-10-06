@@ -32,7 +32,7 @@ public:
 	inline void SetInter(const Vector3& inter) { inter_ = inter; }
 
 	// ”¼Œa‚ğİ’è
-	inline void SetRadius(float radius) { Sphere::radius = radius; }
+	inline void SetRadius(float aRadius) { Sphere::radius = aRadius; }
 
 	// ‰Ÿ‚µo‚µƒxƒNƒgƒ‹‚ğ‰ÁZ
 	inline void AddReject(const Vector3& reject) { reject_ += reject; }

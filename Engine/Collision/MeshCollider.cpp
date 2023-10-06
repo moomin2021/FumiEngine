@@ -69,7 +69,7 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 
 		// レイと三角形の当たり判定
 		if (Collision::CheckRay2Triangle(localRay, triangle, nullptr, &tempInter)) {
-			const Matrix4& matWorld = object_->GetMatWorld();
+			//const Matrix4& matWorld = object_->GetMatWorld();
 
 			// ワールド座標系での交点を得る
 			//tempInter = Vector3Transform(tempInter, matWorld);
