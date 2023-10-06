@@ -16,75 +16,75 @@ Matrix4 Matrix4Identity() {
 
 Matrix4 Matrix4Inverse(const Matrix4& m)
 {
-	Matrix4 result;
-	float mat[4][8] = { 0 };
+	float sweepMat[4][8] = {};
+	float tmepNum = 0;
 
-	for (size_t i = 0; i < 4; i++) {
-		for (size_t j = 0; j < 4; j++) {
-			mat[i][j] = m.m[i][j];
+	// 掃き出し行列の初期化
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			// 引数でもらった行列（左 4 * 4）
+			sweepMat[i][j] = m.m[i][j];
+
+			// 単位行列（右 4 * 4）
+			sweepMat[i][j + 4] = (i == j) ? 1.0f : 0.0f;
 		}
 	}
 
-	mat[0][4] = 1;
-	mat[1][5] = 1;
-	mat[2][6] = 1;
-	mat[3][7] = 1;
-
-	for (size_t n = 0; n < 4; n++) {
-		//最大の絶対値を探索する(とりあえず対象成分を最大と仮定しておく)
-		float max = abs(mat[n][n]);
-		size_t maxIndex = n;
-
-		for (size_t i = n + 1; i < 4; i++) {
-			if (abs(mat[i][n]) > max) {
-				max = abs(mat[i][n]);
-				maxIndex = i;
+	// 掃き出し法
+	for (int i = 0; i < 4; i++)
+	{
+		// 最大成分を探索する
+		float max = fabsf(sweepMat[i][i]);
+		int maxIndex = i;
+		for (int j = i + 1; j < 4; j++)
+		{
+			if (max < fabsf(sweepMat[i][i]))
+			{
+				max = fabsf(sweepMat[i][i]);
+				maxIndex = j;
 			}
 		}
-
-		//最大の絶対値が0だったら逆行列は求められない
-		if (abs(mat[maxIndex][n]) <= 0.000001f) {
-			return result; //とりあえず単位行列返しちゃう
+		// 逆行列求めるかどうか
+		if (fabsf(sweepMat[maxIndex][i]) <= 1.e-50)
+		{
+			// 求めれない場合は単位行列を返す
+			Matrix4 identity = Matrix4Identity();
+			return identity;
 		}
 
-		//入れ替え
-		if (n != maxIndex) {
-			for (size_t i = 0; i < 8; i++) {
-				float f = mat[maxIndex][i];
-				mat[maxIndex][i] = mat[n][i];
-				mat[n][i] = f;
-			}
+		// 対象となる行列の対角成分を1にする
+		tmepNum = 1 / sweepMat[i][i];
+		for (int j = 0; j < 8; j++)
+		{
+			sweepMat[i][j] *= tmepNum;
 		}
 
-		//掛けたら1になる値を算出
-		float mul = 1 / mat[n][n];
+		// 対象となる行列の対角成分以外を0にするため
+		for (int j = 0; j < 4; j++)
+		{
+			if (i == j) continue;
 
-		//掛ける
-		for (size_t i = 0; i < 8; i++) {
-			mat[n][i] *= mul;
-		}
-
-		//他全部0にする
-		for (size_t i = 0; i < 4; i++) {
-			if (n == i) {
-				continue;
-			}
-
-			float mul = -mat[i][n];
-
-			for (size_t j = 0; j < 8; j++) {
-				mat[i][j] += mat[n][j] * mul;
+			tmepNum = -sweepMat[j][i];
+			for (int k = 0; k < 8; k++)
+			{
+				sweepMat[j][k] += sweepMat[i][k] * tmepNum;
 			}
 		}
 	}
 
-	for (size_t i = 0; i < 4; i++) {
-		for (size_t j = 0; j < 4; j++) {
-			result.m[i][j] = mat[i][j + 4];
+	// 逆行列を返す
+	Matrix4 inverseMat = Matrix4Identity();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			inverseMat.m[i][j] = sweepMat[i][j + 4];
 		}
 	}
 
-	return result;
+	return inverseMat;
 }
 
 // --拡大縮小行列を求める-- //

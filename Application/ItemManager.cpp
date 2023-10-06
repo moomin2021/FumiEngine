@@ -45,7 +45,7 @@ void ItemManager::AddItem(const Vector3& pos)
 	// アイテム生成
 	items_.emplace_back();
 
-	Item& itr = items_.back();
+	//Item& itr = items_.back();
 
 	// アイテム番号をランダムで決定
 	items_.back().itemNum = static_cast<uint8_t>(Util::GetRandomInt(0, 1));
