@@ -100,9 +100,6 @@ ID3D12Resource* Texture::UploadTextureData(ID3D12Resource* texture, const Direct
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
-
-	// Meta情報を取得
-	const TexMetadata& metadata = mipImages.GetMetadata();
 	
 	std::vector<D3D12_SUBRESOURCE_DATA> subResources;
 
@@ -192,7 +189,7 @@ uint16_t Texture::LoadTexture(const std::string fileName)
 	UINT descriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	// 読み込んだ画像のハンドル
-	uint16_t handle = descriptorSize * loadCounter_;
+	uint16_t handle = static_cast<uint16_t>(descriptorSize) * loadCounter_;
 
 	// 設定を保存
 	texBuff_.emplace(fileName, texResource);
