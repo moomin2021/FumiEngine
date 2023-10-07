@@ -1,4 +1,4 @@
-﻿#include "PipelineManager.h"
+#include "PipelineManager.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
@@ -71,7 +71,7 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Sprite"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Sprite"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Sprite"]->CreateRootParams(1, 1);
-	pipelineObj_["Sprite"]->CreatePipeline(1);
+	pipelineObj_["Sprite"]->CreatePipeline(1, PipelineObj::ALPHA, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, false);
 
 	AddPipeline("Gaussian");
 	pipelineObj_["Gaussian"]->LoadShader("Resources/Shaders/GaussianPS.hlsl", PS);

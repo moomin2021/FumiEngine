@@ -1,4 +1,4 @@
-﻿#include "TitleScene.h"
+#include "TitleScene.h"
 #include "Texture.h"
 #include "PipelineManager.h"
 #include "SceneManager.h"
