@@ -1,4 +1,4 @@
-﻿#include "Vector3.h"
+#include "Vector3.h"
 #include "Matrix4.h"
 #include <cmath>    // sqrt
 
@@ -84,6 +84,15 @@ Vector3& Vector3::operator/=(float s)
 	y /= s;
 	z /= s;
 	return *this;
+}
+
+bool Vector3::operator==(const Vector3& v) const
+{
+	if (x != v.x) return false;
+	if (y != v.y) return false;
+	if (z != v.z) return false;
+
+	return true;
 }
 
 Vector3 Vector3Normalize(const Vector3& vec)

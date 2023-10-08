@@ -1,4 +1,4 @@
-﻿#include "WinAPI.h"
+#include "WinAPI.h"
 
 #include <imgui_impl_win32.h>
 
@@ -67,7 +67,7 @@ void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 	GetWindowRect(hwnd_, &rect);
 
 	// 指定範囲外にマウスがいかないように
-	ClipCursor(&rect);
+	//ClipCursor(&rect);
 }
 
 bool WinAPI::IsEndMessage()

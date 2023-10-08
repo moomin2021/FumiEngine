@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 struct Matrix4;
 
@@ -30,6 +30,8 @@ public:
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
 	Vector3& operator/=(float s);
+
+	bool operator==(const Vector3& v) const;
 };
 
 Vector3 Vector3Normalize(const Vector3& vec);

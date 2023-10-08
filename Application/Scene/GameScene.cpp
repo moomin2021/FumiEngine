@@ -1,7 +1,8 @@
-﻿#include "GameScene.h"
+#include "GameScene.h"
 #include "CollisionManager.h"
 
 #include "PipelineManager.h"
+#include "NavMesh.h"
 
 GameScene::GameScene() {}
 
@@ -59,6 +60,9 @@ void GameScene::Initialize()
 
 	// ステージ読み込み
 	stage_->Load("Resources/StageJson/stage1.json");
+
+	std::unique_ptr<NavMesh> navMesh = std::make_unique<NavMesh>();
+	navMesh->LoadMesh("cube");
 }
 
 void GameScene::Update()
