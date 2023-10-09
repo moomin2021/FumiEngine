@@ -30,7 +30,7 @@ void TitleScene::Initialize()
 #pragma endregion
 
 #pragma region スプライト
-	sSelectButtons_.resize(2);
+	sSelectButtons_.resize(3);
 	for (uint16_t i = 0; i < sSelectButtons_.size(); i++) {
 		sSelectButtons_[i] = std::make_unique<Sprite>();
 		sSelectButtons_[i]->SetPosition({ 250.0f, 525.0f + (i * 50.0f) });
@@ -42,7 +42,7 @@ void TitleScene::Initialize()
 	sSelectButtonFrame_->SetAnchorPoint({ 0.5f, 0.5f });
 	sSelectButtonFrame_->SetSize({ 324.0f, 54.0f });
 
-	sSelectText_.resize(2);
+	sSelectText_.resize(3);
 	for (uint16_t i = 0; i < sSelectText_.size(); i++) {
 		sSelectText_[i] = std::make_unique<Sprite>();
 		sSelectText_[i]->SetPosition({ 250.0f, 525.0f + (i * 50.0f) });
@@ -55,9 +55,10 @@ void TitleScene::Initialize()
 	gSelectButton_ = LoadTexture("Resources/titleSelectButton.png");
 	gSelectButtonFrame_ = LoadTexture("Resources/titleSelectButtonFrame.png");
 
-	gSelectText_.resize(2);
+	gSelectText_.resize(3);
 	gSelectText_[0] = LoadTexture("resources/titleSelectText0.png");
 	gSelectText_[1] = LoadTexture("resources/titleSelectText1.png");
+	gSelectText_[2] = LoadTexture("resources/titleSelectText2.png");
 #pragma endregion
 
 #pragma region コライダー
@@ -65,7 +66,7 @@ void TitleScene::Initialize()
 	mouseCol_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(mouseCol_.get());
 
-	selectButtonsCol_.resize(2);
+	selectButtonsCol_.resize(3);
 	for (uint16_t i = 0; i < selectButtonsCol_.size(); i++) {
 		selectButtonsCol_[i] = std::make_unique<BoxCollider>(Vector2{ 0.0f, 0.0f }, Vector2{ 155.0f, 20.0f });
 		selectButtonsCol_[i]->SetSprite(sSelectButtons_[i].get());
@@ -75,7 +76,7 @@ void TitleScene::Initialize()
 #pragma endregion
 
 #pragma region ボタン関連
-	selectButtonPos_.resize(2);
+	selectButtonPos_.resize(3);
 	for (uint8_t i = 0; i < selectButtonPos_.size();i++) {
 		selectButtonPos_[i] = {250.0f, 525.0f + (i * 50.0f)};
 	}
@@ -105,11 +106,16 @@ void TitleScene::Update()
 	ImGui::End();
 
 	if (mouse_->TriggerMouseButton(M_LEFT)) {
-		if (nowSelect_ == START) {
+		if (nowSelect_ == SelectNum::START) {
 			SceneManager::GetInstance()->SceneTransition(GAME);
 		}
 
-		else if (nowSelect_ == END) {
+		else if (nowSelect_ == SelectNum::SETTING)
+		{
+
+		}
+
+		else if (nowSelect_ == SelectNum::END) {
 			SceneManager::GetInstance()->SetIsEnd(true);
 		}
 	}
@@ -143,16 +149,16 @@ void TitleScene::OnCollision()
 		sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		if (selectButtonsCol_[i]->GetIsHit()) {
 			if (isSelect_ == false) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
-			if (nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
+			if ((uint16_t)nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
 			result = true;// 選択中フラグを[ON]
 			sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// 色を変える
-			nowSelect_ = i;// 選択しているものを保存
+			nowSelect_ = (SelectNum)i;// 選択しているものを保存
 			sSelectButtonFrame_->SetPosition(selectButtonPos_[i]);
 		}
 	}
 
 	isSelect_ = result;
-	if (isSelect_ == false) nowSelect_ = 100;
+	if (isSelect_ == false) nowSelect_ = SelectNum::NONE;
 #pragma endregion
 }
 

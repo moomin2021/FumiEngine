@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "BaseScene.h"
 #include "Key.h"
 #include "Mouse.h"
@@ -13,9 +13,11 @@
 
 class TitleScene : public BaseScene
 {
-	enum SelectNum {
+	enum class SelectNum {
+		NONE = -1,
 		START,
-		END
+		SETTING,
+		END,
 	};
 
 #pragma region メンバ変数
@@ -44,7 +46,7 @@ private:
 
 	// セレクトボタン関連
 	bool isSelect_ = false;// ボタンを選択しているか
-	uint16_t nowSelect_ = 100;
+	SelectNum nowSelect_ = SelectNum::NONE;
 	std::vector<Vector2> selectButtonPos_ = {};// ボタンの座標
 	Vector2 startSelectButtonFrameSize_ = { 330.0f, 60.0f };
 	Vector2 endSelectButtonFrameSize_ = { 324.0f, 54.0f };
