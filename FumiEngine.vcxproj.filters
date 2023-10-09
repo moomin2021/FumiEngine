@@ -112,6 +112,12 @@
     <Filter Include="Engine\ヘッダー ファイル\Collision">
       <UniqueIdentifier>{ba92de7c-ea1f-44c0-b64d-f7ba760c7485}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\ソースファイル\NavMesh">
+      <UniqueIdentifier>{eb0bd203-74a9-4abe-af8a-60b485e64cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ヘッダーファイル\NavMesh">
+      <UniqueIdentifier>{873e237a-11e1-4df0-9a24-368dd9e5782f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Base\WinAPI.cpp">
@@ -270,8 +276,14 @@
     <ClCompile Include="Application\Scene\TestScene.cpp">
       <Filter>Engine\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Application\NavMesh.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
+    <ClCompile Include="Application\NavMesh\NavMeshPathfinder.cpp">
+      <Filter>Application\ソースファイル\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\NavMesh\NavCell.cpp">
+      <Filter>Application\ソースファイル\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\NavMesh\NavMesh.cpp">
+      <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,8 +470,14 @@
     <ClInclude Include="Application\Scene\TitleScene.h">
       <Filter>Engine\ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Application\NavMesh.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
+    <ClInclude Include="Application\NavMesh\NavMeshPathfinder.h">
+      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\NavMesh\NavCell.h">
+      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\NavMesh\NavMesh.h">
+      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

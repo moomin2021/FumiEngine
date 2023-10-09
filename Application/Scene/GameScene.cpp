@@ -4,6 +4,8 @@
 #include "PipelineManager.h"
 #include "NavMesh.h"
 
+#include <set>
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {}
