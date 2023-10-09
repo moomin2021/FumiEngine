@@ -73,9 +73,7 @@ private:
 #pragma region メンバ関数
 public:
 	// ルート探索
-	void SearchRoute(std::vector<std::shared_ptr<NavCell>> navCells, int32_t startCellID, int32_t endCellID);
-
-	void CreateNode(int32_t cellID);
+	//void SearchRoute(std::vector<std::shared_ptr<NavCell>> navCells, int32_t startCellID, int32_t endCellID);
 #pragma endregion
 };
 

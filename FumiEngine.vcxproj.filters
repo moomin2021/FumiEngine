@@ -276,9 +276,6 @@
     <ClCompile Include="Application\Scene\TestScene.cpp">
       <Filter>Engine\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Application\NavMesh\NavMeshPathfinder.cpp">
-      <Filter>Application\ソースファイル\NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="Application\NavMesh\NavCell.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
@@ -469,9 +466,6 @@
     </ClInclude>
     <ClInclude Include="Application\Scene\TitleScene.h">
       <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\NavMesh\NavMeshPathfinder.h">
-      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="Application\NavMesh\NavCell.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>

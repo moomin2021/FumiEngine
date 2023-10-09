@@ -128,13 +128,6 @@ void NavMesh::LinkCell()
 	}
 }
 
-void NavMesh::CreateNode(int32_t startCellID, int32_t endCellID)
-{
-	std::vector<NavNode> nodes = {};
-
-
-}
-
 //bool NavMeshPathfinder::FindPath(NavMesh* navMesh, int32_t startCellIndex, const Vector3& startPos, int32_t goalCellIndex, const Vector3& endPos)
 //{
 //	//std::shared_ptr<NavNode> current = nullptr;
@@ -154,13 +147,13 @@ void NavMesh::CreateNode(int32_t startCellID, int32_t endCellID)
 //	startNode->gCost = 0.0f;
 //}
 
-void NavMeshPathfinder::SearchRoute(std::vector<std::shared_ptr<NavCell>> navCells, int32_t startCellID, int32_t endCellID)
-{
-	// スタート地点のノードを作成
-	nodes_.emplace_back(startCellID);
-
-	while (true)
-	{
-
-	}
-}
+//void NavMeshPathfinder::SearchRoute(std::vector<std::shared_ptr<NavCell>> navCells, int32_t startCellID, int32_t endCellID)
+//{
+//	// スタート地点のノードを作成
+//	nodes_.emplace_back(startCellID);
+//
+//	while (true)
+//	{
+//
+//	}
+//}

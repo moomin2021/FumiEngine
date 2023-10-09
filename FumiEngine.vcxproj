@@ -146,7 +146,6 @@
     <ClCompile Include="Application\Scene\TransitionScene.cpp" />
     <ClCompile Include="Application\NavMesh\NavMesh.cpp" />
     <ClCompile Include="Application\NavMesh\NavCell.cpp" />
-    <ClCompile Include="Application\NavMesh\NavMeshPathfinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -212,7 +211,6 @@
     <ClInclude Include="Application\Player\ItemManager.h" />
     <ClInclude Include="Application\NavMesh\NavMesh.h" />
     <ClInclude Include="Application\NavMesh\NavCell.h" />
-    <ClInclude Include="Application\NavMesh\NavMeshPathfinder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
