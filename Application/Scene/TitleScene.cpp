@@ -24,12 +24,28 @@ void TitleScene::Initialize()
 	colMgr2D_ = CollisionManager2D::GetInstance();// 衝突マネージャー2D
 #pragma endregion
 
+#pragma region ライトグループ
+	lightGroup_ = std::make_unique<LightGroup>();
+	Object3D::SetLightGroup(lightGroup_.get());
+
+	dirLight_ = std::make_unique<DirectionalLight>();
+	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
+	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
+	lightGroup_->AddDirLight(dirLight_.get());
+#pragma endregion
+
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 20.0f, -90.0f });
+	camera_->SetTarget({ 0.0f, 10.0f, 0.0f });
 	Sprite::SetCamera(camera_.get());
+	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region スプライト
+	sTitle_ = std::make_unique<Sprite>();
+	sTitle_->SetSize({ 1920.0f, 1080.0f });
+
 	sSelectButtons_.resize(3);
 	for (uint16_t i = 0; i < sSelectButtons_.size(); i++) {
 		sSelectButtons_[i] = std::make_unique<Sprite>();
@@ -52,6 +68,7 @@ void TitleScene::Initialize()
 #pragma endregion
 
 #pragma region テクスチャハンドル
+	gTitle_ = LoadTexture("Resources/title.png");
 	gSelectButton_ = LoadTexture("Resources/titleSelectButton.png");
 	gSelectButtonFrame_ = LoadTexture("Resources/titleSelectButtonFrame.png");
 
@@ -81,12 +98,21 @@ void TitleScene::Initialize()
 		selectButtonPos_[i] = {250.0f, 525.0f + (i * 50.0f)};
 	}
 #pragma endregion
+
+#pragma region ステージ
+	stage_ = std::make_unique<Stage>();
+	stage_->Initialize();
+	stage_->Load("Resources/StageJson/stage1.json", false);
+#pragma endregion
 }
 
 void TitleScene::Update()
 {
 	// セレクトボタンの処理
 	SelectButton();
+
+	// カメラ回転
+	CameraRota();
 
 	// マウスのコライダー更新
 	mouseCol_->SetOffset(mouse_->MousePos());
@@ -123,10 +149,14 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
+
+	stage_->Draw();
+
 	PipelineManager::PreDraw("Sprite");
 
 	// タイトルを描画
-	//sTitle_->Draw(hTitle_);
+	sTitle_->Draw(gTitle_);
 
 	// セレクトボタン描画
 	for (auto& it : sSelectButtons_) it->Draw(gSelectButton_);
@@ -167,6 +197,12 @@ void TitleScene::MatUpdate()
 	// カメラ更新
 	camera_->Update();
 
+	// ステージ
+	stage_->MatUpdate();
+
+	// タイトル
+	sTitle_->MatUpdate();
+
 	// セレクトボタン更新
 	for (auto& it : sSelectButtons_) it->MatUpdate();
 
@@ -188,4 +224,23 @@ void TitleScene::SelectButton()
 		resultPos.y = Easing::Quint::easeOut(startSelectButtonFrameSize_.y, endSelectButtonFrameSize_.y, rate);
 		sSelectButtonFrame_->SetSize(resultPos);
 	}
+}
+
+void TitleScene::CameraRota()
+{
+	static float angle = 0.0f;
+	angle += 0.1f;
+
+	Vector3 cameraPos = {
+		sinf(Util::Degree2Radian(angle)),
+		0.0f,
+		cosf(Util::Degree2Radian(angle))
+	};
+
+	cameraPos.normalize();
+
+	cameraPos *= 90.0f;
+	cameraPos.y = 10.0f;
+
+	camera_->SetEye(cameraPos);
 }

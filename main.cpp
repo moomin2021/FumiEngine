@@ -1,4 +1,4 @@
-﻿#pragma region 自クラス読み込み(含める)
+#pragma region 自クラス読み込み(含める)
 #include "WinAPI.h"// -> WinAPI
 #include "DX12Cmd.h"// -> DirectX12
 #include "Texture.h"// -> Texture

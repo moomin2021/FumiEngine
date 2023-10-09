@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Key.h"
 #include "Mouse.h"
 #include "CollisionManager.h"
@@ -121,6 +121,9 @@ private:
 	bool isHitItem_ = false;
 	bool isBossGen_ = false;
 
+	// デバックフラグ
+	bool isDebug_ = false;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -148,6 +151,9 @@ public:
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// デバック
+	void Debug();
 
 private:
 	// 状態別処理

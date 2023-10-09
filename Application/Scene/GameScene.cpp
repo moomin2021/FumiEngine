@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "CollisionManager.h"
+#include "WinAPI.h"
 
 #include "PipelineManager.h"
 #include "NavMesh.h"
@@ -12,6 +13,15 @@ GameScene::~GameScene() {}
 
 void GameScene::Initialize()
 {
+#pragma region カーソルの設定
+	WinAPI::GetInstance()->DisplayCursor(false);
+	WinAPI::GetInstance()->SetClipCursor(true);
+#pragma endregion
+
+#pragma region インスタンス
+	key_ = Key::GetInstance();
+#pragma endregion
+
 #pragma region ライトグループ
 	lightGroup_ = std::make_unique<LightGroup>();
 	Object3D::SetLightGroup(lightGroup_.get());
@@ -75,6 +85,9 @@ void GameScene::Update()
 	// エネミーマネージャー
 	enemyMgr_->Update();
 
+	// デバック
+	Debug();
+
 	// 衝突時処理
 	OnCollision();
 
@@ -106,6 +119,30 @@ void GameScene::Draw()
 
 	// プレイヤー
 	player_->DrawFront2D();
+}
+
+void GameScene::Debug()
+{
+	if (key_->TriggerKey(DIK_0))
+	{
+		if (isDebug_)
+		{
+			isDebug_ = false;
+			WinAPI::GetInstance()->DisplayCursor(false);
+			WinAPI::GetInstance()->SetClipCursor(true);
+		}
+
+		else
+		{
+			isDebug_ = true;
+			WinAPI::GetInstance()->DisplayCursor(true);
+			WinAPI::GetInstance()->SetClipCursor(false);
+		}
+	}
+
+	if (isDebug_ == false) return;
+
+	player_->Debug();
 }
 
 void GameScene::OnCollision()

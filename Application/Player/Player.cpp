@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "CollisionAttribute.h"
 #include "Util.h"
 #include "Easing.h"
@@ -190,11 +190,6 @@ void Player::Update()
 
 	climbCol_->SetDir({ forwardVec_.x, 0.0f, forwardVec_.z });
 	eyeCol_->SetDir(forwardVec_);
-
-	//ImGui::Begin("Player");
-	//ImGui::Text("state = %s", stateName_[state_].c_str());
-	//ImGui::Text("distance = %f", legCol_->GetDistance());
-	//ImGui::End();
 }
 
 void Player::Draw3D()
@@ -364,6 +359,16 @@ void Player::MatUpdate()
 
 	// 操作ヒント
 	opeTips_->MatUpdate();
+}
+
+void Player::Debug()
+{
+	Vector3 cameraPos = camera_->GetEye();
+
+	ImGui::Begin("Player");
+	ImGui::Text("state = %s", stateName_[state_].c_str());
+	ImGui::Text("Position = {%f, %f, %f}", cameraPos.x, cameraPos.y, cameraPos.z);
+	ImGui::End();
 }
 
 void (Player::* Player::stateTable[]) () = {

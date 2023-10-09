@@ -1,4 +1,4 @@
-﻿#include "Stage.h"
+#include "Stage.h"
 #include "CollisionAttribute.h"
 
 #include <iostream>
@@ -47,7 +47,7 @@ void Stage::Draw()
 	oSkydome_->Draw();
 }
 
-void Stage::Load(std::string fileName)
+void Stage::Load(std::string fileName, bool isCol)
 {
 	// ファイルストリーム
 	std::ifstream file;
@@ -140,16 +140,19 @@ void Stage::Load(std::string fileName)
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 		if (objectData.className == "Enemy") {
+			if (isCol == false) continue;
 			// 敵を追加
 			enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
 		}
 
 		else if (objectData.className == "Item") {
+			if (isCol == false) continue;
 			// アイテムを追加
 			ItemManager::GetInstace()->AddItem(objectData.translation);
 		}
 
 		else if (objectData.className == "BossGenerator") {
+			if (isCol == false) continue;
 			enemyMgr_->SetBossGenerator(objectData.translation);
 		}
 
@@ -160,6 +163,8 @@ void Stage::Load(std::string fileName)
 			objects_.front()->SetPosition(objectData.translation);
 			objects_.front()->SetRotation(objectData.rotation);
 			objects_.front()->SetScale(objectData.scaling);
+
+			if (isCol == false) continue;
 
 			// コライダー
 			colliders_.emplace_front(std::make_unique<MeshCollider>(objects_.front().get()));

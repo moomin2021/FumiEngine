@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Model.h"
 #include "Object3D.h"
 #include "MeshCollider.h"
@@ -67,7 +67,7 @@ public:
 	void Draw();
 
 	// ステージ情報読み込み
-	void Load(std::string fileName);
+	void Load(std::string fileName, bool isCol = true);
 #pragma endregion
 
 #pragma region セッター関数

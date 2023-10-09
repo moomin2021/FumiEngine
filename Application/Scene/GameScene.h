@@ -1,9 +1,10 @@
-﻿#pragma once
+#pragma once
 #include "BaseScene.h"
 #include "Model.h"
 #include "Object3D.h"
 #include "LightGroup.h"
 #include "DirectionalLight.h"
+#include "Key.h"
 
 #include "Stage.h"
 #include "Player.h"
@@ -15,6 +16,9 @@ class GameScene : public BaseScene
 {
 #pragma region メンバ変数
 private:
+	// インスタンス
+	Key* key_ = nullptr;
+
 	// ライトグループ
 	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
@@ -35,6 +39,9 @@ private:
 
 	// 3軸を示すオブジェクト
 	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
+
+	// デバック
+	bool isDebug_ = false;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -53,6 +60,9 @@ public:
 
 	// 描画処理
 	void Draw();
+
+	// デバック
+	void Debug();
 
 private:
 	// 衝突時処理

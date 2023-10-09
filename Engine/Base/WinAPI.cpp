@@ -61,13 +61,6 @@ void WinAPI::Initialize(uint16_t winWidth, uint16_t winHeight)
 
 	// ウィンドウを表示状態にする
 	ShowWindow(hwnd_, SW_SHOW);
-
-	RECT rect;
-
-	GetWindowRect(hwnd_, &rect);
-
-	// 指定範囲外にマウスがいかないように
-	//ClipCursor(&rect);
 }
 
 bool WinAPI::IsEndMessage()
@@ -90,6 +83,29 @@ bool WinAPI::IsEndMessage()
 
 	// 「偽」を返す
 	return false;
+}
+
+void WinAPI::DisplayCursor(bool isDisplay)
+{
+	ShowCursor(isDisplay);
+}
+
+void WinAPI::SetClipCursor(bool isClip)
+{
+	if (isClip)
+	{
+		RECT rect;
+
+		GetWindowRect(hwnd_, &rect);
+
+		// 指定範囲外にマウスがいかないように
+		ClipCursor(&rect);
+	}
+
+	else
+	{
+		ClipCursor(nullptr);
+	}
 }
 
 WinAPI::WinAPI() :

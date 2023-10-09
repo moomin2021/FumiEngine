@@ -9,6 +9,8 @@
 #include "PointCollider.h"
 #include "BoxCollider.h"
 
+#include "Stage.h"
+
 #include <memory>
 
 class TitleScene : public BaseScene
@@ -30,12 +32,20 @@ private:
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 
+	// ライトグループ
+	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
+
+	// 平行光源
+	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
+
 	// スプライト
+	std::unique_ptr<Sprite> sTitle_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sSelectButtons_ = {};
 	std::unique_ptr<Sprite> sSelectButtonFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sSelectText_ = {};
 
 	// 画像ハンドル
+	uint16_t gTitle_ = 0;
 	uint16_t gSelectButton_ = 0;
 	uint16_t gSelectButtonFrame_ = 0;
 	std::vector<uint16_t> gSelectText_ = {};
@@ -52,6 +62,9 @@ private:
 	Vector2 endSelectButtonFrameSize_ = { 324.0f, 54.0f };
 	float easeTime_ = 0.5f;// [s]
 	uint64_t startEaseTime_ = 0;
+
+	// ステージ
+	std::unique_ptr<Stage> stage_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -72,11 +85,16 @@ public:
 	void Draw();
 
 private:
+	// 衝突時処理
 	void OnCollision();
 
+	// 行列更新処理
 	void MatUpdate();
 
 	// セレクトボタンの処理
 	void SelectButton();
+
+	// カメラを回転
+	void CameraRota();
 #pragma endregion
 };

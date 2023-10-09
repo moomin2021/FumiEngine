@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Windows.h>
 #include <stdint.h>
 
@@ -33,6 +33,12 @@ public:
 	/// </summary>
 	/// <returns> 真偽結果 </returns>
 	bool IsEndMessage();
+
+	// カーソルの設定
+	void DisplayCursor(bool isDisplay = true);
+
+	// カーソルを画面の範囲外にいあかないようにする
+	void SetClipCursor(bool isClip = false);
 
 #pragma region ゲッター関数
 	/// <summary>
