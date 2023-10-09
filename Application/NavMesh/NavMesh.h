@@ -31,6 +31,8 @@ public:
 
 	// セルをリンク
 	void LinkCell();
+
+	void CreateNode(int32_t startCellID, int32_t endCellID);
 #pragma endregion
 };
 
@@ -38,6 +40,43 @@ enum NodeState {
 	None,
 	Open,
 	Closed,
+};
+
+struct NavNode {
+	// セルの番号
+	int32_t cellID = ID_NONE;
+
+	// 親ノード
+	std::shared_ptr<NavNode> parent = nullptr;
+
+	// ノードの状態
+	NodeState nodeState = None;
+
+	float aCost = 0.0f;// 実コスト
+	float hCost = 0.0f;// 推定コスト
+	float score = 0.0f;// スコア
+
+	NavNode() {}
+	NavNode(int32_t inCellID) : cellID(inCellID) {}
+	~NavNode() {}
+
+	// トータルスコアを取得
+	float GetTotalScore() const { return aCost + hCost; }
+};
+
+class NavMeshPathfinder {
+#pragma region メンバ変数
+private:
+	std::vector<NavNode> nodes_ = {};
+#pragma endregion
+
+#pragma region メンバ関数
+public:
+	// ルート探索
+	void SearchRoute(std::vector<std::shared_ptr<NavCell>> navCells, int32_t startCellID, int32_t endCellID);
+
+	void CreateNode(int32_t cellID);
+#pragma endregion
 };
 
 //class NavMeshPathfinder {

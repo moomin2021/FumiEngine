@@ -29,6 +29,12 @@ NavCell::NavCell(int32_t inCellID, const Vector3& pA, const Vector3& pB, const V
 	center_ = (pA + pB + pC) / 3.0f;
 	normal_ = Vector3(pB - pA).cross(pC - pA);
 	normal_.normalize();
+
+	// 三角形の情報入力
+	triangle_.p0 = pA;
+	triangle_.p1 = pB;
+	triangle_.p2 = pC;
+	triangle_.normal = normal_;
 }
 
 uint8_t NavCell::ValidLinkCount()

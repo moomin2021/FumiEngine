@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3.h"
+#include "CollisionPrimitive.h"
 
 #include <vector>
 
@@ -38,6 +39,9 @@ private:
 
 	Vector3 center_ = { 0.0f, 0.0f, 0.0f };// メッシュの中心座標
 	Vector3 normal_ = { 0.0f, 0.0f, 0.0f };// メッシュの法線方向
+
+	// 当たり判定用の三角形の情報
+	Triangle triangle_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
