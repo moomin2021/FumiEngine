@@ -55,7 +55,6 @@ void NavMesh::LoadMesh(std::string name)
 			string index_string;
 			while (getline(line_stream, index_string, ' '))
 			{
-
 				// 頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
 				std::istringstream index_stream(index_string);
 				index_stream >> index[count];
