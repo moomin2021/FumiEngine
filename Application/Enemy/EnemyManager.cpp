@@ -1,8 +1,9 @@
-﻿#include "EnemyManager.h"
+#include "EnemyManager.h"
 #include "CollisionAttribute.h"
 #include "SceneManager.h"
 #include "Texture.h"
 #include "SceneManager.h"
+#include "WinAPI.h"
 
 EnemyManager::EnemyManager() {}
 
@@ -52,19 +53,15 @@ void EnemyManager::Update()
 	// ボスが生成されていたら処理をする
 	if (boss_) {
 		boss_->Update();
-
-		if (boss_->GetIsAlive() == false) {
-			SceneManager::GetInstance()->SceneTransition(TITLE);
-		}
 	}
 }
 
 void EnemyManager::Draw()
 {
-	//oBossGenerator_->Draw();
-	//if (boss_) {
-	//	boss_->Draw();
-	//}
+	oBossGenerator_->Draw();
+	if (boss_) {
+		boss_->Draw();
+	}
 
 	// 敵描画処理
 	for (auto& i : enemys_) {
@@ -110,6 +107,8 @@ void EnemyManager::CheckSceneChange()
 {
 	if (boss_ && boss_->GetIsAlive() == false) {
 		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+		WinAPI::GetInstance()->DisplayCursor(true);
+		WinAPI::GetInstance()->SetClipCursor(false);
 	}
 }
 

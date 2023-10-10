@@ -1,4 +1,4 @@
-﻿#include "SceneManager.h"
+#include "SceneManager.h"
 #include "DX12Cmd.h"
 #include "PipelineManager.h"
 #include "ImGuiManager.h"

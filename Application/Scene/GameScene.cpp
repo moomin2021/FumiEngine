@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "CollisionManager.h"
 #include "WinAPI.h"
+#include "Texture.h"
 
 #include "PipelineManager.h"
 #include "NavMesh.h"
@@ -75,6 +76,11 @@ void GameScene::Initialize()
 
 	std::unique_ptr<NavMesh> navMesh = std::make_unique<NavMesh>();
 	navMesh->LoadMesh("cube");
+
+	sGameUI_ = std::make_unique<Sprite>();
+	sGameUI_->SetSize({ 1920.0f, 1080.0f });
+
+	gGameUI_ = LoadTexture("Resources/GameUI.png");
 }
 
 void GameScene::Update()
@@ -85,14 +91,14 @@ void GameScene::Update()
 	// エネミーマネージャー
 	enemyMgr_->Update();
 
-	// デバック
-	Debug();
-
 	// 衝突時処理
 	OnCollision();
 
 	// 行列更新処理
 	MatUpdate();
+
+	// デバック
+	Debug();
 
 	enemyMgr_->CheckSceneChange();
 }
@@ -119,6 +125,8 @@ void GameScene::Draw()
 
 	// プレイヤー
 	player_->DrawFront2D();
+
+	sGameUI_->Draw(gGameUI_);
 }
 
 void GameScene::Debug()
@@ -172,4 +180,6 @@ void GameScene::MatUpdate()
 	for (auto& it : oAxis_) {
 		it->MatUpdate();
 	}
+
+	sGameUI_->MatUpdate();
 }

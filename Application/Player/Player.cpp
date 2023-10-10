@@ -80,7 +80,7 @@ void Player::Initialize()
 	sBulletValueDisplayFrame_ = std::make_unique<Sprite>();
 	sBulletValueDisplayFrame_->SetAnchorPoint({ 0.5f, 0.5f });
 	sBulletValueDisplayFrame_->SetSize({ 300.0f, 140.0f });
-	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 70.0f });
+	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 980.0f });
 
 	// 最大弾数表示用スプライト生成
 	sMaxBulletUI_.resize(2);
@@ -90,8 +90,8 @@ void Player::Initialize()
 	sMaxBulletUI_[1]->SetAnchorPoint({ 1.0f, 1.0f });
 	sMaxBulletUI_[0]->SetSize({ 35.25f, 54.0f });
 	sMaxBulletUI_[1]->SetSize({ 35.25f, 54.0f });
-	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 30.0f });
-	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 30.0f });
+	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 940.0f });
+	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 940.0f });
 
 	// 残弾数表示スプライト
 	sNowBulletUI_.resize(2);
@@ -101,8 +101,8 @@ void Player::Initialize()
 	sNowBulletUI_[1]->SetAnchorPoint({ 0.5f, 1.0f });
 	sNowBulletUI_[0]->SetSize({ 47.0f, 72.0f });
 	sNowBulletUI_[1]->SetSize({ 47.0f, 72.0f });
-	sNowBulletUI_[0]->SetPosition({ winSize.x - 247.0f, winSize.y - 30.0f });
-	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 30.0f });
+	sNowBulletUI_[0]->SetPosition({ winSize.x - 247.0f, winSize.y - 940.0f });
+	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 940.0f });
 #pragma endregion
 
 #pragma region 画像読み込み
@@ -170,9 +170,6 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	maxBullet_ = 6 + (items_[0] * 1);
-	shotInterval_ = 0.7f * (1.0f / (0.15f * items_[1] + 1.0f));
-
 	recoilEyeAngle_ -= 0.5f;
 	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
 
@@ -289,7 +286,8 @@ void Player::OnCollision()
 #pragma region ボスジェネレータ
 	isBossGen_ = false;
 
-	if (eyeCol_->GetIsHit()) {
+	if (eyeCol_->GetIsHit() && eyeCol_->GetDistance() <= 15.0f)
+	{
 		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_BOSSGENERATOR) {
 			isBossGen_ = true;
 		}
@@ -368,6 +366,25 @@ void Player::Debug()
 	ImGui::Begin("Player");
 	ImGui::Text("state = %s", stateName_[state_].c_str());
 	ImGui::Text("Position = {%f, %f, %f}", cameraPos.x, cameraPos.y, cameraPos.z);
+
+	if (ImGui::TreeNode("Jump"))
+	{
+		ImGui::SliderFloat("JumpSpeed", &jumpSpd_, 0.0f, 2.0f);
+		ImGui::SliderFloat("gAcc", &gAcc_, 0.0f, 1.0f);
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Shoot"))
+	{
+		int value = (int)maxBullet_;
+		ImGui::SliderInt("MaxBullet", &value, 0, 99);
+		ImGui::SliderFloat("ShootInterval", &shotInterval_, 0.0f, 1.0f);
+		maxBullet_ = (uint8_t)value;
+
+		ImGui::TreePop();
+	}
+
 	ImGui::End();
 }
 
@@ -414,11 +431,6 @@ void Player::Air()
 
 	// 撃つ処理
 	Shoot();
-
-#ifdef _DEBUG
-	// ジャンプ処理
-	Jump();
-#endif
 
 	// 落下処理
 	Fall();
@@ -474,6 +486,9 @@ void Player::Ads()
 
 void Player::Shoot()
 {
+	if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) return;
+	if (key_->PushKey(DIK_Q)) return;
+
 	// フラグリセット
 	shotCol_->SetAttribute(0);
 
@@ -606,7 +621,7 @@ void Player::EyeMove()
 	eyeAngle_.y += mouse_->GetMouseVelosity().y * sencivity_;
 
 	// 視点移動の上下に制限を付ける
-	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 120.0f, 60.0f);
+	eyeAngle_.y = Util::Clamp(eyeAngle_.y, 180.0f, 0.0f);
 
 	// 前方ベクトル計算
 	forwardVec_ = {

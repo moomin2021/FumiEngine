@@ -1,4 +1,4 @@
-﻿#include "Enemy0.h"
+#include "Enemy0.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "EnemyManager.h"
@@ -154,9 +154,9 @@ void Enemy0::OnCollision()
 	// 衝突していなかったら処理を飛ばす
 	if (collider_->GetIsHit() == false) return;
 	if (collider_->GetHitCollider()->GetAttribute() != COL_PLAYER_SHOT) return;
-	//hp_ -= 1;
+	hp_ -= 1;
 	object_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
-	//damageCounter_ = 0;
+	damageCounter_ = 0;
 }
 
 void Enemy0::MatUpdate()

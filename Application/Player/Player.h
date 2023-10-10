@@ -50,7 +50,7 @@ private:
 	// カメラ関連
 	std::unique_ptr<Camera> camera_ = nullptr;// カメラ本体
 	float sencivity_ = 0.1f;// カメラ感度
-	Vector3 eyeAngle_	= { 0.0f, 0.0f, 0.0f };// カメラ角度
+	Vector3 eyeAngle_	= { 0.0f, 90.0f, 0.0f };// カメラ角度
 	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル
 	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// 右ベクトル
 	float fovAngleY_ = 70.0f;
@@ -85,8 +85,8 @@ private:
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
 	float maxGravity_ = 1.5f;// 最大重力
-	float gAcc_ = 0.2f;// 重力加速度
-	float jumpSpd_ = 1.5f;// ジャンプ速度
+	float gAcc_ = 0.1f;// 重力加速度
+	float jumpSpd_ = 1.0f;// ジャンプ速度
 
 	// クロスヘア
 	uint16_t crossHairHandle_ = 0;
@@ -120,9 +120,6 @@ private:
 	uint16_t opeTipsHandle_ = 0;
 	bool isHitItem_ = false;
 	bool isBossGen_ = false;
-
-	// デバックフラグ
-	bool isDebug_ = false;
 
 #pragma endregion
 

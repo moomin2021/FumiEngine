@@ -42,6 +42,10 @@ private:
 
 	// デバック
 	bool isDebug_ = false;
+
+	// ゲームUI
+	std::unique_ptr<Sprite> sGameUI_ = nullptr;
+	uint16_t gGameUI_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数

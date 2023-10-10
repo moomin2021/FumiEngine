@@ -1,4 +1,4 @@
-﻿#include "Boss0.h"
+#include "Boss0.h"
 #include "CollisionAttribute.h"
 
 Boss0::Boss0()
