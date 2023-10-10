@@ -4,6 +4,7 @@
 #include "Mouse.h"
 #include "Sprite.h"
 #include "Camera.h"
+#include "SettingLayer.h"
 
 #include "CollisionManager2D.h"
 #include "PointCollider.h"
@@ -65,6 +66,9 @@ private:
 
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
+
+	// 設定レイヤー
+	std::unique_ptr<SettingLayer> settingLayer_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

@@ -104,6 +104,11 @@ void TitleScene::Initialize()
 	stage_->Initialize();
 	stage_->Load("Resources/StageJson/stage1.json", false);
 #pragma endregion
+
+#pragma region 設定レイヤー
+	settingLayer_ = std::make_unique<SettingLayer>();
+	settingLayer_->Initialize();
+#pragma endregion
 }
 
 void TitleScene::Update()
@@ -116,6 +121,9 @@ void TitleScene::Update()
 
 	// マウスのコライダー更新
 	mouseCol_->SetOffset(mouse_->MousePos());
+
+	// 設定レイヤー
+	settingLayer_->Update();
 
 	// 衝突処理2D
 	OnCollision();
@@ -166,6 +174,9 @@ void TitleScene::Draw()
 
 	// セレクトテキスト
 	for (uint16_t i = 0; i < sSelectText_.size(); i++) sSelectText_[i]->Draw(gSelectText_[i]);
+
+	// 設定レイヤー
+	settingLayer_->Draw();
 }
 
 void TitleScene::OnCollision()
@@ -190,6 +201,9 @@ void TitleScene::OnCollision()
 	isSelect_ = result;
 	if (isSelect_ == false) nowSelect_ = SelectNum::NONE;
 #pragma endregion
+
+	// 設定レイヤー
+	settingLayer_->OnCollision();
 }
 
 void TitleScene::MatUpdate()
@@ -211,6 +225,9 @@ void TitleScene::MatUpdate()
 
 	// セレクトテキスト
 	for (auto& it : sSelectText_) it->MatUpdate();
+
+	// 設定レイヤー
+	settingLayer_->MatUpdate();
 }
 
 void TitleScene::SelectButton()
