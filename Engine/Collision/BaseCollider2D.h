@@ -71,6 +71,9 @@ public:
 	// 衝突判定属性を取得
 	inline uint16_t GetAttribute() { return attribute_; }
 
+	// スプライトを取得
+	inline Sprite* GetSprite() { return sprite_; }
+
 	// 衝突フラグを取得
 	inline bool GetIsHit() { return isHit_; }
 
@@ -82,5 +85,8 @@ public:
 
 	// 衝突判定をとるかフラグを取得
 	inline bool GetIsOnCol() { return isOnCol_; }
+
+	// スプライトの座標を取得
+	inline const Vector2& GetSpritePos() { return sprite_->GetPosition(); }
 #pragma endregion
 };

@@ -27,8 +27,6 @@ class TitleScene : public BaseScene
 #pragma region メンバ変数
 private:
 	// インスタンス
-	Key* key_ = nullptr;
-	Mouse* mouse_ = nullptr;
 	CollisionManager2D* colMgr2D_ = nullptr;
 
 	// カメラ
@@ -42,23 +40,9 @@ private:
 
 	// スプライト
 	std::unique_ptr<Sprite> sTitle_ = nullptr;
-	std::unique_ptr<Sprite> sSelectButtonFrame_ = nullptr;
 
 	// 画像ハンドル
 	uint16_t gTitle_ = 0;
-	uint16_t gSelectButtonFrame_ = 0;
-
-	// コライダー
-	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
-
-	// セレクトボタン関連
-	bool isSelect_ = false;// ボタンを選択しているか
-	SelectNum nowSelect_ = SelectNum::NONE;
-	std::vector<Vector2> selectButtonPos_ = {};// ボタンの座標
-	Vector2 startSelectButtonFrameSize_ = { 330.0f, 60.0f };
-	Vector2 endSelectButtonFrameSize_ = { 324.0f, 54.0f };
-	float easeTime_ = 0.5f;// [s]
-	uint64_t startEaseTime_ = 0;
 
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
@@ -93,9 +77,6 @@ private:
 
 	// 行列更新処理
 	void MatUpdate();
-
-	// セレクトボタンの処理
-	void SelectButton();
 
 	// カメラを回転
 	void CameraRota();

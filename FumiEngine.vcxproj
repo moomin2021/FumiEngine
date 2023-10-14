@@ -159,6 +159,7 @@
     <ClInclude Include="Application\Enemy\Boss0.h" />
     <ClInclude Include="Application\Setting\BaseLayer.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
+    <ClInclude Include="Application\Setting\ButtonAttribute.h" />
     <ClInclude Include="Engine\Util\Easing.h" />
     <ClInclude Include="Engine\Collision\CircleCollider.h" />
     <ClInclude Include="Engine\Collision\BoxCollider.h" />

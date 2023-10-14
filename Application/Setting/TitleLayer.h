@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseLayer.h"
 #include "BoxButton.h"
+#include "HitFrame.h"
 
 #include <vector>
 #include <memory>
@@ -11,6 +12,12 @@ class TitleLayer : public BaseLayer
 private:
 	// ボタン
 	std::vector<std::unique_ptr<BoxButton>> buttons_ = {};
+
+	// フレーム関連
+	uint16_t frameHandle_ = 0;
+	const Vector2 frameSize_ = { 324.0f, 54.0f };
+	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
+
 #pragma endregion
 
 #pragma region メンバ関数
