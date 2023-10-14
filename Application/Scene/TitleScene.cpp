@@ -13,7 +13,6 @@ TitleScene::TitleScene() {}
 TitleScene::~TitleScene()
 {
 	colMgr2D_->RemoveCollider(mouseCol_.get());
-	for (auto& it : selectButtonsCol_) colMgr2D_->RemoveCollider(it.get());
 }
 
 void TitleScene::Initialize()
@@ -46,50 +45,20 @@ void TitleScene::Initialize()
 	sTitle_ = std::make_unique<Sprite>();
 	sTitle_->SetSize({ 1920.0f, 1080.0f });
 
-	sSelectButtons_.resize(3);
-	for (uint16_t i = 0; i < sSelectButtons_.size(); i++) {
-		sSelectButtons_[i] = std::make_unique<Sprite>();
-		sSelectButtons_[i]->SetPosition({ 250.0f, 525.0f + (i * 50.0f) });
-		sSelectButtons_[i]->SetAnchorPoint({ 0.5f, 0.5f });
-		sSelectButtons_[i]->SetSize({ 310.0f, 40.0f });
-	}
-
 	sSelectButtonFrame_ = std::make_unique<Sprite>();
 	sSelectButtonFrame_->SetAnchorPoint({ 0.5f, 0.5f });
 	sSelectButtonFrame_->SetSize({ 324.0f, 54.0f });
-
-	sSelectText_.resize(3);
-	for (uint16_t i = 0; i < sSelectText_.size(); i++) {
-		sSelectText_[i] = std::make_unique<Sprite>();
-		sSelectText_[i]->SetPosition({ 250.0f, 525.0f + (i * 50.0f) });
-		sSelectText_[i]->SetAnchorPoint({ 0.5f, 0.5f });
-		sSelectText_[i]->SetSize({ 310.0f, 40.0f });
-	}
 #pragma endregion
 
 #pragma region テクスチャハンドル
 	gTitle_ = LoadTexture("Resources/title.png");
-	gSelectButton_ = LoadTexture("Resources/titleSelectButton.png");
 	gSelectButtonFrame_ = LoadTexture("Resources/titleSelectButtonFrame.png");
-
-	gSelectText_.resize(3);
-	gSelectText_[0] = LoadTexture("resources/titleSelectText0.png");
-	gSelectText_[1] = LoadTexture("resources/titleSelectText1.png");
-	gSelectText_[2] = LoadTexture("resources/titleSelectText2.png");
 #pragma endregion
 
 #pragma region コライダー
 	mouseCol_ = std::make_unique<PointCollider>();
 	mouseCol_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(mouseCol_.get());
-
-	selectButtonsCol_.resize(3);
-	for (uint16_t i = 0; i < selectButtonsCol_.size(); i++) {
-		selectButtonsCol_[i] = std::make_unique<BoxCollider>(Vector2{ 0.0f, 0.0f }, Vector2{ 155.0f, 20.0f });
-		selectButtonsCol_[i]->SetSprite(sSelectButtons_[i].get());
-		selectButtonsCol_[i]->SetAttribute(COL_BOX);
-		colMgr2D_->AddCollider(selectButtonsCol_[i].get());
-	}
 #pragma endregion
 
 #pragma region ボタン関連
@@ -103,6 +72,11 @@ void TitleScene::Initialize()
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
 	stage_->Load("Resources/StageJson/stage1.json", false);
+#pragma endregion
+
+#pragma region タイトルレイヤー
+	titleLayer_ = std::make_unique<TitleLayer>();
+	titleLayer_->Initialize();
 #pragma endregion
 
 #pragma region 設定レイヤー
@@ -122,6 +96,9 @@ void TitleScene::Update()
 	// マウスのコライダー更新
 	mouseCol_->SetOffset(mouse_->MousePos());
 
+	// タイトルレイヤー
+	titleLayer_->Update();
+
 	// 設定レイヤー
 	settingLayer_->Update();
 
@@ -135,8 +112,6 @@ void TitleScene::Update()
 	ImGui::Text("MousePos = {%f, %f}", mouseCol_->GetOffset().x, mouseCol_->GetOffset().y);
 	ImGui::Text("nowSelect = %d", nowSelect_);
 	ImGui::Text("isSelect = %d", isSelect_);
-	ImGui::Text("isHit0 = %d", selectButtonsCol_[0]->GetIsHit());
-	ImGui::Text("isHit1 = %d", selectButtonsCol_[1]->GetIsHit());
 	ImGui::End();
 
 	if (mouse_->TriggerMouseButton(M_LEFT)) {
@@ -166,14 +141,11 @@ void TitleScene::Draw()
 	// タイトルを描画
 	sTitle_->Draw(gTitle_);
 
-	// セレクトボタン描画
-	for (auto& it : sSelectButtons_) it->Draw(gSelectButton_);
-
 	// セレクトボタンの枠
 	if (isSelect_) sSelectButtonFrame_->Draw(gSelectButtonFrame_);
 
-	// セレクトテキスト
-	for (uint16_t i = 0; i < sSelectText_.size(); i++) sSelectText_[i]->Draw(gSelectText_[i]);
+	// タイトルレイヤー
+	titleLayer_->Draw();
 
 	// 設定レイヤー
 	settingLayer_->Draw();
@@ -186,21 +158,24 @@ void TitleScene::OnCollision()
 
 #pragma region ボタンとマウスの判定
 	bool result = false;
-	for (uint16_t i = 0; i < selectButtonsCol_.size();i++) {
-		sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-		if (selectButtonsCol_[i]->GetIsHit()) {
-			if (isSelect_ == false) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
-			if ((uint16_t)nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
-			result = true;// 選択中フラグを[ON]
-			sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// 色を変える
-			nowSelect_ = (SelectNum)i;// 選択しているものを保存
-			sSelectButtonFrame_->SetPosition(selectButtonPos_[i]);
-		}
-	}
+	//for (uint16_t i = 0; i < selectButtonsCol_.size();i++) {
+	//	sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	//	if (selectButtonsCol_[i]->GetIsHit()) {
+	//		if (isSelect_ == false) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
+	//		if ((uint16_t)nowSelect_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
+	//		result = true;// 選択中フラグを[ON]
+	//		sSelectButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// 色を変える
+	//		nowSelect_ = (SelectNum)i;// 選択しているものを保存
+	//		sSelectButtonFrame_->SetPosition(selectButtonPos_[i]);
+	//	}
+	//}
 
 	isSelect_ = result;
 	if (isSelect_ == false) nowSelect_ = SelectNum::NONE;
 #pragma endregion
+
+	// タイトルレイヤー
+	titleLayer_->OnCollision();
 
 	// 設定レイヤー
 	settingLayer_->OnCollision();
@@ -217,14 +192,11 @@ void TitleScene::MatUpdate()
 	// タイトル
 	sTitle_->MatUpdate();
 
-	// セレクトボタン更新
-	for (auto& it : sSelectButtons_) it->MatUpdate();
-
 	// セレクトボタンの枠
 	sSelectButtonFrame_->MatUpdate();
 
-	// セレクトテキスト
-	for (auto& it : sSelectText_) it->MatUpdate();
+	// タイトルレイヤー
+	titleLayer_->MatUpdate();
 
 	// 設定レイヤー
 	settingLayer_->MatUpdate();

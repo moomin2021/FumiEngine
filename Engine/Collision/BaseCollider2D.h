@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "CollisionShapeType.h"
 #include "Sprite.h"
 
@@ -24,6 +24,12 @@ protected:
 
 	// 衝突したコライダー
 	BaseCollider2D* hitCol_ = nullptr;
+
+	// タグ
+	int32_t tag_ = -1;
+
+	// 衝突判定をとるかフラグ
+	bool isOnCol_ = true;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -50,6 +56,12 @@ public:
 
 	// 衝突したコライダーを設定
 	inline void SetHitCollider(BaseCollider2D* collider) { hitCol_ = collider; }
+
+	// タグを設定
+	inline void SetTag(int32_t inTag) { tag_ = inTag; }
+
+	// 衝突判定をとるかフラグを設定
+	inline void SetIsOnCol(bool frag) { isOnCol_ = frag; }
 #pragma endregion
 
 #pragma region ゲッター関数
@@ -64,5 +76,11 @@ public:
 
 	// 衝突したコライダーを取得
 	inline BaseCollider2D* GetHitCollider() { return hitCol_; }
+
+	// タグを取得
+	inline int32_t GetTag() { return tag_; }
+
+	// 衝突判定をとるかフラグを取得
+	inline bool GetIsOnCol() { return isOnCol_; }
 #pragma endregion
 };

@@ -1,4 +1,4 @@
-﻿#include "CollisionManager2D.h"
+#include "CollisionManager2D.h"
 #include "Collision.h"
 
 CollisionManager2D::~CollisionManager2D()
@@ -23,9 +23,13 @@ void CollisionManager2D::CheckAllCollision()
 		itB = itA;
 		++itB;
 
+		if ((*itA)->GetIsOnCol() == false) continue;
+
 		for (; itB != colliders_.end(); ++itB) {
 			// 属性が合わなければ除外
 			if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
+
+			if ((*itB)->GetIsOnCol() == false) continue;
 
 			// ともに矩形
 			if ((*itA)->GetShapeType() == SHAPE_BOX && (*itB)->GetShapeType() == SHAPE_BOX) {

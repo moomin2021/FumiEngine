@@ -282,7 +282,16 @@
     <ClCompile Include="Application\NavMesh\NavMesh.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
-    <ClCompile Include="Application\SettingLayer.cpp">
+    <ClCompile Include="Application\Setting\SettingLayer.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\BoxButton.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\TitleLayer.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\HitFrame.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -476,7 +485,19 @@
     <ClInclude Include="Application\NavMesh\NavMesh.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
-    <ClInclude Include="Application\SettingLayer.h">
+    <ClInclude Include="Application\Setting\SettingLayer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\BoxButton.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\BaseLayer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\TitleLayer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\HitFrame.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

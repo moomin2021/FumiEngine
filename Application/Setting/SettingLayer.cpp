@@ -17,15 +17,6 @@ void SettingLayer::Initialize()
 #pragma endregion
 
 #pragma region スプライト
-	sTreeButtons_.resize(2);
-	for (uint8_t i = 0; i < sTreeButtons_.size(); i++)
-	{
-		sTreeButtons_[i] = std::make_unique<Sprite>();
-		sTreeButtons_[i]->SetPosition({ 300.0f + (i * 280.0f), 101.0f });
-		sTreeButtons_[i]->SetSize({ 260.0f, 44.0f });
-		sTreeButtons_[i]->SetAnchorPoint({ 0.5f, 0.5f });
-	}
-
 	sTreeButtonCursorFrame_ = std::make_unique<Sprite>();
 	sTreeButtonCursorFrame_->SetPosition({ 300.0f, 101.0f });
 	sTreeButtonCursorFrame_->SetSize({ 272.0f, 56.0f });
@@ -37,7 +28,6 @@ void SettingLayer::Initialize()
 #pragma endregion
 
 #pragma region 画像
-	gTreeButton_ = LoadTexture("Resources/treeButton.png");
 	gTreeButtonCursorFrame_ = LoadTexture("Resources/treeButtonCursorFrame.png");
 	gBackBox_ = LoadTexture("Resources/backBox.png");
 #pragma endregion
@@ -46,15 +36,6 @@ void SettingLayer::Initialize()
 	mouseCol_ = std::make_unique<PointCollider>();
 	mouseCol_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(mouseCol_.get());
-
-	treeButtonsCol_.resize(2);
-	for (uint8_t i = 0; i < treeButtonsCol_.size(); i++)
-	{
-		treeButtonsCol_[i] = std::make_unique<BoxCollider>(Vector2{ 0.0f, 0.0f }, Vector2{ 130.0f, 22.0f });
-		treeButtonsCol_[i]->SetAttribute(COL_BOX);
-		treeButtonsCol_[i]->SetSprite(sTreeButtons_[i].get());
-		colMgr2D_->AddCollider(treeButtonsCol_[i].get());
-	}
 #pragma endregion
 
 #pragma region ボタン関連
@@ -62,6 +43,18 @@ void SettingLayer::Initialize()
 	for (uint8_t i = 0; i < treeButtonPos_.size(); i++)
 	{
 		treeButtonPos_[i] = { 300.0f + (i * 280.0f), 101.0f };
+	}
+#pragma endregion
+
+#pragma region ボタン
+	treeButtons_.resize(2);
+	BoxButton::SetCollisionManager2D(colMgr2D_);
+	for (uint16_t i = 0; i < treeButtons_.size(); i++)
+	{
+		treeButtons_[i] = std::make_unique<BoxButton>();
+		treeButtons_[i]->Initialize(i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f },
+			LoadTexture("Resources/treeButton.png"),
+			LoadTexture("Resources/treeText" + std::string(std::to_string(i)) + std::string(".png")));
 	}
 #pragma endregion
 }
@@ -81,7 +74,10 @@ void SettingLayer::Draw()
 	sBackBox_->Draw(gBackBox_);
 
 	// ツリーボタン
-	for (auto& it : sTreeButtons_) it->Draw(gTreeButton_);
+	//for (auto& it : sTreeButtons_) it->Draw(gTreeButton_);
+
+	// ボタン
+	for (auto& it : treeButtons_) it->Draw();
 
 	// カーソルがあった時のフレーム
 	if (isTreeButton_) sTreeButtonCursorFrame_->Draw(gTreeButtonCursorFrame_);
@@ -89,29 +85,32 @@ void SettingLayer::Draw()
 
 void SettingLayer::OnCollision()
 {
-	bool result = false;
-	for (uint16_t i = 0; i < treeButtonsCol_.size(); i++)
-	{
-		sTreeButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-		if (treeButtonsCol_[i]->GetIsHit())
-		{
-			if (isTreeButton_ == false) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
-			if ((uint16_t)cursorState_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
-			result = true;// 選択中フラグを[ON]
-			sTreeButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// 色を変える
-			cursorState_ = (SelectState)i;// 選択しているものを保存
-			sTreeButtonCursorFrame_->SetPosition(treeButtonPos_[i]);
-		}
-	}
+	//bool result = false;
+	//for (uint16_t i = 0; i < treeButtonsCol_.size(); i++)
+	//{
+	//	sTreeButtons_[i]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	//	if (treeButtonsCol_[i]->GetIsHit())
+	//	{
+	//		if (isTreeButton_ == false) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
+	//		if ((uint16_t)cursorState_ != i) startEaseTime_ = Util::GetTimrMSec();// イージング開始時間を記録
+	//		result = true;// 選択中フラグを[ON]
+	//		sTreeButtons_[i]->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });// 色を変える
+	//		cursorState_ = (SelectState)i;// 選択しているものを保存
+	//		sTreeButtonCursorFrame_->SetPosition(treeButtonPos_[i]);
+	//	}
+	//}
 
-	isTreeButton_ = result;
-	if (isTreeButton_ == false) cursorState_ = SelectState::NONE;
+	//isTreeButton_ = result;
+	//if (isTreeButton_ == false) cursorState_ = SelectState::NONE;
+
+	// ボタン
+	for (auto& it : treeButtons_) it->OnCollision();
 }
 
 void SettingLayer::MatUpdate()
 {
-	// ツリーボタン
-	for (auto& it : sTreeButtons_) it->MatUpdate();
+	// ボタン
+	for (auto& it : treeButtons_) it->MatUpdate();
 
 	// 背景のボックス
 	sBackBox_->MatUpdate();

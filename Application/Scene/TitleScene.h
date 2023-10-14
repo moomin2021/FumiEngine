@@ -4,13 +4,14 @@
 #include "Mouse.h"
 #include "Sprite.h"
 #include "Camera.h"
-#include "SettingLayer.h"
 
 #include "CollisionManager2D.h"
 #include "PointCollider.h"
 #include "BoxCollider.h"
 
 #include "Stage.h"
+#include "SettingLayer.h"
+#include "TitleLayer.h"
 
 #include <memory>
 
@@ -41,19 +42,14 @@ private:
 
 	// スプライト
 	std::unique_ptr<Sprite> sTitle_ = nullptr;
-	std::vector<std::unique_ptr<Sprite>> sSelectButtons_ = {};
 	std::unique_ptr<Sprite> sSelectButtonFrame_ = nullptr;
-	std::vector<std::unique_ptr<Sprite>> sSelectText_ = {};
 
 	// 画像ハンドル
 	uint16_t gTitle_ = 0;
-	uint16_t gSelectButton_ = 0;
 	uint16_t gSelectButtonFrame_ = 0;
-	std::vector<uint16_t> gSelectText_ = {};
 
 	// コライダー
 	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
-	std::vector<std::unique_ptr<BoxCollider>> selectButtonsCol_ = {};
 
 	// セレクトボタン関連
 	bool isSelect_ = false;// ボタンを選択しているか
@@ -66,6 +62,9 @@ private:
 
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
+
+	// タイトルレイヤー
+	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;
 
 	// 設定レイヤー
 	std::unique_ptr<SettingLayer> settingLayer_ = nullptr;

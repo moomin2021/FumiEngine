@@ -5,6 +5,8 @@
 #include "PointCollider.h"
 #include "Mouse.h"
 
+#include "BoxButton.h"
+
 #include <vector>
 #include <memory>
 
@@ -22,20 +24,16 @@ private:
 	Mouse* mouse_ = nullptr;
 	CollisionManager2D* colMgr2D_ = nullptr;
 
-	// スプライト
-	std::vector<std::unique_ptr<Sprite>> sTreeButtons_ = {};
-	
+	// スプライト	
 	std::unique_ptr<Sprite> sTreeButtonCursorFrame_ = nullptr;
 	std::unique_ptr<Sprite> sBackBox_ = nullptr;
 
 	// 画像
-	uint16_t gTreeButton_ = 0;
 	uint16_t gTreeButtonCursorFrame_ = 0;
 	uint16_t gBackBox_ = 0;
 
 	// コライダー
 	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
-	std::vector<std::unique_ptr<BoxCollider>> treeButtonsCol_ = {};
 
 	// ツリーボタン関連
 	bool isTreeButton_ = false;// ボタンを選択しているか
@@ -46,6 +44,9 @@ private:
 	Vector2 endTreeButtonFrameSize_ = { 272.0f, 56.0f };
 	float easeTime_ = 0.5f;// [s]
 	uint64_t startEaseTime_ = 0;
+
+	// ボタン
+	std::vector<std::unique_ptr<BoxButton>> treeButtons_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
