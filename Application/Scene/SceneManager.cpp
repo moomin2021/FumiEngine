@@ -82,8 +82,7 @@ void SceneManager::SceneTransition(SCENE scene)
 {
 	nextScene_ = scene;
 
-	nowScene_ = std::make_unique<TransitionScene>();
-	nowScene_->Initialize();
+	isTransition_ = true;
 }
 
 // 更新処理
@@ -100,6 +99,12 @@ void SceneManager::Update() {
 	ImGuiManager::GetInstance()->Begin();
 
 	nowScene_->Update();
+
+	if (isTransition_)
+	{
+		isTransition_ = false;
+		ChangeScene(TRANSITION);
+	}
 }
 
 // 描画処理

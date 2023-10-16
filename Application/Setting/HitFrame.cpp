@@ -3,6 +3,7 @@
 #include "Easing.h"
 
 #include "CollisionAttribute.h"
+#include "SceneManager.h"
 
 HitFrame::~HitFrame()
 {
@@ -65,6 +66,20 @@ void HitFrame::OnCollision()
 	{
 		isDraw_ = false;
 		buttonAttr_ = ButtonAttribute::NONE;
+	}
+
+	// 左クリックでアクション
+	if (mouse_->TriggerMouseButton(M_LEFT))
+	{
+		if (buttonAttr_ == ButtonAttribute::START)
+		{
+			SceneManager::GetInstance()->SceneTransition(GAME);
+		}
+
+		else if (buttonAttr_ == ButtonAttribute::END)
+		{
+			SceneManager::GetInstance()->SetIsEnd(true);
+		}
 	}
 }
 

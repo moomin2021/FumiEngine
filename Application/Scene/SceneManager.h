@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "BaseScene.h"// -> 各シーンのベース
 #include "Key.h"// -> キーボード入力
 #include "PostEffect.h"
@@ -45,6 +45,9 @@ private:
 
 	// ゲームを終了
 	bool isEnd_ = false;
+
+	// シーン遷移フラグ
+	bool isTransition_ = false;
 
 	// --メンバ関数-- //
 public:
