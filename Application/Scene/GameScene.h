@@ -9,6 +9,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "NavMesh.h"
 
 #include <memory>
 
@@ -39,6 +40,9 @@ private:
 
 	// 3軸を示すオブジェクト
 	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
+
+	// ナビメッシュ
+	std::unique_ptr<NavMesh> navMesh_ = nullptr;
 
 	// デバック
 	bool isDebug_ = false;

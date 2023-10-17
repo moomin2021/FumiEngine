@@ -4,7 +4,6 @@
 #include "Texture.h"
 
 #include "PipelineManager.h"
-#include "NavMesh.h"
 
 #include <set>
 
@@ -71,11 +70,13 @@ void GameScene::Initialize()
 	oAxis_[2]->SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
 #pragma endregion
 
+#pragma region ナビメッシュ
+	navMesh_ = std::make_unique<NavMesh>();
+	navMesh_->Initialize("cube");
+#pragma endregion
+
 	// ステージ読み込み
 	stage_->Load("Resources/StageJson/stage1.json");
-
-	std::unique_ptr<NavMesh> navMesh = std::make_unique<NavMesh>();
-	navMesh->LoadMesh("cube");
 
 	sGameUI_ = std::make_unique<Sprite>();
 	sGameUI_->SetSize({ 1920.0f, 1080.0f });
@@ -120,6 +121,9 @@ void GameScene::Draw()
 	for (auto& it : oAxis_) {
 		it->Draw();
 	}
+
+	// ナビメッシュ
+	navMesh_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
 
@@ -180,6 +184,9 @@ void GameScene::MatUpdate()
 	for (auto& it : oAxis_) {
 		it->MatUpdate();
 	}
+
+	// ナビメッシュ
+	navMesh_->MatUpdate();
 
 	sGameUI_->MatUpdate();
 }

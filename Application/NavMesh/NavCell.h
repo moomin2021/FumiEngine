@@ -56,7 +56,7 @@ public:
 	NavCell(int32_t inCellID, const Vector3& pA, const Vector3& pB, const Vector3& pC);
 
 	// リンクしている数を取得
-	uint8_t ValidLinkCount();
+	uint8_t LinkCount();
 
 	// 受け取ったエッジがどの辺のタイプか調べる
 	bool CheckSharedEdge(const CellEdge& edge, CellSide& sideType);

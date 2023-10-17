@@ -37,12 +37,12 @@ NavCell::NavCell(int32_t inCellID, const Vector3& pA, const Vector3& pB, const V
 	triangle_.normal = normal_;
 }
 
-uint8_t NavCell::ValidLinkCount()
+uint8_t NavCell::LinkCount()
 {
 	uint8_t count = 0;
-	count += (linkID_[0] != -1);
-	count += (linkID_[1] != -1);
-	count += (linkID_[2] != -1);
+	count += (linkID_[0] != ID_NONE);
+	count += (linkID_[1] != ID_NONE);
+	count += (linkID_[2] != ID_NONE);
 	return count;
 }
 
