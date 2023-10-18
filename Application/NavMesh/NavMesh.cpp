@@ -1,5 +1,7 @@
 #include "NavMesh.h"
 
+#include <list>
+
 void NavMesh::Initialize(const std::string& fileName)
 {
 	// モデル生成
@@ -7,12 +9,16 @@ void NavMesh::Initialize(const std::string& fileName)
 
 	// オブジェクト3D生成
 	object_ = std::make_unique<Object3D>(model_.get());
-	
+
 	// セルを作成
 	CreateCell();
 
 	// セルをリンク
 	LinkCell();
+
+	std::vector<Vector3> route;
+
+	RouteSearch(0, 5, route);
 }
 
 void NavMesh::MatUpdate()
@@ -23,6 +29,101 @@ void NavMesh::MatUpdate()
 void NavMesh::Draw()
 {
 	object_->Draw();
+}
+
+void NavMesh::RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute)
+{
+	std::vector<Vector3> route;
+	std::vector<std::unique_ptr<NavNode>> nodes;
+	std::vector<NavNode*> open;
+	std::vector<int32_t> closeID;
+	NavNode* goalNode = nullptr;
+
+	// -----最初の処理----- //
+	// 1. ノードを生成 
+	// 2. スタートIDをもとにセルのポインタを保存 
+	// 3. 推定コストを計算(スタート位置からエンド位置までの直線距離) 
+	// 4. スコアを計算(実スコア + 推定スコア) 
+	// 5. オープンリストに追加 
+	nodes.emplace_back(std::make_unique<NavNode>());
+	nodes.back()->cell = GetNavCell(startID);
+	nodes.back()->hCost = CalcCellDist(startID, endID);
+	nodes.back()->GetScore();
+	open.emplace_back(nodes.back().get());
+#pragma endregion
+
+#pragma region ゴールまで繰り返す
+	bool isBreak = false;
+
+	while (isBreak == false)
+	{
+		// オープンリストから一番スコアの低いノードを取り出す
+		NavNode* minScoreNode = nullptr;
+		float minScore = FLT_MAX;
+		uint32_t deleteNum = 0;
+		for (uint32_t i = 0; i < open.size(); i++)
+		{
+			if (open[i]->cell->GetCellID() == endID)
+			{
+				goalNode = open[i];
+				isBreak = true;
+				break;
+			}
+
+			if (open[i]->GetScore() < minScore)
+			{
+				minScoreNode = open[i];
+				deleteNum = i;
+			}
+		}
+
+		if (isBreak) break;
+
+		// 取り出したノードのIDをクローズリストに追加
+		closeID.emplace_back(open[deleteNum]->cell->GetCellID());
+
+		// 取り出したノードをオープンリストから削除
+		open.erase(open.begin() + deleteNum);
+
+		// オープンリストから取り出したノードから新たにノードを生成
+		std::vector<int32_t> linkID = minScoreNode->cell->GetLinkID();
+		for (uint8_t i = 0; i < linkID.size(); i++)
+		{
+			if (linkID[i] == ID_NONE) continue;
+
+			bool isClose = false;
+			for (uint32_t j = 0; j < closeID.size(); j++)
+			{
+				if (linkID[i] == closeID[j])
+				{
+					isClose = true;
+					break;
+				}
+			}
+
+			if (isClose == false)
+			{
+				nodes.emplace_back(std::make_unique<NavNode>());
+				nodes.back()->parent = minScoreNode;
+				nodes.back()->cell = GetNavCell(linkID[i]);
+				nodes.back()->hCost = CalcCellDist(linkID[i], endID);
+				nodes.back()->GetScore();
+				open.emplace_back(nodes.back().get());
+			}
+		}
+	}
+
+	NavNode* nowNode = nullptr;
+	nowNode = goalNode;
+
+	while (nowNode != nullptr)
+	{
+		route.emplace_back(nowNode->cell->GetCenter());
+		nowNode = nowNode->parent;
+	}
+#pragma endregion
+
+	outputRoute = route;
 }
 
 void NavMesh::CreateCell()
@@ -86,4 +187,19 @@ void NavMesh::LinkCell()
 			}
 		}
 	}
+}
+
+NavCell* NavMesh::GetNavCell(int32_t cellID)
+{
+	for (uint32_t i = 0; i < cells_.size(); i++)
+	{
+		if (*cells_[i] == cellID) return cells_[i].get();
+	}
+
+	return nullptr;
+}
+
+float NavMesh::CalcCellDist(int32_t startID, int32_t endID)
+{
+	return Vector3(cells_[startID]->GetCenter() - cells_[endID]->GetCenter()).length();
 }

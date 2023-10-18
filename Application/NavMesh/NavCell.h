@@ -81,11 +81,15 @@ public:
 
 	// リンクIDを取得
 	int32_t GetLinkID(CellSide sideType) { return linkID_[(uint8_t)sideType]; }
-	const std::vector<int32_t>& GetLinkID() const { return linkID_; }
+	std::vector<int32_t> GetLinkID() const { return linkID_; }
+
+	// メッシュの中心座標を取得
+	const Vector3& GetCenter() { return center_; }
 #pragma endregion
 
 #pragma region オペレーター
 public:
 	bool operator==(const NavCell* other) const { return cellID_ == other->cellID_; }
+	bool operator==(int32_t id) const { return cellID_ == id; }
 #pragma endregion
 };

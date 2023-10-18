@@ -72,7 +72,7 @@ void GameScene::Initialize()
 
 #pragma region ナビメッシュ
 	navMesh_ = std::make_unique<NavMesh>();
-	navMesh_->Initialize("cube");
+	navMesh_->Initialize("navMesh");
 #pragma endregion
 
 	// ステージ読み込み
