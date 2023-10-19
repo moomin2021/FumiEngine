@@ -40,11 +40,11 @@ void NavMesh::RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& 
 	NavNode* goalNode = nullptr;
 
 	// -----最初の処理----- //
-	// 1. ノードを生成 
-	// 2. スタートIDをもとにセルのポインタを保存 
-	// 3. 推定コストを計算(スタート位置からエンド位置までの直線距離) 
-	// 4. スコアを計算(実スコア + 推定スコア) 
-	// 5. オープンリストに追加 
+	// 1. ノードを生成
+	// 2. スタートIDをもとにセルのポインタを保存
+	// 3. 推定コストを計算(スタート位置からエンド位置までの直線距離)
+	// 4. スコアを計算(実スコア + 推定スコア)
+	// 5. オープンリストに追加
 	nodes.emplace_back(std::make_unique<NavNode>());
 	nodes.back()->cell = GetNavCell(startID);
 	nodes.back()->hCost = CalcCellDist(startID, endID);
@@ -155,7 +155,7 @@ void NavMesh::LinkCell()
 			if (itA->AlreadyLinkCell(itB->GetCellID())) continue;
 
 			// 既にリンクしている数が3つだったら飛ばす
-			if (itA->LinkCount()) continue;
+			if (itA->LinkCount() == 3) continue;
 
 			CellSide side;
 
@@ -170,7 +170,7 @@ void NavMesh::LinkCell()
 
 			// itAセルは辺BC側にリンクしているセルがない かつ
 			// itBセルは辺BC側でitAセルとのリンクが可能である
-			if (itA->GetLinkID(CellSide::SIDE_BC) == ID_NONE &&
+			else if (itA->GetLinkID(CellSide::SIDE_BC) == ID_NONE &&
 				itB->CheckSharedEdge(itA->GetEdge(CellSide::SIDE_BC), side))
 			{
 				itA->SetLinkID(CellSide::SIDE_BC, itB->GetCellID());
@@ -179,7 +179,7 @@ void NavMesh::LinkCell()
 
 			// itAセルは辺CA側にリンクしているセルがない かつ
 			// itBセルは辺CA側でitAセルとのリンクが可能である
-			if (itA->GetLinkID(CellSide::SIDE_CA) == ID_NONE &&
+			else if (itA->GetLinkID(CellSide::SIDE_CA) == ID_NONE &&
 				itB->CheckSharedEdge(itA->GetEdge(CellSide::SIDE_CA), side))
 			{
 				itA->SetLinkID(CellSide::SIDE_CA, itB->GetCellID());
