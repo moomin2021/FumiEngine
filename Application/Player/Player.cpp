@@ -432,6 +432,9 @@ void Player::Air()
 	// 撃つ処理
 	Shoot();
 
+	// ジャンプ処理
+	Jump();
+
 	// 落下処理
 	Fall();
 

@@ -85,6 +85,8 @@ public:
 
 	// メッシュの中心座標を取得
 	const Vector3& GetCenter() { return center_; }
+
+	const Triangle& GetTriangle() { return triangle_; }
 #pragma endregion
 
 #pragma region オペレーター

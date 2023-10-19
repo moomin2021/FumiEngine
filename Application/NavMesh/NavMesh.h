@@ -34,8 +34,11 @@ public:
 	void Draw();
 
 	// ルート探索
-	//std::vector<Vector3> RouteSearch(int32_t startID, int32_t endID);
 	void RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute);
+	void RouteSearch(const Vector3& startVec, const Vector3& endVec, std::vector<Vector3>& outputRoute);
+
+	// レイがどのセルの上にいるのかを返す
+	int32_t CheckRay2Cell(const Ray& ray);
 
 private:
 	// セルを作成
