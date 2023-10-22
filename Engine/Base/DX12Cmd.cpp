@@ -1,4 +1,4 @@
-﻿#include "DX12Cmd.h"
+#include "DX12Cmd.h"
 #include "WinAPI.h"
 #include "float4.h"
 #include "Texture.h"
@@ -96,7 +96,8 @@ void DX12Cmd::PreDraw()
 
 #pragma region 画面クリア R G B A
 	/// バックバッファには前回に描いた絵がそのまま残っているので、一旦指定色で塗りつぶす
-	std::vector<FLOAT> clearColor = { 0.1f, 0.25, 0.5f, 0.0f }; // 青っぽい色
+	//std::vector<FLOAT> clearColor = { 0.1f, 0.25, 0.5f, 0.0f }; // 青っぽい色
+	std::vector<FLOAT> clearColor = { 0.0f, 0.0f, 0.0f, 0.0f }; // 青っぽい色
 	cmdList_->ClearRenderTargetView(rtvHandle, clearColor.data(), 0, nullptr);
 	cmdList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 

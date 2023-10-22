@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "GameOverScene.h"
 #include "TransitionScene.h"
+#include "TestScene.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -75,6 +76,11 @@ void SceneManager::ChangeScene(SCENE changeSceneNum)
 		nowScene_ = std::make_unique<TransitionScene>();
 		nowScene_->Initialize();
 		break;
+
+	case SCENE::TEST:
+		nowScene_ = std::make_unique<TestScene>();
+		nowScene_->Initialize();
+		break;
 	}
 }
 
@@ -92,9 +98,7 @@ void SceneManager::Update() {
 	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
-	if (key_->TriggerKey(DIK_1)) ChangeScene(TITLE);
-	if (key_->TriggerKey(DIK_2)) ChangeScene(GAME);
-	if (key_->TriggerKey(DIK_3)) ChangeScene(GAMEOVER);
+	if (key_->TriggerKey(DIK_1)) SceneTransition(TEST);
 
 	ImGuiManager::GetInstance()->Begin();
 

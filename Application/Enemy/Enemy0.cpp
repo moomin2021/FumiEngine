@@ -4,6 +4,7 @@
 #include "EnemyManager.h"
 
 Player* Enemy0::player_ = nullptr;
+NavMesh* Enemy0::sNavMesh_ = nullptr;
 
 Enemy0::Enemy0(Model* model) :
 	// HP

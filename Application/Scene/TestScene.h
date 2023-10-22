@@ -1,10 +1,11 @@
-﻿#pragma once
+#pragma once
 #include "BaseScene.h"
 #include "Camera.h"
 #include "Model.h"
 #include "Object3D.h"
 #include "LightGroup.h"
 #include "DirectionalLight.h"
+#include "Line3D.h"
 
 #include <memory>
 
@@ -26,6 +27,9 @@ private:
 
 	// オブジェクト3D
 	std::unique_ptr<Object3D> object_ = nullptr;
+
+	// 線
+	std::unique_ptr<Line3D> line_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

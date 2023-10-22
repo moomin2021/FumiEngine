@@ -1,4 +1,4 @@
-﻿#include "ImGuiManager.h"
+#include "ImGuiManager.h"
 #include "WinAPI.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
@@ -27,7 +27,8 @@ void ImGuiManager::Initialize()
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
 	// デスクリプタヒープ生成
-	HRESULT result = dx12->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
+	HRESULT result;
+	result = dx12->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
 	// ImGuiのコンテキストを生成

@@ -3,6 +3,7 @@
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "Player.h"
+#include "NavMesh.h"
 
 #include <memory>
 
@@ -18,6 +19,7 @@ class Enemy0
 private:
 	// プライヤー
 	static Player* player_;
+	static NavMesh* sNavMesh_;
 
 	// オブジェクト
 	std::unique_ptr<Object3D> object_;
@@ -121,6 +123,8 @@ public:
 	/// プレイヤーを設定
 	/// </summary>
 	static void SetPlayer(Player* player) { player_ = player; }
+
+	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
 #pragma endregion
 
 #pragma region ゲッター関数

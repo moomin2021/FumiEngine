@@ -47,6 +47,14 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
 	pipelineObj_["Object3D"]->CreatePipeline(2);
 
+	AddPipeline("Line3D");
+	pipelineObj_["Line3D"]->LoadShader("Resources/Shaders/Line3DPS.hlsl", PS);
+	pipelineObj_["Line3D"]->LoadShader("Resources/Shaders/Line3DVS.hlsl", VS);
+	pipelineObj_["Line3D"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Line3D"]->CreateRootParams(0, 1);
+	//pipelineObj_["Line3D"]->CreatePipeline(1);
+	pipelineObj_["Line3D"]->CreatePipeline(1, PipelineObj::NONE, D3D12_PRIMITIVE_TOPOLOGY_TYPE::D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE);
+
 	AddPipeline("Toon");
 	pipelineObj_["Toon"]->LoadShader("Resources/Shaders/ToonPS.hlsl", PS);
 	pipelineObj_["Toon"]->LoadShader("Resources/Shaders/ToonVS.hlsl", VS);

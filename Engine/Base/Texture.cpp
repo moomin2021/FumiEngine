@@ -1,4 +1,4 @@
-﻿#include "Texture.h"
+#include "Texture.h"
 #include "DX12Cmd.h"
 #include "float4.h"
 #include "Util.h"
@@ -80,7 +80,8 @@ ID3D12Resource* Texture::CreateTextureResource(const DirectX::TexMetadata& metad
 
 	// Resourceの生成
 	ID3D12Resource* resource = nullptr;
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result;
+	result = device->CreateCommittedResource(
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&texResourceDesc,
@@ -145,7 +146,8 @@ ID3D12Resource* Texture::CreateBufferResource(size_t sizeInBytes)
 
 	// Resourceの生成
 	ID3D12Resource* resource = nullptr;
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result;
+	result = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,

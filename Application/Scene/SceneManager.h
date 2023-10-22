@@ -11,6 +11,8 @@ enum SCENE {
 	GAME,
 	GAMEOVER,
 	TRANSITION,
+
+	TEST,
 };
 
 enum PostEffectType {
