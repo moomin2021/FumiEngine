@@ -41,9 +41,6 @@ private:
 	// 3軸を示すオブジェクト
 	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
 
-	// ナビメッシュ
-	std::unique_ptr<NavMesh> navMesh_ = nullptr;
-
 	// デバック
 	bool isDebug_ = false;
 

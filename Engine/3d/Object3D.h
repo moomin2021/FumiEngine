@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Matrix4.h"
 #include "float4.h"
 #include "Vector3.h"
@@ -40,6 +40,9 @@ private:
 
 	// モデル
 	Model* model_ = nullptr;
+
+	// 描画フラグ
+	bool isDraw_ = true;
 
 	// 静的メンバ変数
 	static Camera*		sCamera_;		// カメラ
@@ -92,6 +95,12 @@ public:
 	/// </summary>
 	/// <param name="model"> モデル </param>
 	inline void SetModel(Model* model) { model_ = model; }
+
+	/// <summary>
+	/// 描画フラグの設定
+	/// </summary>
+	/// <param name="frag"> フラグ </param>
+	inline void SetIsDraw(bool frag) { isDraw_ = frag; }
 
 	/// <summary>
 	/// カメラを設定

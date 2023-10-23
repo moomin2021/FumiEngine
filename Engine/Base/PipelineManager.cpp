@@ -45,7 +45,7 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineObj_["Object3D"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
-	pipelineObj_["Object3D"]->CreatePipeline(2);
+	pipelineObj_["Object3D"]->CreatePipeline(2, PipelineObj::ALPHA);
 
 	AddPipeline("Line3D");
 	pipelineObj_["Line3D"]->LoadShader("Resources/Shaders/Line3DPS.hlsl", PS);

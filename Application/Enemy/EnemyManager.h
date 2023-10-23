@@ -1,10 +1,11 @@
-﻿#pragma once
+#pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 #include "Boss0.h"
 #include "Enemy0.h"
 #include "ParticleEmitter.h"
+#include "NavMesh.h"
 
 #include <memory>
 
@@ -36,6 +37,9 @@ private:
 
 	// エネミー
 	std::deque<std::unique_ptr<Enemy0>> enemys_;
+
+	// ナビメッシュ
+	std::unique_ptr<NavMesh> navMesh_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -71,6 +75,9 @@ public:
 
 	// パーティクル生成
 	void AddParticle(const Vector3& pos);
+
+	// デバック
+	void Debug();
 
 private:
 #pragma endregion

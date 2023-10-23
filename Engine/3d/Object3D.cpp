@@ -1,4 +1,4 @@
-﻿#include "Object3D.h"
+#include "Object3D.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 #include "Util.h"
@@ -87,6 +87,9 @@ void Object3D::MatUpdate()
 }
 
 void Object3D::Draw() {
+	// 描画フラグが[OFF]ならこれ以降処理しない
+	if (isDraw_ == false) return;
+
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
 

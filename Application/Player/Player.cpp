@@ -5,6 +5,7 @@
 #include "WinAPI.h"
 #include "Texture.h"
 #include "PipelineManager.h"
+#include "Line3D.h"
 
 #include "EnemyManager.h"
 
@@ -46,6 +47,7 @@ void Player::Initialize()
 	camera_->SetEye({ 0.0f, 10.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 	Sprite::SetCamera(camera_.get());
+	Line3D::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region モデル

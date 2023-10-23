@@ -5,6 +5,8 @@
 #include "SceneManager.h"
 #include "WinAPI.h"
 
+#include <imgui_impl_DX12.h>
+
 EnemyManager::EnemyManager() {}
 
 EnemyManager::~EnemyManager()
@@ -37,6 +39,11 @@ void EnemyManager::Initialize()
 #pragma region ハンドル
 	hParticle_ = LoadTexture("Resources/effect1.png");
 #pragma endregion
+
+#pragma region ナビメッシュ
+	navMesh_ = std::make_unique<NavMesh>();
+	navMesh_->Initialize("navMesh");
+#pragma endregion
 }
 
 void EnemyManager::Update()
@@ -67,6 +74,8 @@ void EnemyManager::Draw()
 	for (auto& i : enemys_) {
 		i->Draw();
 	}
+
+	navMesh_->Draw();
 }
 
 void EnemyManager::MatUpdate()
@@ -77,6 +86,8 @@ void EnemyManager::MatUpdate()
 	}
 
 	for (auto& it : enemys_) it->MatUpdate();
+
+	navMesh_->MatUpdate();
 }
 
 void EnemyManager::OnCollision()
@@ -131,6 +142,31 @@ void EnemyManager::AddParticle(const Vector3& pos)
 	}
 
 	particles_.emplace_back(std::move(newParticle));
+}
+
+void EnemyManager::Debug()
+{
+	static Vector3 enemyCreatePos = { 0.0f, 1.0f, 0.0f };
+
+	ImGui::Begin("Enemy");
+	ImGui::SliderFloat("CreateEnemyPosX", &enemyCreatePos.x, -1000.0f, 1000.0f);
+	ImGui::SliderFloat("CreateEnemyPosY", &enemyCreatePos.y, -1000.0f, 1000.0f);
+	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -1000.0f, 1000.0f);
+	if (ImGui::Button("CreateEnemy"))
+	{
+		CreateAddEnemy0(enemyCreatePos, Vector3{ 1.0f, 1.0f, 1.0f });
+	}
+
+	if (ImGui::TreeNode("NavMesh"))
+	{
+		static bool isMeshDraw = false;
+		ImGui::Checkbox("DrawMesh", &isMeshDraw);
+		navMesh_->SetIsDraw(isMeshDraw);
+
+		ImGui::TreePop();
+	}
+
+	ImGui::End();
 }
 
 void EnemyManager::SetBossGenerator(const Vector3& pos)

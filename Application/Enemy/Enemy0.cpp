@@ -2,6 +2,7 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "EnemyManager.h"
+#include "PipelineManager.h"
 
 Player* Enemy0::player_ = nullptr;
 NavMesh* Enemy0::sNavMesh_ = nullptr;
@@ -14,6 +15,10 @@ Enemy0::Enemy0(Model* model) :
 {
 	// オブジェクト生成
 	object_ = std::make_unique<Object3D>(model);
+
+	// 線
+	line_ = std::make_unique<Line3D>();
+	line_->Initialize(100);
 }
 
 Enemy0::~Enemy0()
@@ -62,8 +67,17 @@ void Enemy0::Update()
 
 void Enemy0::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
+
 	// オブジェクト描画
 	if (isAlive_) object_->Draw();
+
+	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	// 線
+	line_->Draw();
+
+	PipelineManager::PreDraw("Object3D");
 }
 
 void (Enemy0::* Enemy0::stateTable[]) () = {
@@ -164,6 +178,24 @@ void Enemy0::MatUpdate()
 {
 	// オブジェクト更新
 	object_->MatUpdate();
+
+	// 線
+	line_->MatUpdate();
+}
+
+void Enemy0::CreateNavRoute()
+{
+	Vector3 addVec = { 0.0f, 1.0f, 0.0f };
+
+	// 線の削除
+	line_->ClearPoint();
+
+	sNavMesh_->RouteSearch(object_->GetPosition(), player_->GetPosition(), route_);
+
+	for (uint16_t i = 0; i < route_.size() - 1; i++)
+	{
+		line_->AddPoint(route_[i] + addVec, route_[i + 1] + addVec);
+	}
 }
 
 void Enemy0::Shoot()

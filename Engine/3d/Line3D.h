@@ -63,6 +63,9 @@ public:
 	// 点の追加
 	void AddPoint(const Vector3& inPoint0, const Vector3& inPoint1);
 
+	// 点の全削除
+	void ClearPoint() { lines_.clear(); }
+
 	Line3D() {}
 	~Line3D() { lines_.clear(); }
 

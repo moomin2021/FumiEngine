@@ -142,7 +142,7 @@ void Stage::Load(std::string fileName, bool isCol)
 		if (objectData.className == "Enemy") {
 			if (isCol == false) continue;
 			// 敵を追加
-			enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
+			//enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
 		}
 
 		else if (objectData.className == "Item") {

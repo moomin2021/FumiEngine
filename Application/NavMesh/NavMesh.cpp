@@ -12,6 +12,7 @@ void NavMesh::Initialize(const std::string& fileName)
 	// オブジェクト3D生成
 	object_ = std::make_unique<Object3D>(model_.get());
 	object_->SetRotation({ 0.0f, 180.0f, 0.0f });
+	object_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
 
 	// セルを作成
 	CreateCell();

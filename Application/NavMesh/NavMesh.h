@@ -53,6 +53,11 @@ private:
 	// 指定したセル二つの直線距離を返す
 	float CalcCellDist(int32_t startID, int32_t endID);
 #pragma endregion
+
+#pragma region セッター関数
+public:
+	void SetIsDraw(bool frag) { object_->SetIsDraw(frag); }
+#pragma endregion
 };
 
 enum class NodeState {

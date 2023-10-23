@@ -70,11 +70,6 @@ void GameScene::Initialize()
 	oAxis_[2]->SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
 #pragma endregion
 
-#pragma region ナビメッシュ
-	navMesh_ = std::make_unique<NavMesh>();
-	navMesh_->Initialize("navMesh");
-#pragma endregion
-
 	// ステージ読み込み
 	stage_->Load("Resources/StageJson/stage1.json");
 
@@ -122,9 +117,6 @@ void GameScene::Draw()
 		it->Draw();
 	}
 
-	// ナビメッシュ
-	navMesh_->Draw();
-
 	PipelineManager::PreDraw("Sprite");
 
 	// プレイヤー
@@ -155,6 +147,9 @@ void GameScene::Debug()
 	if (isDebug_ == false) return;
 
 	player_->Debug();
+
+	// エネミーマネージャー
+	enemyMgr_->Debug();
 }
 
 void GameScene::OnCollision()
@@ -184,9 +179,6 @@ void GameScene::MatUpdate()
 	for (auto& it : oAxis_) {
 		it->MatUpdate();
 	}
-
-	// ナビメッシュ
-	navMesh_->MatUpdate();
 
 	sGameUI_->MatUpdate();
 }

@@ -4,6 +4,7 @@
 #include "SphereCollider.h"
 #include "Player.h"
 #include "NavMesh.h"
+#include "Line3D.h"
 
 #include <memory>
 
@@ -26,6 +27,12 @@ private:
 
 	// コライダー
 	std::unique_ptr<SphereCollider> collider_;
+
+	// 線
+	std::unique_ptr<Line3D> line_ = nullptr;
+
+	// ルート
+	std::vector<Vector3> route_ = {};
 
 	// 生存フラグ
 	bool isAlive_ = true;
@@ -105,6 +112,9 @@ public:
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// ルート生成
+	void CreateNavRoute();
 
 private:
 	// 状態別処理
