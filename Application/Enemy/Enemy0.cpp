@@ -138,31 +138,18 @@ void Enemy0::RandomMove()
 
 void Enemy0::Chase()
 {
-	// 横移動経過時間
-	uint64_t elapsedTime = Util::GetTimeSec() - horizontalMoveStartTime_;
+	if (route_.size() == 0) return;
+	Vector3 moveVec = route_[0] - object_->GetPosition();
+	moveVec = {moveVec.x, 0.0f, moveVec.z};
 
-	// エネミーからプレイヤーまでの方向
-	Vector3 s = player_->GetPosition() - object_->GetPosition();
-	Vector3 enemy2Player = Vector3(player_->GetPosition() - object_->GetPosition());
-	enemy2Player.y = 0.0f;
-	enemy2Player.normalize();
-
-	// 右ベクトルの計算
-	Vector3 rightVec = Vector3(enemy2Player.x, 0.0f, enemy2Player.z);
-	rightVec = -rightVec.cross(rightVec + Vector3(0.0f, 1.0f, 0.0f));
-	rightVec.normalize();
-
-	// 横移動経過時間が指定時間を過ぎたら横移動方向を切り替える
-	if (horizontalMoveSwitchTime_ <= elapsedTime) {
-		isMoveRight_ *= -1.0f;
-		horizontalMoveStartTime_ = Util::GetTimeSec();
+	if (moveVec.length() < moveSpd_)
+	{
+		route_.erase(route_.begin());
 	}
 
-	Vector3 pos = object_->GetPosition() + (enemy2Player * frontRearMoveSpd_) + (rightVec * horizontalMoveSpd_ * isMoveRight_);
-	object_->SetPosition(pos);
+	moveVec.normalize();
 
-	// 弾を撃つ処理
-	Shoot();
+	object_->SetPosition(object_->GetPosition() + moveVec * moveSpd_);
 }
 
 void Enemy0::OnCollision()

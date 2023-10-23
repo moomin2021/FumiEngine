@@ -38,7 +38,10 @@ private:
 	bool isAlive_ = true;
 
 	// 状態
-	State state_ = WAIT;
+	State state_ = CHASE;
+
+	// 移動速度
+	float moveSpd_ = 0.1f;
 
 	// 各状態の開始時間
 	uint64_t waitStartTime_ = 0;

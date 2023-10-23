@@ -151,9 +151,9 @@ void EnemyManager::Debug()
 	static Vector3 enemyCreatePos = { 0.0f, 1.0f, 0.0f };
 
 	ImGui::Begin("Enemy");
-	ImGui::SliderFloat("CreateEnemyPosX", &enemyCreatePos.x, -1000.0f, 1000.0f);
-	ImGui::SliderFloat("CreateEnemyPosY", &enemyCreatePos.y, -1000.0f, 1000.0f);
-	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -1000.0f, 1000.0f);
+	ImGui::SliderFloat("CreateEnemyPosX", &enemyCreatePos.x, -100.0f, 100.0f);
+	ImGui::SliderFloat("CreateEnemyPosY", &enemyCreatePos.y, -100.0f, 100.0f);
+	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
 	if (ImGui::Button("CreateEnemy"))
 	{
 		CreateAddEnemy0(enemyCreatePos, Vector3{ 1.0f, 1.0f, 1.0f });
