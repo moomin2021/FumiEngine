@@ -131,6 +131,7 @@
     <ClCompile Include="Application\Player\ItemManager.cpp" />
     <ClCompile Include="Application\Setting\HitFrame.cpp" />
     <ClCompile Include="Engine\3d\Line3D.cpp" />
+    <ClCompile Include="Application\Setting\GamePlayLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Application\NavMesh\NavCell.cpp" />
     <ClCompile Include="Application\Setting\SettingLayer.cpp" />
     <ClCompile Include="Application\Setting\TitleLayer.cpp" />
+    <ClCompile Include="Slider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -223,6 +225,8 @@
     <ClInclude Include="Application\Setting\HitFrame.h" />
     <ClInclude Include="Application\Setting\TitleLayer.h" />
     <ClInclude Include="Engine\3d\Line3D.h" />
+    <ClInclude Include="Application\Setting\GamePlayLayer.h" />
+    <ClInclude Include="Slider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
