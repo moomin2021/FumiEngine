@@ -1,6 +1,7 @@
 #include "NavMesh.h"
 
 #include "Collision.h"
+#include "PipelineManager.h"
 
 #include <list>
 
@@ -11,28 +12,37 @@ void NavMesh::Initialize(const std::string& fileName)
 
 	// オブジェクト3D生成
 	object_ = std::make_unique<Object3D>(model_.get());
-	object_->SetRotation({ 0.0f, 180.0f, 0.0f });
+	object_->SetPosition({ 0.0f, 0.25f, 0.0f });
 	object_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
+
+	// リンクライン
+	linkLines_ = std::make_unique<Line3D>();
+	linkLines_->Initialize(200);
+	linkLines_->SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
 
 	// セルを作成
 	CreateCell();
 
 	// セルをリンク
 	LinkCell();
-
-	std::vector<Vector3> route;
-
-	RouteSearch(0, 5, route);
 }
 
 void NavMesh::MatUpdate()
 {
 	object_->MatUpdate();
+	linkLines_->MatUpdate();
 }
 
 void NavMesh::Draw()
 {
 	object_->Draw();
+
+	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	if (isLinkLineDraw_)
+	{
+		linkLines_->Draw();
+	}
+	PipelineManager::PreDraw("Object3D");
 }
 
 void NavMesh::RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute)
@@ -271,6 +281,8 @@ void NavMesh::CreateCell()
 
 void NavMesh::LinkCell()
 {
+	Vector3 addVec = { 0.0f, 0.5f, 0.0f };
+
 	// セル同士を総当たりしてリンク処理をする
 	for (auto& itA : cells_)
 	{
@@ -294,6 +306,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_AB, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
+				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 
 			// itAセルは辺BC側にリンクしているセルがない かつ
@@ -303,6 +316,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_BC, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
+				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 
 			// itAセルは辺CA側にリンクしているセルがない かつ
@@ -312,6 +326,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_CA, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
+				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 		}
 	}

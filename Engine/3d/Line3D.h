@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Vector3.h"
 #include "Matrix4.h"
+#include "float4.h"
 
 #include <d3d12.h>
 #include <deque>
@@ -22,6 +23,7 @@ private:
 	// 定数バッファ
 	struct ConstBufferData {
 		Matrix4 mat;
+		float4 color;
 	};
 #pragma endregion
 
@@ -47,6 +49,9 @@ private:
 	// インデックスデータ
 	D3D12_INDEX_BUFFER_VIEW indexView_ = {};
 	ComPtr<ID3D12Resource> indexBuff_ = nullptr;
+
+	// 色
+	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 #pragma endregion
 
 #pragma region メンバ関数
@@ -83,5 +88,6 @@ private:
 #pragma region セッター関数
 public:
 	static void SetCamera(Camera* inCamera) { sCamera_ = inCamera; }
+	void SetColor(const float4& inColor) { color_ = inColor; }
 #pragma endregion
 };

@@ -43,6 +43,8 @@ void EnemyManager::Initialize()
 #pragma region ナビメッシュ
 	navMesh_ = std::make_unique<NavMesh>();
 	navMesh_->Initialize("navMesh");
+	navMesh_->SetIsDraw(false);
+	Enemy0::SetNavMesh(navMesh_.get());
 #pragma endregion
 }
 
@@ -160,8 +162,19 @@ void EnemyManager::Debug()
 	if (ImGui::TreeNode("NavMesh"))
 	{
 		static bool isMeshDraw = false;
+		static bool isLinkLineDraw = false;
 		ImGui::Checkbox("DrawMesh", &isMeshDraw);
+		ImGui::Checkbox("DrawLinkLine", &isLinkLineDraw);
 		navMesh_->SetIsDraw(isMeshDraw);
+		navMesh_->SetIsLinkLineDraw(isLinkLineDraw);
+
+		if (ImGui::Button("CreateRoute"))
+		{
+			for (auto& it : enemys_)
+			{
+				it->CreateNavRoute();
+			}
+		}
 
 		ImGui::TreePop();
 	}

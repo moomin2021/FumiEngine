@@ -44,6 +44,7 @@ void Line3D::MatUpdate()
 
 	// 行列を送信
 	constMap_->mat = matWorld * sCamera_->GetMatView() * sCamera_->GetMatProjection();
+	constMap_->color = color_;
 #pragma endregion
 }
 

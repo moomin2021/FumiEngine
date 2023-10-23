@@ -3,6 +3,7 @@
 #include "Object3D.h"
 
 #include "NavCell.h"
+#include "Line3D.h"
 
 #include <memory>
 
@@ -17,6 +18,12 @@ private:
 
 	// セル
 	std::vector<std::unique_ptr<NavCell>> cells_ = {};
+
+	// リンクライン
+	std::unique_ptr<Line3D> linkLines_ = nullptr;
+
+	// リンクライン描画フラグ
+	bool isLinkLineDraw_ = false;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -57,6 +64,7 @@ private:
 #pragma region セッター関数
 public:
 	void SetIsDraw(bool frag) { object_->SetIsDraw(frag); }
+	void SetIsLinkLineDraw(bool frag) { isLinkLineDraw_ = frag; }
 #pragma endregion
 };
 
