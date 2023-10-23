@@ -1,4 +1,4 @@
-﻿#include "Model.h"
+#include "Model.h"
 #include "Texture.h"
 #include "DX12Cmd.h"
 
@@ -77,6 +77,7 @@ void Model::LoadModel(string name)
 			line_stream >> position.z;
 
 			// 座標データに追加
+			//position.x = -position.x;
 			positions.emplace_back(position);
 		}
 

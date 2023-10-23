@@ -19,6 +19,7 @@ Enemy0::Enemy0(Model* model) :
 	// 線
 	line_ = std::make_unique<Line3D>();
 	line_->Initialize(100);
+	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 }
 
 Enemy0::~Enemy0()

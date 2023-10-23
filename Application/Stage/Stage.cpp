@@ -116,7 +116,7 @@ void Stage::Load(std::string fileName, bool isCol)
 			nlohmann::json& transform = object["transform"];
 
 			// 平行移動
-			objectData.translation.x = (float)transform["translation"][0];
+			objectData.translation.x = -(float)transform["translation"][0];
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
 

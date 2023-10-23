@@ -120,6 +120,7 @@ void NavMesh::RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& 
 				nodes.emplace_back(std::make_unique<NavNode>());
 				nodes.back()->parent = minScoreNode;
 				nodes.back()->cell = GetNavCell(linkID[i]);
+				nodes.back()->cCost = minScoreNode->cCost + CalcCellDist(GetNavCell(linkID[i])->GetCellID(), minScoreNode->cell->GetCellID());
 				nodes.back()->hCost = CalcCellDist(linkID[i], endID);
 				nodes.back()->GetScore();
 				open.emplace_back(nodes.back().get());
@@ -185,6 +186,7 @@ void NavMesh::RouteSearch(const Vector3& startVec, const Vector3& endVec, std::v
 
 			if (open[i]->GetScore() < minScore)
 			{
+				minScore = open[i]->GetScore();
 				minScoreNode = open[i];
 				deleteNum = i;
 			}
@@ -219,6 +221,7 @@ void NavMesh::RouteSearch(const Vector3& startVec, const Vector3& endVec, std::v
 				nodes.emplace_back(std::make_unique<NavNode>());
 				nodes.back()->parent = minScoreNode;
 				nodes.back()->cell = GetNavCell(linkID[i]);
+				nodes.back()->cCost = minScoreNode->cCost + CalcCellDist(GetNavCell(linkID[i])->GetCellID(), minScoreNode->cell->GetCellID());
 				nodes.back()->hCost = CalcCellDist(linkID[i], endID);
 				nodes.back()->GetScore();
 				open.emplace_back(nodes.back().get());
