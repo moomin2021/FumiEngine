@@ -6,6 +6,7 @@
 #include "Mouse.h"
 
 #include "BoxButton.h"
+#include "HitFrame.h"
 
 #include <vector>
 #include <memory>
@@ -24,29 +25,13 @@ private:
 	Mouse* mouse_ = nullptr;
 	CollisionManager2D* colMgr2D_ = nullptr;
 
-	// スプライト	
-	std::unique_ptr<Sprite> sTreeButtonCursorFrame_ = nullptr;
-	std::unique_ptr<Sprite> sBackBox_ = nullptr;
-
-	// 画像
-	uint16_t gTreeButtonCursorFrame_ = 0;
-	uint16_t gBackBox_ = 0;
-
-	// コライダー
-	std::unique_ptr<PointCollider> mouseCol_ = nullptr;
-
-	// ツリーボタン関連
-	bool isTreeButton_ = false;// ボタンを選択しているか
-	SelectState cursorState_ = SelectState::NONE;
-	SelectState treeState_ = SelectState::GAME_PLAY;
-	std::vector<Vector2> treeButtonPos_ = {};// ボタンの座標
-	Vector2 startTreeButtonFrameSize_ = { 285.0f, 65.0f };
-	Vector2 endTreeButtonFrameSize_ = { 272.0f, 56.0f };
-	float easeTime_ = 0.5f;// [s]
-	uint64_t startEaseTime_ = 0;
-
 	// ボタン
-	std::vector<std::unique_ptr<BoxButton>> treeButtons_ = {};
+	std::vector<std::unique_ptr<BoxButton>> buttons_ = {};
+
+	// フレーム関連
+	uint16_t frameHandle_ = 0;
+	const Vector2 frameSize_ = { 272.0f, 56.0f };
+	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -64,13 +49,12 @@ public:
 	void Draw();
 
 	// 衝突時処理
-	void OnCollision();
+	void OnCollision(SelectNum& selectNum);
 
 	// 行列更新処理
 	void MatUpdate();
 
-private:
-	// ボタンフレームの処理
-	void ButtonFrame();
+	// 衝突判定の[ON][OFF]を切り替える
+	void SetIsCollision(bool frag);
 #pragma endregion
 };

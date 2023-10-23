@@ -49,13 +49,13 @@ void TitleLayer::Draw()
 	hitFrame_->Draw();
 }
 
-void TitleLayer::OnCollision()
+void TitleLayer::OnCollision(SelectNum& selectNum)
 {
 	// ボタン
 	for (auto& it : buttons_) it->OnCollision();
 
 	// フレーム
-	hitFrame_->OnCollision();
+	hitFrame_->OnCollision(selectNum);
 }
 
 void TitleLayer::MatUpdate()
@@ -65,4 +65,10 @@ void TitleLayer::MatUpdate()
 
 	// フレーム
 	hitFrame_->MatUpdate();
+}
+
+void TitleLayer::SetIsCollision(bool frag)
+{
+	for (auto& it : buttons_) it->SetIsCollision(frag);
+	hitFrame_->SetIsCollision(frag);
 }

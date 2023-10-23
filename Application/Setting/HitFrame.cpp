@@ -44,7 +44,7 @@ void HitFrame::Draw()
 	if (isDraw_) sprite_->Draw(handle_);
 }
 
-void HitFrame::OnCollision()
+void HitFrame::OnCollision(SelectNum& selectNum)
 {
 	// マウスが衝突していたら以下の処理をする
 	// 1. 衝突フラグを[ON]にする
@@ -55,7 +55,7 @@ void HitFrame::OnCollision()
 	{
 		isDraw_ = true;
 		if (AttrBeforeAndNowDiffer()) startEaseTime_ = Util::GetTimrMSec();
-		buttonAttr_ = (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
+		buttonAttr_ = (SelectNum)cMouse_->GetHitCollider()->GetTag();
 		sprite_->SetPosition(cMouse_->GetHitCollider()->GetSpritePos());
 	}
 
@@ -65,21 +65,13 @@ void HitFrame::OnCollision()
 	else
 	{
 		isDraw_ = false;
-		buttonAttr_ = ButtonAttribute::NONE;
+		selectNum = SelectNum::NONE;
 	}
 
 	// 左クリックでアクション
 	if (mouse_->TriggerMouseButton(M_LEFT))
 	{
-		if (buttonAttr_ == ButtonAttribute::START)
-		{
-			SceneManager::GetInstance()->SceneTransition(GAME);
-		}
-
-		else if (buttonAttr_ == ButtonAttribute::END)
-		{
-			SceneManager::GetInstance()->SetIsEnd(true);
-		}
+		selectNum = buttonAttr_;
 	}
 }
 
@@ -108,7 +100,12 @@ void HitFrame::SetFrame(const Vector2 inSize, uint16_t inHandle)
 	handle_ = inHandle;
 }
 
+void HitFrame::SetIsCollision(bool frag)
+{
+	cMouse_->SetIsOnCol(frag);
+}
+
 bool HitFrame::AttrBeforeAndNowDiffer()
 {
-	return buttonAttr_ != (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
+	return buttonAttr_ != (SelectNum)cMouse_->GetHitCollider()->GetTag();
 }

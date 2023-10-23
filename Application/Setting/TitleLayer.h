@@ -35,9 +35,12 @@ public:
 	void Draw();
 
 	// 衝突時処理
-	void OnCollision();
+	void OnCollision(SelectNum& selectNum);
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// 衝突判定の[ON][OFF]を切り替える
+	void SetIsCollision(bool frag);
 #pragma endregion
 };

@@ -5,4 +5,7 @@ enum class ButtonAttribute {
 	START = 0,
 	SETTING = 1,
 	END = 2,
+
+	GAMEPLAY,
+	AUDIO,
 };

@@ -47,5 +47,8 @@ public:
 
 #pragma region セッター関数
 	static void SetCollisionManager2D(CollisionManager2D* inst) { stColMgr2D_ = inst; }
+
+	// 衝突判定の[ON][OFF]を切り替える
+	void SetIsCollision(bool frag);
 #pragma endregion
 };

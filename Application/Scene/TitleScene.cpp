@@ -56,11 +56,13 @@ void TitleScene::Initialize()
 #pragma region タイトルレイヤー
 	titleLayer_ = std::make_unique<TitleLayer>();
 	titleLayer_->Initialize();
+	titleLayer_->SetIsCollision(true);
 #pragma endregion
 
 #pragma region 設定レイヤー
 	settingLayer_ = std::make_unique<SettingLayer>();
 	settingLayer_->Initialize();
+	settingLayer_->SetIsCollision(false);
 #pragma endregion
 }
 
@@ -70,31 +72,16 @@ void TitleScene::Update()
 	CameraRota();
 
 	// タイトルレイヤー
-	titleLayer_->Update();
+	if (layerState_ == LayerState::TITLE) titleLayer_->Update();
 
-	// 設定レイヤー
-	settingLayer_->Update();
+	// 設定レイヤー	
+	else if (layerState_ == LayerState::SETTING) settingLayer_->Update();
 
 	// 衝突処理2D
 	OnCollision();
 
 	// 行列更新処理
 	MatUpdate();
-
-	//if (mouse_->TriggerMouseButton(M_LEFT)) {
-	//	if (nowSelect_ == SelectNum::START) {
-	//		SceneManager::GetInstance()->SceneTransition(GAME);
-	//	}
-
-	//	else if (nowSelect_ == SelectNum::SETTING)
-	//	{
-
-	//	}
-
-	//	else if (nowSelect_ == SelectNum::END) {
-	//		SceneManager::GetInstance()->SetIsEnd(true);
-	//	}
-	//}
 }
 
 void TitleScene::Draw()
@@ -109,10 +96,10 @@ void TitleScene::Draw()
 	sTitle_->Draw(gTitle_);
 
 	// タイトルレイヤー
-	titleLayer_->Draw();
+	if (layerState_ == LayerState::TITLE) titleLayer_->Draw();
 
-	// 設定レイヤー
-	settingLayer_->Draw();
+	// 設定レイヤー	
+	else if (layerState_ == LayerState::SETTING) settingLayer_->Draw();
 }
 
 void TitleScene::OnCollision()
@@ -121,10 +108,27 @@ void TitleScene::OnCollision()
 	colMgr2D_->CheckAllCollision();
 
 	// タイトルレイヤー
-	titleLayer_->OnCollision();
+	if (layerState_ == LayerState::TITLE) titleLayer_->OnCollision(selectNum_);
 
-	// 設定レイヤー
-	settingLayer_->OnCollision();
+	// 設定レイヤー	
+	else if (layerState_ == LayerState::SETTING) settingLayer_->OnCollision(selectNum_);
+
+	if (selectNum_ == SelectNum::START)
+	{
+		SceneManager::GetInstance()->SceneTransition(GAME);
+	}
+
+	else if (selectNum_ == SelectNum::SETTING)
+	{
+		layerState_ = LayerState::SETTING;
+		titleLayer_->SetIsCollision(false);
+		settingLayer_->SetIsCollision(true);
+	}
+
+	else if (selectNum_ == SelectNum::END)
+	{
+		SceneManager::GetInstance()->SetIsEnd(true);
+	}
 }
 
 void TitleScene::MatUpdate()
@@ -139,10 +143,12 @@ void TitleScene::MatUpdate()
 	sTitle_->MatUpdate();
 
 	// タイトルレイヤー
-	titleLayer_->MatUpdate();
+	if (layerState_ == LayerState::TITLE) titleLayer_->MatUpdate();
 
-	// 設定レイヤー
-	settingLayer_->MatUpdate();
+	// 設定レイヤー	
+	else if (layerState_ == LayerState::SETTING) settingLayer_->MatUpdate();
+
+
 }
 
 void TitleScene::CameraRota()

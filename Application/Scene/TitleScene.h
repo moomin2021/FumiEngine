@@ -17,11 +17,9 @@
 
 class TitleScene : public BaseScene
 {
-	enum class SelectNum {
-		NONE = -1,
-		START,
+	enum class LayerState {
+		TITLE,
 		SETTING,
-		END,
 	};
 
 #pragma region メンバ変数
@@ -46,6 +44,12 @@ private:
 
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
+
+	// 選択物
+	SelectNum selectNum_ = SelectNum::NONE;
+
+	// レイヤーの状態
+	LayerState layerState_ = LayerState::TITLE;
 
 	// タイトルレイヤー
 	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;

@@ -8,6 +8,16 @@
 
 #include <memory>
 
+enum class SelectNum {
+	NONE = -1,
+	START,
+	SETTING,
+	END,
+
+	GAMEPLAY,
+	AUDIO,
+};
+
 class HitFrame
 {
 #pragma region メンバ変数
@@ -35,7 +45,7 @@ private:
 	bool isDraw_ = false;
 
 	// ボタンの属性
-	ButtonAttribute buttonAttr_ = ButtonAttribute::NONE;
+	SelectNum buttonAttr_ = SelectNum::NONE;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -53,7 +63,7 @@ public:
 	void Draw();
 
 	// 衝突判定時処理
-	void OnCollision();
+	void OnCollision(SelectNum& selectNum);
 
 	// 行列更新処理
 	void MatUpdate();
@@ -70,5 +80,8 @@ private:
 public:
 	// フレームを設定
 	void SetFrame(const Vector2 inSize, uint16_t frameHandle);
+
+	// 衝突判定の[ON][OFF]を切り替える
+	void SetIsCollision(bool frag);
 #pragma endregion
 };

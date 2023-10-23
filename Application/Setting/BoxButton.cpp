@@ -71,3 +71,8 @@ void BoxButton::MatUpdate()
 	// テキスト
 	sText_->MatUpdate();
 }
+
+void BoxButton::SetIsCollision(bool frag)
+{
+	cButton_->SetIsOnCol(frag);
+}
