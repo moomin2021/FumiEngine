@@ -66,6 +66,7 @@ void HitFrame::OnCollision(SelectNum& selectNum)
 	{
 		isDraw_ = false;
 		selectNum = SelectNum::NONE;
+		buttonAttr_ = SelectNum::NONE;
 	}
 
 	// 左クリックでアクション

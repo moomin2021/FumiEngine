@@ -36,12 +36,6 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// スプライト
-	std::unique_ptr<Sprite> sTitle_ = nullptr;
-
-	// 画像ハンドル
-	uint16_t gTitle_ = 0;
-
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
 

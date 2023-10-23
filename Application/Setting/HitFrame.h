@@ -16,6 +16,7 @@ enum class SelectNum {
 
 	GAMEPLAY,
 	AUDIO,
+	RETURN,
 };
 
 class HitFrame

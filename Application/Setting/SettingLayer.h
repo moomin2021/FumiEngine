@@ -25,13 +25,21 @@ private:
 	Mouse* mouse_ = nullptr;
 	CollisionManager2D* colMgr2D_ = nullptr;
 
-	// ボタン
+	// ツリーボタン
 	std::vector<std::unique_ptr<BoxButton>> buttons_ = {};
+
+	// 戻るボタン
+	uint16_t gFrameReturn_ = 0;
+	std::unique_ptr<BoxButton> returnButton_ = nullptr;
 
 	// フレーム関連
 	uint16_t frameHandle_ = 0;
 	const Vector2 frameSize_ = { 272.0f, 56.0f };
 	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
+
+	// 設定の背景画像
+	uint16_t gBackBox_ = 0;
+	std::unique_ptr<Sprite> sBackBox_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

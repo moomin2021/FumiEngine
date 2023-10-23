@@ -18,6 +18,10 @@ private:
 	const Vector2 frameSize_ = { 324.0f, 54.0f };
 	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
 
+	// タイトル
+	std::unique_ptr<Sprite> sTitle_ = nullptr;
+	uint16_t gTitle_ = 0;
+
 #pragma endregion
 
 #pragma region メンバ関数

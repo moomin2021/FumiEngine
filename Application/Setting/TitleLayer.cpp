@@ -29,6 +29,13 @@ void TitleLayer::Initialize()
 	hitFrame_->Initialize();
 	hitFrame_->SetFrame(frameSize_, frameHandle_);
 #pragma endregion
+
+#pragma region タイトル
+	sTitle_ = std::make_unique<Sprite>();
+	sTitle_->SetSize({ 1920.0f, 1080.0f });
+
+	gTitle_ = LoadTexture("Resources/title.png");
+#pragma endregion
 }
 
 void TitleLayer::Update()
@@ -47,6 +54,9 @@ void TitleLayer::Draw()
 
 	// フレーム
 	hitFrame_->Draw();
+
+	// タイトル
+	sTitle_->Draw(gTitle_);
 }
 
 void TitleLayer::OnCollision(SelectNum& selectNum)
@@ -65,6 +75,9 @@ void TitleLayer::MatUpdate()
 
 	// フレーム
 	hitFrame_->MatUpdate();
+
+	// タイトル
+	sTitle_->MatUpdate();
 }
 
 void TitleLayer::SetIsCollision(bool frag)

@@ -38,15 +38,6 @@ void TitleScene::Initialize()
 	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region スプライト
-	sTitle_ = std::make_unique<Sprite>();
-	sTitle_->SetSize({ 1920.0f, 1080.0f });
-#pragma endregion
-
-#pragma region テクスチャハンドル
-	gTitle_ = LoadTexture("Resources/title.png");
-#pragma endregion
-
 #pragma region ステージ
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
@@ -92,9 +83,6 @@ void TitleScene::Draw()
 
 	PipelineManager::PreDraw("Sprite");
 
-	// タイトルを描画
-	sTitle_->Draw(gTitle_);
-
 	// タイトルレイヤー
 	if (layerState_ == LayerState::TITLE) titleLayer_->Draw();
 
@@ -129,6 +117,13 @@ void TitleScene::OnCollision()
 	{
 		SceneManager::GetInstance()->SetIsEnd(true);
 	}
+
+	else if (selectNum_ == SelectNum::RETURN)
+	{
+		layerState_ = LayerState::TITLE;
+		titleLayer_->SetIsCollision(true);
+		settingLayer_->SetIsCollision(false);
+	}
 }
 
 void TitleScene::MatUpdate()
@@ -138,9 +133,6 @@ void TitleScene::MatUpdate()
 
 	// ステージ
 	stage_->MatUpdate();
-
-	// タイトル
-	sTitle_->MatUpdate();
 
 	// タイトルレイヤー
 	if (layerState_ == LayerState::TITLE) titleLayer_->MatUpdate();
