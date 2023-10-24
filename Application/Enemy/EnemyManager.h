@@ -70,6 +70,7 @@ public:
 
 	// エネミーを生成追加
 	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
+	void DeleteEnemy0() { enemys_.clear(); }
 
 	void CheckSceneChange();
 

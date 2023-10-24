@@ -159,6 +159,11 @@ void EnemyManager::Debug()
 		CreateAddEnemy0(enemyCreatePos, Vector3{ 1.0f, 1.0f, 1.0f });
 	}
 
+	if (ImGui::Button("DeleteEnemy"))
+	{
+		DeleteEnemy0();
+	}
+
 	if (ImGui::TreeNode("NavMesh"))
 	{
 		static bool isMeshDraw = false;
