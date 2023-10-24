@@ -16,26 +16,26 @@ void SettingLayer::Initialize()
 	colMgr2D_ = CollisionManager2D::GetInstance();
 #pragma endregion
 
-#pragma region ツリーボタン
-	buttons_.resize(2);
-	BoxButton::SetCollisionManager2D(CollisionManager2D::GetInstance());
-	for (uint16_t i = 0; i < buttons_.size(); i++)
-	{
-		buttons_[i] = std::make_unique<BoxButton>();
-		buttons_[i]->Initialize(uint16_t(SelectNum::GAMEPLAY) + i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f },
-			LoadTexture("Resources/treeButton.png"),
-			LoadTexture("Resources/treeText" + std::string(std::to_string(i)) + std::string(".png")));
-	}
-#pragma endregion
-
-#pragma region 戻るボタン
-	gFrameReturn_ = LoadTexture("Resources/returnText.png");
-
-	returnButton_ = std::make_unique<BoxButton>();
-	returnButton_->Initialize((int32_t)SelectNum::RETURN, { 200.0f, 1000.0f }, {260.0f, 44.0f},
-		LoadTexture("Resources/treeButton.png"),
-		LoadTexture("Resources/returnText.png"));
-#pragma endregion
+//#pragma region ツリーボタン
+//	buttons_.resize(2);
+//	BoxButton::SetCollisionManager2D(CollisionManager2D::GetInstance());
+//	for (uint16_t i = 0; i < buttons_.size(); i++)
+//	{
+//		buttons_[i] = std::make_unique<BoxButton>();
+//		buttons_[i]->Initialize(uint16_t(SelectNum::GAMEPLAY) + i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f },
+//			LoadTexture("Resources/treeButton.png"),
+//			LoadTexture("Resources/treeText" + std::string(std::to_string(i)) + std::string(".png")));
+//	}
+//#pragma endregion
+//
+//#pragma region 戻るボタン
+//	gFrameReturn_ = LoadTexture("Resources/returnText.png");
+//
+//	returnButton_ = std::make_unique<BoxButton>();
+//	returnButton_->Initialize((int32_t)SelectNum::RETURN, { 200.0f, 1000.0f }, {260.0f, 44.0f},
+//		LoadTexture("Resources/treeButton.png"),
+//		LoadTexture("Resources/returnText.png"));
+//#pragma endregion
 
 #pragma region フレーム関連
 	// 画像読み込み
@@ -86,13 +86,13 @@ void SettingLayer::Draw()
 void SettingLayer::OnCollision(SelectNum& selectNum)
 {
 	// ボタン
-	for (auto& it : buttons_) it->OnCollision();
+	//for (auto& it : buttons_) it->OnCollision();
 
 	// フレーム
 	hitFrame_->OnCollision(selectNum);
 
 	// 戻るボタン
-	returnButton_->OnCollision();
+	//returnButton_->OnCollision();
 }
 
 void SettingLayer::MatUpdate()

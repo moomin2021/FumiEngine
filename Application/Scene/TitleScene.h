@@ -26,6 +26,7 @@ class TitleScene : public BaseScene
 private:
 	// インスタンス
 	CollisionManager2D* colMgr2D_ = nullptr;
+	Mouse* mouse_ = nullptr;
 
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
@@ -39,17 +40,14 @@ private:
 	// ステージ
 	std::unique_ptr<Stage> stage_ = nullptr;
 
-	// 選択物
-	SelectNum selectNum_ = SelectNum::NONE;
+	// コライダー
+	std::unique_ptr<PointCollider> cMouse_ = nullptr;
 
-	// レイヤーの状態
-	LayerState layerState_ = LayerState::TITLE;
+	// 触れているボタンの属性
+	ButtonAttribute hitButtonAttr_ = ButtonAttribute::NONE;
 
 	// タイトルレイヤー
 	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;
-
-	// 設定レイヤー
-	std::unique_ptr<SettingLayer> settingLayer_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

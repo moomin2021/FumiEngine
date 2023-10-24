@@ -13,11 +13,6 @@ private:
 	// ボタン
 	std::vector<std::unique_ptr<BoxButton>> buttons_ = {};
 
-	// フレーム関連
-	uint16_t frameHandle_ = 0;
-	const Vector2 frameSize_ = { 324.0f, 54.0f };
-	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
-
 	// タイトル
 	std::unique_ptr<Sprite> sTitle_ = nullptr;
 	uint16_t gTitle_ = 0;
@@ -39,7 +34,7 @@ public:
 	void Draw();
 
 	// 衝突時処理
-	void OnCollision(SelectNum& selectNum);
+	void OnCollision(ButtonAttribute& buttonAttr);
 
 	// 行列更新処理
 	void MatUpdate();

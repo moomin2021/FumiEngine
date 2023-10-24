@@ -12,12 +12,14 @@ TitleScene::TitleScene() {}
 
 TitleScene::~TitleScene()
 {
+	colMgr2D_->RemoveCollider(cMouse_.get());
 }
 
 void TitleScene::Initialize()
 {
 #pragma region インスタンス取得
 	colMgr2D_ = CollisionManager2D::GetInstance();// 衝突マネージャー2D
+	mouse_ = Mouse::GetInstance();
 #pragma endregion
 
 #pragma region ライトグループ
@@ -44,29 +46,28 @@ void TitleScene::Initialize()
 	stage_->Load("Resources/StageJson/stage1.json", false);
 #pragma endregion
 
+#pragma region コライダー
+	cMouse_ = std::make_unique<PointCollider>();
+	cMouse_->SetAttribute(COL_POINT);
+	colMgr2D_->AddCollider(cMouse_.get());
+#pragma endregion
+
 #pragma region タイトルレイヤー
 	titleLayer_ = std::make_unique<TitleLayer>();
 	titleLayer_->Initialize();
-	titleLayer_->SetIsCollision(true);
-#pragma endregion
-
-#pragma region 設定レイヤー
-	settingLayer_ = std::make_unique<SettingLayer>();
-	settingLayer_->Initialize();
-	settingLayer_->SetIsCollision(false);
 #pragma endregion
 }
 
 void TitleScene::Update()
 {
-	// カメラ回転
-	CameraRota();
+	// コライダーとマウスの座標をリンク
+	cMouse_->SetOffset(mouse_->MousePos());
 
 	// タイトルレイヤー
-	if (layerState_ == LayerState::TITLE) titleLayer_->Update();
+	titleLayer_->Update();
 
-	// 設定レイヤー	
-	else if (layerState_ == LayerState::SETTING) settingLayer_->Update();
+	// カメラ回転
+	CameraRota();
 
 	// 衝突処理2D
 	OnCollision();
@@ -84,46 +85,30 @@ void TitleScene::Draw()
 	PipelineManager::PreDraw("Sprite");
 
 	// タイトルレイヤー
-	if (layerState_ == LayerState::TITLE) titleLayer_->Draw();
-
-	// 設定レイヤー	
-	else if (layerState_ == LayerState::SETTING) settingLayer_->Draw();
+	titleLayer_->Draw();
 }
 
 void TitleScene::OnCollision()
 {
+	// ボタンの属性をリセット
+	hitButtonAttr_ = ButtonAttribute::NONE;
+
 	// 衝突全チェック
 	colMgr2D_->CheckAllCollision();
 
 	// タイトルレイヤー
-	if (layerState_ == LayerState::TITLE) titleLayer_->OnCollision(selectNum_);
+	titleLayer_->OnCollision(hitButtonAttr_);
 
-	// 設定レイヤー	
-	else if (layerState_ == LayerState::SETTING) settingLayer_->OnCollision(selectNum_);
+#pragma region 左クリックを押したら
+	// 衝突していなかったらこれ以降の処理を飛ばす
+	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
 
-	if (selectNum_ == SelectNum::START)
+	// スタート
+	if (hitButtonAttr_ == ButtonAttribute::START)
 	{
-		SceneManager::GetInstance()->SceneTransition(GAME);
+		SceneManager::GetInstance()->SceneTransition(SCENE::GAME);
 	}
-
-	else if (selectNum_ == SelectNum::SETTING)
-	{
-		layerState_ = LayerState::SETTING;
-		titleLayer_->SetIsCollision(false);
-		settingLayer_->SetIsCollision(true);
-	}
-
-	else if (selectNum_ == SelectNum::END)
-	{
-		SceneManager::GetInstance()->SetIsEnd(true);
-	}
-
-	else if (selectNum_ == SelectNum::RETURN)
-	{
-		layerState_ = LayerState::TITLE;
-		titleLayer_->SetIsCollision(true);
-		settingLayer_->SetIsCollision(false);
-	}
+#pragma endregion
 }
 
 void TitleScene::MatUpdate()
@@ -135,12 +120,7 @@ void TitleScene::MatUpdate()
 	stage_->MatUpdate();
 
 	// タイトルレイヤー
-	if (layerState_ == LayerState::TITLE) titleLayer_->MatUpdate();
-
-	// 設定レイヤー	
-	else if (layerState_ == LayerState::SETTING) settingLayer_->MatUpdate();
-
-
+	titleLayer_->MatUpdate();
 }
 
 void TitleScene::CameraRota()
