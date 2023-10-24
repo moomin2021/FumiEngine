@@ -300,7 +300,7 @@
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Slider.cpp">
+    <ClCompile Include="Application\Setting\Slider.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -509,16 +509,13 @@
     <ClInclude Include="Application\Setting\HitFrame.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Setting\ButtonAttribute.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\3d\Line3D.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Setting\GamePlayLayer.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Slider.h">
+    <ClInclude Include="Application\Setting\Slider.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

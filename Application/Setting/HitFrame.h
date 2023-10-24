@@ -4,8 +4,6 @@
 #include "CollisionManager2D.h"
 #include "PointCollider.h"
 
-#include "ButtonAttribute.h"
-
 #include <memory>
 
 enum class SelectNum {

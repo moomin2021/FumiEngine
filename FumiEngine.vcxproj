@@ -152,7 +152,7 @@
     <ClCompile Include="Application\NavMesh\NavCell.cpp" />
     <ClCompile Include="Application\Setting\SettingLayer.cpp" />
     <ClCompile Include="Application\Setting\TitleLayer.cpp" />
-    <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="Application\Setting\Slider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -162,7 +162,6 @@
     <ClInclude Include="Application\Enemy\Boss0.h" />
     <ClInclude Include="Application\Setting\BaseLayer.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
-    <ClInclude Include="Application\Setting\ButtonAttribute.h" />
     <ClInclude Include="Engine\Util\Easing.h" />
     <ClInclude Include="Engine\Collision\CircleCollider.h" />
     <ClInclude Include="Engine\Collision\BoxCollider.h" />
@@ -226,7 +225,7 @@
     <ClInclude Include="Application\Setting\TitleLayer.h" />
     <ClInclude Include="Engine\3d\Line3D.h" />
     <ClInclude Include="Application\Setting\GamePlayLayer.h" />
-    <ClInclude Include="Slider.h" />
+    <ClInclude Include="Application\Setting\Slider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
