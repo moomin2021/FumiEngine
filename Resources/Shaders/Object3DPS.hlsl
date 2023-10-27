@@ -39,13 +39,13 @@ PSOutput main(VSOutput input)
             float intensity = saturate(dot(normalize(input.normal), dirLights[i].lightv));
             
             // ŠgU”½ËŒõ
-            float3 diffuse = texcolor.rgb * intensity * dirLights[i].lightcolor;
+            float3 diffuse = texcolor.rgb * intensity * dirLights[i].lightcolor * m_diffuse;
             
             // ‹¾–Ê”½ËŒõ
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * dirLights[i].lightcolor * m_specular;
             
             // ŠÂ‹«Œõ = ‘fŞ‚ÌF ~ ƒ‰ƒCƒg‚ÌF * ˆÃ‚­‚·‚é‚½‚ß‚É
-            float3 ambient = texcolor.rgb * dirLights[i].lightcolor * 0.3;
+            float3 ambient = texcolor.rgb * dirLights[i].lightcolor * m_ambient;
             
             // ‘S‚Ä‰ÁZ‚·‚é
             shadecolor.rgb += diffuse + specular + ambient;

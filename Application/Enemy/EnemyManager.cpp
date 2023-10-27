@@ -22,7 +22,7 @@ void EnemyManager::Initialize()
 
 #pragma region モデル
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
-	mEnemy0_ = std::make_unique<Model>("sphere");
+	mEnemy0_ = std::make_unique<Model>("stoneGolem");
 #pragma endregion
 
 #pragma region オブジェクト
@@ -148,7 +148,7 @@ void EnemyManager::AddParticle(const Vector3& pos)
 
 void EnemyManager::Debug()
 {
-	static Vector3 enemyCreatePos = { 0.0f, 1.0f, 0.0f };
+	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 
 	ImGui::Begin("Enemy");
 	ImGui::SliderFloat("CreateEnemyPosX", &enemyCreatePos.x, -100.0f, 100.0f);
@@ -156,7 +156,7 @@ void EnemyManager::Debug()
 	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
 	if (ImGui::Button("CreateEnemy"))
 	{
-		CreateAddEnemy0(enemyCreatePos, Vector3{ 1.0f, 1.0f, 1.0f });
+		CreateAddEnemy0(enemyCreatePos, Vector3{ 2.0f, 2.0f, 2.0f });
 	}
 
 	if (ImGui::Button("DeleteEnemy"))

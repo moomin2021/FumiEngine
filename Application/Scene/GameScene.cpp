@@ -113,8 +113,12 @@ void GameScene::Draw()
 	enemyMgr_->Draw();
 
 	// 3軸を示すオブジェクト
-	for (auto& it : oAxis_) {
-		it->Draw();
+	if (isDebug_)
+	{
+		for (auto& it : oAxis_)
+		{
+			it->Draw();
+		}
 	}
 
 	PipelineManager::PreDraw("Sprite");
