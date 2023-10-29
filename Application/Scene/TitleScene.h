@@ -43,9 +43,6 @@ private:
 	// コライダー
 	std::unique_ptr<PointCollider> cMouse_ = nullptr;
 
-	// 触れているボタンの属性
-	ButtonAttribute hitButtonAttr_ = ButtonAttribute::NONE;
-
 	// タイトルレイヤー
 	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;
 #pragma endregion

@@ -52,7 +52,7 @@ public:
 	void Draw();
 
 	// 衝突時処理
-	void OnCollision(ButtonAttribute& buttonAttribute);
+	void OnCollision();
 
 	// 行列更新処理
 	void MatUpdate();

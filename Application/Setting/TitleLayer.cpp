@@ -44,10 +44,10 @@ void TitleLayer::Draw()
 	sTitle_->Draw(gTitle_);
 }
 
-void TitleLayer::OnCollision(ButtonAttribute& buttonAttr)
+void TitleLayer::OnCollision()
 {
 	// ボタン
-	for (auto& it : buttons_) it->OnCollision(buttonAttr);
+	for (auto& it : buttons_) it->OnCollision();
 }
 
 void TitleLayer::MatUpdate()

@@ -64,7 +64,7 @@ void BoxButton::Draw()
 	if (isDraw_) sFrame_->Draw(gFrame_);
 }
 
-void BoxButton::OnCollision(ButtonAttribute& buttonAttribute)
+void BoxButton::OnCollision()
 {
 	// ボタンが衝突していたら以下の処理をする
 	if (cButton_->GetIsHit())
@@ -72,7 +72,6 @@ void BoxButton::OnCollision(ButtonAttribute& buttonAttribute)
 		if (isDraw_ == false) startEaseTime_ = Util::GetTimrMSec();
 		isDraw_ = true;
 		sButton_->SetColor({ 1.0f, 1.0f, 0.0f, 1.0f });
-		buttonAttribute = (ButtonAttribute)cButton_->GetTag();
 	}
 
 	// ボタンが衝突していなかったら以下の処理をする

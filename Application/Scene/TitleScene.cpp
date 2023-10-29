@@ -90,21 +90,21 @@ void TitleScene::Draw()
 
 void TitleScene::OnCollision()
 {
-	// ボタンの属性をリセット
-	hitButtonAttr_ = ButtonAttribute::NONE;
-
 	// 衝突全チェック
 	colMgr2D_->CheckAllCollision();
 
 	// タイトルレイヤー
-	titleLayer_->OnCollision(hitButtonAttr_);
+	titleLayer_->OnCollision();
 
 #pragma region 左クリックを押したら
 	// 衝突していなかったらこれ以降の処理を飛ばす
 	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
 
+	// マウスのコライダーから衝突しているコライダーのタグを属性に変換して取得
+	ButtonAttribute buttonAttr = (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
+
 	// スタート
-	if (hitButtonAttr_ == ButtonAttribute::START)
+	if (buttonAttr == ButtonAttribute::START)
 	{
 		SceneManager::GetInstance()->SceneTransition(SCENE::GAME);
 	}

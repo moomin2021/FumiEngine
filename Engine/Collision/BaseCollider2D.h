@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+#define NO_TAG -1
+
 class BaseCollider2D {
 public:
 	friend class CollisionManager2D;
@@ -26,7 +28,7 @@ protected:
 	BaseCollider2D* hitCol_ = nullptr;
 
 	// タグ
-	int32_t tag_ = -1;
+	int32_t tag_ = NO_TAG;
 
 	// 衝突判定をとるかフラグ
 	bool isOnCol_ = true;
