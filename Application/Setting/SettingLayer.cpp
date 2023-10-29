@@ -1,118 +1,75 @@
 #include "SettingLayer.h"
+
 #include "Texture.h"
-#include "CollisionAttribute.h"
-#include "Util.h"
-#include "Easing.h"
 
 SettingLayer::~SettingLayer()
 {
-	
 }
 
 void SettingLayer::Initialize()
 {
-#pragma region インスタンス
-	mouse_ = Mouse::GetInstance();
-	colMgr2D_ = CollisionManager2D::GetInstance();
+#pragma region ボタン
+	buttons_.resize(3);
+	BoxButton::SetCollisionManager2D(CollisionManager2D::GetInstance());
+	for (uint16_t i = 0; i < buttons_.size(); i++)
+	{
+		if (i == 2)
+		{
+			buttons_[i] = std::make_unique<BoxButton>();
+			buttons_[i]->Initialize(uint16_t(ButtonAttribute::GAMEPLAY) + i, { 200.0f, 1000.0f }, {260.0f, 44.0f}, { 272.0f, 56.0f },
+				LoadTexture("Resources/treeButton.png"),
+				LoadTexture("Resources/returnText.png"),
+				LoadTexture("Resources/treeButtonCursorFrame.png"));
+		}
+
+		else
+		{
+			buttons_[i] = std::make_unique<BoxButton>();
+			buttons_[i]->Initialize(uint16_t(ButtonAttribute::GAMEPLAY) + i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f }, { 272.0f, 56.0f },
+				LoadTexture("Resources/treeButton.png"),
+				LoadTexture("resources/treeText" + std::string(std::to_string(i)) + std::string(".png")),
+				LoadTexture("Resources/treeButtonCursorFrame.png"));
+		}
+	}
 #pragma endregion
 
-//#pragma region ツリーボタン
-//	buttons_.resize(2);
-//	BoxButton::SetCollisionManager2D(CollisionManager2D::GetInstance());
-//	for (uint16_t i = 0; i < buttons_.size(); i++)
-//	{
-//		buttons_[i] = std::make_unique<BoxButton>();
-//		buttons_[i]->Initialize(uint16_t(SelectNum::GAMEPLAY) + i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f },
-//			LoadTexture("Resources/treeButton.png"),
-//			LoadTexture("Resources/treeText" + std::string(std::to_string(i)) + std::string(".png")));
-//	}
-//#pragma endregion
-//
-//#pragma region 戻るボタン
-//	gFrameReturn_ = LoadTexture("Resources/returnText.png");
-//
-//	returnButton_ = std::make_unique<BoxButton>();
-//	returnButton_->Initialize((int32_t)SelectNum::RETURN, { 200.0f, 1000.0f }, {260.0f, 44.0f},
-//		LoadTexture("Resources/treeButton.png"),
-//		LoadTexture("Resources/returnText.png"));
-//#pragma endregion
+#pragma region 設定一覧の背景画像
+	sSettingBackground_ = std::make_unique<Sprite>();
+	sSettingBackground_->SetPosition({ 160.0f, 176.0f });
+	sSettingBackground_->SetSize({ 768.0f, 746.0f });
 
-#pragma region フレーム関連
-	// 画像読み込み
-	frameHandle_ = LoadTexture("Resources/treeButtonCursorFrame.png");
-
-	// フレーム生成
-	hitFrame_ = std::make_unique<HitFrame>();
-	hitFrame_->Initialize();
-	hitFrame_->SetFrame(frameSize_, frameHandle_);
-#pragma endregion
-
-#pragma region 設定の背景画像
-	gBackBox_ = LoadTexture("Resources/backBox.png");
-
-	sBackBox_ = std::make_unique<Sprite>();
-	sBackBox_->SetPosition({ 160.0f, 176.0f });
-	sBackBox_->SetSize({ 768.0f, 746.0f });
+	gSettingBackground_ = LoadTexture("Resources/backBox.png");
 #pragma endregion
 }
 
 void SettingLayer::Update()
 {
-	// ボタン
 	for (auto& it : buttons_) it->Update();
-
-	// フレーム
-	hitFrame_->Update();
-
-	// 戻るボタン
-	returnButton_->Update();
 }
 
 void SettingLayer::Draw()
 {
-	// ボタン
+	if (isDraw_ == false) return;
+
 	for (auto& it : buttons_) it->Draw();
 
-	// フレーム
-	hitFrame_->Draw();
-
-	// 設定の背景画像
-	sBackBox_->Draw(gBackBox_);
-
-	// 戻るボタン
-	returnButton_->Draw();
+	sSettingBackground_->Draw(gSettingBackground_);
 }
 
-void SettingLayer::OnCollision(SelectNum& selectNum)
+void SettingLayer::OnCollision()
 {
-	// ボタン
-	//for (auto& it : buttons_) it->OnCollision();
-
-	// フレーム
-	hitFrame_->OnCollision(selectNum);
-
-	// 戻るボタン
-	//returnButton_->OnCollision();
+	for (auto& it : buttons_) it->OnCollision();
 }
 
 void SettingLayer::MatUpdate()
 {
-	// ボタン
 	for (auto& it : buttons_) it->MatUpdate();
 
-	// フレーム
-	hitFrame_->MatUpdate();
-
-	// 設定の背景画像
-	sBackBox_->MatUpdate();
-
-	// 戻るボタン
-	returnButton_->MatUpdate();
+	sSettingBackground_->MatUpdate();
 }
 
-void SettingLayer::SetIsCollision(bool frag)
+void SettingLayer::SetIsDisplay(bool frag)
 {
 	for (auto& it : buttons_) it->SetIsCollision(frag);
-	hitFrame_->SetIsCollision(frag);
-	returnButton_->SetIsCollision(frag);
+	isDraw_ = frag;
 }

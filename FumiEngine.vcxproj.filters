@@ -500,9 +500,6 @@
     <ClInclude Include="Application\Setting\BoxButton.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Setting\BaseLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Setting\TitleLayer.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>

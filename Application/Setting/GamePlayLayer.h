@@ -1,5 +1,4 @@
 #pragma once
-#include "BaseLayer.h"
 #include "Sprite.h"
 #include "BaseCollider2D.h"
 #include "CircleCollider.h"
@@ -9,7 +8,7 @@
 
 #include <memory>
 
-class GamePlayLayer : public BaseLayer
+class GamePlayLayer
 {
 #pragma region メンバ変数
 	// インスタンス

@@ -10,8 +10,8 @@
 #include "BoxCollider.h"
 
 #include "Stage.h"
-#include "SettingLayer.h"
 #include "TitleLayer.h"
+#include "SettingLayer.h"
 
 #include <memory>
 
@@ -45,6 +45,9 @@ private:
 
 	// タイトルレイヤー
 	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;
+
+	// 設定レイヤー
+	std::unique_ptr<SettingLayer> settingLayer_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

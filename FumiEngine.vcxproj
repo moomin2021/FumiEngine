@@ -160,7 +160,6 @@
     <ClInclude Include="Application\Enemy\EnemyManager.h" />
     <ClInclude Include="Application\Enemy\Enemy0.h" />
     <ClInclude Include="Application\Enemy\Boss0.h" />
-    <ClInclude Include="Application\Setting\BaseLayer.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
     <ClInclude Include="Application\Setting\ButtonAttribute.h" />
     <ClInclude Include="Engine\Util\Easing.h" />

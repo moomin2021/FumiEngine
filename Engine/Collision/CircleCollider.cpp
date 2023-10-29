@@ -1,4 +1,4 @@
-﻿#include "CircleCollider.h"
+#include "CircleCollider.h"
 
 CircleCollider::CircleCollider(Vector2 offset, float radius)
 {
@@ -16,6 +16,9 @@ void CircleCollider::Update()
 {
 	// 衝突フラグを初期化
 	isHit_ = false;
+
+	// 衝突しているコライダーをなくす
+	hitCol_ = nullptr;
 
 	// スプライトが紐づけられていたら
 	if (sprite_) {

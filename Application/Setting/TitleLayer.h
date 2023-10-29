@@ -1,12 +1,11 @@
 #pragma once
-#include "BaseLayer.h"
 #include "BoxButton.h"
 #include "HitFrame.h"
 
 #include <vector>
 #include <memory>
 
-class TitleLayer : public BaseLayer
+class TitleLayer
 {
 #pragma region メンバ変数
 private:
@@ -17,6 +16,8 @@ private:
 	std::unique_ptr<Sprite> sTitle_ = nullptr;
 	uint16_t gTitle_ = 0;
 
+	// 描画フラグ
+	bool isDraw_ = true;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -39,7 +40,7 @@ public:
 	// 行列更新処理
 	void MatUpdate();
 
-	// 衝突判定の[ON][OFF]を切り替える
-	void SetIsCollision(bool frag);
+	// 表示の[ON][OFF]を切り替える
+	void SetIsDisplay(bool frag);
 #pragma endregion
 };

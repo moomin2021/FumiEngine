@@ -1,45 +1,21 @@
 #pragma once
-#include "Sprite.h"
-#include "CollisionManager2D.h"
-#include "BoxCollider.h"
-#include "PointCollider.h"
-#include "Mouse.h"
-
 #include "BoxButton.h"
-#include "HitFrame.h"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-enum class SelectState {
-	NONE = -1,
-	GAME_PLAY,
-	AUDIO,
-};
-
-class SettingLayer
-{
+class SettingLayer {
 #pragma region メンバ変数
 private:
-	// インスタンス
-	Mouse* mouse_ = nullptr;
-	CollisionManager2D* colMgr2D_ = nullptr;
-
-	// ツリーボタン
+	// ボタン
 	std::vector<std::unique_ptr<BoxButton>> buttons_ = {};
 
-	// 戻るボタン
-	uint16_t gFrameReturn_ = 0;
-	std::unique_ptr<BoxButton> returnButton_ = nullptr;
+	// 設定一覧の背景画像
+	std::unique_ptr<Sprite> sSettingBackground_ = nullptr;
+	uint16_t gSettingBackground_ = 0;
 
-	// フレーム関連
-	uint16_t frameHandle_ = 0;
-	const Vector2 frameSize_ = { 272.0f, 56.0f };
-	std::unique_ptr<HitFrame> hitFrame_ = nullptr;
-
-	// 設定の背景画像
-	uint16_t gBackBox_ = 0;
-	std::unique_ptr<Sprite> sBackBox_ = nullptr;
+	// 描画フラグ
+	bool isDraw_ = true;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -57,12 +33,12 @@ public:
 	void Draw();
 
 	// 衝突時処理
-	void OnCollision(SelectNum& selectNum);
+	void OnCollision();
 
 	// 行列更新処理
 	void MatUpdate();
 
-	// 衝突判定の[ON][OFF]を切り替える
-	void SetIsCollision(bool frag);
+	// 表示の[ON][OFF]を切り替える
+	void SetIsDisplay(bool frag);
 #pragma endregion
 };

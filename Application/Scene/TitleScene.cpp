@@ -56,6 +56,12 @@ void TitleScene::Initialize()
 	titleLayer_ = std::make_unique<TitleLayer>();
 	titleLayer_->Initialize();
 #pragma endregion
+
+#pragma region 設定レイヤー
+	settingLayer_ = std::make_unique<SettingLayer>();
+	settingLayer_->Initialize();
+	settingLayer_->SetIsDisplay(false);
+#pragma endregion
 }
 
 void TitleScene::Update()
@@ -65,6 +71,9 @@ void TitleScene::Update()
 
 	// タイトルレイヤー
 	titleLayer_->Update();
+
+	// 設定レイヤー
+	settingLayer_->Update();
 
 	// カメラ回転
 	CameraRota();
@@ -86,6 +95,9 @@ void TitleScene::Draw()
 
 	// タイトルレイヤー
 	titleLayer_->Draw();
+
+	// 設定レイヤー
+	settingLayer_->Draw();
 }
 
 void TitleScene::OnCollision()
@@ -96,17 +108,45 @@ void TitleScene::OnCollision()
 	// タイトルレイヤー
 	titleLayer_->OnCollision();
 
+	// 設定レイヤー
+	settingLayer_->OnCollision();
+
 #pragma region 左クリックを押したら
 	// 衝突していなかったらこれ以降の処理を飛ばす
 	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
 
+	// 取得するボタンの属性
+	ButtonAttribute buttonAttr = ButtonAttribute::NONE;
+
 	// マウスのコライダーから衝突しているコライダーのタグを属性に変換して取得
-	ButtonAttribute buttonAttr = (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
+	if (cMouse_->GetHitCollider() != nullptr)
+	{
+		buttonAttr = (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
+	}
 
 	// スタート
 	if (buttonAttr == ButtonAttribute::START)
 	{
 		SceneManager::GetInstance()->SceneTransition(SCENE::GAME);
+	}
+
+	// 設定
+	else if (buttonAttr == ButtonAttribute::SETTING)
+	{
+		titleLayer_->SetIsDisplay(false);
+		settingLayer_->SetIsDisplay(true);
+	}
+
+	// ゲーム終了
+	else if (buttonAttr == ButtonAttribute::END)
+	{
+		SceneManager::GetInstance()->SetIsEnd(true);
+	}
+
+	else if (buttonAttr == ButtonAttribute::RETURN)
+	{
+		titleLayer_->SetIsDisplay(true);
+		settingLayer_->SetIsDisplay(false);
 	}
 #pragma endregion
 }
@@ -121,6 +161,9 @@ void TitleScene::MatUpdate()
 
 	// タイトルレイヤー
 	titleLayer_->MatUpdate();
+
+	// 設定レイヤー
+	settingLayer_->MatUpdate();
 }
 
 void TitleScene::CameraRota()

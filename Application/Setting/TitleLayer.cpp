@@ -37,6 +37,8 @@ void TitleLayer::Update()
 
 void TitleLayer::Draw()
 {
+	if (isDraw_ == false) return;
+
 	// ボタン
 	for (auto& it : buttons_) it->Draw();
 
@@ -59,7 +61,8 @@ void TitleLayer::MatUpdate()
 	sTitle_->MatUpdate();
 }
 
-void TitleLayer::SetIsCollision(bool frag)
+void TitleLayer::SetIsDisplay(bool frag)
 {
 	for (auto& it : buttons_) it->SetIsCollision(frag);
+	isDraw_ = frag;
 }

@@ -1,4 +1,4 @@
-﻿#include "BoxCollider.h"
+#include "BoxCollider.h"
 
 BoxCollider::BoxCollider(const Vector2& offset, const Vector2& radius)
 {
@@ -16,6 +16,9 @@ void BoxCollider::Update()
 {
 	// 衝突フラグを初期化
 	isHit_ = false;
+
+	// 衝突しているコライダーをなくす
+	hitCol_ = nullptr;
 
 	// スプライトを紐づけていたら
 	if (sprite_) {

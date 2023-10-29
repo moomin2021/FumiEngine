@@ -1,4 +1,4 @@
-﻿#include "PointCollider.h"
+#include "PointCollider.h"
 
 PointCollider::PointCollider(const Vector2& offset)
 {
@@ -13,6 +13,9 @@ void PointCollider::Update()
 {
 	// 衝突フラグを初期化
 	isHit_ = false;
+
+	// 衝突しているコライダーをなくす
+	hitCol_ = nullptr;
 	
 	// スプタイトが紐づけられていたら
 	if (sprite_) {
