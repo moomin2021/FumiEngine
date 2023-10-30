@@ -73,10 +73,19 @@ void GameScene::Initialize()
 	// ステージ読み込み
 	stage_->Load("Resources/StageJson/stage1.json");
 
+#pragma region ゲームUI
 	sGameUI_ = std::make_unique<Sprite>();
 	sGameUI_->SetSize({ 1920.0f, 1080.0f });
 
 	gGameUI_ = LoadTexture("Resources/GameUI.png");
+
+	sObjectiveText_ = std::make_unique<Sprite>();
+	sObjectiveText_->SetAnchorPoint({ 0.5f, 0.5f });
+	sObjectiveText_->SetPosition({ 1700.0f, 300.0f });
+	sObjectiveText_->SetSize({ 400.0f, 200.0f });
+
+	gObjectiveText_ = LoadTexture("Resources/objectiveText.png");
+#pragma endregion
 }
 
 void GameScene::Update()
@@ -127,6 +136,8 @@ void GameScene::Draw()
 	player_->DrawFront2D();
 
 	sGameUI_->Draw(gGameUI_);
+
+	sObjectiveText_->Draw(gObjectiveText_);
 }
 
 void GameScene::Debug()
@@ -185,4 +196,5 @@ void GameScene::MatUpdate()
 	}
 
 	sGameUI_->MatUpdate();
+	sObjectiveText_->MatUpdate();
 }

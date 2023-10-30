@@ -47,6 +47,9 @@ private:
 	// ゲームUI
 	std::unique_ptr<Sprite> sGameUI_ = nullptr;
 	uint16_t gGameUI_ = 0;
+
+	std::unique_ptr<Sprite> sObjectiveText_ = nullptr;
+	uint16_t gObjectiveText_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数
