@@ -62,6 +62,18 @@ void TitleScene::Initialize()
 	settingLayer_->Initialize();
 	settingLayer_->SetIsDisplay(false);
 #pragma endregion
+
+#pragma region ゲームプレイレイヤー
+	gamePlayLayer_ = std::make_unique<GamePlayLayer>();
+	gamePlayLayer_->Initialize();
+	gamePlayLayer_->SetIsDisplay(false);
+#pragma endregion
+
+#pragma region オーディオレイヤー
+	audioLayer_ = std::make_unique<AudioLayer>();
+	audioLayer_->Initialize();
+	audioLayer_->SetIsDisplay(false);
+#pragma endregion
 }
 
 void TitleScene::Update()
@@ -69,11 +81,11 @@ void TitleScene::Update()
 	// コライダーとマウスの座標をリンク
 	cMouse_->SetOffset(mouse_->MousePos());
 
-	// タイトルレイヤー
+	// レイヤー
 	titleLayer_->Update();
-
-	// 設定レイヤー
 	settingLayer_->Update();
+	gamePlayLayer_->Update();
+	audioLayer_->Update();
 
 	// カメラ回転
 	CameraRota();
@@ -93,11 +105,11 @@ void TitleScene::Draw()
 
 	PipelineManager::PreDraw("Sprite");
 
-	// タイトルレイヤー
+	// レイヤー
 	titleLayer_->Draw();
-
-	// 設定レイヤー
 	settingLayer_->Draw();
+	gamePlayLayer_->Draw();
+	audioLayer_->Draw();
 }
 
 void TitleScene::OnCollision()
@@ -105,11 +117,11 @@ void TitleScene::OnCollision()
 	// 衝突全チェック
 	colMgr2D_->CheckAllCollision();
 
-	// タイトルレイヤー
+	// レイヤー
 	titleLayer_->OnCollision();
-
-	// 設定レイヤー
 	settingLayer_->OnCollision();
+	gamePlayLayer_->OnCollision();
+	audioLayer_->OnCollision();
 
 #pragma region 左クリックを押したら
 	// 衝突していなかったらこれ以降の処理を飛ばす
@@ -135,6 +147,8 @@ void TitleScene::OnCollision()
 	{
 		titleLayer_->SetIsDisplay(false);
 		settingLayer_->SetIsDisplay(true);
+		gamePlayLayer_->SetIsDisplay(true);
+		audioLayer_->SetIsDisplay(false);
 	}
 
 	// ゲーム終了
@@ -143,10 +157,27 @@ void TitleScene::OnCollision()
 		SceneManager::GetInstance()->SetIsEnd(true);
 	}
 
+	// ゲームプレイ
+	else if (buttonAttr == ButtonAttribute::GAMEPLAY)
+	{
+		gamePlayLayer_->SetIsDisplay(true);
+		audioLayer_->SetIsDisplay(false);
+	}
+
+	// オーディオ
+	else if (buttonAttr == ButtonAttribute::AUDIO)
+	{
+		gamePlayLayer_->SetIsDisplay(false);
+		audioLayer_->SetIsDisplay(true);
+	}
+
+	// 戻る
 	else if (buttonAttr == ButtonAttribute::RETURN)
 	{
 		titleLayer_->SetIsDisplay(true);
 		settingLayer_->SetIsDisplay(false);
+		gamePlayLayer_->SetIsDisplay(false);
+		audioLayer_->SetIsDisplay(false);
 	}
 #pragma endregion
 }
@@ -159,11 +190,11 @@ void TitleScene::MatUpdate()
 	// ステージ
 	stage_->MatUpdate();
 
-	// タイトルレイヤー
+	// レイヤー
 	titleLayer_->MatUpdate();
-
-	// 設定レイヤー
 	settingLayer_->MatUpdate();
+	gamePlayLayer_->MatUpdate();
+	audioLayer_->MatUpdate();
 }
 
 void TitleScene::CameraRota()

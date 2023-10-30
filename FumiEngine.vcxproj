@@ -97,6 +97,7 @@
     <ClCompile Include="Application\Enemy\Enemy0.cpp" />
     <ClCompile Include="Application\Enemy\Boss0.cpp" />
     <ClCompile Include="Application\Setting\BoxButton.cpp" />
+    <ClCompile Include="Application\Setting\AudioLayer.cpp" />
     <ClCompile Include="Engine\Util\Easing.cpp" />
     <ClCompile Include="Engine\Collision\CircleCollider.cpp" />
     <ClCompile Include="Engine\Collision\BoxCollider.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Application\Enemy\Boss0.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
     <ClInclude Include="Application\Setting\ButtonAttribute.h" />
+    <ClInclude Include="Application\Setting\AudioLayer.h" />
     <ClInclude Include="Engine\Util\Easing.h" />
     <ClInclude Include="Engine\Collision\CircleCollider.h" />
     <ClInclude Include="Engine\Collision\BoxCollider.h" />

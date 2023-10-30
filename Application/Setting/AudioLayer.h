@@ -4,7 +4,7 @@
 
 #include <vector>
 
-class GamePlayLayer {
+class AudioLayer {
 #pragma region メンバ変数
 private:
 	// ボタン
@@ -19,8 +19,8 @@ private:
 
 #pragma region メンバ関数
 public:
-	GamePlayLayer() {}
-	~GamePlayLayer();
+	AudioLayer() {}
+	~AudioLayer();
 
 	// 初期化処理
 	void Initialize();

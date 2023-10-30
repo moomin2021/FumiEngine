@@ -43,7 +43,8 @@ public:
 	~BoxButton();
 
 	// 初期化処理
-	void Initialize(int32_t inTag, const Vector2& inPos, const Vector2& inButtonSize, const Vector2& inFrameSize, uint16_t inButtonHandle, uint16_t inTextHandle, uint16_t inFrameHandle);
+	void Initialize(int32_t inTag, const Vector2& inPos, const Vector2& inButtonSize,
+		const Vector2& inFrameSize, uint16_t inButtonHandle, uint16_t inTextHandle, uint16_t inFrameHandle);
 
 	// 更新処理
 	void Update();
