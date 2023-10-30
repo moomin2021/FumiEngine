@@ -157,6 +157,12 @@ void TitleScene::OnCollision()
 		SceneManager::GetInstance()->SetIsEnd(true);
 	}
 
+	// テストシーン
+	else if (buttonAttr == ButtonAttribute::TEST)
+	{
+		SceneManager::GetInstance()->SceneTransition(SCENE::TEST);
+	}
+
 	// ゲームプレイ
 	else if (buttonAttr == ButtonAttribute::GAMEPLAY)
 	{

@@ -1,11 +1,15 @@
 #pragma once
 #include "BaseScene.h"
-#include "Camera.h"
 #include "Model.h"
 #include "Object3D.h"
 #include "LightGroup.h"
 #include "DirectionalLight.h"
-#include "Line3D.h"
+#include "Key.h"
+
+#include "Stage.h"
+#include "Player.h"
+#include "EnemyManager.h"
+#include "NavMesh.h"
 
 #include <memory>
 
@@ -13,8 +17,8 @@ class TestScene : public BaseScene
 {
 #pragma region メンバ変数
 private:
-	// カメラ
-	std::unique_ptr<Camera> camera_ = nullptr;
+	// インスタンス
+	Key* key_ = nullptr;
 
 	// ライトグループ
 	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
@@ -22,14 +26,27 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
+	// ステージオブジェクトの管理クラス
+	std::unique_ptr<Stage> stage_ = nullptr;
+
+	// プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
+
+	// エネミーマネージャー
+	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
+
 	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Model> mCube_ = nullptr;
 
-	// オブジェクト3D
-	std::unique_ptr<Object3D> object_ = nullptr;
+	// 3軸を示すオブジェクト
+	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
 
-	// 線
-	std::unique_ptr<Line3D> line_ = nullptr;
+	// デバック
+	bool isDebug_ = false;
+
+	// ゲームUI
+	std::unique_ptr<Sprite> sGameUI_ = nullptr;
+	uint16_t gGameUI_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -48,6 +65,9 @@ public:
 
 	// 描画処理
 	void Draw();
+
+	// デバック
+	void Debug();
 
 private:
 	// 衝突時処理

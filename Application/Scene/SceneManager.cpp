@@ -5,6 +5,7 @@
 
 #include "TitleScene.h"
 #include "GameScene.h"
+#include "TestScene.h"
 #include "GameOverScene.h"
 #include "TransitionScene.h"
 #include "TestScene.h"
@@ -68,17 +69,16 @@ void SceneManager::ChangeScene(SCENE changeSceneNum)
 		nowScene_ = std::make_unique<GameScene>();
 		nowScene_->Initialize();
 		break;
+	case SCENE::TEST:
+		nowScene_ = std::make_unique<TestScene>();
+		nowScene_->Initialize();
+		break;
 	case SCENE::GAMEOVER:
 		nowScene_ = std::make_unique<GameOverScene>();
 		nowScene_->Initialize();
 		break;
 	case SCENE::TRANSITION:
 		nowScene_ = std::make_unique<TransitionScene>();
-		nowScene_->Initialize();
-		break;
-
-	case SCENE::TEST:
-		nowScene_ = std::make_unique<TestScene>();
 		nowScene_->Initialize();
 		break;
 	}

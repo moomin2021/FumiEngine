@@ -9,10 +9,9 @@
 enum SCENE {
 	TITLE,
 	GAME,
+	TEST,
 	GAMEOVER,
 	TRANSITION,
-
-	TEST,
 };
 
 enum PostEffectType {

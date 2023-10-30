@@ -9,7 +9,7 @@ TitleLayer::~TitleLayer()
 void TitleLayer::Initialize()
 {
 #pragma region ボタン
-	buttons_.resize(3);
+	buttons_.resize(4);
 	BoxButton::SetCollisionManager2D(CollisionManager2D::GetInstance());
 	for (uint16_t i = 0; i < buttons_.size(); i++)
 	{
