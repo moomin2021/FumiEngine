@@ -151,16 +151,22 @@ void TitleScene::OnCollision()
 		audioLayer_->SetIsDisplay(false);
 	}
 
-	// ゲーム終了
-	else if (buttonAttr == ButtonAttribute::END)
+	// マップ作成シーン
+	else if (buttonAttr == ButtonAttribute::MAPCREATE)
 	{
-		SceneManager::GetInstance()->SetIsEnd(true);
+		SceneManager::GetInstance()->SceneTransition(SCENE::MAPCREATE);
 	}
 
 	// テストシーン
 	else if (buttonAttr == ButtonAttribute::TEST)
 	{
 		SceneManager::GetInstance()->SceneTransition(SCENE::TEST);
+	}
+
+	// ゲーム終了
+	else if (buttonAttr == ButtonAttribute::END)
+	{
+		SceneManager::GetInstance()->SetIsEnd(true);
 	}
 
 	// ゲームプレイ

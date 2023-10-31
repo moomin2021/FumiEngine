@@ -154,6 +154,7 @@
     <ClCompile Include="Application\Setting\SettingLayer.cpp" />
     <ClCompile Include="Application\Setting\TitleLayer.cpp" />
     <ClCompile Include="Application\Setting\Slider.cpp" />
+    <ClCompile Include="Application\Scene\MapCreateScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Engine\3d\Line3D.h" />
     <ClInclude Include="Application\Setting\GamePlayLayer.h" />
     <ClInclude Include="Application\Setting\Slider.h" />
+    <ClInclude Include="Application\Scene\MapCreateScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

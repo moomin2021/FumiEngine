@@ -19,11 +19,6 @@
 
 class TitleScene : public BaseScene
 {
-	enum class LayerState {
-		TITLE,
-		SETTING,
-	};
-
 #pragma region メンバ変数
 private:
 	// インスタンス

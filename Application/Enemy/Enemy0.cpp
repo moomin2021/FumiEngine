@@ -35,7 +35,7 @@ void Enemy0::Initialize(Vector3 pos, Vector3 scale)
 	object_->SetScale(scale);
 
 	// コライダー生成
-	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f);
+	collider_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 4.0f, 0.0f }, 1.0f);
 
 	// コライダーとオブジェクトを紐づけ
 	collider_->SetObject3D(object_.get());

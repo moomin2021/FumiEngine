@@ -5,6 +5,7 @@ enum class ButtonAttribute {
 	START,
 	SETTING,
 	END,
+	MAPCREATE,
 	TEST,
 
 	GAMEPLAY,
