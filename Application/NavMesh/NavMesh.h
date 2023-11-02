@@ -41,8 +41,7 @@ public:
 	void Draw();
 
 	// ルート探索
-	void RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute);
-	void RouteSearch(const Vector3& startVec, const Vector3& endVec, std::vector<Vector3>& outputRoute);
+	void RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::vector<Vector3>& outputRoute);
 
 	// レイがどのセルの上にいるのかを返す
 	int32_t CheckRay2Cell(const Ray& ray);
@@ -77,8 +76,8 @@ struct NavNode {
 	// 前のノード
 	NavNode* parent = nullptr;
 
-	// ノードの状態
-	NodeState state = NodeState::OPEN;
+	// セルID
+	int32_t cellID = ID_NONE;
 
 	// セル
 	NavCell* cell = nullptr;
@@ -88,5 +87,5 @@ struct NavNode {
 	float score = 0.0f;// スコア = 移動コスト + 推定コスト
 
 	// スコアを取得
-	float GetScore() { return score = cCost + hCost; }
+	void CalcScore() { score = cCost + hCost; }
 };
