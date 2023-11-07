@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <vector>
 #include <string>
 
@@ -27,6 +27,22 @@ namespace Util {
 	/// <param name="min"> 最小値 </param>
 	/// <returns></returns>
 	float Clamp(float value, float max, float min);
+
+	/// <summary>
+	/// 入れた値を比較し大きい値を返す
+	/// </summary>
+	/// <param name="value0"> 値 </param>
+	/// <param name="value1"> 値 </param>
+	/// <returns></returns>
+	float Max(float value0, float value1);
+
+	/// <summary>
+	/// 入れた値を比較し小さい値を返す
+	/// </summary>
+	/// <param name="value0"> 値 </param>
+	/// <param name="value1"> 値 </param>
+	/// <returns></returns>
+	float Min(float value0, float value1);
 
 	/// <summary>
 	/// 弧度法の値を度数法にして返す

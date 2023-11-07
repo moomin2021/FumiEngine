@@ -1,4 +1,4 @@
-﻿#include "Util.h"
+#include "Util.h"
 
 #include <Windows.h>
 #include <chrono>
@@ -28,6 +28,18 @@ float Util::Clamp(float value, float max, float min)
 
 	// どちらにも当てはまらなかったら値をそのまま返す
 	return value;
+}
+
+float Util::Max(float value0, float value1)
+{
+	if (value0 > value1) return value0;
+	return value1;
+}
+
+float Util::Min(float value0, float value1)
+{
+	if (value0 < value1) return value0;
+	return value1;
 }
 
 float Util::Radian2Degree(float radian)

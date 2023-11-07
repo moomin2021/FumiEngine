@@ -4,6 +4,7 @@
 #include "CollisionManager.h"
 #include "Boss0.h"
 #include "Enemy0.h"
+#include "Zombie.h"
 #include "ParticleEmitter.h"
 #include "NavMesh.h"
 
@@ -19,6 +20,7 @@ private:
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
+	std::unique_ptr<Model> mZombie_ = nullptr;
 
 	// パーティクルエミッター
 	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
@@ -37,6 +39,7 @@ private:
 
 	// エネミー
 	std::deque<std::unique_ptr<Enemy0>> enemys_;
+	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
 
 	// ナビメッシュ
 	std::unique_ptr<NavMesh> navMesh_ = nullptr;
@@ -69,7 +72,7 @@ public:
 	void SummonBoss();
 
 	// エネミーを生成追加
-	void CreateAddEnemy0(const Vector3& pos, const Vector3& scale);
+	void CreateAddEnemy0(const Vector3& pos);
 	void DeleteEnemy0() { enemys_.clear(); }
 
 	void CheckSceneChange();

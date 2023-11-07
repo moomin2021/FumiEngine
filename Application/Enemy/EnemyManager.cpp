@@ -18,11 +18,16 @@ void EnemyManager::Initialize()
 {
 #pragma region インスタンス
 	colMgr_ = CollisionManager::GetInstance();
+
+	Zombie::SetCollisionManager(colMgr_);
 #pragma endregion
 
 #pragma region モデル
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("stoneGolem");
+	mZombie_ = std::make_unique<Model>("zombie");
+
+	Zombie::SetModel(mZombie_.get());
 #pragma endregion
 
 #pragma region オブジェクト
@@ -59,6 +64,16 @@ void EnemyManager::Update()
 		else ++it;
 	}
 
+	for (auto it = zombies_.begin(); it != zombies_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false) it = zombies_.erase(it);
+		else ++it;
+	}
+
 	// ボスが生成されていたら処理をする
 	if (boss_) {
 		boss_->Update();
@@ -77,6 +92,8 @@ void EnemyManager::Draw()
 		i->Draw();
 	}
 
+	for (auto& it : zombies_) it->Draw();
+
 	navMesh_->Draw();
 }
 
@@ -88,6 +105,7 @@ void EnemyManager::MatUpdate()
 	}
 
 	for (auto& it : enemys_) it->MatUpdate();
+	for (auto& it : zombies_) it->MatUpdate();
 
 	navMesh_->MatUpdate();
 }
@@ -97,6 +115,7 @@ void EnemyManager::OnCollision()
 	if (boss_) boss_->OnCollision();
 
 	for (auto& it : enemys_) it->OnCollision();
+	for (auto& it : zombies_) it->OnCollision();
 }
 
 void EnemyManager::SummonBoss()
@@ -106,14 +125,14 @@ void EnemyManager::SummonBoss()
 	boss_->MatUpdate();
 }
 
-void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& scale)
+void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 {
 	// 敵の生成
-	std::unique_ptr<Enemy0> newEnemy = std::make_unique<Enemy0>(mEnemy0_.get());
-	newEnemy->Initialize(pos, scale);
+	std::unique_ptr<Zombie> newZombie = std::make_unique<Zombie>();
+	newZombie->Initialize(pos);
 
 	// エネミー配列に追加
-	enemys_.emplace_back(std::move(newEnemy));
+	zombies_.emplace_back(std::move(newZombie));
 }
 
 void EnemyManager::CheckSceneChange()
@@ -156,7 +175,7 @@ void EnemyManager::Debug()
 	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
 	if (ImGui::Button("CreateEnemy"))
 	{
-		CreateAddEnemy0(enemyCreatePos, Vector3{ 2.0f, 2.0f, 2.0f });
+		CreateAddEnemy0(enemyCreatePos);
 	}
 
 	if (ImGui::Button("DeleteEnemy"))
