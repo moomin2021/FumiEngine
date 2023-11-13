@@ -50,6 +50,7 @@ void EnemyManager::Initialize()
 	navMesh_->Initialize("navMesh");
 	navMesh_->SetIsDraw(false);
 	Enemy0::SetNavMesh(navMesh_.get());
+	Zombie::SetNavMesh(navMesh_.get());
 #pragma endregion
 }
 

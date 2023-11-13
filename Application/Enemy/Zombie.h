@@ -4,6 +4,8 @@
 #include "CollisionManager.h"
 #include "RayCollider.h"
 #include "SphereCollider.h"
+#include "Line3D.h"
+#include "NavMesh.h"
 
 #include "Player.h"
 
@@ -13,7 +15,7 @@ class Zombie
 {
 private:
 	enum class State {
-		NONE,
+		WAIT,
 		PATROL,
 		CHASE,
 	};
@@ -23,6 +25,7 @@ private:
 	static CollisionManager* sColMgr_;// 衝突判定管理クラス
 	static Model* sModel_;// モデル
 	static Player* sPlayer_;// プレイヤー
+	static NavMesh* sNavMesh_;// ナビメッシュ
 
 	// オブジェクト3D
 	std::unique_ptr<Object3D> object_ = nullptr;
@@ -30,10 +33,10 @@ private:
 	// コライダー
 	std::unique_ptr<RayCollider> cGroundJudgment_ = nullptr;// 接地判定を取るコライダー
 	std::unique_ptr<SphereCollider> cSphere_ = nullptr;// ステージObjと衝突判定をする
-	std::unique_ptr<RayCollider> cPlayer2Zombie_ = nullptr;// プレイヤーからゾンビまでのレイ
+	std::unique_ptr<RayCollider> cEnemy2Player_ = nullptr;// 敵からプレイヤーまでのレイ
 
 	// ステート
-	State state_ = State::NONE;
+	State state_ = State::WAIT;
 
 	// 生存フラグ
 	bool isAlive_ = true;
@@ -51,6 +54,14 @@ private:
 	float turnSpd_ = 1.5f;
 	float angle_ = 0.0f;
 	Vector2 forwardVec_ = { 0.0f, 1.0f };
+
+	// ルート探索
+	std::unique_ptr<Line3D> line_ = nullptr;
+	std::vector<Vector3> route_ = {};
+	float routeSearchInterval_ = 10.0f;// ルート探索のインターバル[s]
+	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
+	float moveSpd_ = 0.1f;
+	float visualRecognitionDist_ = 20.0f;// 視認距離
 
 #pragma endregion
 
@@ -80,12 +91,14 @@ public:
 private:
 	// 状態別処理
 	static void (Zombie::* stateTable[]) ();
+	void Wait();		// 待機状態
 	void Patrol();		// 見回り状態
 	void Chase();		// 追跡状態
 
 	void GroundingJudgment();// 接地判定
 	void Gravity();// 重力処理
 	void Rotate();// 回転処理
+	void CreateNavRoute();// ルート作成
 #pragma endregion
 
 #pragma region セッター関数
@@ -93,6 +106,7 @@ public:
 	static void SetCollisionManager(CollisionManager* inColMgr) { sColMgr_ = inColMgr; }
 	static void SetModel(Model* inModel) { sModel_ = inModel; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
+	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
 #pragma endregion
 
 #pragma region ゲッター関数
