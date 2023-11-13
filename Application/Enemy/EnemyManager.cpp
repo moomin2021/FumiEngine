@@ -167,6 +167,8 @@ void EnemyManager::AddParticle(const Vector3& pos)
 
 void EnemyManager::Debug()
 {
+	for (auto& it : zombies_) it->Debug();
+
 	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 
 	ImGui::Begin("Enemy");
@@ -214,4 +216,5 @@ void EnemyManager::SetBossGenerator(const Vector3& pos)
 void EnemyManager::SetPlayer(Player* player)
 {
 	Enemy0::SetPlayer(player);
+	Zombie::SetPlayer(player);
 }
