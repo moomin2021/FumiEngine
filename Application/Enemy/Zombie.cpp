@@ -96,7 +96,7 @@ void Zombie::OnCollision()
 	// 視認距離内にオブジェクトがあったら処理を飛ばす
 	if (cEnemy2Player_->GetIsHit() && cEnemy2Player_->GetDistance() <= visualRecognitionDist_) return;
 
-	state_ = State::TRACKING;
+	state_ = State::CHASE;
 }
 
 void Zombie::MatUpdate()
@@ -214,7 +214,7 @@ void Zombie::CreateNavRoute()
 
 	lastRouteSearchTime_ = Util::GetTimrMSec();
 
-	Vector3 addVec = { 0.0f, 1.0f, 0.0f };
+	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
 	// 線の削除
 	line_->ClearPoint();
