@@ -133,6 +133,7 @@
     <ClCompile Include="Application\Setting\HitFrame.cpp" />
     <ClCompile Include="Engine\3d\Line3D.cpp" />
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp" />
+    <ClCompile Include="Application\NavMesh\FunnelAlgorithm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Application\Setting\Slider.cpp" />
     <ClCompile Include="Application\Scene\MapCreateScene.cpp" />
     <ClCompile Include="Application\Player\MapCreatePlayer.cpp" />
+    <ClCompile Include="Application\NavMesh\NavMeshPath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Scene\BaseScene.h" />
@@ -232,6 +234,8 @@
     <ClInclude Include="Application\Setting\Slider.h" />
     <ClInclude Include="Application\Scene\MapCreateScene.h" />
     <ClInclude Include="Application\Player\MapCreatePlayer.h" />
+    <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
+    <ClInclude Include="Application\NavMesh\FunnelAlgorithm.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

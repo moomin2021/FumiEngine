@@ -87,6 +87,8 @@ public:
 	const Vector3& GetCenter() { return center_; }
 
 	const Triangle& GetTriangle() { return triangle_; }
+
+	CellEdge GetArrivalEdge(int32_t toCellIndex) const;
 #pragma endregion
 
 #pragma region オペレーター
