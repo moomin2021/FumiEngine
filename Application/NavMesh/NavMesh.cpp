@@ -2,6 +2,7 @@
 
 #include "Collision.h"
 #include "PipelineManager.h"
+#include "NavMeshPath.h"
 
 #include <list>
 
@@ -45,213 +46,139 @@ void NavMesh::Draw()
 	PipelineManager::PreDraw("Object3D");
 }
 
-void NavMesh::RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute)
+bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::vector<Vector3>& outputRoute)
 {
-	std::vector<Vector3> route;
-	std::vector<std::unique_ptr<NavNode>> nodes;
-	std::vector<NavNode*> open;
-	std::vector<int32_t> closeID;
-	NavNode* goalNode = nullptr;
+	// スタートとゴールのセルIDを求める
+	int32_t startID = CheckRay2Cell(Ray(startVec, { 0.0f, -1.0f, 0.0f }));
+	int32_t goalID = CheckRay2Cell(Ray(goalVec, { 0.0f, -1.0f, 0.0f }));
 
-	// -----最初の処理----- //
-	// 1. ノードを生成
-	// 2. スタートIDをもとにセルのポインタを保存
-	// 3. 推定コストを計算(スタート位置からエンド位置までの直線距離)
-	// 4. スコアを計算(実スコア + 推定スコア)
-	// 5. オープンリストに追加
-	nodes.emplace_back(std::make_unique<NavNode>());
-	nodes.back()->cell = GetNavCell(startID);
-	nodes.back()->hCost = CalcCellDist(startID, endID);
-	nodes.back()->GetScore();
-	open.emplace_back(nodes.back().get());
-#pragma endregion
+	// 1. 現在の参照ノード
+	// 2. オープンリスト、クローズリスト
+	std::shared_ptr<NavNode> current = nullptr;
+	std::list<std::shared_ptr<NavNode>> open, close;
+	std::shared_ptr<NavNode> startNode = std::make_shared<NavNode>(goalID);
+	//startNode->cCost = 0.0f;
+	//startNode->hCost = 0.0f;
 
-#pragma region ゴールまで繰り返す
-	bool isBreak = false;
+	// ノードを格納
+	open.emplace_back(startNode);
 
-	while (isBreak == false)
+	// 過剰なループ防止
+	int32_t loopCount = 0;
+	const int32_t loopLimit = 1000000;
+
+	// openリストの中身がある間はループ
+	while (open.size() || loopCount < loopLimit)
 	{
-		// オープンリストから一番スコアの低いノードを取り出す
-		NavNode* minScoreNode = nullptr;
+		loopCount++;
+
+		// スコアが最も低いノードを取り出す
+
+		// 1. 最もスコアの低いノードのポインタ
+		// 2. 最も低いスコアの保存する変数
+		// 3. 削除するインデックス
+		std::shared_ptr<NavNode> minScoreNode = nullptr;
 		float minScore = FLT_MAX;
-		uint32_t deleteNum = 0;
-		for (uint32_t i = 0; i < open.size(); i++)
+		uint32_t deleteIndex = 0;
+		uint32_t count = 0;
+
+		for (auto& it : open)
 		{
-			if (open[i]->cell->GetCellID() == endID)
+			// スコアが今までで最も低かったら保存する
+			if (it->GetTotalCost() < minScore)
 			{
-				goalNode = open[i];
-				isBreak = true;
-				break;
+				// 1. 今までで最も低いノードとして保存
+				// 2. 今までで最も低いスコアとして保存
+				current = it;
+				minScore = it->GetTotalCost();
+				deleteIndex = count;
 			}
 
-			if (open[i]->GetScore() < minScore)
-			{
-				minScoreNode = open[i];
-				deleteNum = i;
-			}
+			count++;
 		}
+		open.erase(std::next(open.begin(), deleteIndex));
 
-		if (isBreak) break;
+		// 取り出したノードがスタート地点と同じセルだったらパス検索官僚
+		if (current->cellID == startID) break;
 
-		// 取り出したノードのIDをクローズリストに追加
-		closeID.emplace_back(open[deleteNum]->cell->GetCellID());
+		// closeに保存
+		close.emplace_back(current);
 
-		// 取り出したノードをオープンリストから削除
-		open.erase(open.begin() + deleteNum);
-
-		// オープンリストから取り出したノードから新たにノードを生成
-		std::vector<int32_t> linkID = minScoreNode->cell->GetLinkID();
-		for (uint8_t i = 0; i < linkID.size(); i++)
+		// currentCellの隣接セルを取得
+		NavCell* currentCell = GetNavCell(current->cellID);
+		for (int32_t neighborIndex : currentCell->GetLinkID())
 		{
-			if (linkID[i] == ID_NONE) continue;
-
-			bool isClose = false;
-			for (uint32_t j = 0; j < closeID.size(); j++)
+			// neighborIndexが無効な値 または closeリストに含まれている場合は以降の処理を実行しない
+			std::shared_ptr<NavNode> neighborNode = std::make_shared<NavNode>(neighborIndex);
+			bool containsInCloseList = false;
+			for (auto& it : close)
 			{
-				if (linkID[i] == closeID[j])
+				if (it->cellID == neighborNode->cellID)
 				{
-					isClose = true;
+					containsInCloseList = true;
 					break;
 				}
 			}
 
-			if (isClose == false)
+			if (neighborIndex == ID_NONE || containsInCloseList) continue;
+
+			NavCell* neighborCell = GetNavCell(neighborNode->cellID);
+			float totalCost = current->cCost + Vector3(currentCell->GetCenter() - neighborCell->GetCenter()).length();
+			bool containsInOpenList = false;
+
+			for (auto& it : open)
 			{
-				nodes.emplace_back(std::make_unique<NavNode>());
-				nodes.back()->parent = minScoreNode;
-				nodes.back()->cell = GetNavCell(linkID[i]);
-				nodes.back()->cCost = minScoreNode->cCost + CalcCellDist(GetNavCell(linkID[i])->GetCellID(), minScoreNode->cell->GetCellID());
-				nodes.back()->hCost = CalcCellDist(linkID[i], endID);
-				nodes.back()->GetScore();
-				open.emplace_back(nodes.back().get());
-			}
-		}
-	}
-
-	NavNode* nowNode = nullptr;
-	nowNode = goalNode;
-
-	while (nowNode != nullptr)
-	{
-		route.emplace_back(nowNode->cell->GetCenter());
-		nowNode = nowNode->parent;
-	}
-#pragma endregion
-
-	outputRoute = route;
-}
-
-void NavMesh::RouteSearch(const Vector3& startVec, const Vector3& endVec, std::vector<Vector3>& outputRoute)
-{
-	std::vector<Vector3> route;
-	std::vector<std::unique_ptr<NavNode>> nodes;
-	std::vector<NavNode*> open;
-	std::vector<int32_t> closeID;
-	NavNode* goalNode = nullptr;
-	Ray startRay = { startVec, {0.0f, -1.0f, 0.0f} };
-	Ray endRay = { endVec, {0.0f, -1.0f, 0.0f} };
-	int32_t startID = CheckRay2Cell(startRay);
-	int32_t endID = CheckRay2Cell(endRay);
-
-	// -----最初の処理----- //
-	// 1. ノードを生成
-	// 2. スタートIDをもとにセルのポインタを保存
-	// 3. 推定コストを計算(スタート位置からエンド位置までの直線距離)
-	// 4. スコアを計算(実スコア + 推定スコア)
-	// 5. オープンリストに追加
-	nodes.emplace_back(std::make_unique<NavNode>());
-	nodes.back()->cell = GetNavCell(startID);
-	nodes.back()->hCost = CalcCellDist(startID, endID);
-	nodes.back()->GetScore();
-	open.emplace_back(nodes.back().get());
-#pragma endregion
-
-#pragma region ゴールまで繰り返す
-	bool isBreak = false;
-
-	while (isBreak == false)
-	{
-		// オープンリストから一番スコアの低いノードを取り出す
-		NavNode* minScoreNode = nullptr;
-		float minScore = FLT_MAX;
-		uint32_t deleteNum = 0;
-		for (uint32_t i = 0; i < open.size(); i++)
-		{
-			if (open[i]->cell->GetCellID() == endID)
-			{
-				goalNode = open[i];
-				isBreak = true;
-				break;
-			}
-
-			if (open[i]->GetScore() < minScore)
-			{
-				minScore = open[i]->GetScore();
-				minScoreNode = open[i];
-				deleteNum = i;
-			}
-		}
-
-		if (isBreak) break;
-
-		// 取り出したノードのIDをクローズリストに追加
-		closeID.emplace_back(open[deleteNum]->cell->GetCellID());
-
-		// 取り出したノードをオープンリストから削除
-		open.erase(open.begin() + deleteNum);
-
-		// オープンリストから取り出したノードから新たにノードを生成
-		std::vector<int32_t> linkID = minScoreNode->cell->GetLinkID();
-		for (uint8_t i = 0; i < linkID.size(); i++)
-		{
-			if (linkID[i] == ID_NONE) continue;
-
-			bool isClose = false;
-			for (uint32_t j = 0; j < closeID.size(); j++)
-			{
-				if (linkID[i] == closeID[j])
+				if (it->cellID == neighborNode->cellID)
 				{
-					isClose = true;
+					containsInOpenList = true;
 					break;
 				}
 			}
 
-			if (isClose == false)
+			// OpenリストにNeighborNodeがあるかチェック
+			if (containsInOpenList)
 			{
-				nodes.emplace_back(std::make_unique<NavNode>());
-				nodes.back()->parent = minScoreNode;
-				nodes.back()->cell = GetNavCell(linkID[i]);
-				nodes.back()->cCost = minScoreNode->cCost + CalcCellDist(GetNavCell(linkID[i])->GetCellID(), minScoreNode->cell->GetCellID());
-				nodes.back()->hCost = CalcCellDist(linkID[i], endID);
-				nodes.back()->GetScore();
-				open.emplace_back(nodes.back().get());
+				// 「スタートからNeighborまでの推定コスト」がこれまでに記録した「スタートからNeighborまでの最小コスト」よりも小さい
+				if (totalCost < neighborNode->cCost)
+				{
+					neighborNode->parent = current;
+					neighborNode->cCost = totalCost;
+				}
+			}
+
+			// 未だOpenリストにない
+			else
+			{
+				// 必要な情報を記録してOpenリストへ格納
+				neighborNode->parent = current;
+				neighborNode->cCost = totalCost;
+				neighborNode->hCost = Vector3(neighborCell->GetCenter() - neighborCell->GetCenter()).length();
+				open.emplace_back(neighborNode);
 			}
 		}
 	}
 
-	NavNode* nowNode = nullptr;
-	nowNode = goalNode;
+	// 過剰にループするようであればパス検索は失敗
+	if (loopCount >= loopLimit) return false;
 
-	route.emplace_back(endVec);
+	// パスが見つかった
+	std::unique_ptr<NavMeshPath> navMeshPath = std::make_unique<NavMeshPath>();
 
-	while (nowNode != nullptr)
+	navMeshPath->AddWayPoint(startVec);
+	while (current->parent != nullptr)
 	{
-		route.emplace_back(nowNode->cell->GetCenter());
-		nowNode = nowNode->parent;
+		NavCell* currentCell = GetNavCell(current->cellID);
+		NavCell* parentCell = GetNavCell(current->parent->cellID);
+		navMeshPath->AddWayPoint(currentCell, parentCell);
+		current = current->parent;
 	}
+	navMeshPath->AddWayPoint(goalVec);
 
-	route.emplace_back(startVec);
+	std::vector<Vector3> result = navMeshPath->GetStraightPath(0.0f);
 
-	std::vector<Vector3> resultRoute;
-	resultRoute.resize(route.size());
+	outputRoute = result;
 
-	for (uint16_t i = 0; i < resultRoute.size(); i++)
-	{
-		resultRoute[i] = route[resultRoute.size() - i - 1];
-	}
-#pragma endregion
-
-	outputRoute = resultRoute;
+	return true;
 }
 
 int32_t NavMesh::CheckRay2Cell(const Ray& ray)

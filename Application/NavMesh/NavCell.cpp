@@ -105,3 +105,13 @@ bool NavCell::AlreadyLinkCell(int32_t inCellID)
 
 	return result;
 }
+
+CellEdge NavCell::GetArrivalEdge(int32_t toCellIndex) const
+{
+	for (uint8_t i = 0; i < linkID_.size(); i++)
+	{
+		if (linkID_[i] == toCellIndex) return edges_[i];
+	}
+
+	return CellEdge();
+}

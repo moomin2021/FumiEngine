@@ -312,6 +312,12 @@
     <ClCompile Include="Application\Player\MapCreatePlayer.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\NavMesh\NavMeshPath.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\NavMesh\FunnelAlgorithm.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Application\Enemy\Zombie.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
@@ -537,6 +543,12 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Player\MapCreatePlayer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\NavMesh\NavMeshPath.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\NavMesh\FunnelAlgorithm.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\Zombie.h">

@@ -6,6 +6,7 @@
 #include "Line3D.h"
 
 #include <memory>
+#include <algorithm>
 
 class NavMesh {
 #pragma region メンバ変数
@@ -41,8 +42,7 @@ public:
 	void Draw();
 
 	// ルート探索
-	void RouteSearch(int32_t startID, int32_t endID, std::vector<Vector3>& outputRoute);
-	void RouteSearch(const Vector3& startVec, const Vector3& endVec, std::vector<Vector3>& outputRoute);
+	bool RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::vector<Vector3>& outputRoute);
 
 	// レイがどのセルの上にいるのかを返す
 	int32_t CheckRay2Cell(const Ray& ray);
@@ -75,18 +75,23 @@ enum class NodeState {
 
 struct NavNode {
 	// 前のノード
-	NavNode* parent = nullptr;
+	std::shared_ptr<NavNode> parent = nullptr;
 
-	// ノードの状態
-	NodeState state = NodeState::OPEN;
+	// セルID
+	int32_t cellID = ID_NONE;
 
 	// セル
-	NavCell* cell = nullptr;
+	std::shared_ptr<NavCell> cell = nullptr;
 
 	float cCost = 0.0f;// 移動コスト
 	float hCost = 0.0f;// 推定コスト
 	float score = 0.0f;// スコア = 移動コスト + 推定コスト
 
+	NavNode() : cellID(0), cCost(0.0f), hCost(0.0f) {}
+	NavNode(int32_t inCellID) : cellID(inCellID), parent(nullptr), cCost(0.0f), hCost(0.0f) {}
+	~NavNode() {}
+
 	// スコアを取得
-	float GetScore() { return score = cCost + hCost; }
+	void CalcScore() { score = cCost + hCost; }
+	float GetTotalCost() { return cCost + hCost; }
 };
