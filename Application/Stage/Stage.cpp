@@ -173,4 +173,7 @@ void Stage::Load(std::string fileName, bool isCol)
 			colMgr_->AddCollider(colliders_.front().get());
 		}
 	}
+
+	int num = 0;
+	num = 1;
 }
