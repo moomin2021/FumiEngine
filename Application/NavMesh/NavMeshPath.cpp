@@ -50,7 +50,7 @@ std::vector<Vector3> NavMeshPath::GetStraightPath(float cornerOffSetRatio)
 		// 右の点を更新
 
 		// NextRight が PortalRight よりも左側にあるということはファンネルをより狭く出来るということなので PortalRight を Right へと進める.
-		PointSide Classification = ClassifyPoint(portalApex, portalRight, nextRight);
+ 		PointSide Classification = ClassifyPoint(portalApex, portalRight, nextRight);
 		if (Classification != PointSide::RIGHT_SIDE)
 		{
 			// NextRight は PortalApex と PortalLeft からなるベクトルよりも右側にあるかチェック（正しい三角形が構成されているかチェック）
@@ -138,10 +138,10 @@ void NavMeshPath::AddWayPoint(const NavWayPoint& inNavWayPoint)
 
 NavMeshPath::PointSide NavMeshPath::ClassifyPoint(const Vector3& a, const Vector3& b, const Vector3& c)
 {
-	Vector2 ab = Vector2(b.x, b.y) - Vector2(a.x, a.y);
-	Vector2 ac = Vector2(c.x, c.y) - Vector2(a.x, a.y);
+	Vector2 ab = Vector2(b.x, b.z) - Vector2(a.x, a.z);
+	Vector2 ac = Vector2(c.x, c.z) - Vector2(a.x, a.z);
 
-	float value = ab.normalize().cross(ac.normalize());
+	float value = ac.normalize().cross(ab.normalize());
 
 	if (value == 0) return PointSide::ON_LINE;
 	if (value < 0) return PointSide::LEFT_SIDE;

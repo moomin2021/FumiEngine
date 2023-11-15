@@ -175,6 +175,14 @@ bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::
 	navMeshPath->AddWayPoint(goalVec);
 
 	std::vector<Vector3> result = navMeshPath->GetStraightPath(0.0f);
+	
+	//std::vector<NavMeshPath::NavWayPoint> navWayPoints = navMeshPath->GetWayPoints();
+	//std::vector<Vector3> result = {};
+
+	//for (auto& it : navWayPoints)
+	//{
+	//	result.emplace_back(it.location);
+	//}
 
 	outputRoute = result;
 
