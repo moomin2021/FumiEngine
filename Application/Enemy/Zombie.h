@@ -13,7 +13,7 @@
 
 class Zombie
 {
-private:
+	public:
 	enum class State {
 		WAIT,
 		PATROL,
@@ -36,7 +36,7 @@ private:
 	std::unique_ptr<RayCollider> cEnemy2Player_ = nullptr;// 敵からプレイヤーまでのレイ
 
 	// ステート
-	State state_ = State::WAIT;
+	State state_ = State::PATROL;
 
 	// 生存フラグ
 	bool isAlive_ = true;
@@ -61,7 +61,7 @@ private:
 	float routeSearchInterval_ = 1.0f;// ルート探索のインターバル[s]
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.1f;
-	float visualRecognitionDist_ = 40.0f;// 視認距離
+	float visualRecognitionDist_ = 30.0f;// 視認距離
 
 #pragma endregion
 
@@ -88,6 +88,8 @@ public:
 	// デバック処理
 	void Debug();
 
+	void CreateNavRoute();// ルート作成
+
 private:
 	// 状態別処理
 	static void (Zombie::* stateTable[]) ();
@@ -98,7 +100,6 @@ private:
 	void GroundingJudgment();// 接地判定
 	void Gravity();// 重力処理
 	void Rotate();// 回転処理
-	void CreateNavRoute();// ルート作成
 #pragma endregion
 
 #pragma region セッター関数
@@ -107,6 +108,7 @@ public:
 	static void SetModel(Model* inModel) { sModel_ = inModel; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
+	void SetState(State inState) { state_ = inState; }
 #pragma endregion
 
 #pragma region ゲッター関数

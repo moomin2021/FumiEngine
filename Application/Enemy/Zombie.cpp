@@ -60,9 +60,6 @@ void Zombie::Update()
 	// 重力処理
 	Gravity();
 
-	// 回転処理
-	Rotate();
-
 	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
 	enemy2Player.normalize();
 
@@ -86,15 +83,23 @@ void Zombie::OnCollision()
 	// 接地判定
 	GroundingJudgment();
 
-	if (state_ == State::CHASE) return;
+	if (state_ == State::WAIT) return;
 
 	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
 
 	// 敵からプレイヤーまでの距離が指定した視認距離より長かったら処理を飛ばす
-	if (enemy2Player.length() > visualRecognitionDist_) return;
+	if (enemy2Player.length() > visualRecognitionDist_)
+	{
+		state_ = State::PATROL;
+		return;
+	}
 
 	// 視認距離内にオブジェクトがあったら処理を飛ばす
-	if (cEnemy2Player_->GetIsHit() && cEnemy2Player_->GetDistance() <= visualRecognitionDist_) return;
+	if (cEnemy2Player_->GetIsHit())
+	{
+		state_ = State::PATROL;
+		return;
+	}
 
 	state_ = State::CHASE;
 }
@@ -107,9 +112,9 @@ void Zombie::MatUpdate()
 
 void Zombie::Debug()
 {
-	ImGui::Begin("Enemy");
-	ImGui::Text("angle = %f", angle_);
-	ImGui::End();
+	//ImGui::Begin("Enemy");
+	//ImGui::Text("angle = %f", angle_);
+	//ImGui::End();
 }
 
 void (Zombie::* Zombie::stateTable[]) () = {
@@ -131,6 +136,9 @@ void Zombie::Chase()
 {
 	// ルート探索
 	CreateNavRoute();
+
+	// 回転処理
+	Rotate();
 
 	if (route_.size() == 0) return;
 	Vector3 moveVec = route_[0] - object_->GetPosition();
@@ -214,14 +222,12 @@ void Zombie::CreateNavRoute()
 
 	lastRouteSearchTime_ = Util::GetTimrMSec();
 
-	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
+	Vector3 addVec = { 0.0f, 0.5f, 0.0f };
 
 	// 線の削除
 	line_->ClearPoint();
 
-	sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition(), route_);
-
-	route_.erase(route_.begin());
+	sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 0.1f, 0.0f), sPlayer_->GetPosition(), route_);
 
 	for (uint16_t i = 0; i < route_.size() - 1; i++)
 	{

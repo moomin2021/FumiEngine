@@ -3,7 +3,7 @@
     "objects": [
         {
             "type": "MESH",
-            "name": "stage",
+            "name": "terrain.000",
             "transform": {
                 "translation": [
                     0.0,
@@ -21,15 +21,81 @@
                     1.0
                 ]
             },
-            "file_name": "stage"
+            "file_name": "terrain"
         },
         {
             "type": "MESH",
-            "name": "bossGenerator",
+            "name": "cylinder.000",
             "transform": {
                 "translation": [
                     0.0,
-                    50.0,
+                    56.20524597167969,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "cylinder.001",
+            "transform": {
+                "translation": [
+                    -36.35497283935547,
+                    -45.56881332397461,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "cylinder.002",
+            "transform": {
+                "translation": [
+                    37.849483489990234,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cylinder"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    31.361276626586914,
                     1.0
                 ],
                 "rotation": [
@@ -40,10 +106,169 @@
                 "scaling": [
                     1.0,
                     1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.001",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -40.2952766418457,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.002",
+            "transform": {
+                "translation": [
+                    -30.740385055541992,
+                    0.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.003",
+            "transform": {
+                "translation": [
+                    29.182870864868164,
+                    0.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Enemy.004",
+            "transform": {
+                "translation": [
+                    16.87482261657715,
+                    -22.242645263671875,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "sphere",
+            "class_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "terrain.001",
+            "transform": {
+                "translation": [
+                    1.3748245239257812,
+                    148.2646942138672,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.5586514472961426,
+                    0.5586514472961426,
+                    0.5586514472961426
+                ]
+            },
+            "file_name": "terrain"
+        },
+        {
+            "type": "MESH",
+            "name": "BossGenerator",
+            "transform": {
+                "translation": [
+                    -3.1033172607421875,
+                    146.0726318359375,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    9.0,
+                    9.0,
                     1.0
                 ]
             },
             "class_name": "BossGenerator"
+        },
+        {
+            "type": "MESH",
+            "name": "bridge.000",
+            "transform": {
+                "translation": [
+                    0.0,
+                    87.73924255371094,
+                    -0.8444497585296631
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    5.093135833740234,
+                    25.46567726135254,
+                    0.2546567916870117
+                ]
+            },
+            "file_name": "bridge"
         }
     ]
 }

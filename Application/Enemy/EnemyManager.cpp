@@ -181,6 +181,18 @@ void EnemyManager::Debug()
 		CreateAddEnemy0(enemyCreatePos);
 	}
 
+	ImGui::Text("State");
+
+	if (ImGui::Button("Wait"))
+	{
+		for (auto& it : zombies_) it->SetState(Zombie::State::WAIT);
+	}
+
+	if (ImGui::Button("Patrol"))
+	{
+		for (auto& it : zombies_) it->SetState(Zombie::State::PATROL);
+	}
+
 	if (ImGui::Button("DeleteEnemy"))
 	{
 		DeleteEnemy0();
@@ -197,7 +209,7 @@ void EnemyManager::Debug()
 
 		if (ImGui::Button("CreateRoute"))
 		{
-			for (auto& it : enemys_)
+			for (auto& it : zombies_)
 			{
 				it->CreateNavRoute();
 			}
