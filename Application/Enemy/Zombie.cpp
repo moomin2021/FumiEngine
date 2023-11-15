@@ -194,14 +194,14 @@ void Zombie::Rotate()
 
 	object_->SetRotation({ 0.0f, angle_, 0.0f });
 
-	ImGui::Begin("Enemy");
-	ImGui::Text("enemy = {%f, %f}", enemy.x, enemy.y);
-	ImGui::Text("player = {%f, %f}", player.x, player.y);
-	ImGui::Text("enemy2player = {%f, %f}", enemy2Player.x, enemy2Player.y);
-	ImGui::Text("forwardVec = {%f, %f}", forwardVec_.x, forwardVec_.y);
-	ImGui::Text("resultAngle = %f", result);
-	ImGui::Text("cross = %f", forwardVec_.cross(enemy2Player));
-	ImGui::End();
+	//ImGui::Begin("Enemy");
+	//ImGui::Text("enemy = {%f, %f}", enemy.x, enemy.y);
+	//ImGui::Text("player = {%f, %f}", player.x, player.y);
+	//ImGui::Text("enemy2player = {%f, %f}", enemy2Player.x, enemy2Player.y);
+	//ImGui::Text("forwardVec = {%f, %f}", forwardVec_.x, forwardVec_.y);
+	//ImGui::Text("resultAngle = %f", result);
+	//ImGui::Text("cross = %f", forwardVec_.cross(enemy2Player));
+	//ImGui::End();
 }
 
 void Zombie::CreateNavRoute()

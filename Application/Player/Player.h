@@ -49,6 +49,7 @@ private:
 
 	// カメラ関連
 	std::unique_ptr<Camera> camera_ = nullptr;// カメラ本体
+	float cameraHeight_ = 1.62f;
 	float sencivity_ = 0.1f;// カメラ感度
 	Vector3 eyeAngle_	= { 0.0f, 90.0f, 0.0f };// カメラ角度
 	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル

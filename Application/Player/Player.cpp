@@ -126,6 +126,7 @@ void Player::Initialize()
 
 #pragma region コライダー
 	playerCol_ = std::make_unique<SphereCollider>();
+	playerCol_->SetRadius(0.3f);
 	playerCol_->SetAttribute(COL_PLAYER);
 	playerCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(playerCol_.get());
@@ -239,10 +240,10 @@ void Player::OnCollision()
 		oPlayer_->SetPosition(camera_->GetEye());
 	}
 
-	if (legCol_->GetIsHit() && legCol_->GetDistance() <= 2.0f) {
+	if (legCol_->GetIsHit() && legCol_->GetDistance() <= cameraHeight_) {
 		state_ = NORMAL;
 		gravity_ = 0.0f;
-		Vector3 reject = (2.0f - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
+		Vector3 reject = (cameraHeight_ - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
 		camera_->SetEye(camera_->GetEye() + reject);
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 		oPlayer_->SetPosition(camera_->GetEye());
