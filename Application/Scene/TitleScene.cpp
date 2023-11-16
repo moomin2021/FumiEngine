@@ -222,7 +222,7 @@ void TitleScene::CameraRota()
 
 	cameraPos.normalize();
 
-	cameraPos *= 90.0f;
+	cameraPos *= 50.0f;
 	cameraPos.y = 10.0f;
 
 	camera_->SetEye(cameraPos);
