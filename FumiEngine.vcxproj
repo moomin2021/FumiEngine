@@ -133,7 +133,6 @@
     <ClCompile Include="Application\Setting\HitFrame.cpp" />
     <ClCompile Include="Engine\3d\Line3D.cpp" />
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp" />
-    <ClCompile Include="Application\NavMesh\FunnelAlgorithm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -236,7 +235,6 @@
     <ClInclude Include="Application\Scene\MapCreateScene.h" />
     <ClInclude Include="Application\Player\MapCreatePlayer.h" />
     <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
-    <ClInclude Include="Application\NavMesh\FunnelAlgorithm.h" />
     <ClInclude Include="Application\Enemy\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
