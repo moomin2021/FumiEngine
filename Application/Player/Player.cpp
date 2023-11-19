@@ -108,20 +108,20 @@ void Player::Initialize()
 #pragma endregion
 
 #pragma region 画像読み込み
-	crossHairHandle_ = LoadTexture("Resources/crossHair.png");
-	reloadUIHandle_ = LoadTexture("Resources/reloadUI.png");
-	bulletValueDisplayFrameHandle_ = LoadTexture("Resources/BulletValueDisplayFrame.png");
+	crossHairHandle_ = LoadTexture("Sprite/crossHair.png");
+	reloadUIHandle_ = LoadTexture("Sprite/reloadUI.png");
+	bulletValueDisplayFrameHandle_ = LoadTexture("Sprite/BulletValueDisplayFrame.png");
 	numberHandle_.resize(10);
-	numberHandle_[0] = LoadTexture("Resources/number0.png");
-	numberHandle_[1] = LoadTexture("Resources/number1.png");
-	numberHandle_[2] = LoadTexture("Resources/number2.png");
-	numberHandle_[3] = LoadTexture("Resources/number3.png");
-	numberHandle_[4] = LoadTexture("Resources/number4.png");
-	numberHandle_[5] = LoadTexture("Resources/number5.png");
-	numberHandle_[6] = LoadTexture("Resources/number6.png");
-	numberHandle_[7] = LoadTexture("Resources/number7.png");
-	numberHandle_[8] = LoadTexture("Resources/number8.png");
-	numberHandle_[9] = LoadTexture("Resources/number9.png");
+	numberHandle_[0] = LoadTexture("Sprite/number0.png");
+	numberHandle_[1] = LoadTexture("Sprite/number1.png");
+	numberHandle_[2] = LoadTexture("Sprite/number2.png");
+	numberHandle_[3] = LoadTexture("Sprite/number3.png");
+	numberHandle_[4] = LoadTexture("Sprite/number4.png");
+	numberHandle_[5] = LoadTexture("Sprite/number5.png");
+	numberHandle_[6] = LoadTexture("Sprite/number6.png");
+	numberHandle_[7] = LoadTexture("Sprite/number7.png");
+	numberHandle_[8] = LoadTexture("Sprite/number8.png");
+	numberHandle_[9] = LoadTexture("Sprite/number9.png");
 #pragma endregion
 
 #pragma region コライダー
@@ -167,7 +167,7 @@ void Player::Initialize()
 	opeTips_->SetPosition({ 950.0f, 550.0f });
 	opeTips_->SetSize({ 250.0f, 50.0f });
 
-	opeTipsHandle_ = LoadTexture("Resources/operationTips0.png");
+	opeTipsHandle_ = LoadTexture("Sprite/operationTips0.png");
 #pragma endregion
 }
 

@@ -76,7 +76,7 @@ void TestScene::Initialize()
 	sGameUI_ = std::make_unique<Sprite>();
 	sGameUI_->SetSize({ 1920.0f, 1080.0f });
 
-	gGameUI_ = LoadTexture("Resources/GameUI.png");
+	gGameUI_ = LoadTexture("Sprite/GameUI.png");
 }
 
 void TestScene::Update()

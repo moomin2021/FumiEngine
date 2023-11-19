@@ -17,18 +17,18 @@ void SettingLayer::Initialize()
 		{
 			buttons_[i] = std::make_unique<BoxButton>();
 			buttons_[i]->Initialize(uint16_t(ButtonAttribute::GAMEPLAY) + i, { 200.0f, 1000.0f }, {260.0f, 44.0f}, { 272.0f, 56.0f },
-				LoadTexture("Resources/treeButton.png"),
-				LoadTexture("Resources/returnText.png"),
-				LoadTexture("Resources/treeButtonCursorFrame.png"));
+				LoadTexture("Sprite/treeButton.png"),
+				LoadTexture("Sprite/returnText.png"),
+				LoadTexture("Sprite/treeButtonCursorFrame.png"));
 		}
 
 		else
 		{
 			buttons_[i] = std::make_unique<BoxButton>();
 			buttons_[i]->Initialize(uint16_t(ButtonAttribute::GAMEPLAY) + i, { 300.0f + (i * 280.0f), 101.0f }, { 260.0f, 44.0f }, { 272.0f, 56.0f },
-				LoadTexture("Resources/treeButton.png"),
-				LoadTexture("resources/treeText" + std::string(std::to_string(i)) + std::string(".png")),
-				LoadTexture("Resources/treeButtonCursorFrame.png"));
+				LoadTexture("Sprite/treeButton.png"),
+				LoadTexture("Sprite/treeText" + std::string(std::to_string(i)) + std::string(".png")),
+				LoadTexture("Sprite/treeButtonCursorFrame.png"));
 		}
 	}
 #pragma endregion
@@ -38,7 +38,7 @@ void SettingLayer::Initialize()
 	sSettingBackground_->SetPosition({ 160.0f, 176.0f });
 	sSettingBackground_->SetSize({ 768.0f, 746.0f });
 
-	gSettingBackground_ = LoadTexture("Resources/backBox.png");
+	gSettingBackground_ = LoadTexture("Sprite/backBox.png");
 #pragma endregion
 }
 

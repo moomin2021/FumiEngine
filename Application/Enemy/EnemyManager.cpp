@@ -42,7 +42,7 @@ void EnemyManager::Initialize()
 #pragma endregion
 
 #pragma region ハンドル
-	hParticle_ = LoadTexture("Resources/effect1.png");
+	hParticle_ = LoadTexture("Sprite/effect1.png");
 #pragma endregion
 
 #pragma region ナビメッシュ

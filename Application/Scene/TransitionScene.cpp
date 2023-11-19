@@ -31,7 +31,7 @@ void TransitionScene::Initialize()
 	sLoad_->SetSize({ 100.0f, 100.0f });
 	sLoad_->SetPosition({ winSize.x - 100.0f, winSize.y - 100.0f });
 
-	loadHandle_ = LoadTexture("Resources/load.png");
+	loadHandle_ = LoadTexture("Sprite/load.png");
 
 	time_ = 0;
 }

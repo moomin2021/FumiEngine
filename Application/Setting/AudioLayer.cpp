@@ -15,9 +15,9 @@ void AudioLayer::Initialize()
 	{
 		buttons_[i] = std::make_unique<BoxButton>();
 		buttons_[i]->Initialize(NO_TAG, { 544.0f, 220.0f + (i * 70.0f) }, { 746.0f, 60.0f }, { 758.0f, 72.0f },
-			LoadTexture("Resources/leafButton.png"),
-			LoadTexture("resources/leafButtonText1_" + std::string(std::to_string(i)) + std::string(".png")),
-			LoadTexture("Resources/leafButtonFrame.png"));
+			LoadTexture("Sprite/leafButton.png"),
+			LoadTexture("Sprite/leafButtonText1_" + std::string(std::to_string(i)) + std::string(".png")),
+			LoadTexture("Sprite/leafButtonFrame.png"));
 	}
 #pragma endregion
 
@@ -28,8 +28,8 @@ void AudioLayer::Initialize()
 	{
 		sliders_[i] = std::make_unique<Slider>();
 		sliders_[i]->Initialize({ 700.0f, 220.0f + (i * 70.0f) }, { 288.0f, 13.0f }, { 39.0f, 39.0f },
-			LoadTexture("Resources/slider.png"),
-			LoadTexture("Resources/sliderPoint.png"));
+			LoadTexture("Sprite/slider.png"),
+			LoadTexture("Sprite/sliderPoint.png"));
 	}
 #pragma endregion
 }

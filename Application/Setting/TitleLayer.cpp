@@ -15,9 +15,9 @@ void TitleLayer::Initialize()
 	{
 		buttons_[i] = std::make_unique<BoxButton>();
 		buttons_[i]->Initialize(i, { 250.0f, 525.0f + (i * 50.0f) }, { 310.0f, 40.0f }, {324.0f, 54.0f},
-			LoadTexture("Resources/titleSelectButton.png"),
-			LoadTexture("resources/titleSelectText" + std::string(std::to_string(i)) + std::string(".png")),
-			LoadTexture("Resources/titleSelectButtonFrame.png"));
+			LoadTexture("Sprite/titleSelectButton.png"),
+			LoadTexture("Sprite/titleSelectText" + std::string(std::to_string(i)) + std::string(".png")),
+			LoadTexture("Sprite/titleSelectButtonFrame.png"));
 	}
 #pragma endregion
 
@@ -25,7 +25,7 @@ void TitleLayer::Initialize()
 	sTitle_ = std::make_unique<Sprite>();
 	sTitle_->SetSize({ 1920.0f, 1080.0f });
 
-	gTitle_ = LoadTexture("Resources/title.png");
+	gTitle_ = LoadTexture("Sprite/title.png");
 #pragma endregion
 }
 

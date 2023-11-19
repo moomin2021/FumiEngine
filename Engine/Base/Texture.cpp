@@ -23,7 +23,7 @@ void Texture::Initialize() {
 	CreateDescriptorHeap();
 
 	// デバック用のテクスチャを読み込む
-	LoadTexture("Resources/debug.png");
+	LoadTexture("Sprite/debug.png");
 }
 
 void Texture::LoadImageFile(const std::string filePath, DirectX::ScratchImage& scratchImage, DirectX::TexMetadata& metadata)
@@ -172,8 +172,10 @@ uint16_t Texture::LoadTexture(const std::string fileName)
 	TexMetadata metadata{};
 	ScratchImage scratchImage{};
 
+	std::string path = "Resources/" + fileName;
+
 	// 画像読み込み
-	LoadImageFile(fileName, scratchImage, metadata);
+	LoadImageFile(path, scratchImage, metadata);
 
 	D3D12_RESOURCE_DESC texResourceDesc{};
 	ID3D12Resource* texResource{};

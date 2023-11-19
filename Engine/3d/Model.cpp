@@ -35,8 +35,8 @@ void Model::LoadModel(string name)
 	// .objファイルを開く
 	const string modelName = name;
 	const string fileName = modelName + ".obj";
-	const string directoryPath = "Resources/" + modelName + "/";
-	file.open(directoryPath + fileName);
+	const string directoryPath = "Model/" + modelName + "/";
+	file.open("Resources/" + directoryPath + fileName);
 
 	// ファイルオープン失敗をチェック
 	assert(!file.fail());
@@ -169,7 +169,7 @@ void Model::LoadMaterial(const string& directoryPath, const string& fileName) {
 	ifstream file;
 
 	// マテリアルファイルを開く
-	file.open(directoryPath + fileName);
+	file.open("Resources/" + directoryPath + fileName);
 
 	// ファイルオープン失敗をチェック
 	if (file.fail()) assert(0);

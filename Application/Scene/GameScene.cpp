@@ -77,14 +77,14 @@ void GameScene::Initialize()
 	sGameUI_ = std::make_unique<Sprite>();
 	sGameUI_->SetSize({ 1920.0f, 1080.0f });
 
-	gGameUI_ = LoadTexture("Resources/GameUI.png");
+	gGameUI_ = LoadTexture("Sprite/GameUI.png");
 
 	sObjectiveText_ = std::make_unique<Sprite>();
 	sObjectiveText_->SetAnchorPoint({ 0.5f, 0.5f });
 	sObjectiveText_->SetPosition({ 1700.0f, 300.0f });
 	sObjectiveText_->SetSize({ 400.0f, 200.0f });
 
-	gObjectiveText_ = LoadTexture("Resources/objectiveText.png");
+	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
 #pragma endregion
 }
 
