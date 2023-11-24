@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Vector3.h"
 #include "Vector2.h"
 
@@ -61,4 +61,12 @@ struct Circle {
 
 	// 半径
 	float radius = 1.0f;
+};
+
+struct AABB {
+	// 中心座標
+	Vector3 center = { 0.0f, 0.0f, 0.0f };
+
+	// 半径
+	Vector3 radius = { 0.0f, 0.0f, 0.0f };
 };

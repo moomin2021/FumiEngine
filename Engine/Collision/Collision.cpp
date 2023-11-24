@@ -1,4 +1,5 @@
-﻿#include "Collision.h"
+#include "Collision.h"
+#include "Util.h"
 
 #include <math.h>
 
@@ -28,7 +29,8 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vect
 	if (fabsf(dist) > sphere.radius) return false;
 
 	// 疑似交点を計算
-	if (inter) {
+	if (inter)
+	{
 		// 平面上の最近接点を、疑似交点とする
 		*inter = -dist * plane.normal + sphere.center;
 	}
@@ -131,7 +133,8 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	if (inter) *inter = p;
 
 	// 押し出すベクトルを計算
-	if (reject) {
+	if (reject)
+	{
 		float ds = Vector3Dot(sphere.center, triangle.normal);
 		float dt = Vector3Dot(triangle.p0, triangle.normal);
 		float rejectLen = dt - ds + sphere.radius;
@@ -327,4 +330,47 @@ bool Collision::CheckPoint2Circle(const Point& point, const Circle& circle)
 
 	if (x + y <= powf(circle.radius, 2)) return true;
 	return false;
+}
+
+bool Collision::CheckRay2AABB(const Ray& ray, const AABB& aabb, float* pDistance, Vector3* pInter)
+{
+	// レイ方向を正規化
+	Vector3 rayNorm = ray.dir.normalize();
+	Vector3 min = aabb.center - aabb.radius;
+	Vector3 max = aabb.center + aabb.radius;
+	Vector3 inter = { 0.0f, 0.0f, 0.0f };
+
+	float maxInTime = -FLT_MAX;
+	float minOutTime = FLT_MAX;
+
+	bool result = true;
+
+	for (uint8_t i = 0; i < 3; i++)
+	{
+		if (fabsf(rayNorm[i]) > FLT_EPSILON)
+		{
+			float minTime = (min[i] - ray.start[i]) / rayNorm[i];
+			float maxTime = (max[i] - ray.start[i]) / rayNorm[i];
+			float inTime = Util::Min(minTime, maxTime);
+			float outTime = Util::Max(minTime, maxTime);
+			maxInTime = Util::Max(maxInTime, inTime);
+			minOutTime = Util::Min(minOutTime, outTime);
+			inter[i] = ray.start[i] + inTime * rayNorm[i];
+			continue;
+		}
+
+		if (min[i] <= ray.start[i] && ray.start[i] <= max[i]) inter[i] = ray.start[i];
+		else result = false;
+	}
+
+	if (!result) return false;
+	if (minOutTime - maxInTime <= 0.0f) return false;
+
+	if (pInter)
+	{
+		*pInter = inter;
+		if (pDistance) *pDistance = Vector3(inter - ray.start).length();
+	}
+
+	return true;
 }

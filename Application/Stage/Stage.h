@@ -1,7 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Object3D.h"
-#include "MeshCollider.h"
+#include "AABBCollider.h"
 #include "CollisionManager.h"
 
 #include "EnemyManager.h"
@@ -42,7 +42,7 @@ private:
 	std::forward_list<std::unique_ptr<Object3D>> objects_ = {};
 
 	// コライダー
-	std::forward_list<std::unique_ptr<MeshCollider>> colliders_ = {};
+	std::forward_list<std::unique_ptr<AABBCollider>> colliders_ = {};
 
 	// スカイドーム
 	std::unique_ptr<Model> mSkydome_	= nullptr;// モデル

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 struct Matrix4;
 
@@ -18,6 +19,7 @@ public:
 	// メンバ関数
 	float length() const;// -------------------> ノルム(長さ)を求める
 	Vector3& normalize();// ------------------> 正規化
+	Vector3 normalize() const;
 	float dot(const Vector3& v) const;// -----> 内積を求める
 	Vector3 cross(const Vector3& v) const;// -> 外積を求める
 
@@ -32,6 +34,9 @@ public:
 	Vector3& operator/=(float s);
 
 	bool operator==(const Vector3& v) const;
+
+	float& operator[](uint8_t num);
+	const float& operator[](uint8_t num) const;
 };
 
 Vector3 Vector3Normalize(const Vector3& vec);

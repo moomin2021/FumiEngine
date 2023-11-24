@@ -324,6 +324,9 @@
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Collision\AABBCollider.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -553,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="Application\NavMesh\NavMeshPath.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\AABBCollider.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

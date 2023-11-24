@@ -3,232 +3,12 @@
     "objects": [
         {
             "type": "MESH",
-            "name": "floor",
+            "name": "block0.000",
             "transform": {
                 "translation": [
                     0.0,
                     0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    200.0,
-                    200.0,
-                    1.0
-                ]
-            },
-            "file_name": "floor"
-        },
-        {
-            "type": "MESH",
-            "name": "wall.000",
-            "transform": {
-                "translation": [
-                    0.0,
-                    205.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    200.0,
-                    5.0,
-                    50.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "wall.001",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -205.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    200.0,
-                    5.0,
-                    50.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "wall.002",
-            "transform": {
-                "translation": [
-                    205.0,
-                    0.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    5.0,
-                    200.0,
-                    50.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "wall.003",
-            "transform": {
-                "translation": [
-                    -205.0,
-                    0.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    5.0,
-                    200.0,
-                    50.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.000",
-            "transform": {
-                "translation": [
-                    41.98274612426758,
-                    90.76270294189453,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.001",
-            "transform": {
-                "translation": [
-                    -102.35794067382812,
-                    100.35875701904297,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.002",
-            "transform": {
-                "translation": [
-                    115.95235443115234,
-                    71.1707534790039,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.003",
-            "transform": {
-                "translation": [
-                    -67.17240142822266,
-                    -15.593589782714844,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "enemy.004",
-            "transform": {
-                "translation": [
-                    76.76844787597656,
-                    -35.185546875,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "class_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "item.000",
-            "transform": {
-                "translation": [
-                    -37.06503677368164,
-                    59.913246154785156,
-                    1.0
+                    -0.5
                 ],
                 "rotation": [
                     0.0,
@@ -241,16 +21,16 @@
                     1.0
                 ]
             },
-            "class_name": "Item"
+            "file_name": "block0"
         },
         {
             "type": "MESH",
-            "name": "item.001",
+            "name": "bossGenerator",
             "transform": {
                 "translation": [
-                    19.025165557861328,
-                    63.41888427734375,
-                    1.0
+                    -50.0,
+                    0.0,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -263,73 +43,7 @@
                     1.0
                 ]
             },
-            "class_name": "Item"
-        },
-        {
-            "type": "MESH",
-            "name": "item.002",
-            "transform": {
-                "translation": [
-                    -14.528793334960938,
-                    47.893917083740234,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "class_name": "Item"
-        },
-        {
-            "type": "MESH",
-            "name": "item.003",
-            "transform": {
-                "translation": [
-                    8.50825309753418,
-                    35.87458801269531,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "class_name": "Item"
-        },
-        {
-            "type": "MESH",
-            "name": "item.004",
-            "transform": {
-                "translation": [
-                    -38.56745147705078,
-                    30.3657283782959,
-                    1.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "class_name": "Item"
+            "class_name": "BossGenerator"
         }
     ]
 }

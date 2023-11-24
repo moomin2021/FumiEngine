@@ -1,8 +1,9 @@
-﻿#include "CollisionManager.h"
+#include "CollisionManager.h"
 #include "Collision.h"
 #include "SphereCollider.h"
 #include "RayCollider.h"
 #include "MeshCollider.h"
+#include "AABBCollider.h"
 
 CollisionManager::~CollisionManager()
 {
@@ -18,8 +19,10 @@ void CollisionManager::CheckAllCollision()
 	}
 
 	// 総当たりするために用意
-	std::forward_list<BaseCollider*>::iterator itA = colliders_.begin();;
+	std::forward_list<BaseCollider*>::iterator itA = colliders_.begin();
 	std::forward_list<BaseCollider*>::iterator itB;
+
+	uint32_t count = 0;
 
 	// 総当たりチェック
 	for (; itA != colliders_.end(); ++itA) {
@@ -46,6 +49,11 @@ void CollisionManager::CheckAllCollision()
 			for (; it != colliders_.end(); ++it) {
 				// 属性が合わなければスキップ
 				if (!((*itA)->attribute_ & (*it)->attribute_)) continue;
+
+				// 同属性なら処理をスキップ
+				if ((*itA)->attribute_ == (*it)->attribute_) continue;
+
+				count++;
 
 				// 球の場合
 				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
@@ -89,6 +97,28 @@ void CollisionManager::CheckAllCollision()
 					inter = tempInter;
 					it_hit = *it;
 				}
+
+				else if ((*it)->shapeType_ == SHAPE_AABB)
+				{
+					// 衝突判定を行うためにAABBコライダーに変換
+					AABBCollider* aabbCol = dynamic_cast<AABBCollider*>(*it);
+
+					// 判定したときのデータ
+					float tempDistance = FLT_MAX;
+					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
+
+					// 衝突していなかったら除外
+					if (!Collision::CheckRay2AABB(*ray, *aabbCol, &tempDistance, &tempInter)) continue;
+
+					// 距離が最小でなければ除外
+					if (tempDistance >= distance) continue;
+
+					// 最も近いコライダーなので情報を保存
+					result = true;
+					distance = tempDistance;
+					inter = tempInter;
+					it_hit = *it;
+				}
 			}
 
 			// 衝突していたら
@@ -115,6 +145,14 @@ void CollisionManager::CheckAllCollision()
 					meshCol->SetInter(inter);
 					meshCol->SetHitCollider(*itA);
 				}
+
+				// AABB
+				else if (it_hit->shapeType_ == SHAPE_AABB)
+				{
+					AABBCollider* aabbCol = dynamic_cast<AABBCollider*>(it_hit);
+					aabbCol->SetIsHit(true);
+					aabbCol->SetHitCollider(*itA);
+				}
 			}
 		}
 
@@ -123,6 +161,11 @@ void CollisionManager::CheckAllCollision()
 			for (; itB != colliders_.end(); ++itB) {
 				// 属性が合わなければ除外
 				if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
+
+				// 同属性なら処理をスキップ
+				if ((*itA)->attribute_ == (*itB)->attribute_) continue;
+
+				count++;
 
 				// ともに球
 				if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {
@@ -195,6 +238,8 @@ void CollisionManager::CheckAllCollision()
 			}
 		}
 	}
+
+	count = count;
 }
 
 CollisionManager* CollisionManager::GetInstance()

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 enum CollisionShapeType {
 	SHAPE_UNKNOWN = -1,	// 未設定
@@ -7,5 +7,6 @@ enum CollisionShapeType {
 	SHAPE_RAY,			// レイ
 	SHAPE_POINT,		// 点
 	SHAPE_BOX,			// 矩形
-	SHAPE_CIRCLE		// 円
+	SHAPE_CIRCLE,		// 円
+	SHAPE_AABB,			// AABB
 };

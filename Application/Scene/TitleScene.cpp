@@ -17,6 +17,18 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+
+	uint16_t leg = 0b0000000000000001;
+	uint16_t obj = 0b0000000010000111;
+
+	bool result = leg == obj;
+
+	result = result;
+
+	result = !(leg & obj);
+
+	result = result;
+
 #pragma region インスタンス取得
 	colMgr2D_ = CollisionManager2D::GetInstance();// 衝突マネージャー2D
 	mouse_ = Mouse::GetInstance();

@@ -167,13 +167,11 @@ void Stage::Load(std::string fileName, bool isCol)
 			if (isCol == false) continue;
 
 			// コライダー
-			colliders_.emplace_front(std::make_unique<MeshCollider>(objects_.front().get()));
+			colliders_.emplace_front(std::make_unique<AABBCollider>());
+			colliders_.front()->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
 			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
 			colliders_.front()->SetObject3D(objects_.front().get());
 			colMgr_->AddCollider(colliders_.front().get());
 		}
 	}
-
-	int num = 0;
-	num = 1;
 }

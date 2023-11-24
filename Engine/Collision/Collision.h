@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "CollisionPrimitive.h"
 
 class Collision
@@ -109,4 +109,13 @@ public:
 	/// <param name="circle"> 円 </param>
 	/// <returns></returns>
 	static bool CheckPoint2Circle(const Point& point, const Circle& circle);
+
+	/// <summary>
+	/// レイとAABBの当たり判定
+	/// </summary>
+	/// <param name="ray"> レイ </param>
+	/// <param name="aabb"> AABB </param>
+	/// <param name="inter"> 最近接点 </param>
+	/// <returns></returns>
+	static bool CheckRay2AABB(const Ray& ray, const AABB& aabb, float* pDistance = nullptr, Vector3* pInter = nullptr);
 };

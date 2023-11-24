@@ -30,6 +30,13 @@ Vector3& Vector3::normalize()
 	return *this;
 }
 
+Vector3 Vector3::normalize() const
+{
+	float len = length();
+	if (len != 0) return *this / len;
+	return *this;
+}
+
 // 内積を求める
 float Vector3::dot(const Vector3& v) const
 {
@@ -93,6 +100,24 @@ bool Vector3::operator==(const Vector3& v) const
 	if (z != v.z) return false;
 
 	return true;
+}
+
+float& Vector3::operator[](uint8_t num)
+{
+	if (num == 0) return x;
+	if (num == 1) return y;
+	if (num == 2) return z;
+
+	return x;
+}
+
+const float& Vector3::operator[](uint8_t num) const
+{
+	if (num == 0) return x;
+	if (num == 1) return y;
+	if (num == 2) return z;
+
+	return x;
 }
 
 Vector3 Vector3Normalize(const Vector3& vec)
