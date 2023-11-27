@@ -171,7 +171,7 @@ void Stage::Load(std::string fileName, bool isCol)
 			colliders_.front()->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
 			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
 			colliders_.front()->SetObject3D(objects_.front().get());
-			colMgr_->AddCollider(colliders_.front().get());
+			colMgr_->AddBlockCollider(colliders_.front().get());
 		}
 	}
 }

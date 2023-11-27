@@ -3,7 +3,7 @@
 #include "SphereCollider.h"
 #include "RayCollider.h"
 #include "MeshCollider.h"
-#include "AABBCollider.h"
+#include "CollisionAttribute.h"
 
 CollisionManager::~CollisionManager()
 {
@@ -18,6 +18,8 @@ void CollisionManager::CheckAllCollision()
 		it->Update();
 	}
 
+	for (auto& it : blockCollider_) it->Update();
+
 	// 総当たりするために用意
 	std::forward_list<BaseCollider*>::iterator itA = colliders_.begin();
 	std::forward_list<BaseCollider*>::iterator itB;
@@ -28,6 +30,59 @@ void CollisionManager::CheckAllCollision()
 	for (; itA != colliders_.end(); ++itA) {
 		itB = itA;
 		++itB;
+
+		// ブロックと属性が合ったら
+		if ((*itA)->attribute_ & COL_STAGE_OBJ)
+		{
+			if ((*itA)->shapeType_ == SHAPE_RAY)
+			{
+				// 衝突フラグ
+				bool result = false;
+
+				// 最も近いコライダーの情報
+				float distance = FLT_MAX;				// 最も最小の距離
+				Vector3 inter = { 0.0f, 0.0f, 0.0f };	// 最も近い距離にいるコライダーとの交点
+				AABBCollider* it_hit = nullptr;			// 最も近いコライダー
+
+				// 衝突判定の引数のためにレイに変換
+				Ray* ray = dynamic_cast<Ray*>(*itA);
+
+				for (auto& it : blockCollider_)
+				{
+					count++;
+
+					// 判定したときのデータ
+					float tempDistance = FLT_MAX;
+					Vector3 tempInter = { 0.0f, 0.0f, 0.0f };
+
+					// 衝突していなかったら除外
+					if (!Collision::CheckRay2AABB(*ray, *it, &tempDistance, &tempInter)) continue;
+
+					// 距離が最小でなければ除外
+					if (tempDistance >= distance) continue;
+
+					// 最も近いコライダーなので情報を保存
+					result = true;
+					distance = tempDistance;
+					inter = tempInter;
+					it_hit = it;
+				}
+
+				if (result)
+				{
+					// レイ
+					RayCollider* rayCol = dynamic_cast<RayCollider*>(*itA);
+					rayCol->SetIsHit(true);
+					rayCol->SetInter(inter);
+					rayCol->SetDistance(distance);
+					rayCol->SetHitCollider(it_hit);
+
+					AABBCollider* aabbCol = dynamic_cast<AABBCollider*>(it_hit);
+					aabbCol->SetIsHit(true);
+					aabbCol->SetHitCollider(*itA);
+				}
+			}
+		}
 
 		// レイだったら
 		if ((*itA)->GetShapeType() == SHAPE_RAY) {
@@ -47,13 +102,14 @@ void CollisionManager::CheckAllCollision()
 
 			// 総当たりチェック
 			for (; it != colliders_.end(); ++it) {
+
+				count++;
+
 				// 属性が合わなければスキップ
 				if (!((*itA)->attribute_ & (*it)->attribute_)) continue;
 
 				// 同属性なら処理をスキップ
 				if ((*itA)->attribute_ == (*it)->attribute_) continue;
-
-				count++;
 
 				// 球の場合
 				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
@@ -159,13 +215,13 @@ void CollisionManager::CheckAllCollision()
 		// レイ以外だったら
 		else {
 			for (; itB != colliders_.end(); ++itB) {
+
+				count++;
 				// 属性が合わなければ除外
 				if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
 
 				// 同属性なら処理をスキップ
 				if ((*itA)->attribute_ == (*itB)->attribute_) continue;
-
-				count++;
 
 				// ともに球
 				if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {
