@@ -6,6 +6,7 @@
 #include "SphereCollider.h"
 #include "Line3D.h"
 #include "NavMesh.h"
+#include "AABBCollider.h"
 
 #include "Player.h"
 
@@ -34,9 +35,14 @@ private:
 	std::unique_ptr<RayCollider> cGroundJudgment_ = nullptr;// 接地判定を取るコライダー
 	std::unique_ptr<SphereCollider> cSphere_ = nullptr;// ステージObjと衝突判定をする
 	std::unique_ptr<RayCollider> cEnemy2Player_ = nullptr;// 敵からプレイヤーまでのレイ
+	std::unique_ptr<AABBCollider> cHit_ = nullptr;// プレイヤーの玉などと衝突判定をとる
 
 	// ステート
 	State state_ = State::WAIT;
+
+	// HP
+	int8_t hp_ = 3;
+
 
 	// 生存フラグ
 	bool isAlive_ = true;
@@ -56,12 +62,17 @@ private:
 	Vector2 forwardVec_ = { 0.0f, 1.0f };
 
 	// ルート探索
-	std::unique_ptr<Line3D> line_ = nullptr;
 	std::vector<Vector3> route_ = {};
 	float routeSearchInterval_ = 1.0f;// ルート探索のインターバル[s]
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.1f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
+
+	Vector3 knockBackVec_ = { 0.0f, 0.0f, 0.0f };
+	float knockBackSpd_ = 0.0f;
+
+	float hitReactionDuringTime_ = 0.2f;
+	uint64_t hitTime_ = 0;
 
 #pragma endregion
 

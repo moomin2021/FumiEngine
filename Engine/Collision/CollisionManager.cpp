@@ -108,9 +108,6 @@ void CollisionManager::CheckAllCollision()
 				// 属性が合わなければスキップ
 				if (!((*itA)->attribute_ & (*it)->attribute_)) continue;
 
-				// 同属性なら処理をスキップ
-				if ((*itA)->attribute_ == (*it)->attribute_) continue;
-
 				// 球の場合
 				if ((*it)->GetShapeType() == SHAPE_SPHERE) {
 					// 衝突判定の引数のために球に変換
@@ -219,9 +216,6 @@ void CollisionManager::CheckAllCollision()
 				count++;
 				// 属性が合わなければ除外
 				if (!((*itA)->attribute_ & (*itB)->attribute_)) continue;
-
-				// 同属性なら処理をスキップ
-				if ((*itA)->attribute_ == (*itB)->attribute_) continue;
 
 				// ともに球
 				if ((*itA)->GetShapeType() == SHAPE_SPHERE && (*itB)->GetShapeType() == SHAPE_SPHERE) {

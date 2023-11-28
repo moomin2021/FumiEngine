@@ -85,7 +85,11 @@ void EnemyManager::Update()
 		(*it)->Update();
 
 		// 敵の生存フラグが[OFF]になったら消す
-		if ((*it)->GetIsAlive() == false) it = zombies_.erase(it);
+		if ((*it)->GetIsAlive() == false)
+		{
+			it = zombies_.erase(it);
+			enemyDeathCounter_++;
+		}
 		else ++it;
 	}
 
@@ -152,7 +156,7 @@ void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 
 void EnemyManager::CheckSceneChange()
 {
-	if (boss_ && boss_->GetIsAlive() == false) {
+	if (enemyDeathCounter_ >= 10) {
 		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);

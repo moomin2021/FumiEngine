@@ -179,5 +179,6 @@ private:
 #pragma region ゲッター関数
 public:
 	inline const Vector3& GetPosition() { return camera_->GetEye(); }
+	const Vector3& GetDir() { return forwardVec_; }
 #pragma endregion
 };

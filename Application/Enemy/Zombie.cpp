@@ -15,6 +15,8 @@ Zombie::~Zombie()
 {
 	sColMgr_->RemoveCollider(cGroundJudgment_.get());
 	sColMgr_->RemoveCollider(cSphere_.get());
+	sColMgr_->RemoveCollider(cEnemy2Player_.get());
+	sColMgr_->RemoveCollider(cHit_.get());
 }
 
 void Zombie::Initialize(const Vector3& inPos)
@@ -26,14 +28,14 @@ void Zombie::Initialize(const Vector3& inPos)
 
 #pragma region コライダー
 	cGroundJudgment_ = std::make_unique<RayCollider>();
-	cGroundJudgment_->SetOffSet({0.0f, 2.0f, 0.0f});
+	cGroundJudgment_->SetOffSet({ 0.0f, 2.0f, 0.0f });
 	cGroundJudgment_->SetDir({ 0.0f, -1.0f, 0.0f });
 	cGroundJudgment_->SetAttribute(COL_LEG);
 	cGroundJudgment_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cGroundJudgment_.get());
 
 	cSphere_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 1.0f, 0.0f }, 1.0f);
-	cSphere_->SetAttribute(COL_ENEMY);
+	cSphere_->SetAttribute(0);
 	cSphere_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cSphere_.get());
 
@@ -42,13 +44,13 @@ void Zombie::Initialize(const Vector3& inPos)
 	cEnemy2Player_->SetAttribute(COL_PLAYER2ENEMY_RAY);
 	cEnemy2Player_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cEnemy2Player_.get());
-#pragma endregion
 
-#pragma region 線
-	// 線
-	line_ = std::make_unique<Line3D>();
-	line_->Initialize(100);
-	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	cHit_ = std::make_unique<AABBCollider>();
+	cHit_->SetOffset({ 0.0f, 2.0f, 0.0f });
+	cHit_->SetRadius({ 0.3f, 0.975f, 0.3f });
+	cHit_->SetAttribute(COL_ENEMY);
+	cHit_->SetObject3D(object_.get());
+	sColMgr_->AddCollider(cHit_.get());
 #pragma endregion
 }
 
@@ -67,24 +69,49 @@ void Zombie::Update()
 	enemy2Player.normalize();
 
 	cEnemy2Player_->SetDir(enemy2Player);
+
+	if (knockBackSpd_ > 0.0f)
+	{
+		object_->SetPosition(object_->GetPosition() + knockBackVec_ * knockBackSpd_);
+		knockBackSpd_ -= 0.2f;
+	}
+
+	if (object_->GetPosition().y <= -50.0f) isAlive_ = false;
 }
 
 void Zombie::Draw()
 {
 	object_->Draw();
-
-	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	// 線
-	line_->Draw();
-
-	PipelineManager::PreDraw("Object3D");
 }
 
 void Zombie::OnCollision()
 {
 	// 接地判定
 	GroundingJudgment();
+
+	if (cHit_->GetIsHit())
+	{
+		knockBackVec_ = sPlayer_->GetDir();
+		knockBackVec_.normalize();
+		knockBackVec_.y = 1.5f;
+		knockBackSpd_ = 1.0f;
+		hp_ -= 1;
+
+		if (hp_ <= 0) isAlive_ = false;
+
+		hitTime_ = Util::GetTimrMSec();
+	}
+
+	float elapsed = (Util::GetTimrMSec() - hitTime_) / 1000.0f;
+	if (hitReactionDuringTime_ >= elapsed)
+	{
+		object_->SetColor({ 0.8f, 0.0f, 0.0f, 1.0f });
+	}
+
+	else
+	{
+		object_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	}
 
 	if (state_ == State::CHASE) return;
 
@@ -102,7 +129,6 @@ void Zombie::OnCollision()
 void Zombie::MatUpdate()
 {
 	object_->MatUpdate();
-	line_->MatUpdate();
 }
 
 void Zombie::Debug()
@@ -151,7 +177,7 @@ void Zombie::GroundingJudgment()
 	if (cGroundJudgment_->GetIsHit() && cGroundJudgment_->GetDistance() < 2.0f)
 	{
 		float reject = 2.0f - cGroundJudgment_->GetDistance();
-		Vector3 result = object_->GetPosition() + Vector3{0.0f, reject, 0.0f};
+		Vector3 result = object_->GetPosition() + Vector3{ 0.0f, reject, 0.0f };
 		object_->SetPosition(result);
 		isGround_ = true;
 	}
@@ -216,15 +242,9 @@ void Zombie::CreateNavRoute()
 
 	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
-	// 線の削除
-	line_->ClearPoint();
+	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition(), route_);
 
-	sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition(), route_);
+	if (!result) return;
 
 	route_.erase(route_.begin());
-
-	for (uint16_t i = 0; i < route_.size() - 1; i++)
-	{
-		line_->AddPoint(route_[i] + addVec, route_[i + 1] + addVec);
-	}
 }

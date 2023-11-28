@@ -48,6 +48,8 @@ private:
 	// 敵の生成器
 	std::unique_ptr<EnemyGenerator> enemyGenerator_ = nullptr;
 	std::vector<Vector3> cellsCenter_ = {};
+
+	uint16_t enemyDeathCounter_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数
