@@ -103,7 +103,7 @@ private:
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
-	float shotInterval_ = 0.7f;
+	float shotInterval_ = 0.5f;
 	uint64_t shotTime_ = 0;
 
 	// リロード
