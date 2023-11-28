@@ -51,11 +51,25 @@ void EnemyManager::Initialize()
 	navMesh_->SetIsDraw(false);
 	Enemy0::SetNavMesh(navMesh_.get());
 	Zombie::SetNavMesh(navMesh_.get());
+	cellsCenter_ = navMesh_->GetCellsCenter();
+#pragma endregion
+
+#pragma region 敵生成器
+	enemyGenerator_ = std::make_unique<EnemyGenerator>();
+	enemyGenerator_->Initialize();
 #pragma endregion
 }
 
 void EnemyManager::Update()
 {
+	enemyGenerator_->Update();
+
+	if (enemyGenerator_->GetSpawnFrag())
+	{
+		Vector3 spawnPos = cellsCenter_[Util::GetRandomInt(0, (uint16_t)cellsCenter_.size() - 1)];
+		CreateAddEnemy0(spawnPos + Vector3{0.0f, 0.1f, 0.0f});
+	}
+
 	for (auto it = enemys_.begin(); it != enemys_.end();) {
 		// 敵の更新
 		(*it)->Update();

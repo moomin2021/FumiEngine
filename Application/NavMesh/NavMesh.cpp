@@ -214,6 +214,7 @@ void NavMesh::CreateCell()
 	{
 		cells_.emplace_back(std::make_unique<NavCell>(
 			i, vertices[i * 3].pos, vertices[i * 3 + 1].pos, vertices[i * 3 + 2].pos));
+		cellsCenter_.emplace_back(cells_.back()->GetCenter());
 	}
 }
 

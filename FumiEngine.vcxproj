@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Enemy\EnemyGenerator.cpp" />
     <ClCompile Include="Engine\Collision\AABBCollider.cpp" />
     <ClCompile Include="Application\Player\Bullet.cpp" />
     <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Application\Enemy\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
     <ClInclude Include="Engine\Collision\AABBCollider.h" />
     <ClInclude Include="Application\Scene\BaseScene.h" />
     <ClInclude Include="Application\Player\Bullet.h" />

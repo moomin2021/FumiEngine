@@ -7,6 +7,7 @@
 #include "Zombie.h"
 #include "ParticleEmitter.h"
 #include "NavMesh.h"
+#include "EnemyGenerator.h"
 
 #include <memory>
 
@@ -43,6 +44,10 @@ private:
 
 	// ナビメッシュ
 	std::unique_ptr<NavMesh> navMesh_ = nullptr;
+
+	// 敵の生成器
+	std::unique_ptr<EnemyGenerator> enemyGenerator_ = nullptr;
+	std::vector<Vector3> cellsCenter_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
