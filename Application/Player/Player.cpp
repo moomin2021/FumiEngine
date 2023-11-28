@@ -133,6 +133,7 @@ void Player::Initialize()
 
 	legCol_ = std::make_unique<RayCollider>();
 	legCol_->SetAttribute(COL_LEG);
+	legCol_->SetOffSet({ 0.0f, -cameraHeight_ + 0.5f, 0.0f });
 	legCol_->SetObject3D(oPlayer_.get());
 	legCol_->SetDir({ 0.0f, -1.0f, 0.0f });
 	colMgr_->AddCollider(legCol_.get());
@@ -240,10 +241,10 @@ void Player::OnCollision()
 		oPlayer_->SetPosition(camera_->GetEye());
 	}
 
-	if (legCol_->GetIsHit() && legCol_->GetDistance() <= cameraHeight_) {
+	if (legCol_->GetIsHit() && legCol_->GetDistance() <= 0.5f) {
 		state_ = NORMAL;
 		gravity_ = 0.0f;
-		Vector3 reject = (cameraHeight_ - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
+		Vector3 reject = (0.5f - legCol_->GetDistance()) * Vector3(0.0f, 1.0f, 0.0f);
 		camera_->SetEye(camera_->GetEye() + reject);
 		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
 		oPlayer_->SetPosition(camera_->GetEye());

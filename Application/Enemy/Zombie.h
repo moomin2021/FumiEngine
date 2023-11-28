@@ -57,7 +57,7 @@ private:
 	float accel_ = 0.05f;// 加速度
 
 	// ゾンビの向き
-	float turnSpd_ = 4.0f;
+	float turnSpd_ = 8.0f;
 	float angle_ = 0.0f;
 	Vector2 forwardVec_ = { 0.0f, 1.0f };
 

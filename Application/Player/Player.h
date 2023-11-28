@@ -78,16 +78,16 @@ private:
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度
-	float maxMoveSpd_ = 0.5f;// 最大移動速度
+	float maxMoveSpd_ = 0.15f;// 最大移動速度
 	float moveAcc_ = 0.05f;// 移動加速度
 	bool isDash_ = false;// ダッシュフラグ
-	float dashSpd_ = 1.0f;// ダッシュ速度
+	float dashSpd_ = 0.3f;// ダッシュ速度
 
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
 	float maxGravity_ = 1.5f;// 最大重力
 	float gAcc_ = 0.1f;// 重力加速度
-	float jumpSpd_ = 1.0f;// ジャンプ速度
+	float jumpSpd_ = 0.5f;// ジャンプ速度
 
 	// クロスヘア
 	uint16_t crossHairHandle_ = 0;

@@ -73,7 +73,7 @@ void Zombie::Update()
 	if (knockBackSpd_ > 0.0f)
 	{
 		object_->SetPosition(object_->GetPosition() + knockBackVec_ * knockBackSpd_);
-		knockBackSpd_ -= 0.2f;
+		knockBackSpd_ -= 0.1f;
 	}
 
 	if (object_->GetPosition().y <= -50.0f) isAlive_ = false;
@@ -121,7 +121,7 @@ void Zombie::OnCollision()
 	if (enemy2Player.length() > visualRecognitionDist_) return;
 
 	// 視認距離内にオブジェクトがあったら処理を飛ばす
-	if (cEnemy2Player_->GetIsHit() && cEnemy2Player_->GetDistance() <= visualRecognitionDist_) return;
+	//if (cEnemy2Player_->GetIsHit() && cEnemy2Player_->GetDistance() <= visualRecognitionDist_) return;
 
 	state_ = State::CHASE;
 }
@@ -195,7 +195,8 @@ void Zombie::Rotate()
 {
 	// エネミーからプレイヤーまでの向きを計算
 	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
-	Vector2 player = { sPlayer_->GetPosition().x, sPlayer_->GetPosition().z };
+	if (route_.size() == 0) return;
+	Vector2 player = { route_[0].x, route_[0].z};
 	Vector2 enemy2Player = player - enemy;
 	enemy2Player.normalize();
 
