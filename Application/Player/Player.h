@@ -112,16 +112,6 @@ private:
 	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
 	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
 
-	// アイテム
-	std::vector<uint8_t> items_;
-	ItemManager* itemManager_ = nullptr;
-
-	// 操作ヒント
-	std::unique_ptr<Sprite> opeTips_ = nullptr;
-	uint16_t opeTipsHandle_ = 0;
-	bool isHitItem_ = false;
-	bool isBossGen_ = false;
-
 #pragma endregion
 
 #pragma region メンバ関数

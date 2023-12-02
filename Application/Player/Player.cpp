@@ -154,21 +154,6 @@ void Player::Initialize()
 	eyeCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(eyeCol_.get());
 #pragma endregion
-
-#pragma region アイテム
-	itemManager_ = ItemManager::GetInstace();
-	itemManager_->Initialize();
-
-	items_.resize(2);
-#pragma endregion
-
-#pragma region 操作ヒント
-	opeTips_ = std::make_unique<Sprite>();
-	opeTips_->SetPosition({ 950.0f, 550.0f });
-	opeTips_->SetSize({ 250.0f, 50.0f });
-
-	opeTipsHandle_ = LoadTexture("Sprite/operationTips0.png");
-#pragma endregion
 }
 
 void Player::Update()
@@ -197,9 +182,6 @@ void Player::Draw3D()
 	// 弾
 	for (auto& it : bullets_) it->Draw();
 
-	// アイテム
-	itemManager_->Draw();
-
 	PipelineManager::PreDraw("Toon");
 
 	// 銃
@@ -226,9 +208,6 @@ void Player::DrawFront2D()
 
 	// 残弾数表示枠を描画
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
-
-	// 操作ヒント描画
-	if (isHitItem_ || isBossGen_) opeTips_->Draw(opeTipsHandle_);
 }
 
 void Player::OnCollision()
@@ -266,36 +245,6 @@ void Player::OnCollision()
 		isDash_ = false;
 	}
 #pragma endregion
-
-#pragma region アイテム
-	isHitItem_ = false;
-	SphereCollider* it = nullptr;
-
-	if (eyeCol_->GetIsHit()) {
-		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_ITEM) {
-			if (eyeCol_->GetDistance() <= 10.0f) {
-				isHitItem_ = true;
-				it = dynamic_cast<SphereCollider*>(eyeCol_->GetHitCollider());
-			}
-		}
-	}
-
-	if (isHitItem_ && key_->TriggerKey(DIK_F)) {
-		items_[Util::GetRandomInt(0, 1)]++;
-		itemManager_->DeleteItem(it);
-	}
-#pragma endregion
-
-#pragma region ボスジェネレータ
-	isBossGen_ = false;
-
-	if (eyeCol_->GetIsHit() && eyeCol_->GetDistance() <= 15.0f)
-	{
-		if (eyeCol_->GetHitCollider()->GetAttribute() == COL_BOSSGENERATOR) {
-			isBossGen_ = true;
-		}
-	}
-#pragma endregion
 }
 
 void Player::MatUpdate()
@@ -319,9 +268,6 @@ void Player::MatUpdate()
 
 	// 弾
 	for (auto& it : bullets_) it->MatUpdate();
-
-	// アイテム
-	itemManager_->MatUpdate();
 
 	// 銃
 	Vector3 adsPos = camera_->GetEye() + Vector3{0.0f, -0.1f, 0.0f} + (forwardVec_ * 0.5f);
@@ -353,9 +299,6 @@ void Player::MatUpdate()
 
 	// リロードUI
 	sReloadUI_->MatUpdate();
-
-	// 操作ヒント
-	opeTips_->MatUpdate();
 }
 
 void Player::Debug()

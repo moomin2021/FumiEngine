@@ -20,6 +20,7 @@ void EnemyManager::Initialize()
 	colMgr_ = CollisionManager::GetInstance();
 
 	Zombie::SetCollisionManager(colMgr_);
+	EnemyCore::SetCollisionManager(colMgr_);
 #pragma endregion
 
 #pragma region モデル
@@ -154,7 +155,8 @@ void EnemyManager::AddCore(const Vector3& inPos)
 
 void EnemyManager::CheckSceneChange()
 {
-	if (enemyDeathCounter_ >= 10) {
+	if (enemyCores_.empty())
+	{
 		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);
