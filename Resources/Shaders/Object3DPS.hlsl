@@ -16,8 +16,10 @@ PSOutput main(VSOutput input)
     // テクスチャマッピング
     float4 texcolor = tex.Sample(smp, input.uv) * input.color;
     
+    if (texcolor.a <= 0.0) discard;
+    
     // 光沢度
-    const float shininess = 20.0f;
+        const float shininess = 20.0f;
     
     // 頂点から視点への方向ベクトル
     float3 eyedir = normalize(cameraPos - input.worldPos.xyz);
