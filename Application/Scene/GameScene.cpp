@@ -20,12 +20,12 @@ void GameScene::Initialize()
 
 #pragma region インスタンス
 	key_ = Key::GetInstance();
+	lightGroup_ = LightGroup::GetInstance();
+	Object3D::SetLightGroup(lightGroup_);
+	EnemyCore::SetLightGroup(lightGroup_);
 #pragma endregion
 
 #pragma region ライトグループ
-	lightGroup_ = std::make_unique<LightGroup>();
-	Object3D::SetLightGroup(lightGroup_.get());
-
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
 	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });

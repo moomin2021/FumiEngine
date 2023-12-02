@@ -33,15 +33,6 @@ private:
 	// パーティクル画像のハンドル
 	uint16_t hParticle_ = 0;
 
-	// オブジェクト
-	std::unique_ptr<Object3D> oBossGenerator_ = nullptr;
-
-	// コライダー
-	std::unique_ptr<SphereCollider> colBossGenerator_ = nullptr;
-
-	// ボス
-	std::unique_ptr<Boss0> boss_ = nullptr;
-
 	// エネミー
 	std::deque<std::unique_ptr<Enemy0>> enemys_;
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
@@ -50,7 +41,7 @@ private:
 	std::unique_ptr<NavMesh> navMesh_ = nullptr;
 
 	// コア
-	std::unique_ptr<EnemyCore> enemyCore_ = nullptr;
+	std::deque<std::unique_ptr<EnemyCore>> enemyCores_ = {};
 
 	// 敵の生成器
 	std::unique_ptr<EnemyGenerator> enemyGenerator_ = nullptr;
@@ -82,12 +73,11 @@ public:
 	// 衝突時処理
 	void OnCollision();
 
-	// ボス召喚
-	void SummonBoss();
-
 	// エネミーを生成追加
 	void CreateAddEnemy0(const Vector3& pos);
 	void DeleteEnemy0() { enemys_.clear(); }
+
+	void AddCore(const Vector3& inPos);
 
 	void CheckSceneChange();
 

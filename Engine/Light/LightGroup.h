@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
@@ -54,11 +54,6 @@ private:
 #pragma region メンバ関数
 public:
 	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	LightGroup();
-
-	/// <summary>
 	/// ライト描画
 	/// </summary>
 	void Draw();
@@ -83,10 +78,17 @@ public:
 	/// </summary>
 	void AddCircleShadow(CircleShadow* shadow);
 
+	static LightGroup* GetInstance();
+
 private:
 	/// <summary>
 	/// 定数バッファ転送
 	/// </summary>
 	void TransferConstBuffer();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	LightGroup();
 #pragma endregion
 };

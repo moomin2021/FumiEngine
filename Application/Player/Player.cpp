@@ -295,10 +295,6 @@ void Player::OnCollision()
 			isBossGen_ = true;
 		}
 	}
-
-	if (isBossGen_ && key_->TriggerKey(DIK_F)) {
-		enemyMgr_->SummonBoss();
-	}
 #pragma endregion
 }
 

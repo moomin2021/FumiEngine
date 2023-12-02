@@ -21,7 +21,7 @@ private:
 	Key* key_ = nullptr;
 
 	// ライトグループ
-	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
+	LightGroup* lightGroup_ = nullptr;
 
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;

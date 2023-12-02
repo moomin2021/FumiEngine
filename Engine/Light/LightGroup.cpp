@@ -1,4 +1,4 @@
-﻿#include "LightGroup.h"
+#include "LightGroup.h"
 #include "DX12Cmd.h"
 
 #include <d3dx12.h>
@@ -65,6 +65,15 @@ void LightGroup::AddPointLight(PointLight* light) {
 			break;
 		}
 	}
+}
+
+LightGroup* LightGroup::GetInstance()
+{
+	// インスタンス生成
+	static LightGroup inst;
+
+	// インスタンスを返す
+	return &inst;
 }
 
 void LightGroup::TransferConstBuffer() {
