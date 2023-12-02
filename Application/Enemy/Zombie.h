@@ -65,7 +65,7 @@ private:
 	std::vector<Vector3> route_ = {};
 	float routeSearchInterval_ = 1.0f;// ルート探索のインターバル[s]
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
-	float moveSpd_ = 0.1f;
+	float moveSpd_ = 0.05f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
 
 	Vector3 knockBackVec_ = { 0.0f, 0.0f, 0.0f };

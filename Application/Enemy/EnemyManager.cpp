@@ -50,7 +50,7 @@ void EnemyManager::Initialize()
 
 	enemyGenerators_.emplace_front();
 	enemyGenerators_.front().SetOffset({ 0.0f, 2.0f, 0.0f });
-	enemyGenerators_.front().AddSpawnNum(10);
+	enemyGenerators_.front().AddSpawnNum(5);
 }
 
 void EnemyManager::Update()

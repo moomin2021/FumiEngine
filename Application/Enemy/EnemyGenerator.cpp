@@ -23,8 +23,8 @@ void EnemyGenerator::Update()
 		isSpawn_ = true;
 		spawnNum_ -= 1;
 		lastSpawnTime_ = Util::GetTimrMSec();
-		spawnPos_.x = Util::GetRandomFloat(minSpawn_, maxSpawn_) + offset_.x;
+		spawnPos_.x = (Util::GetRandomFloat(minSpawn_, maxSpawn_) * (Util::GetRandomInt(0, 1) * 2 - 1)  ) + offset_.x;
 		spawnPos_.y = offset_.y;
-		spawnPos_.z = Util::GetRandomFloat(minSpawn_, maxSpawn_) + offset_.z;
+		spawnPos_.z = (Util::GetRandomFloat(minSpawn_, maxSpawn_) * (Util::GetRandomInt(0, 1) * 2 - 1)) + offset_.z;
 	}
 }
