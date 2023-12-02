@@ -26,6 +26,9 @@ void EnemyManager::Initialize()
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("stoneGolem");
 	mZombie_ = std::make_unique<Model>("zombie");
+	coreM_ = std::make_unique<Model>("core");
+	coreFrameM_ = std::make_unique<Model>("coreFrame");
+	coreStandM_ = std::make_unique<Model>("coreStand");
 
 	Zombie::SetModel(mZombie_.get());
 #pragma endregion
@@ -57,6 +60,12 @@ void EnemyManager::Initialize()
 #pragma region 敵生成器
 	enemyGenerator_ = std::make_unique<EnemyGenerator>();
 	enemyGenerator_->Initialize();
+#pragma endregion
+
+#pragma region コア
+	enemyCore_ = std::make_unique<EnemyCore>();
+	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
+	enemyCore_->Initialize({0.0f, 0.0f, 0.0f});
 #pragma endregion
 }
 
@@ -97,6 +106,9 @@ void EnemyManager::Update()
 	if (boss_) {
 		boss_->Update();
 	}
+
+	// コア
+	enemyCore_->Update();
 }
 
 void EnemyManager::Draw()
@@ -113,6 +125,9 @@ void EnemyManager::Draw()
 
 	for (auto& it : zombies_) it->Draw();
 
+	// コア
+	enemyCore_->Draw();
+
 	navMesh_->Draw();
 }
 
@@ -127,6 +142,8 @@ void EnemyManager::MatUpdate()
 	for (auto& it : zombies_) it->MatUpdate();
 
 	navMesh_->MatUpdate();
+
+	enemyCore_->MatUpdate();
 }
 
 void EnemyManager::OnCollision()
@@ -135,6 +152,8 @@ void EnemyManager::OnCollision()
 
 	for (auto& it : enemys_) it->OnCollision();
 	for (auto& it : zombies_) it->OnCollision();
+
+	enemyCore_->OnCollision();
 }
 
 void EnemyManager::SummonBoss()

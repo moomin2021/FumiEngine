@@ -8,6 +8,7 @@
 #include "ParticleEmitter.h"
 #include "NavMesh.h"
 #include "EnemyGenerator.h"
+#include "EnemyCore.h"
 
 #include <memory>
 
@@ -22,6 +23,9 @@ private:
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
 	std::unique_ptr<Model> mZombie_ = nullptr;
+	std::unique_ptr<Model> coreM_ = nullptr;
+	std::unique_ptr<Model> coreFrameM_ = nullptr;
+	std::unique_ptr<Model> coreStandM_ = nullptr;
 
 	// パーティクルエミッター
 	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
@@ -44,6 +48,9 @@ private:
 
 	// ナビメッシュ
 	std::unique_ptr<NavMesh> navMesh_ = nullptr;
+
+	// コア
+	std::unique_ptr<EnemyCore> enemyCore_ = nullptr;
 
 	// 敵の生成器
 	std::unique_ptr<EnemyGenerator> enemyGenerator_ = nullptr;
