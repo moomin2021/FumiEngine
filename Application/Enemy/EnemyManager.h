@@ -44,7 +44,7 @@ private:
 	std::deque<std::unique_ptr<EnemyCore>> enemyCores_ = {};
 
 	// 敵の生成器
-	std::unique_ptr<EnemyGenerator> enemyGenerator_ = nullptr;
+	std::deque<EnemyGenerator> enemyGenerators_ = {};
 	std::vector<Vector3> cellsCenter_ = {};
 
 	uint16_t enemyDeathCounter_ = 0;

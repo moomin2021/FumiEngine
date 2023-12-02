@@ -48,20 +48,21 @@ void EnemyManager::Initialize()
 	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
 
-#pragma region 敵生成器
-	enemyGenerator_ = std::make_unique<EnemyGenerator>();
-	enemyGenerator_->Initialize();
-#pragma endregion
+	enemyGenerators_.emplace_front();
+	enemyGenerators_.front().SetOffset({ 0.0f, 2.0f, 0.0f });
+	enemyGenerators_.front().AddSpawnNum(10);
 }
 
 void EnemyManager::Update()
 {
-	enemyGenerator_->Update();
+	for (auto& it : enemyGenerators_) it.Update();
 
-	if (enemyGenerator_->GetSpawnFrag())
+	for (auto& it : enemyGenerators_)
 	{
-		Vector3 spawnPos = cellsCenter_[Util::GetRandomInt(0, (uint16_t)cellsCenter_.size() - 1)];
-		CreateAddEnemy0(spawnPos + Vector3{0.0f, 0.1f, 0.0f});
+		if (it.GetSpawnFrag())
+		{
+			CreateAddEnemy0(it.GetSpawnPos());
+		}
 	}
 
 	for (auto it = enemys_.begin(); it != enemys_.end();) {

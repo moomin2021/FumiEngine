@@ -16,11 +16,15 @@ void EnemyGenerator::Update()
 	isSpawn_ = false;
 
 	// 前回スポーンしてからの経過時間
-	float elapsed = (Util::GetTimrMSec() - spawnTime_) / 1000.0f;
+	float elapsed = (Util::GetTimrMSec() - lastSpawnTime_) / 1000.0f;
 
-	if (elapsed >= spawnInterval_)
+	if (elapsed >= interval_ && spawnNum_ > 0)
 	{
 		isSpawn_ = true;
-		spawnTime_ = Util::GetTimrMSec();
+		spawnNum_ -= 1;
+		lastSpawnTime_ = Util::GetTimrMSec();
+		spawnPos_.x = Util::GetRandomFloat(minSpawn_, maxSpawn_) + offset_.x;
+		spawnPos_.y = offset_.y;
+		spawnPos_.z = Util::GetRandomFloat(minSpawn_, maxSpawn_) + offset_.z;
 	}
 }
