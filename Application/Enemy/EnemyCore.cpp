@@ -35,19 +35,20 @@ void EnemyCore::Initialize(const Vector3& inPos)
 	pointLight_ = std::make_unique<PointLight>();
 	lightPosition_ = inPos + offset1_;
 	pointLight_->SetPosition(lightPosition_);
-	pointLight_->SetColor({ 1.0f, 1.0f, 1.0f });
+	pointLight_->SetColor({ 0.5f, 1.0f, 1.0f });
+	pointLight_->SetRadius(lightRadius_);
 	sLightGroup_->AddPointLight(pointLight_.get());
 #pragma endregion
 }
 
 void EnemyCore::Update()
 {
-	lightRadius_ -= subLightRadius_;
-	lightRadius_ = Util::Clamp(lightRadius_, maxLightRadius_, minLightRadius_);
+	lightIntensity_ -= subLightIntensity_;
+	lightIntensity_ = Util::Clamp(lightIntensity_, maxLightIntensity_, minLightIntensity_);
 	pointLight_->SetPosition(lightPosition_);
-	pointLight_->SetRadius(dLightDistance_);
-	pointLight_->SetIntensity(dLightIntensity_);
-	pointLight_->SetDecay(dLightDecay_);
+	pointLight_->SetRadius(lightRadius_);
+	pointLight_->SetIntensity(lightIntensity_);
+	//pointLight_->SetDecay(dLightDecay_);
 }
 
 void EnemyCore::Draw()
@@ -61,7 +62,7 @@ void EnemyCore::OnCollision()
 {
 	if (collider_->GetIsHit())
 	{
-		lightRadius_ = maxLightRadius_;
+		lightIntensity_ = maxLightIntensity_;
 		hp_ -= 1;
 
 		if (hp_ <= 0) isAlive_ = false;
@@ -79,8 +80,6 @@ void EnemyCore::Debug()
 {
 	ImGui::Begin("Core");
 	ImGui::SliderFloat3("position", &lightPosition_.x, -5.0f, 5.0f);
-	ImGui::SliderFloat("radius", &dLightDistance_, 0.0f, 10.0f);
-	ImGui::SliderFloat("intensity", &dLightIntensity_, 0.0f, 10.0f);
 	ImGui::SliderFloat("decay", &dLightDecay_, 0.0f, 10.0f);
 	ImGui::End();
 }

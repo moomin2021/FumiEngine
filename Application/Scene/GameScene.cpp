@@ -30,7 +30,7 @@ void GameScene::Initialize()
 #pragma region ライトグループ
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
-	dirLight_->SetLightColor({ 0.5f, 0.5f, 0.5f });
+	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 

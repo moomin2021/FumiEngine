@@ -42,14 +42,13 @@ private:
 	// ポイントライト
 	std::unique_ptr<PointLight> pointLight_ = nullptr;
 	Vector3 lightPosition_ = { 0.0f, 0.0f, 0.0f };
-	float lightRadius_ = 0.0f;
-	float maxLightRadius_ = 10.0f;
-	float minLightRadius_ = 3.0f;
-	float subLightRadius_ = 0.25f;
+	float lightIntensity_ = 1.0f;
+	float lightRadius_ = 5.0f;
+	float maxLightIntensity_ = 10.0f;
+	float minLightIntensity_ = 0.0f;
+	float subLightIntensity_ = 0.5f;
 
-	float dLightIntensity_ = 1.0f;
 	float dLightDecay_ = 1.0f;
-	float dLightDistance_ = 5.0f;
 #pragma endregion
 
 #pragma region メンバ関数
