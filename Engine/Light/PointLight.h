@@ -25,13 +25,13 @@ private:
 	Vector3 color_ = { 1.0f, 1.0f, 1.0f };
 
 	// 輝度
-	float intensity_ = 0.0f;
+	float intensity_ = 1.0f;
 
 	// 距離
 	float radius_ = 1.0f;
 
 	// 減衰率
-	float decay_ = 0.0f;
+	float decay_ = 1.0f;
 
 	// 有効フラグ
 	bool active_ = true;

@@ -47,9 +47,9 @@ private:
 	float minLightRadius_ = 3.0f;
 	float subLightRadius_ = 0.25f;
 
-	float dLightIntensity_ = 0.0f;
-	float dLightDecay_ = 0.0f;
-	float dLightDistance_ = 0.0f;
+	float dLightIntensity_ = 1.0f;
+	float dLightDecay_ = 1.0f;
+	float dLightDistance_ = 5.0f;
 #pragma endregion
 
 #pragma region メンバ関数

@@ -76,7 +76,7 @@ PSOutput main(VSOutput input)
             float3 reflect = normalize(-lightv + 2.0 * dotLightNormal * input.normal);
             
             // ŠgŽU”½ŽËŒõ
-            float3 diffuse = dotLightNormal * m_diffuse;
+            float3 diffuse = m_diffuse;
 
             // ‹¾–Ê”½ŽËŒõ
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
@@ -85,7 +85,7 @@ PSOutput main(VSOutput input)
             //float3 ambient = m_ambient * 0.3;
 
             // ‚·‚×‚Ä‚ð‰ÁŽZ‚·‚é
-            shadecolor.rgb += factor * (diffuse + specular) * pointLights[i].color.rgb;
+            shadecolor.rgb += factor * (diffuse + specular) * pointLights[i].intensity * pointLights[i].color.rgb;
         }
     }
     
