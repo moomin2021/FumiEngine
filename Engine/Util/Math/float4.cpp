@@ -1,10 +1,13 @@
-﻿#include "float4.h"
+#include "float4.h"
+#include "Vector3.h"
 
 // 引数なしのコンストラクタ
 float4::float4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 
 // 引数ありのコンストラクタ
 float4::float4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+float4::float4(const Vector3& vec, float a) : x(vec.x), y(vec.y), z(vec.z), w(a) {}
 
 float4 float4::operator+() const
 {

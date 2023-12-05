@@ -13,6 +13,7 @@ TitleScene::TitleScene() {}
 TitleScene::~TitleScene()
 {
 	colMgr2D_->RemoveCollider(cMouse_.get());
+	lightGroup_->RemoveDirLight(dirLight_.get());
 }
 
 void TitleScene::Initialize()

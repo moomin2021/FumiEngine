@@ -28,9 +28,11 @@ struct DirLight
 
 struct PointLight
 {
-    float3 lightpos; // -> ライト座標
-    float3 lightcolor; // -> ライトの色(RGB)
-    float3 lightatten; // -> ライト距離減衰係数
+    float4 color;
+    float3 position;
+    float intensity;
+    float radius;
+    float decay;
     uint active;
 };
 

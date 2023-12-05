@@ -1,6 +1,8 @@
 #include "EnemyCore.h"
 #include "CollisionAttribute.h"
 
+#include <imgui_impl_DX12.h>
+
 LightGroup* EnemyCore::sLightGroup_ = nullptr;
 CollisionManager* EnemyCore::sColMgr_ = nullptr;
 Model* EnemyCore::sCoreM_ = nullptr;
@@ -31,18 +33,21 @@ void EnemyCore::Initialize(const Vector3& inPos)
 
 #pragma region ライト
 	pointLight_ = std::make_unique<PointLight>();
-	pointLight_->SetLightPos(inPos + offset1_);
-	pointLight_->SetLightColor({0.5f, 1.0f, 1.0f});
-	pointLight_->SetLightAtten({1.0f, 1.0f, 1.0f});
+	lightPosition_ = inPos + offset1_;
+	pointLight_->SetPosition(lightPosition_);
+	pointLight_->SetColor({ 1.0f, 1.0f, 1.0f });
 	sLightGroup_->AddPointLight(pointLight_.get());
 #pragma endregion
 }
 
 void EnemyCore::Update()
 {
-	lightAtt_ -= subLightAtt_;
-	lightAtt_ = Util::Clamp(lightAtt_, maxLightAtt_, minLightAtt_);
-	pointLight_->SetLightAtten({ lightAtt_, lightAtt_ , lightAtt_ });
+	lightRadius_ -= subLightRadius_;
+	lightRadius_ = Util::Clamp(lightRadius_, maxLightRadius_, minLightRadius_);
+	pointLight_->SetPosition(lightPosition_);
+	pointLight_->SetRadius(dLightDistance_);
+	pointLight_->SetIntensity(dLightIntensity_);
+	pointLight_->SetDecay(dLightDecay_);
 }
 
 void EnemyCore::Draw()
@@ -56,7 +61,7 @@ void EnemyCore::OnCollision()
 {
 	if (collider_->GetIsHit())
 	{
-		lightAtt_ = maxLightAtt_;
+		lightRadius_ = maxLightRadius_;
 		hp_ -= 1;
 
 		if (hp_ <= 0) isAlive_ = false;
@@ -70,7 +75,18 @@ void EnemyCore::MatUpdate()
 	coreStandO_->MatUpdate();
 }
 
+void EnemyCore::Debug()
+{
+	ImGui::Begin("Core");
+	ImGui::SliderFloat3("position", &lightPosition_.x, -5.0f, 5.0f);
+	ImGui::SliderFloat("radius", &dLightDistance_, 0.0f, 10.0f);
+	ImGui::SliderFloat("intensity", &dLightIntensity_, 0.0f, 10.0f);
+	ImGui::SliderFloat("decay", &dLightDecay_, 0.0f, 10.0f);
+	ImGui::End();
+}
+
 EnemyCore::~EnemyCore()
 {
 	sColMgr_->RemoveCollider(collider_.get());
+	sLightGroup_->RemovePointLight(pointLight_.get());
 }

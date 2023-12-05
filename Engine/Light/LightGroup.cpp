@@ -53,18 +53,10 @@ void LightGroup::Draw() {
 	cmdList->SetGraphicsRootConstantBufferView(3, constBuff_->GetGPUVirtualAddress());
 }
 
-void LightGroup::AddDirLight(DirectionalLight* light) {
-	dirLights_[0] = light;
-}
-
-void LightGroup::AddPointLight(PointLight* light) {
-	for (size_t i = 0; i < POINT_LIGHT_LIMIT; i++) {
-		// 中身が空だったら
-		if (pointLights_[i] == nullptr) {
-			pointLights_[i] = light;
-			break;
-		}
-	}
+void LightGroup::Reset()
+{
+	for (auto& it : dirLights_) it = nullptr;
+	for (auto& it : pointLights_) it = nullptr;
 }
 
 LightGroup* LightGroup::GetInstance()
@@ -91,88 +83,128 @@ void LightGroup::TransferConstBuffer() {
 
 	if (SUCCEEDED(result)) {
 #pragma region 平行光源
-		// 平行光源
-		for (size_t i = 0; i < DIR_LIGHT_LIMIT; i++) {
-			// 中身が空ではなかったら
-			if (dirLights_[i] != nullptr) {
-				// ライトが有効なら設定を転送
-				if (dirLights_[i]->GetActive()) {
-					constMap->dirLights[i].active = true;
-					constMap->dirLights[i].lightVec = -dirLights_[i]->GetLightDir();
-					constMap->dirLights[i].lightColor = dirLights_[i]->GetLightColor();
+		{// 始
+			std::forward_list<DirectionalLight*>::iterator itDirLight = dirLights_.begin();// イテレーター
+			size_t index = 0;// インデックス
+			while (index < DIR_LIGHT_LIMIT)
+			{
+				if (*itDirLight == nullptr)
+				{
+					constMap->dirLights[index].active = false;
 				}
 
-				// ライトが無効なら転送しない
-				else {
-					constMap->dirLights[i].active = false;
+				// ライトが有効なら設定を転送
+				else if ((*itDirLight)->GetActive())
+				{
+					constMap->dirLights[index].active = true;
+					constMap->dirLights[index].lightVec = -(*itDirLight)->GetLightDir();
+					constMap->dirLights[index].lightColor = (*itDirLight)->GetLightColor();
 				}
+
+				// ライトが無効なら設定を転送しない
+				else constMap->dirLights[index].active = false;
+
+				// インデックスとイテレータを進める
+				++index;
+				++itDirLight;
 			}
-		}
+		}// 終
 #pragma endregion
 
 #pragma region 点光源
-		for (size_t i = 0; i < POINT_LIGHT_LIMIT; i++) {
-			// 中身が空ではなかったら
-			if (pointLights_[i] != nullptr) {
-				// ライトが有効なら設定を転送
-				if (pointLights_[i]->GetActive()) {
-					constMap->pointLights[i].active = true;
-					constMap->pointLights[i].lightPos = pointLights_[i]->GetLightPos();
-					constMap->pointLights[i].lightColor = pointLights_[i]->GetLightColor();
-					constMap->pointLights[i].lightAtten = pointLights_[i]->GetLightAtten();
+		{// 始
+			std::forward_list<PointLight*>::iterator itPointLight = pointLights_.begin();// イテレーター
+			size_t index = 0;// インデックス
+			while (index < POINT_LIGHT_LIMIT && *itPointLight != nullptr)
+			{
+				if (*itPointLight == nullptr)
+				{
+					constMap->pointLights[index].active = false;
 				}
 
-				// ライトが無効ならライト色を0に
-				else {
-					constMap->pointLights[i].active = false;
+				// ライトが有効なら設定を転送
+				else if ((*itPointLight)->GetActive())
+				{
+					constMap->pointLights[index].active = true;
+					constMap->pointLights[index].pos = (*itPointLight)->GetPosition();
+					constMap->pointLights[index].color = float4{ (*itPointLight)->GetColor(), 1.0f };
+					constMap->pointLights[index].intensity = (*itPointLight)->GetIntensity();
+					constMap->pointLights[index].radius = (*itPointLight)->GetRadius();
+					constMap->pointLights[index].decay = (*itPointLight)->GetDecay();
 				}
+
+				// ライトが無効なら設定を転送しない
+				else constMap->pointLights[index].active = false;
+
+				// インデックスとイテレータを進める
+				++index;
+				++itPointLight;
 			}
-		}
+		}// 終
 #pragma endregion
 
 #pragma region スポットライト
-		for (size_t i = 0; i < SPOT_LIGHT_LIMIT; i++) {
-			// 中身が空ではなかったら
-			if (spotLights_[i] != nullptr) {
-				// ライトが有効なら設定を転送
-				if (spotLights_[i]->GetActive()) {
-					constMap->spotLights[i].active = true;
-					constMap->spotLights[i].lightVec = -spotLights_[i]->GetLightDir();
-					constMap->spotLights[i].lightPos = spotLights_[i]->GetLightPos();
-					constMap->spotLights[i].lightColor = spotLights_[i]->GetLightColor();
-					constMap->spotLights[i].lightAtten = spotLights_[i]->GetLightAtten();
-					constMap->spotLights[i].lightFactorAngleCos = spotLights_[i]->GetLightFactorAngle();
+		{// 始
+			std::forward_list<SpotLight*>::iterator itSpotLight = spotLights_.begin();// イテレーター
+			size_t index = 0;// インデックス
+			while (index < SPOT_LIGHT_LIMIT && *itSpotLight != nullptr)
+			{
+				if (*itSpotLight == nullptr)
+				{
+					constMap->spotLights[index].active = false;
 				}
 
-				// ライトが無効ならライト色を0に
-				else {
-					constMap->spotLights[i].active = false;
+				// ライトが有効なら設定を転送
+				else if ((*itSpotLight)->GetActive())
+				{
+					constMap->spotLights[index].active = true;
+					constMap->spotLights[index].lightVec = -(*itSpotLight)->GetLightDir();
+					constMap->spotLights[index].lightPos = (*itSpotLight)->GetLightPos();
+					constMap->spotLights[index].lightColor = (*itSpotLight)->GetLightColor();
+					constMap->spotLights[index].lightAtten = (*itSpotLight)->GetLightAtten();
+					constMap->spotLights[index].lightFactorAngleCos = (*itSpotLight)->GetLightFactorAngle();
 				}
+
+				// ライトが無効なら設定を転送しない
+				else constMap->spotLights[index].active = false;
+
+				// インデックスとイテレータを進める
+				++index;
+				++itSpotLight;
 			}
-		}
+		}// 終
 #pragma endregion
 
 #pragma region 丸影
-		// 丸影
-		for (size_t i = 0; i < CIRCLE_SHADOW_LIMIT; i++) {
-			// 中身空ではなかったら
-			if (circleShadows_[i] != nullptr) {
-				// 有効なら設定を転送
-				if (circleShadows_[i]->GetActive()) {
-					constMap->circleShadows[i].active = true;
-					constMap->circleShadows[i].dir = -circleShadows_[i]->GetDir();
-					constMap->circleShadows[i].casterPos = circleShadows_[i]->GetCasterPos();
-					constMap->circleShadows[i].distCasterLight = circleShadows_[i]->GetDistCasterLight();
-					constMap->circleShadows[i].atten = circleShadows_[i]->GetAtten();
-					constMap->circleShadows[i].factorAngleCos = circleShadows_[i]->GetFactorAngleCos();
+		{// 始
+			std::forward_list<CircleShadow*>::iterator itCircleShadow = circleShadows_.begin();// イテレーター
+			size_t index = 0;// インデックス
+			while (index < CIRCLE_SHADOW_LIMIT && *itCircleShadow != nullptr)
+			{
+				if (*itCircleShadow == nullptr)
+				{
+					constMap->circleShadows[index].active = false;
 				}
 
-				// 無効なら色を0に
-				else {
-					constMap->circleShadows[i].active = false;
+				// ライトが有効なら設定を転送
+				else if ((*itCircleShadow)->GetActive())
+				{
+					constMap->circleShadows[index].active = true;
+					constMap->circleShadows[index].dir = -(*itCircleShadow)->GetDir();
+					constMap->circleShadows[index].casterPos = (*itCircleShadow)->GetCasterPos();
+					constMap->circleShadows[index].distCasterLight = (*itCircleShadow)->GetDistCasterLight();
+					constMap->circleShadows[index].atten = (*itCircleShadow)->GetAtten();
+					constMap->circleShadows[index].factorAngleCos = (*itCircleShadow)->GetFactorAngleCos();
 				}
+
+				// ライトが無効なら設定を転送しない
+				else constMap->circleShadows[index].active = false;
+
+				// インデックスとイテレータを進める
+				++index;
+				++itCircleShadow;
 			}
-		}
+		}// 終
 #pragma endregion
 
 		// 環境光

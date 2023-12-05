@@ -50,7 +50,7 @@ void EnemyManager::Initialize()
 
 	enemyGenerators_.emplace_front();
 	enemyGenerators_.front().SetOffset({ 0.0f, 2.0f, 0.0f });
-	enemyGenerators_.front().AddSpawnNum(5);
+	//enemyGenerators_.front().AddSpawnNum(5);
 }
 
 void EnemyManager::Update()
@@ -188,6 +188,7 @@ void EnemyManager::AddParticle(const Vector3& pos)
 void EnemyManager::Debug()
 {
 	for (auto& it : zombies_) it->Debug();
+	for (auto& it : enemyCores_) it->Debug();
 
 	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 

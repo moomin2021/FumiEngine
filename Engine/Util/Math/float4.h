@@ -1,4 +1,6 @@
-﻿#pragma once
+#pragma once
+class Vector3;
+
 struct float4
 {
 	// x成分、y成分、z成分、w成分
@@ -7,6 +9,7 @@ struct float4
 	// コンストラクタ
 	float4();// -----------------------------------> 引数なし
 	float4(float x, float y, float z, float w);// -> 引数あり
+	float4(const Vector3& vec, float a);
 
 	// 単項演算子オーバーロード
 	float4 operator+() const;

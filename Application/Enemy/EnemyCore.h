@@ -41,10 +41,15 @@ private:
 
 	// ポイントライト
 	std::unique_ptr<PointLight> pointLight_ = nullptr;
-	float lightAtt_ = 0.0f;
-	float maxLightAtt_ = 1.0f;
-	float minLightAtt_ = 0.5f;
-	float subLightAtt_ = 0.1f;
+	Vector3 lightPosition_ = { 0.0f, 0.0f, 0.0f };
+	float lightRadius_ = 0.0f;
+	float maxLightRadius_ = 10.0f;
+	float minLightRadius_ = 3.0f;
+	float subLightRadius_ = 0.25f;
+
+	float dLightIntensity_ = 0.0f;
+	float dLightDecay_ = 0.0f;
+	float dLightDistance_ = 0.0f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -63,6 +68,9 @@ public:
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// デバック
+	void Debug();
 
 	EnemyCore() {}
 	~EnemyCore();

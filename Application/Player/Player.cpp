@@ -44,7 +44,7 @@ void Player::Initialize()
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 10.0f, -1.0f });
+	camera_->SetEye({ 0.0f, 10.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 	Sprite::SetCamera(camera_.get());
 	Line3D::SetCamera(camera_.get());
