@@ -25,7 +25,7 @@ PSOutput main(VSOutput input)
     float3 eyedir = normalize(cameraPos - input.worldPos.xyz);
     
     // シェーディングによる色
-    float4 shadecolor = float4(ambientColor * m_ambient, m_alpha);
+    float4 shadecolor = float4(0.0f, 0.0f, 0.0f, m_alpha);
     
     // 平行光源
     for (int i = 0; i < DIRLIGHT_NUM; i++)
@@ -45,10 +45,10 @@ PSOutput main(VSOutput input)
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
             
             // 環境光
-            //float3 ambient = m_ambient * 0.3;
+            float3 ambient = m_ambient * 0.3;
 
             // すべて加算する
-            shadecolor.rgb += (diffuse + specular) * dirLights[i].lightcolor.rgb;
+            shadecolor.rgb += (diffuse + specular + ambient) * dirLights[i].lightcolor.rgb;
         }
     }
     
@@ -82,7 +82,7 @@ PSOutput main(VSOutput input)
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
             
             // 環境光
-            //float3 ambient = m_ambient * 0.3;
+            float3 ambient = m_ambient * 0.3;
 
             // すべてを加算する
             shadecolor.rgb += factor * (diffuse + specular) * pointLights[i].intensity * pointLights[i].color.rgb;

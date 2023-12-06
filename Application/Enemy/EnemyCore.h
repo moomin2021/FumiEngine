@@ -45,7 +45,7 @@ private:
 	float lightIntensity_ = 1.0f;
 	float lightRadius_ = 5.0f;
 	float maxLightIntensity_ = 10.0f;
-	float minLightIntensity_ = 0.0f;
+	float minLightIntensity_ = 1.0f;
 	float subLightIntensity_ = 0.5f;
 
 	float dLightDecay_ = 1.0f;
