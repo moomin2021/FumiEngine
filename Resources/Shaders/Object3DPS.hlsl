@@ -16,6 +16,8 @@ PSOutput main(VSOutput input)
     // テクスチャマッピング
     float4 texcolor = tex.Sample(smp, input.uv) * input.color;
     
+    if (texcolor.a <= 0.0) discard;
+    
     // 光沢度
     const float shininess = 20.0f;
     
@@ -30,25 +32,23 @@ PSOutput main(VSOutput input)
     {
         if (dirLights[i].active)
         {
+            // ライトに向かうベクトルと法線の内積
+            float3 dotLightNormal = dot(dirLights[i].lightv, input.normal);
+
             // 反射光ベクトル
-            float3 reflect = normalize(-dirLights[i].lightv + 2.0f * input.normal * dot(input.normal, dirLights[i].lightv));
-            
-            // 物体の面の法線と太陽の位置を示すベクトルどのくらい重なっているかを計算
-			// 重なっていれば重なっているほど明るい！
-			// saturateは値を0-1にクランプする
-            float intensity = saturate(dot(normalize(input.normal), dirLights[i].lightv));
+            float3 reflect = normalize(-dirLights[i].lightv + 2.0 * dotLightNormal * input.normal);
             
             // 拡散反射光
-            float3 diffuse = texcolor.rgb * intensity * dirLights[i].lightcolor * m_diffuse;
+            float3 diffuse = dotLightNormal * m_diffuse;
             
             // 鏡面反射光
-            float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * dirLights[i].lightcolor * m_specular;
+            float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
             
-            // 環境光 = 素材の色 × ライトの色 * 暗くするために
-            float3 ambient = texcolor.rgb * dirLights[i].lightcolor * m_ambient;
-            
-            // 全て加算する
-            shadecolor.rgb += diffuse + specular + ambient;
+            // 環境光
+            float3 ambient = m_ambient * 0.3;
+
+            // すべて加算する
+            shadecolor.rgb += (diffuse + specular + ambient) * dirLights[i].lightcolor.rgb;
         }
     }
     
@@ -58,31 +58,34 @@ PSOutput main(VSOutput input)
         if (pointLights[i].active)
         {
             // ライトへのベクトル
-            float3 lightv = pointLights[i].lightpos - input.worldPos.xyz;
+            float3 lightv = pointLights[i].position - input.worldPos.rgb;
             
-            // ベクトルの長さ
-            float d = length(lightv);
+            // ポイントライトまでの距離
+            float3 distance = length(lightv);
             
+            // 指数によるコントロール
+            float3 factor = pow(saturate(-distance / pointLights[i].radius + 1.0), pointLights[i].decay);
+
             // 正規化し、単位ベクトルにする
             lightv = normalize(lightv);
-            
-            // 距離減衰係数
-            float atten = 1.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z * d * d);
-            
+
             // ライトに向かうベクトルと法線の内積
-            float3 dotlightnormal = dot(lightv, input.normal);
-            
+            float3 dotLightNormal = dot(lightv, input.normal);
+
             // 反射光ベクトル
-            float3 reflect = normalize(-lightv + 2.0f * dotlightnormal * input.normal);
+            float3 reflect = normalize(-lightv + 2.0 * dotLightNormal * input.normal);
             
             // 拡散反射光
-            float3 diffuse = dotlightnormal * m_diffuse;
-            
+            float3 diffuse = m_diffuse;
+
             // 鏡面反射光
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
             
-            //　すべて加算する
-            shadecolor.rgb += atten * (diffuse + specular) * pointLights[i].lightcolor;
+            // 環境光
+            float3 ambient = m_ambient * 0.3;
+
+            // すべてを加算する
+            shadecolor.rgb += factor * (diffuse + specular) * pointLights[i].intensity * pointLights[i].color.rgb;
         }
     }
     
@@ -159,7 +162,7 @@ PSOutput main(VSOutput input)
     }
 
     // シェーディングによる色で描画
-    output.target0 = shadecolor;
-    output.target1 = shadecolor;
+    output.target0 = shadecolor * texcolor;
+    output.target1 = shadecolor * texcolor;
     return output;
 }

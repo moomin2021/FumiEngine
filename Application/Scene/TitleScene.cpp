@@ -13,6 +13,7 @@ TitleScene::TitleScene() {}
 TitleScene::~TitleScene()
 {
 	colMgr2D_->RemoveCollider(cMouse_.get());
+	lightGroup_->RemoveDirLight(dirLight_.get());
 }
 
 void TitleScene::Initialize()
@@ -35,8 +36,8 @@ void TitleScene::Initialize()
 #pragma endregion
 
 #pragma region ライトグループ
-	lightGroup_ = std::make_unique<LightGroup>();
-	Object3D::SetLightGroup(lightGroup_.get());
+	lightGroup_ = LightGroup::GetInstance();
+	Object3D::SetLightGroup(lightGroup_);
 
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });

@@ -52,6 +52,8 @@ bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::
 	int32_t startID = CheckRay2Cell(Ray(startVec, { 0.0f, -1.0f, 0.0f }));
 	int32_t goalID = CheckRay2Cell(Ray(goalVec, { 0.0f, -1.0f, 0.0f }));
 
+	if (startID == -1 || goalID == -1) return false;
+
 	// 1. 現在の参照ノード
 	// 2. オープンリスト、クローズリスト
 	std::shared_ptr<NavNode> current = nullptr;
@@ -214,6 +216,7 @@ void NavMesh::CreateCell()
 	{
 		cells_.emplace_back(std::make_unique<NavCell>(
 			i, vertices[i * 3].pos, vertices[i * 3 + 1].pos, vertices[i * 3 + 2].pos));
+		cellsCenter_.emplace_back(cells_.back()->GetCenter());
 	}
 }
 

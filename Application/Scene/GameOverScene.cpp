@@ -1,4 +1,4 @@
-﻿#include "GameOverScene.h"
+#include "GameOverScene.h"
 
 #include "PipelineManager.h"
 
@@ -15,8 +15,8 @@ void GameOverScene::Initialize()
 #pragma endregion
 
 #pragma region ライトグループ
-	lightGroup_ = std::make_unique<LightGroup>();
-	Object3D::SetLightGroup(lightGroup_.get());
+	lightGroup_ = LightGroup::GetInstance();
+	Object3D::SetLightGroup(lightGroup_);
 
 	dirLight_ = std::make_unique<DirectionalLight>();
 	lightGroup_->AddDirLight(dirLight_.get());

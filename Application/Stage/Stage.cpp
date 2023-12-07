@@ -139,21 +139,10 @@ void Stage::Load(std::string fileName, bool isCol)
 
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
-		if (objectData.className == "Enemy") {
-			if (isCol == false) continue;
-			// 敵を追加
-			//enemyMgr_->CreateAddEnemy0(objectData.translation, objectData.scaling);
-		}
 
-		else if (objectData.className == "Item") {
+		if (objectData.className == "enemyCore") {
 			if (isCol == false) continue;
-			// アイテムを追加
-			ItemManager::GetInstace()->AddItem(objectData.translation);
-		}
-
-		else if (objectData.className == "BossGenerator") {
-			if (isCol == false) continue;
-			enemyMgr_->SetBossGenerator(objectData.translation);
+			enemyMgr_->AddCore(objectData.translation);
 		}
 
 		// オブジェクト追加

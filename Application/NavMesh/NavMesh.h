@@ -20,6 +20,8 @@ private:
 	// セル
 	std::vector<std::unique_ptr<NavCell>> cells_ = {};
 
+	std::vector<Vector3> cellsCenter_ = {};
+
 	// リンクライン
 	std::unique_ptr<Line3D> linkLines_ = nullptr;
 
@@ -65,6 +67,10 @@ private:
 public:
 	void SetIsDraw(bool frag) { object_->SetIsDraw(frag); }
 	void SetIsLinkLineDraw(bool frag) { isLinkLineDraw_ = frag; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	const std::vector<Vector3>& GetCellsCenter() { return cellsCenter_; }
 #pragma endregion
 };
 

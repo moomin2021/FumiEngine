@@ -1,9 +1,10 @@
-﻿#pragma once
+#pragma once
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "CircleShadow.h"
 
+#include <forward_list>
 #include <d3d12.h>
 #include <wrl.h>
 
@@ -42,10 +43,10 @@ private:
 	Vector3 ambientColor_;
 	
 	// ライトデータ
-	std::vector<DirectionalLight*> dirLights_;	// 平行光源の配列
-	std::vector<PointLight*> pointLights_;		// 点光源の配列
-	std::vector<SpotLight*> spotLights_;			// スポットライト用
-	std::vector<CircleShadow*> circleShadows_;	// 丸影の配列
+	std::forward_list<DirectionalLight*> dirLights_;	// 平行光源の配列
+	std::forward_list<PointLight*> pointLights_;		// 点光源の配列
+	std::forward_list<SpotLight*> spotLights_;			// スポットライト用
+	std::forward_list<CircleShadow*> circleShadows_;	// 丸影の配列
 
 	// ダーティフラグ
 	bool dirty_;
@@ -54,11 +55,6 @@ private:
 #pragma region メンバ関数
 public:
 	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	LightGroup();
-
-	/// <summary>
 	/// ライト描画
 	/// </summary>
 	void Draw();
@@ -66,27 +62,56 @@ public:
 	/// <summary>
 	/// 平行光源追加
 	/// </summary>
-	void AddDirLight(DirectionalLight* light);
+	void AddDirLight(DirectionalLight* light) { dirLights_.emplace_front(light); }
 
 	/// <summary>
 	/// ポイントライト追加
 	/// </summary>
-	void AddPointLight(PointLight* light);
+	void AddPointLight(PointLight* light) { pointLights_.emplace_front(light); }
 
 	/// <summary>
 	/// スポットライト追加
 	/// </summary>
-	void AddSpotLight(SpotLight* light);
+	void AddSpotLight(SpotLight* light) { spotLights_.emplace_front(light); }
 
 	/// <summary>
 	/// 丸影追加
 	/// </summary>
-	void AddCircleShadow(CircleShadow* shadow);
+	void AddCircleShadow(CircleShadow* light) { circleShadows_.emplace_front(light); };
+
+	/// <summary>
+	/// 平行光源削除
+	/// </summary>
+	void RemoveDirLight(DirectionalLight* light) { dirLights_.remove(light); }
+
+	/// <summary>
+	/// ポイントライト削除
+	/// </summary>
+	void RemovePointLight(PointLight* light) { pointLights_.remove(light); }
+
+	/// <summary>
+	/// スポットライト削除
+	/// </summary>
+	void RemoveSpotLight(SpotLight* light) { spotLights_.remove(light); }
+
+	/// <summary>
+	/// 丸影削除
+	/// </summary>
+	void RemoveCircleShadow(CircleShadow* light) { circleShadows_.remove(light); };
+
+	void Reset();
+
+	static LightGroup* GetInstance();
 
 private:
 	/// <summary>
 	/// 定数バッファ転送
 	/// </summary>
 	void TransferConstBuffer();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	LightGroup();
 #pragma endregion
 };

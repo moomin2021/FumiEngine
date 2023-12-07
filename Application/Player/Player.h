@@ -78,16 +78,16 @@ private:
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度
-	float maxMoveSpd_ = 0.5f;// 最大移動速度
+	float maxMoveSpd_ = 0.15f;// 最大移動速度
 	float moveAcc_ = 0.05f;// 移動加速度
 	bool isDash_ = false;// ダッシュフラグ
-	float dashSpd_ = 1.0f;// ダッシュ速度
+	float dashSpd_ = 0.3f;// ダッシュ速度
 
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
 	float maxGravity_ = 1.5f;// 最大重力
 	float gAcc_ = 0.1f;// 重力加速度
-	float jumpSpd_ = 1.0f;// ジャンプ速度
+	float jumpSpd_ = 0.5f;// ジャンプ速度
 
 	// クロスヘア
 	uint16_t crossHairHandle_ = 0;
@@ -103,7 +103,7 @@ private:
 	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
-	float shotInterval_ = 0.7f;
+	float shotInterval_ = 0.5f;
 	uint64_t shotTime_ = 0;
 
 	// リロード
@@ -111,16 +111,6 @@ private:
 	uint8_t reloadTime_ = 3;// リロード時間
 	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
 	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
-
-	// アイテム
-	std::vector<uint8_t> items_;
-	ItemManager* itemManager_ = nullptr;
-
-	// 操作ヒント
-	std::unique_ptr<Sprite> opeTips_ = nullptr;
-	uint16_t opeTipsHandle_ = 0;
-	bool isHitItem_ = false;
-	bool isBossGen_ = false;
 
 #pragma endregion
 
@@ -179,5 +169,6 @@ private:
 #pragma region ゲッター関数
 public:
 	inline const Vector3& GetPosition() { return camera_->GetEye(); }
+	const Vector3& GetDir() { return forwardVec_; }
 #pragma endregion
 };

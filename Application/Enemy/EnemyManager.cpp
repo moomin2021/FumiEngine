@@ -11,7 +11,7 @@ EnemyManager::EnemyManager() {}
 
 EnemyManager::~EnemyManager()
 {
-	colMgr_->RemoveCollider(colBossGenerator_.get());
+	
 }
 
 void EnemyManager::Initialize()
@@ -20,25 +20,19 @@ void EnemyManager::Initialize()
 	colMgr_ = CollisionManager::GetInstance();
 
 	Zombie::SetCollisionManager(colMgr_);
+	EnemyCore::SetCollisionManager(colMgr_);
 #pragma endregion
 
 #pragma region モデル
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("stoneGolem");
 	mZombie_ = std::make_unique<Model>("zombie");
+	coreM_ = std::make_unique<Model>("core");
+	coreFrameM_ = std::make_unique<Model>("coreFrame");
+	coreStandM_ = std::make_unique<Model>("coreStand");
 
 	Zombie::SetModel(mZombie_.get());
-#pragma endregion
-
-#pragma region オブジェクト
-	oBossGenerator_ = std::make_unique<Object3D>(mBossGenerator_.get());
-#pragma endregion
-
-#pragma region コライダー
-	colBossGenerator_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 3.0f, 0.0f });
-	colBossGenerator_->SetAttribute(COL_BOSSGENERATOR);
-	colBossGenerator_->SetObject3D(oBossGenerator_.get());
-	colMgr_->AddCollider(colBossGenerator_.get());
+	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
 #pragma endregion
 
 #pragma region ハンドル
@@ -51,11 +45,26 @@ void EnemyManager::Initialize()
 	navMesh_->SetIsDraw(false);
 	Enemy0::SetNavMesh(navMesh_.get());
 	Zombie::SetNavMesh(navMesh_.get());
+	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
+
+	enemyGenerators_.emplace_front();
+	enemyGenerators_.front().SetOffset({ 0.0f, 2.0f, 0.0f });
+	enemyGenerators_.front().AddSpawnNum(5);
 }
 
 void EnemyManager::Update()
 {
+	for (auto& it : enemyGenerators_) it.Update();
+
+	for (auto& it : enemyGenerators_)
+	{
+		if (it.GetSpawnFrag())
+		{
+			CreateAddEnemy0(it.GetSpawnPos());
+		}
+	}
+
 	for (auto it = enemys_.begin(); it != enemys_.end();) {
 		// 敵の更新
 		(*it)->Update();
@@ -71,22 +80,28 @@ void EnemyManager::Update()
 		(*it)->Update();
 
 		// 敵の生存フラグが[OFF]になったら消す
-		if ((*it)->GetIsAlive() == false) it = zombies_.erase(it);
+		if ((*it)->GetIsAlive() == false)
+		{
+			it = zombies_.erase(it);
+			enemyDeathCounter_++;
+		}
 		else ++it;
 	}
 
-	// ボスが生成されていたら処理をする
-	if (boss_) {
-		boss_->Update();
+	// コア
+	for (auto it = enemyCores_.begin(); it != enemyCores_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false) it = enemyCores_.erase(it);
+		else ++it;
 	}
 }
 
 void EnemyManager::Draw()
 {
-	oBossGenerator_->Draw();
-	if (boss_) {
-		boss_->Draw();
-	}
 
 	// 敵描画処理
 	for (auto& i : enemys_) {
@@ -95,35 +110,28 @@ void EnemyManager::Draw()
 
 	for (auto& it : zombies_) it->Draw();
 
+	for (auto& it : enemyCores_) it->Draw();
+
 	navMesh_->Draw();
 }
 
 void EnemyManager::MatUpdate()
 {
-	oBossGenerator_->MatUpdate();
-	if (boss_) {
-		boss_->MatUpdate();
-	}
 
 	for (auto& it : enemys_) it->MatUpdate();
 	for (auto& it : zombies_) it->MatUpdate();
 
 	navMesh_->MatUpdate();
+
+	for (auto& it : enemyCores_) it->MatUpdate();
 }
 
 void EnemyManager::OnCollision()
 {
-	if (boss_) boss_->OnCollision();
-
 	for (auto& it : enemys_) it->OnCollision();
 	for (auto& it : zombies_) it->OnCollision();
-}
 
-void EnemyManager::SummonBoss()
-{
-	boss_ = std::make_unique<Boss0>();
-	boss_->Initialize(oBossGenerator_->GetPosition() + Vector3{0.0f, 3.0f, 0.0f});
-	boss_->MatUpdate();
+	for (auto& it : enemyCores_) it->OnCollision();
 }
 
 void EnemyManager::CreateAddEnemy0(const Vector3& pos)
@@ -136,9 +144,20 @@ void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 	zombies_.emplace_back(std::move(newZombie));
 }
 
+void EnemyManager::AddCore(const Vector3& inPos)
+{
+	// 敵の生成
+	std::unique_ptr<EnemyCore> newCore = std::make_unique<EnemyCore>();
+	newCore->Initialize(inPos);
+
+	// エネミー配列に追加
+	enemyCores_.emplace_back(std::move(newCore));
+}
+
 void EnemyManager::CheckSceneChange()
 {
-	if (boss_ && boss_->GetIsAlive() == false) {
+	if (enemyCores_.empty())
+	{
 		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);
@@ -169,6 +188,7 @@ void EnemyManager::AddParticle(const Vector3& pos)
 void EnemyManager::Debug()
 {
 	for (auto& it : zombies_) it->Debug();
+	for (auto& it : enemyCores_) it->Debug();
 
 	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 
@@ -207,11 +227,6 @@ void EnemyManager::Debug()
 	}
 
 	ImGui::End();
-}
-
-void EnemyManager::SetBossGenerator(const Vector3& pos)
-{
-	oBossGenerator_->SetPosition(pos);
 }
 
 void EnemyManager::SetPlayer(Player* player)
