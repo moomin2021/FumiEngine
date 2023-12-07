@@ -374,3 +374,48 @@ bool Collision::CheckRay2AABB(const Ray& ray, const AABB& aabb, float* pDistance
 
 	return true;
 }
+
+bool Collision::CheckAABB2AABB(const AABB& aabb0, const AABB& aabb1, Vector3* pInter, Vector3* pReject)
+{
+	Vector3 min0 = aabb0.center - aabb0.radius;
+	Vector3 max0 = aabb0.center + aabb0.radius;
+	Vector3 min1 = aabb1.center - aabb1.radius;
+	Vector3 max1 = aabb1.center + aabb1.radius;
+
+	bool result = false;
+
+	for (uint8_t i = 0; i < 3; i++)
+	{
+		if (min0[i] <= max1[i] && max0[i] >= min1[i])
+		{
+			result = true;
+		}
+
+		else
+		{
+			return false;
+		}
+	}
+
+	Vector3 aabb02aabb1 = aabb1.center - aabb0.center;
+
+	uint8_t index = 0;
+
+	float max = 0.0f;
+
+	for (uint8_t i = 0; i < 3; i++)
+	{
+		if (max < fabs(aabb02aabb1[i]))
+		{
+			max = aabb02aabb1[i];
+			index = i;
+		}
+	}
+
+	//if (fabs(aabb0.center))
+
+	//	| x2 - x1 | -(sx2 + sx1) / 2 < 0 && | y2 - y1 | -(sy2 + sy1) / 2 < 0 && | z2 - z1 | -(sz2 + sz1) / 2 < 0
+	*pReject = { 0.0f, 0.0f, 0.0f };
+	*pInter = { 0.0f, 0.0f, 0.0f };
+	return false;
+}

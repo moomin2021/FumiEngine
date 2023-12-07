@@ -118,4 +118,14 @@ public:
 	/// <param name="inter"> 最近接点 </param>
 	/// <returns></returns>
 	static bool CheckRay2AABB(const Ray& ray, const AABB& aabb, float* pDistance = nullptr, Vector3* pInter = nullptr);
+
+	/// <summary>
+	/// AABB同士の当たり判定
+	/// </summary>
+	/// <param name="aabb0"> AABB </param>
+	/// <param name="aabb1"> AABB </param>
+	/// <param name="pInter"> 接点 </param>
+	/// <param name="pReject"> 押し返しベクトル </param>
+	/// <returns></returns>
+	static bool CheckAABB2AABB(const AABB& aabb0, const AABB& aabb1, Vector3* pInter = nullptr, Vector3* pReject = nullptr);
 };

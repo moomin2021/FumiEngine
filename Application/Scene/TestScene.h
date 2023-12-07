@@ -6,11 +6,6 @@
 #include "DirectionalLight.h"
 #include "Key.h"
 
-#include "Stage.h"
-#include "Player.h"
-#include "EnemyManager.h"
-#include "NavMesh.h"
-
 #include <memory>
 
 class TestScene : public BaseScene
@@ -19,34 +14,7 @@ class TestScene : public BaseScene
 private:
 	// インスタンス
 	Key* key_ = nullptr;
-
-	// ライトグループ
-	std::unique_ptr<LightGroup> lightGroup_ = nullptr;
-
-	// 平行光源
-	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
-
-	// ステージオブジェクトの管理クラス
-	std::unique_ptr<Stage> stage_ = nullptr;
-
-	// プレイヤー
-	std::unique_ptr<Player> player_ = nullptr;
-
-	// エネミーマネージャー
-	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
-
-	// モデル
-	std::unique_ptr<Model> mCube_ = nullptr;
-
-	// 3軸を示すオブジェクト
-	std::vector<std::unique_ptr<Object3D>> oAxis_ = {};
-
-	// デバック
-	bool isDebug_ = false;
-
-	// ゲームUI
-	std::unique_ptr<Sprite> sGameUI_ = nullptr;
-	uint16_t gGameUI_ = 0;
+	LightGroup* lightGroup_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
