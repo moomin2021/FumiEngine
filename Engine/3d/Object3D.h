@@ -54,7 +54,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Object3D(Model* model);
+	Object3D(Model* model = nullptr);
 
 	// 行列更新処理
 	void MatUpdate();

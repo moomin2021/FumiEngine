@@ -26,6 +26,8 @@ void AABBCollider::Update()
 	// 衝突したコライダーをリセット
 	hitCol_ = nullptr;
 
+	reject_ = { 0.0f, 0.0f, 0.0f };
+
 	// オブジェクト3Dが紐づけられていたら
 	if (object_)
 	{

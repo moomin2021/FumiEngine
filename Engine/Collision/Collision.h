@@ -127,5 +127,5 @@ public:
 	/// <param name="pInter"> 接点 </param>
 	/// <param name="pReject"> 押し返しベクトル </param>
 	/// <returns></returns>
-	static bool CheckAABB2AABB(const AABB& aabb0, const AABB& aabb1, Vector3* pInter = nullptr, Vector3* pReject = nullptr);
+	static bool CheckAABB2AABB(const AABB& aabb0, const AABB& aabb1, Vector3* pReject = nullptr);
 };

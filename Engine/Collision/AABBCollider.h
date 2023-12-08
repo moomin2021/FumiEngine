@@ -8,6 +8,7 @@ class AABBCollider : public BaseCollider, public AABB
 private:
 	// オブジェクト中心からのオフセット
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
+	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };
 #pragma endregion
 
 #pragma region メンバ関数
@@ -27,5 +28,12 @@ public:
 
 	// 半径を設定
 	inline void SetRadius(const Vector3& inRadius) { AABB::radius = inRadius; }
+
+	// 押し戻しベクトルを設定
+	inline void AddReject(const Vector3& inReject) { reject_ += inReject; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	inline const Vector3& GetReject() { return reject_; }
 #pragma endregion
 };

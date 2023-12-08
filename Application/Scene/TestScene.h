@@ -5,6 +5,8 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 #include "Key.h"
+#include "AABBCollider.h"
+#include "CollisionManager.h"
 
 #include <memory>
 
@@ -15,6 +17,24 @@ private:
 	// インスタンス
 	Key* key_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
+	CollisionManager* colMgr_ = nullptr;
+
+	// カメラ
+	std::unique_ptr<Camera> camera_ = nullptr;
+
+	// ライト
+	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
+
+	// モデル
+	std::unique_ptr<Model> cubeM_ = nullptr;
+
+	// オブジェクト
+	const uint8_t cubeMax_ = 3;
+	std::unique_ptr<Object3D[]> cubeO_ = nullptr;
+	Vector3 cube1Pos_ = { 0.0f, 0.0f, -1.5f };
+
+	// コライダー
+	std::unique_ptr<AABBCollider[]> cubeC_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
