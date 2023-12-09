@@ -98,7 +98,7 @@ void CollisionManager::CheckAllCollision()
 					aabb0->SetIsHit(true);
 					aabb1->SetIsHit(true);
 					aabb0->PushBack(reject);
-					aabb0->SetHitCollider(*itB);
+					aabb0->SetHitCollider(it);
 					aabb1->SetHitCollider(*itA);
 				}
 			}

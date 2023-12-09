@@ -125,8 +125,9 @@ void Player::Initialize()
 #pragma endregion
 
 #pragma region コライダー
-	playerCol_ = std::make_unique<SphereCollider>();
-	playerCol_->SetRadius(0.3f);
+	playerCol_ = std::make_unique<AABBCollider>();
+	playerCol_->SetRadius({ 0.3f, 0.9f, 0.3f });
+	playerCol_->SetOffset({ 0.0f, -0.6f, 0.0f });
 	playerCol_->SetAttribute(COL_PLAYER);
 	playerCol_->SetObject3D(oPlayer_.get());
 	colMgr_->AddCollider(playerCol_.get());
@@ -214,9 +215,8 @@ void Player::OnCollision()
 {
 	if (playerCol_->GetIsHit()) {
 		Vector3 reject = playerCol_->GetReject();
-		camera_->SetEye(camera_->GetEye() + reject);
-		camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
-		oPlayer_->SetPosition(camera_->GetEye());
+		camera_->SetEye(oPlayer_->GetPosition());
+		camera_->SetTarget(oPlayer_->GetPosition() + forwardVec_ * 10.0f);
 	}
 
 	if (legCol_->GetIsHit() && legCol_->GetDistance() <= cameraHeight_) {

@@ -70,7 +70,7 @@ private:
 	std::unique_ptr<Object3D> oSheriff_ = nullptr;
 
 	// コライダー
-	std::unique_ptr<SphereCollider> playerCol_ = nullptr;// プレイヤーコライダー
+	std::unique_ptr<AABBCollider> playerCol_ = nullptr;// プレイヤーコライダー
 	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元コライダー
 	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
 	std::unique_ptr<RayCollider> shotCol_ = nullptr;// 弾を撃った時に使うコライダー
@@ -85,7 +85,7 @@ private:
 
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
-	float maxGravity_ = 1.5f;// 最大重力
+	float maxGravity_ = 0.5f;// 最大重力
 	float gAcc_ = 0.1f;// 重力加速度
 	float jumpSpd_ = 0.5f;// ジャンプ速度
 

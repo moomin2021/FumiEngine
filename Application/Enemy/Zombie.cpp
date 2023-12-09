@@ -27,6 +27,13 @@ void Zombie::Initialize(const Vector3& inPos)
 #pragma endregion
 
 #pragma region コライダー
+	cHit_ = std::make_unique<AABBCollider>();
+	cHit_->SetOffset({ 0.0f, 2.0f, 0.0f });
+	cHit_->SetRadius({ 0.3f, 0.975f, 0.3f });
+	cHit_->SetAttribute(COL_ENEMY);
+	cHit_->SetObject3D(object_.get());
+	sColMgr_->AddCollider(cHit_.get());
+
 	cGroundJudgment_ = std::make_unique<RayCollider>();
 	cGroundJudgment_->SetOffSet({ 0.0f, 2.0f, 0.0f });
 	cGroundJudgment_->SetDir({ 0.0f, -1.0f, 0.0f });
@@ -44,13 +51,6 @@ void Zombie::Initialize(const Vector3& inPos)
 	cEnemy2Player_->SetAttribute(COL_PLAYER2ENEMY_RAY);
 	cEnemy2Player_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cEnemy2Player_.get());
-
-	cHit_ = std::make_unique<AABBCollider>();
-	cHit_->SetOffset({ 0.0f, 2.0f, 0.0f });
-	cHit_->SetRadius({ 0.3f, 0.975f, 0.3f });
-	cHit_->SetAttribute(COL_ENEMY);
-	cHit_->SetObject3D(object_.get());
-	sColMgr_->AddCollider(cHit_.get());
 #pragma endregion
 }
 
@@ -93,8 +93,8 @@ void Zombie::OnCollision()
 	{
 		knockBackVec_ = sPlayer_->GetDir();
 		knockBackVec_.normalize();
-		knockBackVec_.y = 1.5f;
-		knockBackSpd_ = 1.0f;
+		knockBackVec_.y = 3.0f;
+		knockBackSpd_ = 0.5f;
 		hp_ -= 1;
 
 		if (hp_ <= 0) isAlive_ = false;
