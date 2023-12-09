@@ -112,6 +112,12 @@ private:
 	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
 	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
 
+	uint8_t damageCooldown_ = 30;
+	uint8_t damageCount_ = 30;
+
+	uint8_t hp_ = 5;
+	Vector3 knockVec_ = { 0.0f, 0.0f, 0.0f };
+	float knockSpd_ = 0.0f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -142,6 +148,10 @@ public:
 
 	// デバック
 	void Debug();
+
+	void SetKnock(const Vector3& vec);
+
+	void CheckSceneChange();
 
 private:
 	// 状態別処理

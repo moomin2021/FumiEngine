@@ -108,6 +108,7 @@ void GameScene::Update()
 	Debug();
 
 	enemyMgr_->CheckSceneChange();
+	player_->CheckSceneChange();
 }
 
 void GameScene::Draw()

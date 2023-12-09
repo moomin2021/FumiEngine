@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "PipelineManager.h"
 #include "Line3D.h"
+#include "SceneManager.h"
 
 #include "EnemyManager.h"
 
@@ -159,6 +160,14 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	damageCount_++;
+
+	knockSpd_ -= 0.1f;
+	knockSpd_ = Util::Clamp(knockSpd_, 10.0f, 0.0f);
+	oPlayer_->SetPosition(oPlayer_->GetPosition() + knockVec_ * knockSpd_);
+	camera_->SetEye(oPlayer_->GetPosition());
+	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
 	recoilEyeAngle_ -= 0.5f;
 	recoilEyeAngle_ = Util::Clamp(recoilEyeAngle_, 10.0f, 0.0f);
 
@@ -327,7 +336,28 @@ void Player::Debug()
 		ImGui::TreePop();
 	}
 
+	ImGui::Text("hp = %d", hp_);
+
 	ImGui::End();
+}
+
+void Player::SetKnock(const Vector3& vec)
+{
+	if (damageCount_ >= damageCooldown_)
+	{
+		knockVec_ = vec;
+		knockSpd_ = 1.0f;
+		damageCount_ = 0;
+		hp_ -= 1;
+	}
+}
+
+void Player::CheckSceneChange()
+{
+	if (hp_ > 0) return;
+	SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+	WinAPI::GetInstance()->DisplayCursor(true);
+	WinAPI::GetInstance()->SetClipCursor(false);
 }
 
 void (Player::* Player::stateTable[]) () = {

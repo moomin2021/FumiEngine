@@ -101,6 +101,13 @@ void Zombie::OnCollision()
 		Jump();
 	}
 
+	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_PLAYER)
+	{
+		Vector3 result = sPlayer_->GetPosition() - object_->GetPosition();
+		result.normalize();
+		sPlayer_->SetKnock(result);
+	}
+
 	float elapsed = (Util::GetTimrMSec() - hitTime_) / 1000.0f;
 	if (hitReactionDuringTime_ >= elapsed)
 	{
