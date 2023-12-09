@@ -82,6 +82,26 @@ void CollisionManager::CheckAllCollision()
 					aabbCol->SetHitCollider(*itA);
 				}
 			}
+
+			else if ((*itA)->shapeType_ == SHAPE_AABB)
+			{
+				for (auto& it : blockCollider_)
+				{
+					count++;
+
+					AABBCollider* aabb0 = dynamic_cast<AABBCollider*>(*itA);
+					AABBCollider* aabb1 = dynamic_cast<AABBCollider*>(it);
+					Vector3 reject = { 0.0f, 0.0f, 0.0f };
+
+					if (!Collision::CheckAABB2AABB(*aabb0, *aabb1, &reject)) continue;
+
+					aabb0->SetIsHit(true);
+					aabb1->SetIsHit(true);
+					aabb0->PushBack(reject);
+					aabb0->SetHitCollider(*itB);
+					aabb1->SetHitCollider(*itA);
+				}
+			}
 		}
 
 		// レイだったら
@@ -286,22 +306,24 @@ void CollisionManager::CheckAllCollision()
 					}
 				}
 
+				// AABB同士
 				else if ((*itA)->GetShapeType() == SHAPE_AABB && (*itB)->GetShapeType() == SHAPE_AABB)
 				{
-					AABB* aabb0 = dynamic_cast<AABB*>(*itA);
-					AABB* aabb1 = dynamic_cast<AABB*>(*itB);
+					AABBCollider* aabb0 = dynamic_cast<AABBCollider*>(*itA);
+					AABBCollider* aabb1 = dynamic_cast<AABBCollider*>(*itB);
 					Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
 					if (Collision::CheckAABB2AABB(*aabb0, *aabb1, &reject))
 					{
-						AABBCollider* aabbCol0 = dynamic_cast<AABBCollider*>(*itA);
-						AABBCollider* aabbCol1 = dynamic_cast<AABBCollider*>(*itB);
-						(*itA)->SetIsHit(true);
-						(*itB)->SetIsHit(true);
-						aabbCol0->AddReject(reject);
-						aabbCol1->AddReject(-reject);
+						aabb0->SetIsHit(true);
+						aabb1->SetIsHit(true);
+						aabb0->AddReject(reject);
+						aabb1->AddReject(-reject);
+						aabb0->SetHitCollider(*itB);
+						aabb1->SetHitCollider(*itA);
 					}
 				}
+
 			}
 		}
 	}

@@ -89,7 +89,7 @@ void Zombie::OnCollision()
 	// 接地判定
 	GroundingJudgment();
 
-	if (cHit_->GetIsHit())
+	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
 	{
 		knockBackVec_ = sPlayer_->GetDir();
 		knockBackVec_.normalize();

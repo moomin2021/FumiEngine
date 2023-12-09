@@ -19,6 +19,8 @@ public:
 
 	// 更新処理
 	void Update() override;
+
+	void PushBack(const Vector3& reject);
 #pragma endregion
 
 #pragma region セッター関数

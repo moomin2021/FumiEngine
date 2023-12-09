@@ -39,3 +39,13 @@ void AABBCollider::Update()
 		AABB::center = offset_;
 	}
 }
+
+void AABBCollider::PushBack(const Vector3& reject)
+{
+	// オブジェクト3Dが紐づけられていたら
+	if (object_)
+	{
+		object_->SetPosition(object_->GetPosition() + reject);
+		AABB::center = object_->GetPosition() + offset_;
+	}
+}
