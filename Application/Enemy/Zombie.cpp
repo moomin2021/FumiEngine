@@ -14,7 +14,6 @@ NavMesh* Zombie::sNavMesh_ = nullptr;
 Zombie::~Zombie()
 {
 	sColMgr_->RemoveCollider(cGroundJudgment_.get());
-	sColMgr_->RemoveCollider(cSphere_.get());
 	sColMgr_->RemoveCollider(cEnemy2Player_.get());
 	sColMgr_->RemoveCollider(cHit_.get());
 }
@@ -40,11 +39,6 @@ void Zombie::Initialize(const Vector3& inPos)
 	cGroundJudgment_->SetAttribute(COL_LEG);
 	cGroundJudgment_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cGroundJudgment_.get());
-
-	cSphere_ = std::make_unique<SphereCollider>(Vector3{ 0.0f, 1.0f, 0.0f }, 1.0f);
-	cSphere_->SetAttribute(0);
-	cSphere_->SetObject3D(object_.get());
-	sColMgr_->AddCollider(cSphere_.get());
 
 	cEnemy2Player_ = std::make_unique<RayCollider>();
 	cEnemy2Player_->SetOffSet({ 0.0f, 1.7f, 0.0f });
@@ -100,6 +94,11 @@ void Zombie::OnCollision()
 		if (hp_ <= 0) isAlive_ = false;
 
 		hitTime_ = Util::GetTimrMSec();
+	}
+
+	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_STAGE_OBJ)
+	{
+		Jump();
 	}
 
 	float elapsed = (Util::GetTimrMSec() - hitTime_) / 1000.0f;
@@ -174,6 +173,7 @@ void Zombie::Chase()
 
 void Zombie::GroundingJudgment()
 {
+	isGround_ = false;
 	if (cGroundJudgment_->GetIsHit() && cGroundJudgment_->GetDistance() < 2.0f)
 	{
 		float reject = 2.0f - cGroundJudgment_->GetDistance();
@@ -185,9 +185,10 @@ void Zombie::GroundingJudgment()
 
 void Zombie::Gravity()
 {
+	if (isGround_) return;
 	velocity_ += accel_;
 	velocity_ = Util::Min(velocity_, velocityLimit_);
-	Vector3 result = object_->GetPosition() + gravity_ * velocity_;
+	Vector3 result = object_->GetPosition() + Vector3{0.0f, -1.0f, 0.0f} * velocity_;
 	object_->SetPosition(result);
 }
 
@@ -248,4 +249,9 @@ void Zombie::CreateNavRoute()
 	if (!result) return;
 
 	route_.erase(route_.begin());
+}
+
+void Zombie::Jump()
+{
+	if (isGround_) velocity_ = JumpSpd_;
 }

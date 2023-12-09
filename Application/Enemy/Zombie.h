@@ -33,7 +33,6 @@ private:
 
 	// コライダー
 	std::unique_ptr<RayCollider> cGroundJudgment_ = nullptr;// 接地判定を取るコライダー
-	std::unique_ptr<SphereCollider> cSphere_ = nullptr;// ステージObjと衝突判定をする
 	std::unique_ptr<RayCollider> cEnemy2Player_ = nullptr;// 敵からプレイヤーまでのレイ
 	std::unique_ptr<AABBCollider> cHit_ = nullptr;// プレイヤーの玉などと衝突判定をとる
 
@@ -51,10 +50,11 @@ private:
 	bool isGround_ = false;
 
 	// 重力
-	Vector3 gravity_ = { 0.0f, -1.0f, 0.0f };
+	float gravity_ = 0.0f;
 	const float velocityLimit_ = 1.0f;
 	float velocity_ = 0.0f;// 速度
 	float accel_ = 0.05f;// 加速度
+	float JumpSpd_ = -0.5f;
 
 	// ゾンビの向き
 	float turnSpd_ = 8.0f;
@@ -110,6 +110,7 @@ private:
 	void Gravity();// 重力処理
 	void Rotate();// 回転処理
 	void CreateNavRoute();// ルート作成
+	void Jump();
 #pragma endregion
 
 #pragma region セッター関数
