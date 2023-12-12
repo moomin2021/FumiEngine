@@ -59,6 +59,7 @@ void Player::Initialize()
 
 #pragma region オブジェクト
 	oPlayer_ = std::make_unique<Object3D>(mSphere_.get());
+	oPlayer_->SetPosition({ 0.0f, 10.0f, -10.0f });
 
 	oSheriff_ = std::make_unique<Object3D>(mSheriff_.get());
 	oSheriff_->SetScale(Vector3{ 0.1f, 0.1f, 0.1f });
