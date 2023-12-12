@@ -49,6 +49,7 @@ void TestScene::Initialize()
 		cubeO_[i].SetScale({ 0.5f, 0.5f, 0.5f });
 	}
 	cubeO_[0].SetPosition({ -0.6f, 0.0f, 0.0f });
+	cubeO_[0].SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
 	cubeO_[1].SetPosition({ 0.0f, 0.0f, -1.5f });
 	cubeO_[2].SetPosition({ 0.6f, 0.0f, 0.0f });
 #pragma endregion

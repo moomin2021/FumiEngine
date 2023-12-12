@@ -186,9 +186,6 @@
     <ClCompile Include="Application\Scene\SceneManager.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Enemy\Boss0.cpp">
-      <Filter>Application\ソースファイル\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\BoxCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
@@ -212,9 +209,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Util\Easing.cpp">
       <Filter>Engine\ソース ファイル\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\Enemy0.cpp">
-      <Filter>Application\ソースファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Application\Enemy\EnemyManager.cpp">
       <Filter>Application\ソースファイル\Enemy</Filter>
@@ -419,9 +413,6 @@
     <ClInclude Include="Engine\Collision\BaseCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Enemy\Boss0.h">
-      <Filter>Application\ヘッダーファイル\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collision\BoxCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
@@ -451,9 +442,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Util\Easing.h">
       <Filter>Engine\ヘッダー ファイル\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\Enemy0.h">
-      <Filter>Application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\EnemyManager.h">
       <Filter>Application\ヘッダーファイル\Enemy</Filter>

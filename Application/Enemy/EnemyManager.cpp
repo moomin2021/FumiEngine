@@ -43,7 +43,6 @@ void EnemyManager::Initialize()
 	navMesh_ = std::make_unique<NavMesh>();
 	navMesh_->Initialize("navMesh");
 	navMesh_->SetIsDraw(false);
-	Enemy0::SetNavMesh(navMesh_.get());
 	Zombie::SetNavMesh(navMesh_.get());
 	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
@@ -63,15 +62,6 @@ void EnemyManager::Update()
 		{
 			CreateAddEnemy0(it.GetSpawnPos());
 		}
-	}
-
-	for (auto it = enemys_.begin(); it != enemys_.end();) {
-		// 敵の更新
-		(*it)->Update();
-
-		// 敵の生存フラグが[OFF]になったら消す
-		if ((*it)->GetIsAlive() == false) it = enemys_.erase(it);
-		else ++it;
 	}
 
 	for (auto it = zombies_.begin(); it != zombies_.end();)
@@ -102,12 +92,6 @@ void EnemyManager::Update()
 
 void EnemyManager::Draw()
 {
-
-	// 敵描画処理
-	for (auto& i : enemys_) {
-		i->Draw();
-	}
-
 	for (auto& it : zombies_) it->Draw();
 
 	for (auto& it : enemyCores_) it->Draw();
@@ -117,8 +101,6 @@ void EnemyManager::Draw()
 
 void EnemyManager::MatUpdate()
 {
-
-	for (auto& it : enemys_) it->MatUpdate();
 	for (auto& it : zombies_) it->MatUpdate();
 
 	navMesh_->MatUpdate();
@@ -128,7 +110,6 @@ void EnemyManager::MatUpdate()
 
 void EnemyManager::OnCollision()
 {
-	for (auto& it : enemys_) it->OnCollision();
 	for (auto& it : zombies_) it->OnCollision();
 
 	for (auto& it : enemyCores_) it->OnCollision();
@@ -203,7 +184,7 @@ void EnemyManager::Debug()
 
 	if (ImGui::Button("DeleteEnemy"))
 	{
-		DeleteEnemy0();
+
 	}
 
 	if (ImGui::TreeNode("NavMesh"))
@@ -217,10 +198,7 @@ void EnemyManager::Debug()
 
 		if (ImGui::Button("CreateRoute"))
 		{
-			for (auto& it : enemys_)
-			{
-				it->CreateNavRoute();
-			}
+
 		}
 
 		ImGui::TreePop();
@@ -231,6 +209,5 @@ void EnemyManager::Debug()
 
 void EnemyManager::SetPlayer(Player* player)
 {
-	Enemy0::SetPlayer(player);
 	Zombie::SetPlayer(player);
 }

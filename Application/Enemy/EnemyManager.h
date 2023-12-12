@@ -2,8 +2,6 @@
 #include "Object3D.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
-#include "Boss0.h"
-#include "Enemy0.h"
 #include "Zombie.h"
 #include "ParticleEmitter.h"
 #include "NavMesh.h"
@@ -34,7 +32,6 @@ private:
 	uint16_t hParticle_ = 0;
 
 	// エネミー
-	std::deque<std::unique_ptr<Enemy0>> enemys_;
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
 
 	// ナビメッシュ
@@ -75,7 +72,6 @@ public:
 
 	// エネミーを生成追加
 	void CreateAddEnemy0(const Vector3& pos);
-	void DeleteEnemy0() { enemys_.clear(); }
 
 	void AddCore(const Vector3& inPos);
 

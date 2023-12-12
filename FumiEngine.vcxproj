@@ -97,8 +97,6 @@
     <ClCompile Include="Engine\Collision\AABBCollider.cpp" />
     <ClCompile Include="Application\Player\Bullet.cpp" />
     <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
-    <ClCompile Include="Application\Enemy\Enemy0.cpp" />
-    <ClCompile Include="Application\Enemy\Boss0.cpp" />
     <ClCompile Include="Application\Setting\BoxButton.cpp" />
     <ClCompile Include="Application\Setting\AudioLayer.cpp" />
     <ClCompile Include="Engine\Util\Easing.cpp" />
@@ -169,8 +167,6 @@
     <ClInclude Include="Application\Scene\BaseScene.h" />
     <ClInclude Include="Application\Player\Bullet.h" />
     <ClInclude Include="Application\Enemy\EnemyManager.h" />
-    <ClInclude Include="Application\Enemy\Enemy0.h" />
-    <ClInclude Include="Application\Enemy\Boss0.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
     <ClInclude Include="Application\Setting\ButtonAttribute.h" />
     <ClInclude Include="Application\Setting\AudioLayer.h" />
