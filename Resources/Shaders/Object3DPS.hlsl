@@ -25,7 +25,7 @@ PSOutput main(VSOutput input)
     float3 eyedir = normalize(cameraPos - input.worldPos.xyz);
     
     // シェーディングによる色
-    float4 shadecolor = float4(0.0f, 0.0f, 0.0f, m_alpha);
+    float4 shadecolor = float4(0.3f, 0.3f, 0.3f, m_alpha);
     
     // 平行光源
     for (int i = 0; i < DIRLIGHT_NUM; i++)
