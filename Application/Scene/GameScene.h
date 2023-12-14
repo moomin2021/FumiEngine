@@ -8,6 +8,7 @@
 
 #include "Stage.h"
 #include "Player.h"
+#include "PlayerUI.h"
 #include "EnemyManager.h"
 #include "NavMesh.h"
 
@@ -29,6 +30,7 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
 	// エネミーマネージャー
 	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;

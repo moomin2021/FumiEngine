@@ -42,6 +42,9 @@ void GameScene::Initialize()
 #pragma region プレイヤー
 	player_ = std::make_unique<Player>();
 	player_->Initialize();
+
+	playerUI_ = std::make_unique<PlayerUI>();
+	playerUI_->Initialize();
 #pragma endregion
 
 #pragma region エネミーマネージャー
@@ -94,6 +97,7 @@ void GameScene::Update()
 {
 	// プレイヤー
 	player_->Update();
+	playerUI_->Update();
 
 	// エネミーマネージャー
 	enemyMgr_->Update();
@@ -137,6 +141,7 @@ void GameScene::Draw()
 
 	// プレイヤー
 	player_->DrawFront2D();
+	playerUI_->Draw();
 
 	sGameUI_->Draw(gGameUI_);
 
@@ -178,6 +183,8 @@ void GameScene::OnCollision()
 	// プレイヤー
 	player_->OnCollision();
 
+	playerUI_->OnCollision();
+
 	// エネミーマネージャー
 	enemyMgr_->OnCollision();
 }
@@ -186,6 +193,7 @@ void GameScene::MatUpdate()
 {
 	// プレイヤー
 	player_->MatUpdate();
+	playerUI_->MatUpdate();
 
 	// エネミーマネージャー
 	enemyMgr_->MatUpdate();
