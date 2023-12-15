@@ -35,10 +35,6 @@ void EnemyManager::Initialize()
 	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
 #pragma endregion
 
-#pragma region ハンドル
-	hParticle_ = LoadTexture("Sprite/effect1.png");
-#pragma endregion
-
 #pragma region ナビメッシュ
 	navMesh_ = std::make_unique<NavMesh>();
 	navMesh_->Initialize("navMesh");
@@ -143,27 +139,6 @@ void EnemyManager::CheckSceneChange()
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);
 	}
-}
-
-void EnemyManager::AddParticle(const Vector3& pos)
-{
-	std::unique_ptr<ParticleEmitter> newParticle = std::make_unique<ParticleEmitter>();
-	for (size_t i = 0; i < 20; i++) {
-		Vector3 vel{};
-		vel.x = Util::GetRandomFloat(-5.0f, 5.0f);
-		vel.y = Util::GetRandomFloat(-5.0f, 5.0f);
-		vel.z = Util::GetRandomFloat(-5.0f, 5.0f);
-
-		Vector3 acc{};
-		acc.x = 0.0f;
-		acc.y = 0.0f;
-		acc.z = 0.0f;
-
-		newParticle->Add(10, { 0.0f, 0.0f, 0.0f }, vel, acc, 10.0f, 0.0f);
-		newParticle->SetSpawnPos(pos);
-	}
-
-	particles_.emplace_back(std::move(newParticle));
 }
 
 void EnemyManager::Debug()

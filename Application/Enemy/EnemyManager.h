@@ -25,12 +25,6 @@ private:
 	std::unique_ptr<Model> coreFrameM_ = nullptr;
 	std::unique_ptr<Model> coreStandM_ = nullptr;
 
-	// パーティクルエミッター
-	std::deque<std::unique_ptr<ParticleEmitter>> particles_;
-
-	// パーティクル画像のハンドル
-	uint16_t hParticle_ = 0;
-
 	// エネミー
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
 
@@ -76,9 +70,6 @@ public:
 	void AddCore(const Vector3& inPos);
 
 	void CheckSceneChange();
-
-	// パーティクル生成
-	void AddParticle(const Vector3& pos);
 
 	// デバック
 	void Debug();
