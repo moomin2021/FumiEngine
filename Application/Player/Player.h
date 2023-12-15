@@ -1,35 +1,28 @@
 #pragma once
 #include "Key.h"
 #include "Mouse.h"
-#include "CollisionManager.h"
-#include "RayCollider.h"
-#include "SphereCollider.h"
+#include "Object3D.h"
+#include "Model.h"
 #include "Camera.h"
-#include "Sprite.h"
-#include "Sound.h"
 
-#include "Bullet.h"
-#include "ItemManager.h"
+#include "CollisionManager.h"
+#include "AABBCollider.h"
+#include "RayCollider.h"
 
-#include <string>
-#include <vector>
 #include <memory>
-#include <deque>
 
 class EnemyManager;
 
 class Player
 {
-	enum State {
-		NORMAL,	// 通常状態
-		AIR,	// 空中状態
-		CLIMB,	// 登り状態
+	enum State : uint8_t {
+		NORMAL,
+		AIR,
 	};
 
 	std::vector<std::string> stateName_ = {
 		"NORMAL",
 		"AIR",
-		"CLIMB"
 	};
 
 #pragma region メンバ変数
@@ -38,43 +31,44 @@ private:
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
 	CollisionManager* colMgr_ = nullptr;
-	EnemyManager* enemyMgr_ = nullptr;
-	Sound* sound_ = nullptr;
-
-	// 状態
-	State state_ = NORMAL;
-
-	// サウンド
-	uint16_t shotSE_ = 0;
-
-	// カメラ関連
-	std::unique_ptr<Camera> camera_ = nullptr;// カメラ本体
-	float cameraHeight_ = 1.62f;
-	float sencivity_ = 0.1f;// カメラ感度
-	Vector3 eyeAngle_	= { 0.0f, 90.0f, 0.0f };// カメラ角度
-	Vector3 forwardVec_	= { 0.0f, 0.0f, 0.0f };// 正面ベクトル
-	Vector3 rightVec_	= { 0.0f, 0.0f, 0.0f };// 右ベクトル
-	float fovAngleY_ = 70.0f;
-	float diffusivity_ = 5.0f;
-	const float maxDiffusivity_ = 5.0f;
-	float adsRate_ = 0.0f;
-	bool isAds_ = false;
-	float recoilEyeAngle_ = 0.0f;
 
 	// モデル
-	std::unique_ptr<Model> mSphere_ = nullptr;// 球
-	std::unique_ptr<Model> mSheriff_ = nullptr;
+	std::unique_ptr<Model> playerM_ = nullptr;
+	std::unique_ptr<Model> sheriffM_ = nullptr;
 
 	// オブジェクト
-	std::unique_ptr<Object3D> oPlayer_ = nullptr;// プレイヤー
-	std::unique_ptr<Object3D> oSheriff_ = nullptr;
+	std::unique_ptr<Object3D> playerO_ = nullptr;// プレイヤー
+	std::unique_ptr<Object3D> sheriffO_ = nullptr;// ピストル
 
 	// コライダー
-	std::unique_ptr<AABBCollider> playerCol_ = nullptr;// プレイヤーコライダー
-	std::unique_ptr<RayCollider> legCol_ = nullptr;// 足元コライダー
-	std::unique_ptr<RayCollider> climbCol_ = nullptr;// 壁登りに使うコライダー
-	std::unique_ptr<RayCollider> shotCol_ = nullptr;// 弾を撃った時に使うコライダー
-	std::unique_ptr<RayCollider> eyeCol_ = nullptr;// 視線コライダー
+	std::unique_ptr<AABBCollider> playerC_ = nullptr;// プレイヤー
+	std::unique_ptr<RayCollider> groundJudgmentC_ = nullptr;// 接地判定
+	std::unique_ptr<RayCollider> shotC_ = nullptr;// 撃った時に飛ばすレイ
+
+	// 状態
+	State state_ = State::NORMAL;
+	uint8_t hp_ = 5;
+
+	// カメラ関連
+	std::unique_ptr<Camera> camera_ = nullptr;
+	float cameraHeight_ = 1.62f;// カメラ(目線)の高さ
+	float sencivity_ = 0.1f;// カメラ感度
+	Vector3 eyeAngle_ = { 0.0f, 90.0f, 0.0f };// カメラ角度
+	Vector3 forwardVec_ = { 0.0f, 0.0f, 0.0f };// 正面ベクトル
+	Vector3 rightVec_ = { 0.0f, 0.0f, 0.0f };// 右ベクトル
+	const float maxFovAngle_ = 90.0f;// 最大視野角
+	const float minFovAngle_ = 40.0f;// 最小視野角
+	const float defFovAngle_ = 70.0f;// デフォルトの視野角
+	float nowFovAngle_ = 70.0f;// 現在の視野角
+	float fovAngleIncrDecValue_ = 2.0f;// 視野角の増減値
+	const float maxDiffusivity_ = 5.0f;// 最大拡散
+	float nowDiffusivity_ = 5.0f;// 現在の拡散
+	float adsRate_ = 0.0f;// ADS率(1.0で完全にADSしている状態になる)
+	float adsRateIncrDecValue_ = 0.1f;// ADS率の増減値
+	bool isAds_ = false;// ADSしているかフラグ
+	const float maxRecoilEyeAngle_ = 10.0f;// 最大リコイル角度
+	float nowRecoilEyeAngle_ = 0.0f;// リコイル角度
+	float decRecoilEyeAngle_ = 0.2f;// リコイル角度の減少値
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度
@@ -82,6 +76,7 @@ private:
 	float moveAcc_ = 0.05f;// 移動加速度
 	bool isDash_ = false;// ダッシュフラグ
 	float dashSpd_ = 0.3f;// ダッシュ速度
+	Vector3 knockVec_ = { 0.0f, 0.0f, 0.0f };
 
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
@@ -89,58 +84,30 @@ private:
 	float gAcc_ = 0.1f;// 重力加速度
 	float jumpSpd_ = 0.5f;// ジャンプ速度
 
-	// クロスヘア
-	uint16_t crossHairHandle_ = 0;
-	std::unique_ptr<Sprite> sCrossHair_ = nullptr;
-
-	// 弾
-	std::unique_ptr<Model> mBullet_ = nullptr;
-	std::deque<std::unique_ptr<Bullet>> bullets_ = {};
+	// 射撃関連
 	uint8_t maxBullet_ = 99;// 最大弾数
 	uint8_t nowBullet_ = 99;// 現在弾数
-	uint16_t bulletValueDisplayFrameHandle_ = 0;// 残弾数表示UIフレームハンドル
-	std::vector<uint16_t> numberHandle_ = {};// 数字ハンドル
-	std::unique_ptr<Sprite> sBulletValueDisplayFrame_ = nullptr;
-	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
-	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
-	float shotInterval_ = 0.5f;
-	uint64_t shotTime_ = 0;
-
-	// リロード
+	float shotInterval_ = 0.5f;// 射撃の間隔
+	uint64_t shotTime_ = 0;// 最後に撃った時間
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間
-	uint16_t reloadUIHandle_ = 0;// リロードUIハンドル
-	std::unique_ptr<Sprite> sReloadUI_ = nullptr;// リロードUIスプライト
-
-	uint8_t damageCooldown_ = 30;
-	uint8_t damageCount_ = 30;
-
-	uint8_t hp_ = 5;
-	Vector3 knockVec_ = { 0.0f, 0.0f, 0.0f };
-	float knockSpd_ = 0.0f;
 #pragma endregion
 
 #pragma region メンバ関数
 public:
-	// コンストラクタ
-	Player();
-
-	// デストラクタ
+	Player() {}
 	~Player();
 
 	// 初期化処理
-	void Initialize();
+	void Initialize(const Vector3& startPos);
 
 	// 更新処理
 	void Update();
 
-	// 3D描画処理
-	void Draw3D();
+	// 描画処理
+	void Draw();
 
-	// 前面2D描画処理
-	void DrawFront2D();
-
-	// 衝突判定時処理
+	// 衝突時更新処理
 	void OnCollision();
 
 	// 行列更新処理
@@ -149,36 +116,40 @@ public:
 	// デバック
 	void Debug();
 
+	// ノックバック
 	void SetKnock(const Vector3& vec);
 
+	// シーン切り替え
 	void CheckSceneChange();
 
-private:
+public:
 	// 状態別処理
-	static void (Player::* stateTable[]) ();
-	void Normal();	// 通常状態
-	void Air();		// 空中状態
-	void Climb();	// 登り状態
+	static void (Player::*state[]) ();
+	void Normal();
+	void Air();
 
 	// 行動関数
-	void Ads();		// 覗き込み
-	void Shoot();	// 弾を撃つ
-	void Reload();	// リロード処理
-	void Move();	// 移動操作
-	void EyeMove();	// 視点操作
-	void Jump();	// ジャンプ処理
-	void Fall();	// 落下処理
-	void Dash();	// 走行処理
+	void EyeMove();
+	void Move();
+	void Jump();
+	void Fall();
+	void Dash();
+	void Ads();
+	void Shot();
+	void Reload();
+
+	void Recoil();// リコイル計算
+	void Sheriff();// ピストルのオブジェクト位置計算
+	void GroundingJudgment();// 接地判定
 #pragma endregion
 
 #pragma region セッター関数
-	public:
-	void SetEnemyManager(EnemyManager* inst) { enemyMgr_ = inst; }
+public:
 #pragma endregion
 
 #pragma region ゲッター関数
 public:
-	inline const Vector3& GetPosition() { return camera_->GetEye(); }
-	const Vector3& GetDir() { return forwardVec_; }
+	inline const Vector3& GetPosition() { return playerO_->GetPosition(); }
+	inline const Vector3& GetDir() { return forwardVec_; }
 #pragma endregion
 };

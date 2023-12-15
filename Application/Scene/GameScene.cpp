@@ -41,7 +41,7 @@ void GameScene::Initialize()
 
 #pragma region プレイヤー
 	player_ = std::make_unique<Player>();
-	player_->Initialize();
+	player_->Initialize({ 0.0f, 10.0f, -10.0f });
 
 	playerUI_ = std::make_unique<PlayerUI>();
 	playerUI_->Initialize();
@@ -53,7 +53,6 @@ void GameScene::Initialize()
 	enemyMgr_->Initialize();
 	enemyMgr_->SetPlayer(player_.get());
 	stage_->SetEnemyManager(enemyMgr_.get());
-	player_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
 #pragma region モデル
@@ -123,7 +122,7 @@ void GameScene::Draw()
 	stage_->Draw();
 
 	// プレイヤー
-	player_->Draw3D();
+	player_->Draw();
 
 	// エネミーマネージャー
 	enemyMgr_->Draw();
@@ -140,7 +139,6 @@ void GameScene::Draw()
 	PipelineManager::PreDraw("Sprite");
 
 	// プレイヤー
-	player_->DrawFront2D();
 	playerUI_->Draw();
 
 	sGameUI_->Draw(gGameUI_);

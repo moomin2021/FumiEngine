@@ -92,4 +92,12 @@ namespace Util {
 	/// </summary>
 	/// <returns> 時間(ms) </returns>
 	uint64_t GetTimrMSec();
+
+	/// <summary>
+	/// 小数点の四捨五入
+	/// </summary>
+	/// <param name="value"> 値 </param>
+	/// <param name="num"> 小数点第何位 </param>
+	/// <returns></returns>
+	float Round(float value, uint8_t num);
 } // namespace MathUtility

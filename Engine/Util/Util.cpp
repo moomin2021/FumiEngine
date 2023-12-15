@@ -89,3 +89,8 @@ uint64_t Util::GetTimrMSec()
 {
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
+
+float Util::Round(float value, uint8_t num)
+{
+	return (float)std::round(value * powf(10, num)) / powf(10, num);
+}
