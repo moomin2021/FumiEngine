@@ -68,7 +68,7 @@ private:
 	bool isAds_ = false;// ADSしているかフラグ
 	const float maxRecoilEyeAngle_ = 10.0f;// 最大リコイル角度
 	float nowRecoilEyeAngle_ = 0.0f;// リコイル角度
-	float decRecoilEyeAngle_ = 0.2f;// リコイル角度の減少値
+	float decRecoilEyeAngle_ = 0.5f;// リコイル角度の減少値
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度

@@ -73,9 +73,6 @@ void Player::Update()
 
 	// リコイル処理
 	Recoil();
-
-	// ピストルオブジェクトの座標計算
-	Sheriff();
 }
 
 void Player::Draw()
@@ -102,6 +99,9 @@ void Player::MatUpdate()
 	// カメラの位置を更新
 	camera_->SetEye(playerO_->GetPosition() + Vector3{ 0.0f, cameraHeight_, 0.0f });
 	camera_->SetTarget(camera_->GetEye() + forwardVec_ * 10.0f);
+
+	// ピストルオブジェクトの座標計算
+	Sheriff();
 
 	camera_->Update();
 	playerO_->MatUpdate();
@@ -424,6 +424,16 @@ void Player::Sheriff()
 	sheriffO_->SetPosition(resultPos);
 	sheriffO_->SetRotation({ (eyeAngle_.y + 90.0f), eyeAngle_.x, 180.0f });
 	sheriffO_->MatUpdate();
+
+	// リコイルの計算
+	Vector3 recoilVec_ = {
+		sinf(Util::Degree2Radian(eyeAngle_.x)),
+		cosf(Util::Degree2Radian(eyeAngle_.y - nowRecoilEyeAngle_)),
+		cosf(Util::Degree2Radian(eyeAngle_.x))
+	};
+
+	// カメラ設定
+	camera_->SetTarget(camera_->GetEye() + (recoilVec_) * 10.0f);
 }
 
 void Player::GroundingJudgment()
