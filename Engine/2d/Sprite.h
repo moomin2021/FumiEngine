@@ -41,6 +41,7 @@ private:
 	Vector2 anchorPoint_ = { 0.0f, 0.0f };				// アンカーポイント座標(XY)
 	bool isFlipX_ = false;					// 左右反転
 	bool isFlipY_ = false;					// 上下反転
+	Vector2 uv_ = { 1.0f, 1.0f };
 
 	// ワールド行列
 	Matrix4 matWorld_ = {};
@@ -101,6 +102,8 @@ public:
 
 	// 上下判定を設定
 	inline void SetFlipY(bool flag) { isFlipY_ = flag; }
+
+	inline void SetUV(const Vector2& inUV) { uv_ = inUV; }
 #pragma endregion
 
 #pragma region ゲッター関数

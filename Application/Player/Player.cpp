@@ -73,6 +73,9 @@ void Player::Update()
 
 	// リコイル処理
 	Recoil();
+
+	damageCount_++;
+	Knock();
 }
 
 void Player::Draw()
@@ -120,7 +123,13 @@ void Player::Debug()
 
 void Player::SetKnock(const Vector3& vec)
 {
-	knockVec_ = vec;
+	if (damageCount_ >= damageCooldown_)
+	{
+		knockVec_ = vec;
+		knockSpd_ = 1.0f;
+		damageCount_ = 0;
+		hp_ -= 1;
+	}
 }
 
 void Player::CheckSceneChange()
@@ -385,6 +394,28 @@ void Player::Reload()
 		startReloadTime = Util::GetTimeSec();
 		nowBullet_ = 0;
 	}
+
+	// リロードしていたらする処理
+	if (isReload_)
+	{
+		// 何秒リロードしたか
+		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
+		// リロード時間を超えたらリロードを終える
+		if (elapsedReloadTime >= reloadTime_)
+		{
+			isReload_ = false;
+			nowBullet_ = maxBullet_;
+		}
+	}
+}
+
+void Player::Knock()
+{
+	knockSpd_ -= decKnockSpd_;
+	knockSpd_ = Util::Clamp(knockSpd_, 10.0f, 0.0f);
+	playerO_->SetPosition(playerO_->GetPosition() + knockVec_ * knockSpd_);
+	camera_->SetEye(playerO_->GetPosition());
+	camera_->SetTarget(camera_->GetEye() + forwardVec_);
 }
 
 void Player::Recoil()

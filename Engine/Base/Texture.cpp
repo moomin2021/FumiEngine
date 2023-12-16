@@ -198,6 +198,7 @@ uint16_t Texture::LoadTexture(const std::string fileName)
 	// 設定を保存
 	texBuff_.emplace(fileName, texResource);
 	texHandle_.emplace(fileName, handle);
+	texName_.emplace(handle, fileName);
 
 	// シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};

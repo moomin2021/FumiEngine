@@ -45,6 +45,7 @@ void GameScene::Initialize()
 
 	playerUI_ = std::make_unique<PlayerUI>();
 	playerUI_->Initialize();
+	playerUI_->SetPlayer(player_.get());
 #pragma endregion
 
 #pragma region エネミーマネージャー

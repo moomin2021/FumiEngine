@@ -48,6 +48,7 @@ private:
 	// 状態
 	State state_ = State::NORMAL;
 	uint8_t hp_ = 5;
+	uint8_t maxHp_ = 5;
 
 	// カメラ関連
 	std::unique_ptr<Camera> camera_ = nullptr;
@@ -77,6 +78,8 @@ private:
 	bool isDash_ = false;// ダッシュフラグ
 	float dashSpd_ = 0.3f;// ダッシュ速度
 	Vector3 knockVec_ = { 0.0f, 0.0f, 0.0f };
+	float knockSpd_ = 0.0f;
+	float decKnockSpd_ = 0.1f;
 
 	// ジャンプ関連
 	float gravity_ = 0.0f;// 重力
@@ -91,6 +94,9 @@ private:
 	uint64_t shotTime_ = 0;// 最後に撃った時間
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間
+
+	uint8_t damageCooldown_ = 30;
+	uint8_t damageCount_ = 30;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -138,6 +144,7 @@ public:
 	void Shot();
 	void Reload();
 
+	void Knock();
 	void Recoil();// リコイル計算
 	void Sheriff();// ピストルのオブジェクト位置計算
 	void GroundingJudgment();// 接地判定
@@ -151,5 +158,8 @@ public:
 public:
 	inline const Vector3& GetPosition() { return playerO_->GetPosition(); }
 	inline const Vector3& GetDir() { return forwardVec_; }
+	inline uint8_t GetHP() { return hp_; }
+	inline uint8_t GetMAXHP() { return maxHp_; }
+	inline bool GetIsReload() { return isReload_; }
 #pragma endregion
 };

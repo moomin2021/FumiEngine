@@ -203,10 +203,10 @@ void Sprite::MatUpdate() {
 	// 上下反転
 	if (isFlipY_) top = -top, bottom = -bottom;
 
-	vertex_[0] = { { left * size_.x, bottom * size_.y }, {0.0f, 1.0f} };// 左下
+	vertex_[0] = { { left * size_.x, bottom * size_.y }, {0.0f, uv_.y} };// 左下
 	vertex_[1] = { { left * size_.x, top * size_.y }, {0.0f, 0.0f} };// 左上
-	vertex_[2] = { { right * size_.x, bottom * size_.y }, {1.0f, 1.0f} };// 右下
-	vertex_[3] = { { right * size_.x, top * size_.y }, {1.0f, 0.0f} };// 右上
+	vertex_[2] = { { right * size_.x, bottom * size_.y }, {uv_.x, uv_.y} };// 右下
+	vertex_[3] = { { right * size_.x, top * size_.y }, {uv_.x, 0.0f} };// 右上
 
 	// 全頂点に対して
 	for (size_t i = 0; i < vertex_.size(); i++)

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #include <DirectXTex.h>
 #include <wrl.h>
@@ -20,6 +20,8 @@ private:
 
 	// テクスチャハンドル
 	std::map<const std::string, uint16_t> texHandle_;
+
+	std::map<uint16_t, const std::string> texName_;
 
 	// SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
@@ -68,6 +70,8 @@ public:
 	/// </summary>
 	/// <returns> SRVデスクリプタヒープ </returns>
 	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
+
+	ID3D12Resource* GetTexBuffer(uint16_t texHandle) { return texBuff_[texName_[texHandle]].Get(); }
 #pragma endregion
 
 private:
