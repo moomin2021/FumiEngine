@@ -49,10 +49,7 @@ void PlayerUI::Initialize()
 
 void PlayerUI::Update()
 {
-	float rate = (float)pPlayer_->GetHP() / pPlayer_->GetMAXHP();
-	float result = hpBarSize_.x * rate;
-	hpBarS_->SetUV({ rate, 1.0f });
-	hpBarS_->SetSize({ result, hpBarSize_.y });
+	HPUI();
 
 	// リロードUI画像の角度
 	static float rotaY = 0.0f;
@@ -85,4 +82,12 @@ void PlayerUI::MatUpdate()
 	hpFrameShadowS_->MatUpdate();
 	reloadUIS_->MatUpdate();
 	crossHairS_->MatUpdate();
+}
+
+void PlayerUI::HPUI()
+{
+	float rate = (float)pPlayer_->GetHP() / pPlayer_->GetMAXHP();
+	float result = hpBarSize_.x * rate;
+	hpBarS_->SetUV({ rate, 1.0f });
+	hpBarS_->SetSize({ result, hpBarSize_.y });
 }

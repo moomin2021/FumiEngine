@@ -47,6 +47,9 @@ public:
 
 	// 行列更新処理
 	void MatUpdate();
+
+private:
+	void HPUI();
 #pragma endregion
 
 #pragma region セッター関数
