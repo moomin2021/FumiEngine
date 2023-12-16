@@ -160,7 +160,6 @@
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp" />
     <ClCompile Include="Application\Enemy\Zombie.cpp" />
     <ClCompile Include="Application\Player\PlayerUI.cpp" />
-    <ClCompile Include="ResultData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
@@ -241,7 +240,6 @@
     <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
     <ClInclude Include="Application\Enemy\Zombie.h" />
     <ClInclude Include="Application\Player\PlayerUI.h" />
-    <ClInclude Include="ResultData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />
