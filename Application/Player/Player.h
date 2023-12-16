@@ -70,6 +70,8 @@ private:
 	const float maxRecoilEyeAngle_ = 10.0f;// 最大リコイル角度
 	float nowRecoilEyeAngle_ = 0.0f;// リコイル角度
 	float decRecoilEyeAngle_ = 0.5f;// リコイル角度の減少値
+	Vector3 hitAngle_ = { 0.3f, 1.0f, 0.0f };
+	Vector3 up_ = { 0.0f, 1.0f, 0.0f };
 
 	// 移動関連
 	float moveSpd_ = 0.0f;// 移動速度

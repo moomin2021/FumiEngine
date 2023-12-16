@@ -125,10 +125,11 @@ void Player::SetKnock(const Vector3& vec)
 {
 	if (damageCount_ >= damageCooldown_)
 	{
-		knockVec_ = vec;
-		knockSpd_ = 1.0f;
+		knockVec_ = vec + Vector3(0.0f, 1.0f, 0.0f);
+		knockSpd_ = 0.5f;
 		damageCount_ = 0;
 		hp_ -= 1;
+		camera_->SetUp(hitAngle_);
 	}
 }
 
@@ -411,11 +412,15 @@ void Player::Reload()
 
 void Player::Knock()
 {
+	float rate = (float)damageCount_ / (damageCooldown_ - 20);
+	rate = Util::Clamp(rate, 1.0f, 0.0f);
+	up_.x = Easing::Quint::easeIn(hitAngle_.x, 0.0f, rate);
 	knockSpd_ -= decKnockSpd_;
 	knockSpd_ = Util::Clamp(knockSpd_, 10.0f, 0.0f);
 	playerO_->SetPosition(playerO_->GetPosition() + knockVec_ * knockSpd_);
 	camera_->SetEye(playerO_->GetPosition());
 	camera_->SetTarget(camera_->GetEye() + forwardVec_);
+	camera_->SetUp(up_);
 }
 
 void Player::Recoil()

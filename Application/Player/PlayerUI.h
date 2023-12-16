@@ -53,6 +53,7 @@ private:
 #pragma endregion
 
 #pragma region セッター関数
+public:
 	void SetPlayer(Player* inPlayer) { pPlayer_ = inPlayer; }
 #pragma endregion
 };
