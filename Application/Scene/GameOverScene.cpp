@@ -1,18 +1,30 @@
 #include "GameOverScene.h"
 
+#include "SceneManager.h"
 #include "PipelineManager.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
+#include "CollisionAttribute.h"
+
 GameOverScene::GameOverScene() {}
 
-GameOverScene::~GameOverScene() {}
+GameOverScene::~GameOverScene() {
+	colMgr2D_->RemoveCollider(cMouse_.get());
+}
 
 void GameOverScene::Initialize()
 {
 	Vector2 winSize = 
 	{	(float)WinAPI::GetInstance()->GetWidth(),
 		(float)WinAPI::GetInstance()->GetHeight() };
+
+#pragma region インスタンス
+	colMgr2D_ = CollisionManager2D::GetInstance();
+	BoxButton::SetCollisionManager2D(colMgr2D_);
+
+	mouse_ = Mouse::GetInstance();
+#pragma endregion
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
@@ -30,10 +42,28 @@ void GameOverScene::Initialize()
 #pragma region 画像
 	resultFrameH_ = LoadTexture("Sprite/resultFrame.png");
 #pragma endregion
+
+#pragma region ボタン
+	titleReturnB_ = std::make_unique<BoxButton>();
+	titleReturnB_->Initialize(1, { 1600.0f, 1000.0f }, { 260.0f, 44.0f }, {272.0f, 56.0f},
+		LoadTexture("Sprite/treeButton.png"), LoadTexture("Sprite/titleReturnText.png"),
+		LoadTexture("Sprite/treeButtonCursorFrame.png"));
+#pragma endregion
+
+#pragma region コライダー
+	cMouse_ = std::make_unique<PointCollider>();
+	cMouse_->SetAttribute(COL_POINT);
+	colMgr2D_->AddCollider(cMouse_.get());
+#pragma endregion
 }
 
 void GameOverScene::Update()
 {
+	// コライダーとマウスの座標をリンク
+	cMouse_->SetOffset(mouse_->MousePos());
+
+	titleReturnB_->Update();
+
 	// 衝突時処理
 	OnCollision();
 
@@ -46,10 +76,31 @@ void GameOverScene::Draw()
 	PipelineManager::PreDraw("Sprite");
 
 	resultFrameS_->Draw(resultFrameH_);
+	titleReturnB_->Draw();
 }
 
 void GameOverScene::OnCollision()
 {
+	colMgr2D_->CheckAllCollision();
+
+	titleReturnB_->OnCollision();
+
+	// 衝突していなかったらこれ以降の処理を飛ばす
+	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
+
+	// 取得するボタンの属性
+	uint16_t buttonAttr = 0;
+
+	// マウスのコライダーから衝突しているコライダーのタグを属性に変換して取得
+	if (cMouse_->GetHitCollider() != nullptr)
+	{
+		buttonAttr = (uint16_t)cMouse_->GetHitCollider()->GetTag();
+	}
+
+	if (buttonAttr == 1)
+	{
+		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+	}
 }
 
 void GameOverScene::MatUpdate()
@@ -58,4 +109,5 @@ void GameOverScene::MatUpdate()
 	camera_->Update();
 
 	resultFrameS_->MatUpdate();
+	titleReturnB_->MatUpdate();
 }
