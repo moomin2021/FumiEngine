@@ -135,7 +135,7 @@ void EnemyManager::CheckSceneChange()
 {
 	if (enemyCores_.empty())
 	{
-		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+		SceneManager::GetInstance()->SceneTransition(SCENE::GAMEOVER);
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);
 	}
