@@ -42,7 +42,7 @@ void GameScene::Initialize()
 
 #pragma region プレイヤー
 	player_ = std::make_unique<Player>();
-	player_->Initialize({ 0.0f, 10.0f, -10.0f });
+	player_->Initialize({ 0.0f, 5.0f, 0.0f });
 
 	playerUI_ = std::make_unique<PlayerUI>();
 	playerUI_->Initialize();

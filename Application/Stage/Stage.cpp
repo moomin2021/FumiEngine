@@ -21,7 +21,7 @@ void Stage::Initialize()
 	colMgr_ = CollisionManager::GetInstance();
 
 	// インスタンシング描画初期化
-	objects_ = std::make_unique<Instancing3D>((uint16_t)1000);
+	objects_ = std::make_unique<Instancing3D>((uint16_t)3000);
 
 #pragma region スカイドーム
 	// モデル
