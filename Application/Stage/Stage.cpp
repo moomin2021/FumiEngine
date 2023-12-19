@@ -114,9 +114,6 @@ void Stage::Load(std::string fileName, bool isCol)
 				objectData.className = object["class_name"];
 			}
 
-			// visible(表示批評)
-			//objectData.isActive = object["visible"];
-
 			// ｔランスフォームのパラメータ読み込み
 			nlohmann::json& transform = object["transform"];
 
@@ -124,11 +121,6 @@ void Stage::Load(std::string fileName, bool isCol)
 			objectData.translation.x = -(float)transform["translation"][0];
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
-		}
-
-		// オブジェクト走査を再帰関数にまとめ、再帰呼出で枝を走査する
-		if (object.contains("children")) {
-
 		}
 	}
 
