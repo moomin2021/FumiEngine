@@ -3,6 +3,7 @@
 #include "Object3D.h"
 #include "AABBCollider.h"
 #include "CollisionManager.h"
+#include "Instancing3D.h"
 
 #include "EnemyManager.h"
 
@@ -39,7 +40,7 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<Model>> models_ = {};
 
 	// オブジェクト
-	std::forward_list<std::unique_ptr<Object3D>> objects_ = {};
+	std::unique_ptr<Instancing3D> objects_ = nullptr;
 
 	// コライダー
 	std::forward_list<std::unique_ptr<AABBCollider>> colliders_ = {};

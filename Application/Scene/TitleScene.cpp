@@ -5,6 +5,7 @@
 #include "CollisionAttribute.h"
 #include "Util.h"
 #include "Easing.h"
+#include "Instancing3D.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -38,6 +39,7 @@ void TitleScene::Initialize()
 #pragma region ライトグループ
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
+	Instancing3D::SetLightGroup(lightGroup_);
 
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
@@ -51,6 +53,7 @@ void TitleScene::Initialize()
 	camera_->SetTarget({ 0.0f, 10.0f, 0.0f });
 	Sprite::SetCamera(camera_.get());
 	Object3D::SetCamera(camera_.get());
+	Instancing3D::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ステージ

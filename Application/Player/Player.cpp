@@ -4,6 +4,7 @@
 #include "Line3D.h"
 #include "Easing.h"
 #include "SceneManager.h"
+#include "Instancing3D.h"
 
 #include "CollisionAttribute.h"
 
@@ -63,6 +64,7 @@ void Player::Initialize(const Vector3& startPos)
 	Object3D::SetCamera(camera_.get());
 	Sprite::SetCamera(camera_.get());
 	Line3D::SetCamera(camera_.get());
+	Instancing3D::SetCamera(camera_.get());
 #pragma endregion
 }
 

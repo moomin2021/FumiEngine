@@ -41,7 +41,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = std::make_unique<TestScene>();
+	nowScene_ = std::make_unique<TitleScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();

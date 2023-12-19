@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "CollisionAttribute.h"
+#include "PipelineManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -19,6 +20,9 @@ void Stage::Initialize()
 	// 衝突判定管理クラスインスタンス
 	colMgr_ = CollisionManager::GetInstance();
 
+	// インスタンシング描画初期化
+	objects_ = std::make_unique<Instancing3D>((uint16_t)1000);
+
 #pragma region スカイドーム
 	// モデル
 	mSkydome_ = std::make_unique<Model>("skydome");
@@ -32,7 +36,7 @@ void Stage::Initialize()
 void Stage::MatUpdate()
 {
 	// オブジェクト行列更新
-	for (auto& object : objects_) object->MatUpdate();
+	objects_->MatUpdate();
 
 	// スカイドーム
 	oSkydome_->MatUpdate();
@@ -40,9 +44,11 @@ void Stage::MatUpdate()
 
 void Stage::Draw()
 {
+	PipelineManager::PreDraw("Instancing3D");
 	// オブジェクト描画処理
-	for (auto& object : objects_) object->Draw();
+	objects_->Draw();
 
+	PipelineManager::PreDraw("Object3D");
 	// スカイドーム
 	oSkydome_->Draw();
 }
@@ -148,18 +154,16 @@ void Stage::Load(std::string fileName, bool isCol)
 		// オブジェクト追加
 		else {
 			// オブジェクト
-			objects_.emplace_front(std::make_unique<Object3D>(models_[objectData.fileName].get()));
-			objects_.front()->SetPosition(objectData.translation);
-			objects_.front()->SetRotation(objectData.rotation);
-			objects_.front()->SetScale(objectData.scaling);
+			if (objects_->GetModel() == nullptr) objects_->SetModel(models_[objectData.fileName].get());
+			objects_->AddTransform(objectData.translation);
 
 			if (isCol == false) continue;
 
 			// コライダー
 			colliders_.emplace_front(std::make_unique<AABBCollider>());
+			colliders_.front()->SetOffset(objectData.translation);
 			colliders_.front()->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
 			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
-			colliders_.front()->SetObject3D(objects_.front().get());
 			colMgr_->AddBlockCollider(colliders_.front().get());
 		}
 	}

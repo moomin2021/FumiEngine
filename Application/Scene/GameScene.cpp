@@ -25,6 +25,7 @@ void GameScene::Initialize()
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
 	EnemyCore::SetLightGroup(lightGroup_);
+	Instancing3D::SetLightGroup(lightGroup_);
 #pragma endregion
 
 #pragma region ライトグループ
