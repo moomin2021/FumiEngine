@@ -47,6 +47,15 @@ PipelineManager::PipelineManager() {
 	pipelineObj_["Object3D"]->CreateRootParams(1, 3);
 	pipelineObj_["Object3D"]->CreatePipeline(2, PipelineObj::ALPHA);
 
+	AddPipeline("Instancing3D");
+	pipelineObj_["Instancing3D"]->LoadShader("Resources/Shaders/Instancing3DPS.hlsl", PS);
+	pipelineObj_["Instancing3D"]->LoadShader("Resources/Shaders/Instancing3DVS.hlsl", VS);
+	pipelineObj_["Instancing3D"]->AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Instancing3D"]->AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+	pipelineObj_["Instancing3D"]->AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
+	pipelineObj_["Instancing3D"]->CreateRootParams(1, 3, 1);
+	pipelineObj_["Instancing3D"]->CreatePipeline(2, PipelineObj::ALPHA);
+
 	AddPipeline("Line3D");
 	pipelineObj_["Line3D"]->LoadShader("Resources/Shaders/Line3DPS.hlsl", PS);
 	pipelineObj_["Line3D"]->LoadShader("Resources/Shaders/Line3DVS.hlsl", VS);

@@ -1,31 +1,37 @@
-#include "Object3D.h"
+#include "Instancing3D.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 #include "Util.h"
 #include "Buffer.h"
 
 // 静的メンバ変数の実態
-Camera*		Object3D::sCamera_		= nullptr;// カメラ
-LightGroup* Object3D::sLightGroup_	= nullptr;// ライト
+Camera* Instancing3D::sCamera_ = nullptr;// カメラ
+LightGroup* Instancing3D::sLightGroup_ = nullptr;// ライト
 
-Object3D::Object3D(Model* model) : model_(model)
+Instancing3D::Instancing3D(uint16_t instNum, Model* model) : instNum_(instNum), model_(model)
 {
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
 	// 定数バッファ生成
 	constBuff_ = CreateBufferResource((sizeof(ConstBufferData) + 0xff) & ~0xff);
-
-#pragma region 定数バッファへのデータ転送
+	
+	// 定数バッファへのデータ転送
 	result = constBuff_->Map(0, nullptr, (void**)&constMap_);
 	assert(SUCCEEDED(result));
-#pragma endregion
+
+	// インスタンシング用リソースを生成
+	instBuff_ = CreateBufferResource(sizeof(Matrix4) * instNum_);
+
+	result = instBuff_->Map(0, nullptr, (void**)&instMap_);
+	assert(SUCCEEDED(result));
 }
 
-void Object3D::MatUpdate()
+void Instancing3D::MatUpdate()
 {
 	// オブジェクトデータが変更されていたら処理する
-	if (hasChanget_) {
+	if (hasChanget_)
+	{
 #pragma region ワールド行列計算
 		// 行列初期化
 		matWorld_ = Matrix4Identity();
@@ -50,9 +56,6 @@ void Object3D::MatUpdate()
 	// ビュープロジェクション転送
 	constMap_->viewProj = sCamera_->GetMatView() * sCamera_->GetMatProjection();
 
-	// ワールド行列転送
-	constMap_->world = matWorld_;
-
 	// カメラの位置座標(XYZ)転送
 	constMap_->cameraPos = sCamera_->GetEye();
 
@@ -61,7 +64,8 @@ void Object3D::MatUpdate()
 #pragma endregion
 }
 
-void Object3D::Draw() {
+void Instancing3D::Draw()
+{
 	// 描画フラグが[OFF]ならこれ以降処理しない
 	if (isDraw_ == false) return;
 

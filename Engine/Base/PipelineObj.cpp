@@ -40,19 +40,28 @@ void PipelineObj::AddInputLayout(const char* semanticName, DXGI_FORMAT format, u
 	});
 }
 
-void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum)
+void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum, uint16_t instNum)
 {
 	// ルートパラメータの生成カウンター
 	uint16_t counter = 0;
 
-	rootParams_.resize(texRegisterNum + constBuffNum);
-	descRangeSRV_.resize(texRegisterNum);
+	rootParams_.resize(texRegisterNum + constBuffNum + instNum);
+	descRangeSRV_.resize(texRegisterNum + instNum);
 
 	for (size_t i = 0; i < texRegisterNum; i++) {
-		descRangeSRV_[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, static_cast<UINT>(i));// t i レジスタ
+		//descRangeSRV_[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, static_cast<UINT>(i));// t i レジスタ
+		descRangeSRV_[i].NumDescriptors = 1;
+		descRangeSRV_[i].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		descRangeSRV_[i].BaseShaderRegister = (UINT)i;
+		descRangeSRV_[i].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
 
 		// ルートパラメータ設定
-		rootParams_[counter].InitAsDescriptorTable(1, &descRangeSRV_[i], D3D12_SHADER_VISIBILITY_ALL);
+		//rootParams_[counter].InitAsDescriptorTable(1, &descRangeSRV_[i], D3D12_SHADER_VISIBILITY_ALL);
+		rootParams_[counter].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParams_[counter].DescriptorTable.pDescriptorRanges = &descRangeSRV_[i];
+		rootParams_[counter].DescriptorTable.NumDescriptorRanges = 1;
+		rootParams_[counter].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 		// ルートパラメータを生成＆設定し終わったためインクリメント
 		counter++;
@@ -60,7 +69,27 @@ void PipelineObj::CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNu
 
 	for (size_t i = 0; i < constBuffNum; i++) {
 		// ルートパラメータ設定
-		rootParams_[counter].InitAsConstantBufferView(static_cast<UINT>(i), 0, D3D12_SHADER_VISIBILITY_ALL);
+		//rootParams_[counter].InitAsConstantBufferView(static_cast<UINT>(i), 0, D3D12_SHADER_VISIBILITY_ALL);
+		rootParams_[counter].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+		rootParams_[counter].Descriptor.ShaderRegister = (UINT)i;
+		rootParams_[counter].Descriptor.RegisterSpace = 0;
+		rootParams_[counter].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+		// ルートパラメータを生成＆設定し終わったためインクリメント
+		counter++;
+	}
+
+	for (size_t i = 0; i < instNum; i++)
+	{
+		descRangeSRV_[i + instNum].BaseShaderRegister = (UINT)i + texRegisterNum;
+		descRangeSRV_[i + instNum].NumDescriptors = 1;
+		descRangeSRV_[i + instNum].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		descRangeSRV_[i + instNum].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+		rootParams_[counter].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParams_[counter].DescriptorTable.pDescriptorRanges = &descRangeSRV_[i + instNum];
+		rootParams_[counter].DescriptorTable.NumDescriptorRanges = 1;
+		rootParams_[counter].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 
 		// ルートパラメータを生成＆設定し終わったためインクリメント
 		counter++;

@@ -5,29 +5,33 @@
 #include <string>
 #include <map>
 
+enum class DescSIZE : uint8_t {
+	SRV = 0,
+	RTV = 1,
+	DSV = 2,
+};
+
 class Texture {
 private:
 	// エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
 #pragma region メンバ変数
 private:
 	// 読み込んだ回数
-	uint16_t loadCounter_ = 0;
+	uint16_t indexCounter_ = 0;
+
+	std::vector<uint32_t> descSize_ = {};
 
 	// テクスチャバッファ
 	std::map<const std::string, ComPtr<ID3D12Resource>> texBuff_;
 
 	// テクスチャハンドル
-	std::map<const std::string, uint16_t> texHandle_;
+	std::map<const std::string, uint16_t> texIndex_;
 
 	std::map<uint16_t, const std::string> texName_;
 
 	// SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;
-
-	// SRVヒープのハンドル
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle_{};
 
 	std::vector<ID3D12Resource*> intermediateResources_;
 #pragma endregion
@@ -65,6 +69,7 @@ public:
 	void ReleaseIntermediateResources();
 
 #pragma region ゲッター関数
+public:
 	/// <summary>
 	/// SRVデスクリプタヒープの取得
 	/// </summary>
@@ -72,6 +77,9 @@ public:
 	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); }
 
 	ID3D12Resource* GetTexBuffer(uint16_t texHandle) { return texBuff_[texName_[texHandle]].Get(); }
+
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(DescSIZE size, uint16_t index);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(DescSIZE size, uint16_t index);
 #pragma endregion
 
 private:

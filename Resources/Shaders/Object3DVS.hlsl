@@ -2,11 +2,11 @@
 
 VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 {
-	// 法線にワールド行列によるスケーリング・回転を適用
+	// 豕慕ｷ壹↓繝ｯ繝ｼ繝ｫ繝芽｡悟�励↓繧医ｋ繧ｹ繧ｱ繝ｼ繝ｪ繝ｳ繧ｰ繝ｻ蝗櫁ｻ｢繧帝←逕ｨ
     float4 wnormal = normalize(mul(world, float4(normal, 0)));
     float4 wpos = mul(world, pos);
     
-    VSOutput output; // ピクセルシェーダーに渡す値
+    VSOutput output; // 繝斐け繧ｻ繝ｫ繧ｷ繧ｧ繝ｼ繝繝ｼ縺ｫ貂｡縺吝､
     output.svPos = mul(mul(viewproj, world), pos);
     output.worldPos = wpos;
     output.normal = wnormal.xyz;

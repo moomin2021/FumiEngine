@@ -76,7 +76,7 @@ public:
 	/// </summary>
 	/// <param name="texRegisterNum"> テクスチャレジスタ数 </param>
 	/// <param name="constBuffNum"> 定数バッファの数 </param>
-	void CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum);
+	void CreateRootParams(uint16_t texRegisterNum, uint16_t constBuffNum, uint16_t instNum = 0);
 
 	/// <summary>
 	/// パイプライン作成

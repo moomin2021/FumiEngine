@@ -225,13 +225,10 @@ void Sprite::Draw(int textureHandle) {
 	Texture* tex = Texture::GetInstance();
 
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	// ハンドルを指定された分まで進める
-	srvGpuHandle.ptr += textureHandle;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUHandle = tex->GetGPUDescriptorHandle(DescSIZE::SRV, (uint16_t)textureHandle);
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGPUHandle);
 
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());

@@ -147,9 +147,6 @@
     <ClCompile Include="Engine\Input\Key.cpp">
       <Filter>Engine\ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\BillBoard.cpp">
-      <Filter>Engine\ソース ファイル\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\Object3D.cpp">
       <Filter>Engine\ソース ファイル\3D</Filter>
     </ClCompile>
@@ -330,6 +327,12 @@
     <ClCompile Include="Application\Player\PlayerUI.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Instancing3D.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Util\Buffer.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -352,9 +355,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Input\Key.h">
       <Filter>Engine\ヘッダー ファイル\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\BillBoard.h">
-      <Filter>Engine\ヘッダー ファイル\3D</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\BaseScene.h">
       <Filter>Engine\ヘッダー ファイル\Scene</Filter>
@@ -566,6 +566,12 @@
     <ClInclude Include="Application\Player\PlayerUI.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Instancing3D.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Util\Buffer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Object3D.hlsli">
@@ -595,6 +601,7 @@
     <None Include="Resources\Shaders\Line3D.hlsli">
       <Filter>Engine\シェーダーファイル</Filter>
     </None>
+    <None Include="Resources\Shaders\Instancing3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Object3DPS.hlsl">
@@ -654,5 +661,7 @@
     <FxCompile Include="Resources\Shaders\Line3DVS.hlsl">
       <Filter>Engine\シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\Instancing3DVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Instancing3DPS.hlsl" />
   </ItemGroup>
 </Project>

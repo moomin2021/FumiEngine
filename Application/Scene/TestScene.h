@@ -26,15 +26,10 @@ private:
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
 	// モデル
-	std::unique_ptr<Model> cubeM_ = nullptr;
+	std::unique_ptr<Model> model_ = nullptr;
 
 	// オブジェクト
-	const uint8_t cubeMax_ = 3;
-	std::unique_ptr<Object3D[]> cubeO_ = nullptr;
-	Vector3 cube1Pos_ = { 0.0f, 0.0f, -1.5f };
-
-	// コライダー
-	std::unique_ptr<AABBCollider[]> cubeC_ = nullptr;
+	std::unique_ptr<Object3D> object_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

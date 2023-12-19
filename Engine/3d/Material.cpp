@@ -1,4 +1,4 @@
-﻿#include "Material.h"
+#include "Material.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
@@ -28,16 +28,13 @@ void Material::Draw()
 	static Texture* tex = Texture::GetInstance();
 
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	// ハンドルを指定された分まで進める
-	srvGpuHandle.ptr += texHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUHandle = tex->GetGPUDescriptorHandle(DescSIZE::SRV, texHandle_);
 
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(2, materialBuff_->GetGPUVirtualAddress());
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGPUHandle);
 }
 
 void Material::CreateMaterialBuff()
