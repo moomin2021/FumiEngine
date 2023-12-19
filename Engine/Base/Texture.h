@@ -68,6 +68,8 @@ public:
 
 	void ReleaseIntermediateResources();
 
+	uint16_t GetIndex();
+
 #pragma region ゲッター関数
 public:
 	/// <summary>

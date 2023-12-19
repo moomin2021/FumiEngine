@@ -13,6 +13,9 @@ Instancing3D::Instancing3D(uint16_t instNum, Model* model) : instNum_(instNum), 
 	// 関数が成功したかどうかを判別する用変数
 	HRESULT result;
 
+	// デバイス取得
+	ID3D12Device* device = DX12Cmd::GetInstance()->GetDevice();
+
 	// 定数バッファ生成
 	constBuff_ = CreateBufferResource((sizeof(ConstBufferData) + 0xff) & ~0xff);
 	
@@ -25,6 +28,19 @@ Instancing3D::Instancing3D(uint16_t instNum, Model* model) : instNum_(instNum), 
 
 	result = instBuff_->Map(0, nullptr, (void**)&instMap_);
 	assert(SUCCEEDED(result));
+
+	index_ = Texture::GetInstance()->GetIndex();
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC instSRVDesc{};
+	instSRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	instSRVDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	instSRVDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	instSRVDesc.Buffer.FirstElement = 0;
+	instSRVDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	instSRVDesc.Buffer.NumElements = (UINT)instNum_;
+	instSRVDesc.Buffer.StructureByteStride = sizeof(Matrix4);
+	D3D12_CPU_DESCRIPTOR_HANDLE instSRVHandleCPU = Texture::GetInstance()->GetCPUDescriptorHandle(DescSIZE::SRV, index_);
+	device->CreateShaderResourceView(instBuff_.Get(), &instSRVDesc, instSRVHandleCPU);
 }
 
 void Instancing3D::MatUpdate()
@@ -32,21 +48,15 @@ void Instancing3D::MatUpdate()
 	// オブジェクトデータが変更されていたら処理する
 	if (hasChanget_)
 	{
-#pragma region ワールド行列計算
-		// 行列初期化
-		matWorld_ = Matrix4Identity();
-
-		// ワールド行列にスケーリングを反映
-		matWorld_ *= Matrix4Scale(scale_);
-
-		// ワールド行列に回転を反映
-		matWorld_ *= Matrix4RotateZ(Util::Degree2Radian(rotation_.z));
-		matWorld_ *= Matrix4RotateX(Util::Degree2Radian(rotation_.x));
-		matWorld_ *= Matrix4RotateY(Util::Degree2Radian(rotation_.y));
-
-		// ワールド行列に平行移動を反映
-		matWorld_ *= Matrix4Translate(position_);
-#pragma endregion
+		for (size_t i = 0; i < worlds_.size(); i++)
+		{
+			worlds_[i] = Matrix4Identity();
+			worlds_[i] *= Matrix4Scale({ 1.0f, 1.0f, 1.0f });
+			worlds_[i] *= Matrix4RotateZ(Util::Degree2Radian(0.0f));
+			worlds_[i] *= Matrix4RotateX(Util::Degree2Radian(0.0f));
+			worlds_[i] *= Matrix4RotateY(Util::Degree2Radian(0.0f));
+			worlds_[i] *= Matrix4Translate(transforms_[i].position);
+		}
 
 		// 変更したのでフラグを[OFF]にする
 		hasChanget_ = false;
@@ -62,6 +72,11 @@ void Instancing3D::MatUpdate()
 	// 色(RGBA)転送
 	constMap_->color = color_;
 #pragma endregion
+
+	for (size_t i = 0; i < worlds_.size(); i++)
+	{
+		instMap_[i] = worlds_[i];
+	}
 }
 
 void Instancing3D::Draw()
@@ -80,4 +95,12 @@ void Instancing3D::Draw()
 
 	// モデルの情報を元に描画
 	model_->Draw();
+	model_->InstDraw(instNum_, index_);
+}
+
+void Instancing3D::AddTransform(const Vector3& position)
+{
+	worlds_.emplace_back();
+	transforms_.emplace_back(position);
+	hasChanget_ = true;
 }

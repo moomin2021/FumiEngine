@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Mesh.h"
 #include "Material.h"
 
@@ -33,6 +33,8 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
+
+	void InstDraw(uint16_t instNum, uint16_t index);
 
 private:
 	/// <summary>

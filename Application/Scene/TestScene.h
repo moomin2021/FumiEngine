@@ -7,6 +7,7 @@
 #include "Key.h"
 #include "AABBCollider.h"
 #include "CollisionManager.h"
+#include "Instancing3D.h"
 
 #include <memory>
 
@@ -29,7 +30,7 @@ private:
 	std::unique_ptr<Model> model_ = nullptr;
 
 	// オブジェクト
-	std::unique_ptr<Object3D> object_ = nullptr;
+	std::unique_ptr<Instancing3D> objects_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

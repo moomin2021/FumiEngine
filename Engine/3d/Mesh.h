@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Vector2.h"
 #include "Vector3.h"
 
@@ -51,6 +51,8 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
+
+	void InstDraw(uint16_t instNum, uint16_t index);
 
 	/// <summary>
 	/// 頂点データを追加

@@ -20,6 +20,7 @@ void TestScene::Initialize()
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
+	Instancing3D::SetLightGroup(lightGroup_->GetInstance());
 	colMgr_ = CollisionManager::GetInstance();
 #pragma endregion
 
@@ -27,6 +28,7 @@ void TestScene::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 1.0f, -5.0f });
 	Object3D::SetCamera(camera_.get());
+	Instancing3D::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ライト
@@ -39,7 +41,12 @@ void TestScene::Initialize()
 	model_ = std::make_unique<Model>("stoneBrick");
 #pragma endregion
 
-	object_ = std::make_unique<Object3D>(model_.get());
+	objects_ = std::make_unique<Instancing3D>((uint16_t)1, model_.get());
+
+	for (size_t i = 0; i < 1; i++)
+	{
+		objects_->AddTransform({ -4.5f + (i * 1.0f), 0.0f, 0.0f });
+	}
 }
 
 void TestScene::Update()
@@ -53,9 +60,9 @@ void TestScene::Update()
 
 void TestScene::Draw()
 {
-	PipelineManager::PreDraw("Object3D");
+	PipelineManager::PreDraw("Instancing3D");
 
-	object_->Draw();
+	objects_->Draw();
 }
 
 void TestScene::Debug()
@@ -71,5 +78,5 @@ void TestScene::OnCollision()
 void TestScene::MatUpdate()
 {
 	camera_->Update();
-	object_->MatUpdate();
+	objects_->MatUpdate();
 }

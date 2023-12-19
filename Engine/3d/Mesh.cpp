@@ -1,5 +1,6 @@
-﻿#include "Mesh.h"
+#include "Mesh.h"
 #include "DX12Cmd.h"
+#include "Texture.h"
 
 #include <cassert>
 
@@ -34,6 +35,27 @@ void Mesh::Draw()
 
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced(static_cast<UINT>(indexes_.size()), 1, 0, 0, 0);
+}
+
+void Mesh::InstDraw(uint16_t instNum, uint16_t index)
+{
+	// コマンドリスト取得
+	static ID3D12GraphicsCommandList* cmdList = DX12Cmd::GetInstance()->GetCmdList();
+
+	D3D12_GPU_DESCRIPTOR_HANDLE handle = Texture::GetInstance()->GetGPUDescriptorHandle(DescSIZE::SRV, index);
+
+	// 指定されたSRVをルートパラメータ1番に設定
+	cmdList->SetGraphicsRootDescriptorTable(4, handle);
+
+	// 頂点バッファビューの設定コマンド
+	cmdList->IASetVertexBuffers(0, 1, &vertexView_);
+
+	// インデックスバッファビューの設定コマンド
+	cmdList->IASetIndexBuffer(&indexView_);
+
+	// 描画コマンド
+	//cmdList->DrawIndexedInstanced(static_cast<UINT>(indexes_.size()), (UINT)instNum, 0, 0, 0);
+	cmdList->DrawInstanced(static_cast<UINT>(indexes_.size()), (UINT)instNum, 0, 0);
 }
 
 void Mesh::CreateVertexBuff()

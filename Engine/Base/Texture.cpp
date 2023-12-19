@@ -232,6 +232,15 @@ void Texture::ReleaseIntermediateResources()
 	intermediateResources_.clear();
 }
 
+uint16_t Texture::GetIndex()
+{
+	uint16_t result = indexCounter_;
+	indexCounter_++;
+
+	// ハンドルを返す
+	return result;
+}
+
 
 Texture::Texture() {}
 

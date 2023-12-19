@@ -27,6 +27,15 @@ void Model::Draw() {
 	}
 }
 
+void Model::InstDraw(uint16_t instNum, uint16_t index)
+{
+	for (auto& i : meshes_)
+	{
+		materials_[i.GetMaterialName()].Draw();
+		i.InstDraw(instNum, index);
+	}
+}
+
 void Model::LoadModel(string name)
 {
 	// ファイルストリーム

@@ -19,6 +19,12 @@ private:
 		float4 color;		// 色(RGBA)
 	};
 
+	struct Transform {
+		Vector3 position = { 0.0f, 0.0f, 0.0f };
+
+		Transform(const Vector3& inPosition) : position(inPosition) {}
+	};
+
 #pragma region メンバ変数
 private:
 	// オブジェクトデータ
@@ -33,7 +39,8 @@ private:
 	bool hasChanget_ = true;
 
 	// ワールド行列
-	Matrix4 matWorld_ = {};
+	std::vector<Matrix4> worlds_ = {};
+	std::vector<Transform> transforms_ = {};
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource>	constBuff_ = nullptr;// 定数バッファ
@@ -41,7 +48,9 @@ private:
 
 	// インスタンシング用リソース
 	ComPtr<ID3D12Resource>	instBuff_ = nullptr;// 定数バッファ
-	ConstBufferData* instMap_ = nullptr;// マッピング処理用
+	Matrix4* instMap_ = nullptr;// マッピング処理用
+
+	uint16_t index_ = 0;
 
 	// モデル
 	Model* model_ = nullptr;
@@ -68,6 +77,8 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
+
+	void AddTransform(const Vector3& position);
 #pragma endregion
 
 #pragma region セッター関数
@@ -132,12 +143,6 @@ public:
 	/// </summary>
 	/// <returns> 拡縮(XYZ) </returns>
 	inline const Vector3& GetScale() { return scale_; }
-
-	/// <summary>
-	/// ワールド行列を取得
-	/// </summary>
-	/// <returns> ワールド行列 </returns>
-	inline const Matrix4& GetMatWorld() { return matWorld_; }
 
 	/// <summary>
 	/// モデルを取得
