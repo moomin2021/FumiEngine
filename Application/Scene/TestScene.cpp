@@ -41,9 +41,9 @@ void TestScene::Initialize()
 	model_ = std::make_unique<Model>("stoneBrick");
 #pragma endregion
 
-	objects_ = std::make_unique<Instancing3D>((uint16_t)1, model_.get());
+	objects_ = std::make_unique<Instancing3D>((uint16_t)10, model_.get());
 
-	for (size_t i = 0; i < 1; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
 		objects_->AddTransform({ -4.5f + (i * 1.0f), 0.0f, 0.0f });
 	}

@@ -94,7 +94,6 @@ void Instancing3D::Draw()
 	sLightGroup_->Draw();
 
 	// モデルの情報を元に描画
-	model_->Draw();
 	model_->InstDraw(instNum_, index_);
 }
 
