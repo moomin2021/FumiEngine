@@ -19,12 +19,9 @@ class Stage
 		// オブジェクト1個分のデータ
 		struct ObjectData {
 			// ファイル名
-			int isActive;
 			std::string fileName;
 			std::string className;
 			Vector3 translation;
-			Vector3 rotation;
-			Vector3 scaling;
 		};
 
 		std::vector<ObjectData> objects;

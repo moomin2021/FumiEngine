@@ -86,13 +86,12 @@ void Stage::Load(std::string fileName, bool isCol)
 
 	// "objects"の全オブジェクトを走査
 	for (nlohmann::json& object : deserialized["objects"]) {
-		assert(object.contains("type"));
 
 		// 種別を取得
-		std::string type = object["type"].get<std::string>();
+		//std::string type = object["type"].get<std::string>();
 
 		// MESH
-		if (type.compare("MESH") == 0) {
+		if (true) {
 			// 要素追加
 			levelData->objects.emplace_back(LevelData::ObjectData{});
 
@@ -125,16 +124,6 @@ void Stage::Load(std::string fileName, bool isCol)
 			objectData.translation.x = -(float)transform["translation"][0];
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
-
-			// 回転角
-			objectData.rotation.x = -(float)transform["rotation"][1];
-			objectData.rotation.y = (float)transform["rotation"][2];
-			objectData.rotation.z = (float)transform["rotation"][0];
-
-			// スケーリング
-			objectData.scaling.x = (float)transform["scaling"][0];
-			objectData.scaling.y = (float)transform["scaling"][2];
-			objectData.scaling.z = (float)transform["scaling"][1];
 		}
 
 		// オブジェクト走査を再帰関数にまとめ、再帰呼出で枝を走査する
