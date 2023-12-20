@@ -42,10 +42,6 @@ void EnemyManager::Initialize()
 	Zombie::SetNavMesh(navMesh_.get());
 	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
-
-	enemyGenerators_.emplace_front();
-	enemyGenerators_.front().SetOffset({ 0.0f, 2.0f, 0.0f });
-	enemyGenerators_.front().AddSpawnNum(5);
 }
 
 void EnemyManager::Update()
@@ -129,6 +125,10 @@ void EnemyManager::AddCore(const Vector3& inPos)
 
 	// エネミー配列に追加
 	enemyCores_.emplace_back(std::move(newCore));
+
+	enemyGenerators_.emplace_back();
+	enemyGenerators_.back().SetOffset(inPos);
+	enemyGenerators_.back().AddSpawnNum(5);
 }
 
 void EnemyManager::CheckSceneChange()

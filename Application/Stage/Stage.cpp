@@ -11,7 +11,7 @@ Stage::Stage() {}
 
 Stage::~Stage() {
 	for (auto& it : colliders_) {
-		colMgr_->RemoveCollider(it.get());
+		colMgr_->RemoveBlockCollider(it.get());
 	}
 }
 

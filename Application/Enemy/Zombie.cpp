@@ -251,7 +251,7 @@ void Zombie::CreateNavRoute()
 
 	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
-	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition(), route_);
+	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), route_);
 
 	if (!result) return;
 

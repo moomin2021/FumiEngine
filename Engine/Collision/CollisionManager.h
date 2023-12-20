@@ -42,6 +42,8 @@ public:
 	/// </summary>
 	/// <param name="collider"></param>
 	inline void RemoveCollider(BaseCollider* collider) { colliders_.remove(collider); }
+
+	inline void RemoveBlockCollider(AABBCollider* collider) { blockCollider_.remove(collider); }
 #pragma endregion
 
 #pragma region ゲッター関数
