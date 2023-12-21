@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClCompile Include="Application\Enemy\EnemyGenerator.cpp" />
     <ClCompile Include="Application\Enemy\EnemyCore.cpp" />
+    <ClCompile Include="Engine\Util\DeltaTime.cpp" />
     <ClCompile Include="Engine\Util\Buffer.cpp" />
     <ClCompile Include="Engine\Collision\AABBCollider.cpp" />
     <ClCompile Include="Application\Player\Bullet.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
     <ClInclude Include="Application\Enemy\EnemyCore.h" />
+    <ClInclude Include="Engine\Util\DeltaTime.h" />
     <ClInclude Include="Engine\Util\Buffer.h" />
     <ClInclude Include="Engine\Collision\AABBCollider.h" />
     <ClInclude Include="Application\Scene\BaseScene.h" />

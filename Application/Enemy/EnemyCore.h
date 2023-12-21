@@ -33,7 +33,7 @@ private:
 	Vector3 offset1_ = { 0.0f, 1.5f, 0.0f };
 
 	// HP
-	const int32_t maxHP_ = 10;
+	const int32_t maxHP_ = 3;
 	int32_t hp_ = maxHP_;
 
 	// 生存フラグ

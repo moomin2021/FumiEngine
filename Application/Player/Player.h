@@ -92,7 +92,7 @@ private:
 	// 射撃関連
 	uint8_t maxBullet_ = 99;// 最大弾数
 	uint8_t nowBullet_ = 99;// 現在弾数
-	float shotInterval_ = 0.5f;// 射撃の間隔
+	float shotInterval_ = 0.2f;// 射撃の間隔
 	uint64_t shotTime_ = 0;// 最後に撃った時間
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間

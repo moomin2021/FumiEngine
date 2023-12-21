@@ -77,6 +77,7 @@ void Player::Update()
 	Recoil();
 
 	damageCount_++;
+	damageCount_ = (uint8_t)Util::Clamp((uint8_t)damageCount_, 100, 0);
 	Knock();
 }
 

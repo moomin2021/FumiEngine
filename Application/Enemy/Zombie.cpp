@@ -85,9 +85,10 @@ void Zombie::OnCollision()
 
 	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
 	{
+		velocity_ = 0.0f;
 		knockBackVec_ = sPlayer_->GetDir();
 		knockBackVec_.normalize();
-		knockBackVec_.y = 3.0f;
+		knockBackVec_.y = 1.0f;
 		knockBackSpd_ = 0.5f;
 		hp_ -= 1;
 
