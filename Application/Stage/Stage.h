@@ -22,6 +22,7 @@ class Stage
 			std::string fileName;
 			std::string className;
 			Vector3 translation;
+			Vector3 scale;
 		};
 
 		std::vector<ObjectData> objects;
@@ -65,7 +66,7 @@ public:
 	void Draw();
 
 	// ステージ情報読み込み
-	void Load(std::string fileName, bool isCol = true);
+	void Load(std::string fileName, bool isCol = true, bool isCore = false);
 #pragma endregion
 
 #pragma region セッター関数

@@ -53,7 +53,7 @@ void Stage::Draw()
 	oSkydome_->Draw();
 }
 
-void Stage::Load(std::string fileName, bool isCol)
+void Stage::Load(std::string fileName, bool isCol, bool isCore)
 {
 	// ファイルストリーム
 	std::ifstream file;
@@ -121,6 +121,13 @@ void Stage::Load(std::string fileName, bool isCol)
 			objectData.translation.x = -(float)transform["translation"][0];
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
+
+			if (isCol == false) continue;
+
+			// スケーリング
+			objectData.scale.x = (float)transform["scaling"][0];
+			objectData.scale.y = (float)transform["scaling"][2];
+			objectData.scale.z = (float)transform["scaling"][1];
 		}
 	}
 
@@ -128,24 +135,28 @@ void Stage::Load(std::string fileName, bool isCol)
 	for (auto& objectData : levelData->objects) {
 
 		if (objectData.className == "enemyCore") {
-			if (isCol == false) continue;
+			if (isCore == false) continue;
 			enemyMgr_->AddCore(objectData.translation);
 		}
 
 		// オブジェクト追加
 		else {
-			// オブジェクト
-			if (objects_->GetModel() == nullptr) objects_->SetModel(models_[objectData.fileName].get());
-			objects_->AddTransform(objectData.translation);
+			if (isCol == false)
+			{
+				// オブジェクト
+				if (objects_->GetModel() == nullptr) objects_->SetModel(models_[objectData.fileName].get());
+				objects_->AddTransform(objectData.translation);
+			}
 
-			if (isCol == false) continue;
-
-			// コライダー
-			colliders_.emplace_front(std::make_unique<AABBCollider>());
-			colliders_.front()->SetOffset(objectData.translation);
-			colliders_.front()->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
-			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
-			colMgr_->AddBlockCollider(colliders_.front().get());
+			else
+			{
+				// コライダー
+				colliders_.emplace_front(std::make_unique<AABBCollider>());
+				colliders_.front()->SetOffset(objectData.translation);
+				colliders_.front()->SetRadius(objectData.scale / 2.0f);
+				colliders_.front()->SetAttribute(COL_STAGE_OBJ);
+				colMgr_->AddBlockCollider(colliders_.front().get());
+			}
 		}
 	}
 }

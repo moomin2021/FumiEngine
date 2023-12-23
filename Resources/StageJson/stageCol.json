@@ -1,0 +1,397 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    3.5,
+                    -0.5
+                ],
+                "scaling": [
+                    3.0,
+                    10.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    -2.0,
+                    2.0
+                ],
+                "scaling": [
+                    3.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -2.0,
+                    3.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    9.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    2.0,
+                    3.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    9.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    4.5,
+                    8.0,
+                    2.0
+                ],
+                "scaling": [
+                    6.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -4.5,
+                    8.0,
+                    2.0
+                ],
+                "scaling": [
+                    6.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    8.0,
+                    16.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    15.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -8.0,
+                    16.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    15.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    4.5,
+                    24.0,
+                    2.0
+                ],
+                "scaling": [
+                    6.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -4.5,
+                    24.0,
+                    2.0
+                ],
+                "scaling": [
+                    6.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    8.0,
+                    3.5
+                ],
+                "scaling": [
+                    3.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    16.0,
+                    0.5
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    28.5,
+                    -0.5
+                ],
+                "scaling": [
+                    3.0,
+                    10.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    2.0,
+                    29.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    9.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -2.0,
+                    27.5,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    6.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -5.0,
+                    30.0,
+                    2.0
+                ],
+                "scaling": [
+                    5.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -3.0,
+                    34.0,
+                    2.0
+                ],
+                "scaling": [
+                    9.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    16.0,
+                    -0.5
+                ],
+                "scaling": [
+                    15.0,
+                    15.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -5.0,
+                    32.0,
+                    -0.5
+                ],
+                "scaling": [
+                    7.0,
+                    3.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -16.0,
+                    32.0,
+                    -0.5
+                ],
+                "scaling": [
+                    15.0,
+                    15.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -24.0,
+                    32.0,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    15.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -16.0,
+                    24.0,
+                    2.0
+                ],
+                "scaling": [
+                    15.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -16.0,
+                    40.0,
+                    2.0
+                ],
+                "scaling": [
+                    15.0,
+                    1.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -8.0,
+                    27.5,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    6.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -8.0,
+                    36.5,
+                    2.0
+                ],
+                "scaling": [
+                    1.0,
+                    6.0,
+                    4.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -16.0,
+                    32.0,
+                    0.5
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    0.0,
+                    24.0,
+                    3.5
+                ],
+                "scaling": [
+                    3.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -8.0,
+                    32.0,
+                    3.5
+                ],
+                "scaling": [
+                    1.0,
+                    3.0,
+                    1.0
+                ]
+            }
+        }
+    ]
+}

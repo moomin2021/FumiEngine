@@ -11,6 +11,7 @@
 #include "PlayerUI.h"
 #include "EnemyManager.h"
 #include "NavMesh.h"
+#include "DeltaTime.h"
 
 #include <memory>
 
@@ -50,6 +51,8 @@ private:
 
 	std::unique_ptr<Sprite> sObjectiveText_ = nullptr;
 	uint16_t gObjectiveText_ = 0;
+
+	DeltaTime deltaTime_ = {};
 #pragma endregion
 
 #pragma region メンバ関数

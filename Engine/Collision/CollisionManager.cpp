@@ -92,8 +92,6 @@ void CollisionManager::CheckAllCollision()
 					AABBCollider* aabb0 = dynamic_cast<AABBCollider*>(*itA);
 					AABBCollider* aabb1 = dynamic_cast<AABBCollider*>(it);
 
-					if (Vector3(aabb0->center - aabb1->center).length() >= 3.0f) continue;
-
 					Vector3 reject = { 0.0f, 0.0f, 0.0f };
 
 					if (!Collision::CheckAABB2AABB(*aabb0, *aabb1, &reject)) continue;

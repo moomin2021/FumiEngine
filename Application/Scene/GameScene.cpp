@@ -6,6 +6,7 @@
 #include "PipelineManager.h"
 
 #include <set>
+#include <imgui_impl_DX12.h>
 
 GameScene::GameScene() {}
 
@@ -77,7 +78,8 @@ void GameScene::Initialize()
 #pragma endregion
 
 	// ステージ読み込み
-	stage_->Load("Resources/StageJson/stage1.json");
+	stage_->Load("Resources/StageJson/stage1.json", false, true);
+	stage_->Load("Resources/StageJson/stageCol.json", true, false);
 
 #pragma region ゲームUI
 	sGameUI_ = std::make_unique<Sprite>();
@@ -92,10 +94,14 @@ void GameScene::Initialize()
 
 	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
 #pragma endregion
+
+	deltaTime_.Initialize();
 }
 
 void GameScene::Update()
 {
+	deltaTime_.Update();
+
 	// プレイヤー
 	player_->Update();
 	playerUI_->Update();
@@ -168,6 +174,10 @@ void GameScene::Debug()
 	}
 
 	if (isDebug_ == false) return;
+
+	ImGui::Begin("DeltaTime");
+	ImGui::Text("deltaTime = %f", deltaTime_.GetDeltaTime());
+	ImGui::End();
 
 	player_->Debug();
 
