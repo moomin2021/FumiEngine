@@ -7,6 +7,8 @@
 #include "NavMesh.h"
 #include "EnemyGenerator.h"
 #include "EnemyCore.h"
+#include "DeltaTime.h"
+#include "ResultData.h"
 
 #include <memory>
 
@@ -39,6 +41,11 @@ private:
 	std::vector<Vector3> cellsCenter_ = {};
 
 	uint16_t enemyDeathCounter_ = 0;
+
+	DeltaTime deltaTime_ = {};
+	float elapsedTime_ = 0.0f;
+	uint16_t killEnemy_ = 0;
+	uint16_t breakCore_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数

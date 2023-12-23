@@ -9,6 +9,7 @@
 #include "BoxButton.h"
 
 #include "ResultBox.h"
+#include "Number.h"
 
 #include <memory>
 
@@ -37,6 +38,10 @@ private:
 
 	// リザルト表記
 	std::vector<std::unique_ptr<ResultBox>> resultBoxs_ = {};
+
+	// 数字表記
+	std::vector<std::unique_ptr<Number>> numbers_ = {};
+	std::vector<uint16_t> displayNums_ = {};
 #pragma endregion
 
 #pragma region メンバ関数

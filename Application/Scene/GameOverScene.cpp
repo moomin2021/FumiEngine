@@ -4,6 +4,7 @@
 #include "PipelineManager.h"
 #include "WinAPI.h"
 #include "Texture.h"
+#include "ResultData.h"
 
 #include "CollisionAttribute.h"
 
@@ -72,6 +73,22 @@ void GameOverScene::Initialize()
 	resultBoxs_[2]->Initialize({ winSize.x / 2.0f, 350.0f }, { 1258.0f, 44.0f },
 		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText2.png"));
 #pragma endregion
+
+#pragma region 数字表記
+	numbers_.resize(3);
+	for (size_t i = 0; i < 3; i++)
+	{
+		numbers_[i] = std::make_unique<Number>();
+		numbers_[i]->Initialize(2, { 1550.0f, 250.0f + (i * 50.0f) }, {25.0f, 35.0f}, "Sprite/num25_35");
+	}
+
+	ResultData* resultData = ResultData::GetInstance();
+
+	displayNums_.resize(3);
+	displayNums_[0] = resultData->elapsedTime_;
+	displayNums_[1] = resultData->killEnemy_;
+	displayNums_[2] = resultData->breakCore_;
+#pragma endregion
 }
 
 void GameOverScene::Update()
@@ -98,6 +115,7 @@ void GameOverScene::Draw()
 	titleReturnB_->Draw();
 
 	for (auto& it : resultBoxs_) it->Draw();
+	for (size_t i = 0; i < numbers_.size();i++) numbers_[i]->Draw(displayNums_[i]);
 }
 
 void GameOverScene::OnCollision()
@@ -135,4 +153,5 @@ void GameOverScene::MatUpdate()
 	titleReturnB_->MatUpdate();
 
 	for (auto& it : resultBoxs_) it->MatUpdate();
+	for (auto& it : numbers_) it->MatUpdate();
 }

@@ -163,6 +163,8 @@
     <ClCompile Include="Application\Enemy\Zombie.cpp" />
     <ClCompile Include="Application\Player\PlayerUI.cpp" />
     <ClCompile Include="Application\Result\ResultBox.cpp" />
+    <ClCompile Include="Application\Result\Number.cpp" />
+    <ClCompile Include="Application\Result\ResultData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
@@ -246,6 +248,8 @@
     <ClInclude Include="Application\Player\PlayerUI.h" />
     <ClInclude Include="Engine\Base\Instancing3D.h" />
     <ClInclude Include="Application\Result\ResultBox.h" />
+    <ClInclude Include="Application\Result\Number.h" />
+    <ClInclude Include="Application\Result\ResultData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

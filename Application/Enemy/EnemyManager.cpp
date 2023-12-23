@@ -42,10 +42,16 @@ void EnemyManager::Initialize()
 	Zombie::SetNavMesh(navMesh_.get());
 	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
+
+
+	deltaTime_.Initialize();
 }
 
 void EnemyManager::Update()
 {
+	deltaTime_.Update();
+	elapsedTime_ += deltaTime_.GetDeltaTime();
+
 	for (auto& it : enemyGenerators_) it.Update();
 
 	for (auto& it : enemyGenerators_)
@@ -66,6 +72,7 @@ void EnemyManager::Update()
 		{
 			it = zombies_.erase(it);
 			enemyDeathCounter_++;
+			killEnemy_++;
 		}
 		else ++it;
 	}
@@ -77,7 +84,11 @@ void EnemyManager::Update()
 		(*it)->Update();
 
 		// 敵の生存フラグが[OFF]になったら消す
-		if ((*it)->GetIsAlive() == false) it = enemyCores_.erase(it);
+		if ((*it)->GetIsAlive() == false)
+		{
+			it = enemyCores_.erase(it);
+			breakCore_++;
+		}
 		else ++it;
 	}
 }
@@ -138,6 +149,11 @@ void EnemyManager::CheckSceneChange()
 		SceneManager::GetInstance()->SceneTransition(SCENE::GAMEOVER);
 		WinAPI::GetInstance()->DisplayCursor(true);
 		WinAPI::GetInstance()->SetClipCursor(false);
+
+		ResultData* resultData_ = ResultData::GetInstance();
+		resultData_->elapsedTime_ = (uint16_t)elapsedTime_;
+		resultData_->killEnemy_ = killEnemy_;
+		resultData_->breakCore_ = breakCore_;
 	}
 }
 
