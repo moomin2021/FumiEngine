@@ -22,6 +22,7 @@ void GameOverScene::Initialize()
 #pragma region インスタンス
 	colMgr2D_ = CollisionManager2D::GetInstance();
 	BoxButton::SetCollisionManager2D(colMgr2D_);
+	ResultBox::SetCollisionManager2D(colMgr2D_);
 
 	mouse_ = Mouse::GetInstance();
 #pragma endregion
@@ -55,6 +56,22 @@ void GameOverScene::Initialize()
 	cMouse_->SetAttribute(COL_POINT);
 	colMgr2D_->AddCollider(cMouse_.get());
 #pragma endregion
+
+#pragma region リザルト表記
+	resultBoxs_.resize(3);
+
+	resultBoxs_[0] = std::make_unique<ResultBox>();
+	resultBoxs_[0]->Initialize({ winSize.x / 2.0f, 250.0f }, {1258.0f, 44.0f},
+		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText0.png"));
+
+	resultBoxs_[1] = std::make_unique<ResultBox>();
+	resultBoxs_[1]->Initialize({ winSize.x / 2.0f, 300.0f }, { 1258.0f, 44.0f },
+		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText1.png"));
+
+	resultBoxs_[2] = std::make_unique<ResultBox>();
+	resultBoxs_[2]->Initialize({ winSize.x / 2.0f, 350.0f }, { 1258.0f, 44.0f },
+		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText2.png"));
+#pragma endregion
 }
 
 void GameOverScene::Update()
@@ -63,6 +80,8 @@ void GameOverScene::Update()
 	cMouse_->SetOffset(mouse_->MousePos());
 
 	titleReturnB_->Update();
+	
+	for (auto& it : resultBoxs_) it->Update();
 
 	// 衝突時処理
 	OnCollision();
@@ -77,6 +96,8 @@ void GameOverScene::Draw()
 
 	resultFrameS_->Draw(resultFrameH_);
 	titleReturnB_->Draw();
+
+	for (auto& it : resultBoxs_) it->Draw();
 }
 
 void GameOverScene::OnCollision()
@@ -84,6 +105,8 @@ void GameOverScene::OnCollision()
 	colMgr2D_->CheckAllCollision();
 
 	titleReturnB_->OnCollision();
+
+	for (auto& it : resultBoxs_) it->OnCollision();
 
 	// 衝突していなかったらこれ以降の処理を飛ばす
 	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
@@ -110,4 +133,6 @@ void GameOverScene::MatUpdate()
 
 	resultFrameS_->MatUpdate();
 	titleReturnB_->MatUpdate();
+
+	for (auto& it : resultBoxs_) it->MatUpdate();
 }

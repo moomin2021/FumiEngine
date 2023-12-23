@@ -8,6 +8,8 @@
 #include "PointCollider.h"
 #include "BoxButton.h"
 
+#include "ResultBox.h"
+
 #include <memory>
 
 class GameOverScene : public BaseScene
@@ -32,6 +34,9 @@ private:
 
 	// コライダー
 	std::unique_ptr<PointCollider> cMouse_ = nullptr;
+
+	// リザルト表記
+	std::vector<std::unique_ptr<ResultBox>> resultBoxs_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
