@@ -49,8 +49,6 @@ void CollisionManager::CheckAllCollision()
 
 				for (auto& it : blockCollider_)
 				{
-					if (Vector3(ray->start - it->center).length() >= 5.0f) continue;
-
 					count++;
 
 					// 判定したときのデータ
