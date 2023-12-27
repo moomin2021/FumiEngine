@@ -4,6 +4,7 @@ Windows SDKのバージョンは10.0です。
 このエンジンでは下記の外部ライブラリを使用しています。  
 * DirectXTex
 * ImGui
+* nlohmann
 
 # 制作中の作品
 ## 概要
