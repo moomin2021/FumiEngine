@@ -1,3 +1,10 @@
+/**
+ * @file Player.h
+ * @brief エネミーを管理するクラス
+ * @author moomin
+ * @date 2023/12/29
+ */
+
 #pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
@@ -39,6 +46,10 @@ private:
 	// 敵の生成器
 	std::deque<EnemyGenerator> enemyGenerators_ = {};
 	std::vector<Vector3> cellsCenter_ = {};
+
+	// パーティクル
+	std::unique_ptr<ParticleEmitter> particle_ = nullptr;
+	uint16_t deathParticleH_ = 0;
 
 	uint16_t enemyDeathCounter_ = 0;
 
@@ -82,12 +93,12 @@ public:
 	void Debug();
 
 private:
+	// 死亡パーティクルの追加
+	void AddDeathParticle(const Vector3& inPos);
 #pragma endregion
 
 #pragma region セッター関数
 public:
-	void SetBossGenerator(const Vector3& pos);
-
 	// プレイヤーを設定
 	void SetPlayer(Player* player);
 #pragma endregion

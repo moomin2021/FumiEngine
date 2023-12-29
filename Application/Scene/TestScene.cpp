@@ -1,5 +1,4 @@
 #include "TestScene.h"
-#include "CollisionManager.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
@@ -20,7 +19,6 @@ void TestScene::Initialize()
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
-	Instancing3D::SetLightGroup(lightGroup_->GetInstance());
 	colMgr_ = CollisionManager::GetInstance();
 #pragma endregion
 
@@ -28,7 +26,7 @@ void TestScene::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 1.0f, -5.0f });
 	Object3D::SetCamera(camera_.get());
-	Instancing3D::SetCamera(camera_.get());
+	ParticleEmitter::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ライト
@@ -37,20 +35,19 @@ void TestScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region モデル
-	model_ = std::make_unique<Model>("stoneBrick");
+#pragma region パーティクル
+	particle_ = std::make_unique<ParticleEmitter>();
+	particleH_ = LoadTexture("Sprite/deathParticle.png");
 #pragma endregion
-
-	objects_ = std::make_unique<Instancing3D>((uint16_t)10, model_.get());
-
-	for (size_t i = 0; i < 10; i++)
-	{
-		objects_->AddTransform({ -4.5f + (i * 1.0f), 0.0f, 0.0f });
-	}
 }
 
 void TestScene::Update()
 {
+	if (key_->PushKey(DIK_P))
+	{
+		particle_->Add(60, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1.0f, 0.0f);
+	}
+
 	// 衝突時処理
 	OnCollision();
 
@@ -60,9 +57,8 @@ void TestScene::Update()
 
 void TestScene::Draw()
 {
-	PipelineManager::PreDraw("Instancing3D");
-
-	objects_->Draw();
+	PipelineManager::PreDraw("Particle");
+	particle_->Draw(particleH_);
 }
 
 void TestScene::Debug()
@@ -78,5 +74,5 @@ void TestScene::OnCollision()
 void TestScene::MatUpdate()
 {
 	camera_->Update();
-	objects_->MatUpdate();
+	particle_->Update(BILLBOARD::Y);
 }

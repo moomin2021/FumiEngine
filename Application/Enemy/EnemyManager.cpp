@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SceneManager.h"
 #include "WinAPI.h"
+#include "PipelineManager.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -43,6 +44,10 @@ void EnemyManager::Initialize()
 	cellsCenter_ = navMesh_->GetCellsCenter();
 #pragma endregion
 
+#pragma region パーティクル
+	particle_ = std::make_unique<ParticleEmitter>();
+	deathParticleH_ = LoadTexture("Sprite/deathParticle.png");
+#pragma endregion
 
 	deltaTime_.Initialize();
 }
@@ -70,6 +75,7 @@ void EnemyManager::Update()
 		// 敵の生存フラグが[OFF]になったら消す
 		if ((*it)->GetIsAlive() == false)
 		{
+			AddDeathParticle((*it)->GetPosition());
 			it = zombies_.erase(it);
 			enemyDeathCounter_++;
 			killEnemy_++;
@@ -95,11 +101,13 @@ void EnemyManager::Update()
 
 void EnemyManager::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
 	for (auto& it : zombies_) it->Draw();
-
 	for (auto& it : enemyCores_) it->Draw();
-
 	navMesh_->Draw();
+
+	PipelineManager::PreDraw("Particle");
+	particle_->Draw(deathParticleH_);
 }
 
 void EnemyManager::MatUpdate()
@@ -109,6 +117,8 @@ void EnemyManager::MatUpdate()
 	navMesh_->MatUpdate();
 
 	for (auto& it : enemyCores_) it->MatUpdate();
+
+	particle_->Update(BILLBOARD::Y);
 }
 
 void EnemyManager::OnCollision()
@@ -196,6 +206,11 @@ void EnemyManager::Debug()
 	}
 
 	ImGui::End();
+}
+
+void EnemyManager::AddDeathParticle(const Vector3& inPos)
+{
+	particle_->Add(60, inPos, { 0.0, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f}, 100.0f, 100.0f);
 }
 
 void EnemyManager::SetPlayer(Player* player)

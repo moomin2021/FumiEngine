@@ -1,4 +1,4 @@
-﻿#include "ParticleEmitter.h"
+#include "ParticleEmitter.h"
 #include "DX12Cmd.h"
 #include "Texture.h"
 
@@ -196,13 +196,10 @@ void ParticleEmitter::Draw(uint16_t handle)
 	Texture* tex = Texture::GetInstance();
 
 	// SRVヒープのハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = tex->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
-	// ハンドルを指定された分まで進める
-	srvGpuHandle.ptr += handle;
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGPUHandle = tex->GetGPUDescriptorHandle(DescSIZE::SRV, handle);
 
 	// 指定されたSRVをルートパラメータ1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, srvGPUHandle);
 
 	// 定数バッファビュー（CBV）の設定コマンド
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff_->GetGPUVirtualAddress());

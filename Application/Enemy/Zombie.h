@@ -124,5 +124,6 @@ public:
 #pragma region ゲッター関数
 public:
 	bool GetIsAlive() { return isAlive_; }
+	const Vector3& GetPosition() { return object_->GetPosition(); }
 #pragma endregion
 };

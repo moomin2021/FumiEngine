@@ -1,3 +1,10 @@
+/**
+ * @file Player.h
+ * @brief プレイヤーのクラス
+ * @author moomin
+ * @date 2023/12/29
+ */
+
 #pragma once
 #include "Key.h"
 #include "Mouse.h"

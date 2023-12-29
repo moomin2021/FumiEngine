@@ -5,9 +5,8 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 #include "Key.h"
-#include "AABBCollider.h"
+#include "ParticleEmitter.h"
 #include "CollisionManager.h"
-#include "Instancing3D.h"
 
 #include <memory>
 
@@ -26,11 +25,9 @@ private:
 	// ライト
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
-
-	// オブジェクト
-	std::unique_ptr<Instancing3D> objects_ = nullptr;
+	// パーティクル
+	std::unique_ptr<ParticleEmitter> particle_ = nullptr;
+	uint16_t particleH_ = 0;
 #pragma endregion
 
 #pragma region メンバ関数

@@ -1,24 +1,24 @@
 #include "Particle.hlsli"
 
-// lŠpŒ`‚Ì’¸“_”
+// å››è§’å½¢ã®é ‚ç‚¹æ•°
 static const uint vnum = 4;
 
-// ƒZƒ“ƒ^[‚©‚ç‚ÌƒIƒtƒZƒbƒg
+// ã‚»ãƒ³ã‚¿ãƒ¼ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 static const float4 offset_array[vnum] =
 {
-    float4(-10.0f, -10.0f, 0.0f, 0.0f), // ¶‰º
-    float4(-10.0f, +10.0f, 0.0f, 0.0f), // ¶ã
-    float4(+10.0f, -10.0f, 0.0f, 0.0f), // ‰E‰º
-    float4(+10.0f, +10.0f, 0.0f, 0.0f)  // ‰Eã
+    float4(-1.0f, -1.0f, 0.0f, 0.0f), // å·¦ä¸‹
+    float4(-1.0f, +1.0f, 0.0f, 0.0f), // å·¦ä¸Š
+    float4(+1.0f, -1.0f, 0.0f, 0.0f), // å³ä¸‹
+    float4(+1.0f, +1.0f, 0.0f, 0.0f)  // å³ä¸Š
 };
 
-// ¶ã‚ª0, 0 ‰E‰º‚ª1, 1
+// å·¦ä¸ŠãŒ0, 0 å³ä¸‹ãŒ1, 1
 static const float2 uv_array[vnum] =
 {
-    float2(0, 1), // ¶‰º
-    float2(0, 0), // ¶ã
-    float2(1, 1), // ‰E‰º
-    float2(1, 0)  // ‰Eã
+    float2(0, 1), // å·¦ä¸‹
+    float2(0, 0), // å·¦ä¸Š
+    float2(1, 1), // å³ä¸‹
+    float2(1, 0)  // å³ä¸Š
 };
 
 [maxvertexcount(vnum)]
@@ -30,15 +30,15 @@ void main(
 {
     GSOutput element;
 	
-	// 4“_•ª‚Ü‚í‚·
+	// 4ç‚¹åˆ†ã¾ã‚ã™
     for (uint i = 0; i < vnum; i++)
     {
         float4 offset = offset_array[i] * input[0].scale;
         
-        // ƒ[ƒ‹ƒhÀ•Wƒx[ƒX‚ÅA‚¸‚ç‚·
+        // ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ãƒ™ãƒ¼ã‚¹ã§ã€ãšã‚‰ã™
         element.svpos = input[0].svpos + offset;
         
-        // ƒrƒ…[AË‰e•ÏŠ·
+        // ãƒ“ãƒ¥ãƒ¼ã€å°„å½±å¤‰æ›
         element.svpos = mul(mat, element.svpos);
         element.uv = uv_array[i];
         output.Append(element);
