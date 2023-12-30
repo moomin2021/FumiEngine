@@ -106,7 +106,7 @@ void EnemyManager::Draw()
 	for (auto& it : enemyCores_) it->Draw();
 	navMesh_->Draw();
 
-	PipelineManager::PreDraw("Particle");
+	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 	particle_->Draw(deathParticleH_);
 }
 
@@ -210,7 +210,20 @@ void EnemyManager::Debug()
 
 void EnemyManager::AddDeathParticle(const Vector3& inPos)
 {
-	particle_->Add(60, inPos, { 0.0, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f}, 100.0f, 100.0f);
+	for (size_t i = 0; i < 10; i++)
+	{
+		Vector3 offset;
+		offset.x = Util::GetRandomFloat(-0.5f, 0.5f);
+		offset.y = Util::GetRandomFloat(-0.5f, 0.5f);
+		offset.z = Util::GetRandomFloat(-0.5f, 0.5f);
+
+		Vector3 velocity = { 0.0f, 1.0f, 0.0f };
+		velocity.x = Util::GetRandomFloat(-0.5f, 0.5f);
+		velocity.z = Util::GetRandomFloat(-0.5f, 0.5f);
+		velocity.normalize();
+		velocity /= 60.0f;
+		particle_->Add(60, inPos + offset, velocity, { -velocity.x / 60.0f, -velocity.y / 60.0f, -velocity.z / 60.0f }, 0.5f, 0.0f);
+	}
 }
 
 void EnemyManager::SetPlayer(Player* player)

@@ -6,10 +6,10 @@ static const uint vnum = 4;
 // センターからのオフセット
 static const float4 offset_array[vnum] =
 {
-    float4(-1.0f, -1.0f, 0.0f, 0.0f), // 左下
-    float4(-1.0f, +1.0f, 0.0f, 0.0f), // 左上
-    float4(+1.0f, -1.0f, 0.0f, 0.0f), // 右下
-    float4(+1.0f, +1.0f, 0.0f, 0.0f)  // 右上
+    float4(-0.5f, -0.5f, 0.0f, 0.0f), // 左下
+    float4(-0.5f, +0.5f, 0.0f, 0.0f), // 左上
+    float4(+0.5f, -0.5f, 0.0f, 0.0f), // 右下
+    float4(+0.5f, +0.5f, 0.0f, 0.0f)  // 右上
 };
 
 // 左上が0, 0 右下が1, 1
@@ -34,12 +34,14 @@ void main(
     for (uint i = 0; i < vnum; i++)
     {
         float4 offset = offset_array[i] * input[0].scale;
+        offset = mul(matBillboard, offset);
         
         // ワールド座標ベースで、ずらす
         element.svpos = input[0].svpos + offset;
         
         // ビュー、射影変換
-        element.svpos = mul(mat, element.svpos);
+        element.svpos = mul(matProj, element.svpos);
+        //element.svpos = element.svpos;
         element.uv = uv_array[i];
         output.Append(element);
     }

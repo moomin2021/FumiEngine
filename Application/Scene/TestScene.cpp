@@ -24,7 +24,7 @@ void TestScene::Initialize()
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
-	camera_->SetEye({ 0.0f, 1.0f, -5.0f });
+	camera_->SetEye({ 0.0f, 1.0f, -10.0f });
 	Object3D::SetCamera(camera_.get());
 	ParticleEmitter::SetCamera(camera_.get());
 #pragma endregion
@@ -38,14 +38,52 @@ void TestScene::Initialize()
 #pragma region パーティクル
 	particle_ = std::make_unique<ParticleEmitter>();
 	particleH_ = LoadTexture("Sprite/deathParticle.png");
+
+	Vector3 pos;
+	pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
+	pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
+	pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		Vector3 offset;
+		offset.x = Util::GetRandomFloat(-0.5f, 0.5f);
+		offset.y = Util::GetRandomFloat(-0.5f, 0.5f);
+		offset.z = Util::GetRandomFloat(-0.5f, 0.5f);
+
+		Vector3 velocity = { 0.0f, 1.0f, 0.0f };
+		velocity.x = Util::GetRandomFloat(-0.5f, 0.5f);
+		velocity.z = Util::GetRandomFloat(-0.5f, 0.5f);
+		velocity.normalize();
+		velocity /= 60.0f;
+		particle_->Add(60, pos + offset, velocity, { -velocity.x / 60.0f, -velocity.y / 60.0f, -velocity.z / 60.0f }, 1.0f, 0.0f);
+	}
 #pragma endregion
 }
 
 void TestScene::Update()
 {
-	if (key_->PushKey(DIK_P))
+	if (key_->TriggerKey(DIK_P))
 	{
-		particle_->Add(60, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 1.0f, 0.0f);
+		Vector3 pos;
+		pos.x = Util::GetRandomFloat(-5.0f, 5.0f);
+		pos.y = Util::GetRandomFloat(-5.0f, 5.0f);
+		pos.z = Util::GetRandomFloat(-5.0f, 5.0f);
+
+		for (size_t i = 0; i < 10; i++)
+		{
+			Vector3 offset;
+			offset.x = Util::GetRandomFloat(-0.5f, 0.5f);
+			offset.y = Util::GetRandomFloat(-0.5f, 0.5f);
+			offset.z = Util::GetRandomFloat(-0.5f, 0.5f);
+
+			Vector3 velocity = { 0.0f, 1.0f, 0.0f };
+			velocity.x = Util::GetRandomFloat(-0.5f, 0.5f);
+			velocity.z = Util::GetRandomFloat(-0.5f, 0.5f);
+			velocity.normalize();
+			velocity /= 60.0f;
+			particle_->Add(60, pos + offset, velocity, { -velocity.x / 60.0f, -velocity.y / 60.0f, -velocity.z / 60.0f }, 1.0f, 0.0f);
+		}
 	}
 
 	// 衝突時処理
@@ -57,7 +95,7 @@ void TestScene::Update()
 
 void TestScene::Draw()
 {
-	PipelineManager::PreDraw("Particle");
+	PipelineManager::PreDraw("Particle", D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	particle_->Draw(particleH_);
 }
 

@@ -135,6 +135,8 @@ void GameScene::Draw()
 	// エネミーマネージャー
 	enemyMgr_->Draw();
 
+	PipelineManager::PreDraw("Object3D");
+
 	// 3軸を示すオブジェクト
 	if (isDebug_)
 	{

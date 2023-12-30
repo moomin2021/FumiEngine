@@ -174,7 +174,7 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 		}
 	}
 
-	if (billBoard != NONE) matWorld *= mMatBillboard;
+	//if (billBoard != NONE) matWorld *= mMatBillboard;
 
 	// ワールド行列に平行移動を反映
 	matWorld *= Matrix4Translate(position_);
@@ -183,7 +183,9 @@ void ParticleEmitter::Update(BILLBOARD billBoard)
 
 #pragma region 定数バッファへのデータ転送
 	// 行列
-	constMap_->mat = matWorld * sCamera_->GetMatView() * sCamera_->GetMatProjection();
+	constMap_->matWorld = matWorld;
+	constMap_->matProj = sCamera_->GetMatView() * sCamera_->GetMatProjection();
+	constMap_->matBillboard = mMatBillboard;
 #pragma endregion
 }
 

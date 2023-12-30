@@ -1,18 +1,20 @@
 cbuffer cbuff0 : register(b0)
 {
-    matrix mat;
+    matrix matWorld;
+    matrix matProj;
+    matrix matBillboard;
 }
 
-// ’¸“_ƒVƒF[ƒ_[‚Ìo—Í\‘¢‘Ì
+// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®å‡ºåŠ›æ§‹é€ ä½“
 struct VSOutput
 {
-    float4 svpos    : SV_POSITION;  // ƒVƒXƒeƒ€—p’¸“_À•W
+    float4 svpos    : SV_POSITION;  // ã‚·ã‚¹ãƒ†ãƒ ç”¨é ‚ç‚¹åº§æ¨™
     float scale : TEXCOORD;
 };
 
-// ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚©‚çƒsƒNƒZƒ‹ƒVƒF[ƒ_‚Ö‚Ìo—Í
+// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã¸ã®å‡ºåŠ›
 struct GSOutput
 {
-    float4 svpos    : SV_POSITION;  // ƒVƒXƒeƒ€—p’¸“_À•W
-    float2 uv       : TEXCOORD;     // uv’l
+    float4 svpos    : SV_POSITION;  // ã‚·ã‚¹ãƒ†ãƒ ç”¨é ‚ç‚¹åº§æ¨™
+    float2 uv       : TEXCOORD;     // uvå€¤
 };

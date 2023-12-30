@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Camera.h"
 #include "Vector3.h"
 #include "Matrix4.h"
@@ -30,7 +30,9 @@ private:
 
 	// 定数バッファ用
 	struct ConstBufferData {
-		Matrix4 mat;
+		Matrix4 matWorld;
+		Matrix4 matProj;
+		Matrix4 matBillboard;
 	};
 
 	// パーティクル1粒
