@@ -26,9 +26,11 @@ private:
 
 	// スプライト
 	std::unique_ptr<Sprite> resultFrameS_ = nullptr;
+	std::unique_ptr<Sprite> resultS_ = nullptr;
 
 	// 画像
 	uint16_t resultFrameH_ = 0;
+	std::vector<uint16_t> resultH_ = {};
 
 	// ボタン
 	std::unique_ptr<BoxButton> titleReturnB_ = nullptr;

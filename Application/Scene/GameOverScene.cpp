@@ -39,10 +39,18 @@ void GameOverScene::Initialize()
 	resultFrameS_->SetAnchorPoint({ 0.5f, 0.5f });
 	resultFrameS_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
 	resultFrameS_->SetSize({ 1280.0f, 720.0f });
+
+	resultS_ = std::make_unique<Sprite>();
+	resultS_->SetAnchorPoint({ 0.5f, 0.5f });
+	resultS_->SetPosition({ winSize.x / 2.0f, 100.0f });
+	resultS_->SetSize({ 600.0f, 80.f });
 #pragma endregion
 
 #pragma region 画像
 	resultFrameH_ = LoadTexture("Sprite/resultFrame.png");
+	resultH_.resize(2);
+	resultH_[0] = LoadTexture("Sprite/resultWin.png");
+	resultH_[1] = LoadTexture("Sprite/resultLose.png");
 #pragma endregion
 
 #pragma region ボタン
@@ -62,15 +70,15 @@ void GameOverScene::Initialize()
 	resultBoxs_.resize(3);
 
 	resultBoxs_[0] = std::make_unique<ResultBox>();
-	resultBoxs_[0]->Initialize({ winSize.x / 2.0f, 250.0f }, {1258.0f, 44.0f},
+	resultBoxs_[0]->Initialize({ winSize.x / 2.0f, 215.0f }, {1258.0f, 44.0f},
 		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText0.png"));
 
 	resultBoxs_[1] = std::make_unique<ResultBox>();
-	resultBoxs_[1]->Initialize({ winSize.x / 2.0f, 300.0f }, { 1258.0f, 44.0f },
+	resultBoxs_[1]->Initialize({ winSize.x / 2.0f, 265.0f }, { 1258.0f, 44.0f },
 		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText1.png"));
 
 	resultBoxs_[2] = std::make_unique<ResultBox>();
-	resultBoxs_[2]->Initialize({ winSize.x / 2.0f, 350.0f }, { 1258.0f, 44.0f },
+	resultBoxs_[2]->Initialize({ winSize.x / 2.0f, 315.0f }, { 1258.0f, 44.0f },
 		LoadTexture("Sprite/resultBox.png"), LoadTexture("Sprite/resultText2.png"));
 #pragma endregion
 
@@ -79,7 +87,7 @@ void GameOverScene::Initialize()
 	for (size_t i = 0; i < 3; i++)
 	{
 		numbers_[i] = std::make_unique<Number>();
-		numbers_[i]->Initialize(2, { 1550.0f, 250.0f + (i * 50.0f) }, {25.0f, 35.0f}, "Sprite/num25_35");
+		numbers_[i]->Initialize(2, { 1550.0f, 215.0f + (i * 50.0f) }, {25.0f, 35.0f}, "Sprite/num25_35");
 	}
 
 	ResultData* resultData = ResultData::GetInstance();
@@ -109,6 +117,8 @@ void GameOverScene::Update()
 
 void GameOverScene::Draw()
 {
+	ResultData* resultData = ResultData::GetInstance();
+
 	PipelineManager::PreDraw("Sprite");
 
 	resultFrameS_->Draw(resultFrameH_);
@@ -116,6 +126,9 @@ void GameOverScene::Draw()
 
 	for (auto& it : resultBoxs_) it->Draw();
 	for (size_t i = 0; i < numbers_.size();i++) numbers_[i]->Draw(displayNums_[i]);
+
+	if (resultData->isWin_) resultS_->Draw(resultH_[0]);
+	else resultS_->Draw(resultH_[1]);
 }
 
 void GameOverScene::OnCollision()
@@ -154,4 +167,6 @@ void GameOverScene::MatUpdate()
 
 	for (auto& it : resultBoxs_) it->MatUpdate();
 	for (auto& it : numbers_) it->MatUpdate();
+
+	resultS_->MatUpdate();
 }

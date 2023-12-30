@@ -57,6 +57,13 @@ private:
 	float elapsedTime_ = 0.0f;
 	uint16_t killEnemy_ = 0;
 	uint16_t breakCore_ = 0;
+
+	// 一回に生成するパーティクルの数
+	const uint16_t particleNum_ = 10;
+	const uint16_t particleLife_ = 60;
+	const float startParticleScale_ = 0.5f;
+	const float endParticleScale_ = 0.0f;
+	Vector2 particleRnd_ = { -0.5f, 0.5f };
 #pragma endregion
 
 #pragma region メンバ関数

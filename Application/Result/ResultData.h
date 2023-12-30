@@ -8,6 +8,7 @@ public:
 	uint16_t elapsedTime_ = 0;
 	uint16_t killEnemy_ = 0;
 	uint16_t breakCore_ = 0;
+	bool isWin_ = false;
 #pragma endregion
 
 #pragma region メンバ関数

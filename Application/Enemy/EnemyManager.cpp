@@ -164,6 +164,7 @@ void EnemyManager::CheckSceneChange()
 		resultData_->elapsedTime_ = (uint16_t)elapsedTime_;
 		resultData_->killEnemy_ = killEnemy_;
 		resultData_->breakCore_ = breakCore_;
+		resultData_->isWin_ = true;
 	}
 }
 
@@ -210,19 +211,21 @@ void EnemyManager::Debug()
 
 void EnemyManager::AddDeathParticle(const Vector3& inPos)
 {
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < particleNum_; i++)
 	{
 		Vector3 offset;
-		offset.x = Util::GetRandomFloat(-0.5f, 0.5f);
-		offset.y = Util::GetRandomFloat(-0.5f, 0.5f);
-		offset.z = Util::GetRandomFloat(-0.5f, 0.5f);
+		offset.x = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
+		offset.y = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
+		offset.z = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
 
 		Vector3 velocity = { 0.0f, 1.0f, 0.0f };
-		velocity.x = Util::GetRandomFloat(-0.5f, 0.5f);
-		velocity.z = Util::GetRandomFloat(-0.5f, 0.5f);
+		velocity.x = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
+		velocity.z = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
 		velocity.normalize();
-		velocity /= 60.0f;
-		particle_->Add(60, inPos + offset, velocity, { -velocity.x / 60.0f, -velocity.y / 60.0f, -velocity.z / 60.0f }, 0.5f, 0.0f);
+		velocity /= (float)particleLife_;
+		particle_->Add(particleLife_, inPos + offset, velocity,
+			{ -velocity.x / particleLife_, -velocity.y / particleLife_, -velocity.z / particleLife_ },
+			startParticleScale_, endParticleScale_);
 	}
 }
 
