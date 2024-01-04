@@ -28,6 +28,13 @@ class Stage
 		std::vector<ObjectData> objects;
 	};
 
+	enum class SECTIONROTA {
+		ROTA_0 = 0,
+		ROTA_90 = 90,
+		ROTA_180 = 180,
+		ROTA_270 = 270,
+	};
+
 #pragma region メンバ変数
 private:
 	// 衝突判定管理クラスインスタンス
@@ -39,6 +46,7 @@ private:
 
 	// オブジェクト
 	std::unique_ptr<Instancing3D> objects_ = nullptr;
+	std::unique_ptr<Model> model_ = nullptr;
 
 	// コライダー
 	std::forward_list<std::unique_ptr<AABBCollider>> colliders_ = {};
@@ -67,6 +75,10 @@ public:
 
 	// ステージ情報読み込み
 	void Load(std::string fileName, bool isCol = true, bool isCore = false);
+
+	void CreateStage();
+
+	void LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota);
 #pragma endregion
 
 #pragma region セッター関数
