@@ -37,9 +37,6 @@ private:
 	// エネミー
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
 
-	// ナビメッシュ
-	std::unique_ptr<NavMesh> navMesh_ = nullptr;
-
 	// コア
 	std::deque<std::unique_ptr<EnemyCore>> enemyCores_ = {};
 
@@ -108,5 +105,6 @@ private:
 public:
 	// プレイヤーを設定
 	void SetPlayer(Player* player);
+	void SetCellsCenter(std::vector<Vector3> inCellsCenter) { cellsCenter_ = inCellsCenter; }
 #pragma endregion
 };

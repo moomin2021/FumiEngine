@@ -36,14 +36,6 @@ void EnemyManager::Initialize()
 	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
 #pragma endregion
 
-#pragma region ナビメッシュ
-	navMesh_ = std::make_unique<NavMesh>();
-	navMesh_->Initialize("navMesh");
-	navMesh_->SetIsDraw(false);
-	Zombie::SetNavMesh(navMesh_.get());
-	cellsCenter_ = navMesh_->GetCellsCenter();
-#pragma endregion
-
 #pragma region パーティクル
 	particle_ = std::make_unique<ParticleEmitter>();
 	deathParticleH_ = LoadTexture("Sprite/deathParticle.png");
@@ -104,7 +96,6 @@ void EnemyManager::Draw()
 	PipelineManager::PreDraw("Object3D");
 	for (auto& it : zombies_) it->Draw();
 	for (auto& it : enemyCores_) it->Draw();
-	navMesh_->Draw();
 
 	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 	particle_->Draw(deathParticleH_);
@@ -113,8 +104,6 @@ void EnemyManager::Draw()
 void EnemyManager::MatUpdate()
 {
 	for (auto& it : zombies_) it->MatUpdate();
-
-	navMesh_->MatUpdate();
 
 	for (auto& it : enemyCores_) it->MatUpdate();
 
@@ -149,7 +138,7 @@ void EnemyManager::AddCore(const Vector3& inPos)
 
 	enemyGenerators_.emplace_back();
 	enemyGenerators_.back().SetOffset(inPos);
-	enemyGenerators_.back().AddSpawnNum(5);
+	enemyGenerators_.back().AddSpawnNum(1);
 }
 
 void EnemyManager::CheckSceneChange()
@@ -195,8 +184,6 @@ void EnemyManager::Debug()
 		static bool isLinkLineDraw = false;
 		ImGui::Checkbox("DrawMesh", &isMeshDraw);
 		ImGui::Checkbox("DrawLinkLine", &isLinkLineDraw);
-		navMesh_->SetIsDraw(isMeshDraw);
-		navMesh_->SetIsLinkLineDraw(isLinkLineDraw);
 
 		if (ImGui::Button("CreateRoute"))
 		{

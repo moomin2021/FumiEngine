@@ -136,6 +136,18 @@ void NavMeshPath::AddWayPoint(const NavWayPoint& inNavWayPoint)
 	wayPoints_.emplace_back(NavWayPoint(inNavWayPoint.location, inNavWayPoint.cellIndex, inNavWayPoint.arrivalEdge));
 }
 
+std::vector<Vector3> NavMeshPath::GetWayPoints()
+{
+	std::vector<Vector3> result = {};
+
+	for (auto& it : wayPoints_)
+	{
+		result.emplace_back(it.location);
+	}
+
+	return result;
+}
+
 NavMeshPath::PointSide NavMeshPath::ClassifyPoint(const Vector3& a, const Vector3& b, const Vector3& c)
 {
 	Vector2 ab = Vector2(b.x, b.z) - Vector2(a.x, a.z);

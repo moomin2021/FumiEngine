@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "CollisionAttribute.h"
 #include "PipelineManager.h"
+#include "Zombie.h"
 
 #include <iostream>
 #include <fstream>
@@ -33,6 +34,11 @@ void Stage::Initialize()
 	oSkydome_ = std::make_unique<Object3D>(mSkydome_.get());
 	oSkydome_->SetScale({ 1000.0f, 1000.0f, 1000.0f });
 #pragma endregion
+
+	// ナビメッシュ
+	navMesh_ = std::make_unique<NavMesh>();
+	navMesh_->SetIsLinkLineDraw(true);
+	Zombie::SetNavMesh(navMesh_.get());
 }
 
 void Stage::MatUpdate()
@@ -42,6 +48,9 @@ void Stage::MatUpdate()
 
 	// スカイドーム
 	oSkydome_->MatUpdate();
+
+	// ナビゲーションメッシュ
+	navMesh_->MatUpdate();
 }
 
 void Stage::Draw()
@@ -53,6 +62,8 @@ void Stage::Draw()
 	PipelineManager::PreDraw("Object3D");
 	// スカイドーム
 	oSkydome_->Draw();
+
+	navMesh_->Draw();
 }
 
 void Stage::Load(std::string fileName, bool isCol, bool isCore)
@@ -173,16 +184,18 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 
 void Stage::CreateStage()
 {
-	LoadSection("Resources/section/startSection.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/section/2WaySection.json", { -13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_270);
-	LoadSection("Resources/section/4WaySection.json", { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/section/2WaySection.json", { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/section/3WaySection.json", { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
-	LoadSection("Resources/section/4WaySection.json", { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/section/3WaySection.json", { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
-	LoadSection("Resources/section/2WaySection.json", { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection("Resources/section/3WaySection.json", { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection("Resources/section/2WaySection.json", { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+	LoadSection("Resources/StageJson/startNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
+	LoadSection("Resources/StageJson/2Way_0.json", { -13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_270);
+	LoadSection("Resources/StageJson/4Way_0.json", { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+	LoadSection("Resources/StageJson/2Way_0.json", { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+	LoadSection("Resources/StageJson/3Way_0.json", { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
+	LoadSection("Resources/StageJson/4Way_0.json", { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
+	LoadSection("Resources/StageJson/3Way_0.json", { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
+	LoadSection("Resources/StageJson/2Way_0.json", { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+	LoadSection("Resources/StageJson/3Way_0.json", { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+	LoadSection("Resources/StageJson/2Way_0.json", { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+	navMesh_->LinkCell();
+	enemyMgr_->SetCellsCenter(navMesh_->GetCellsCenter());
 }
 
 void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota)
@@ -288,6 +301,11 @@ void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA
 		if (objectData.className == "enemyCore")
 		{
 			enemyMgr_->AddCore(offset + objectData.translation);
+		}
+
+		else if (objectData.className == "Nav")
+		{
+			navMesh_->AddVertex(objectData.fileName, offset, (float)sectionRota);
 		}
 
 		else if (objectData.className == "collision")

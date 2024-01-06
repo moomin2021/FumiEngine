@@ -30,18 +30,18 @@ void NavMesh::Initialize(const std::string& fileName)
 
 void NavMesh::MatUpdate()
 {
-	object_->MatUpdate();
-	linkLines_->MatUpdate();
+	if (object_) object_->MatUpdate();
+	if (linkLines_) linkLines_->MatUpdate();
 }
 
 void NavMesh::Draw()
 {
-	object_->Draw();
+	if (object_) object_->Draw();
 
 	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 	if (isLinkLineDraw_)
 	{
-		linkLines_->Draw();
+		if (linkLines_) linkLines_->Draw();
 	}
 	PipelineManager::PreDraw("Object3D");
 }
@@ -70,7 +70,7 @@ bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::
 	const int32_t loopLimit = 1000000;
 
 	// openリストの中身がある間はループ
-	while (open.size() || loopCount < loopLimit)
+	while (open.size() > 0 && loopCount < loopLimit)
 	{
 		loopCount++;
 
@@ -98,6 +98,7 @@ bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::
 
 			count++;
 		}
+
 		open.erase(std::next(open.begin(), deleteIndex));
 
 		// 取り出したノードがスタート地点と同じセルだったらパス検索官僚
@@ -177,6 +178,7 @@ bool NavMesh::RouteSearch(const Vector3& startVec, const Vector3& goalVec, std::
 	navMeshPath->AddWayPoint(goalVec);
 
 	std::vector<Vector3> result = navMeshPath->GetStraightPath(0.3f);
+	//std::vector<Vector3> result = navMeshPath->GetWayPoints();
 	
 	//std::vector<NavMeshPath::NavWayPoint> navWayPoints = navMeshPath->GetWayPoints();
 	//std::vector<Vector3> result = {};
@@ -202,6 +204,43 @@ int32_t NavMesh::CheckRay2Cell(const Ray& ray)
 	}
 
 	return ID_NONE;
+}
+
+void NavMesh::AddVertex(std::string fileName, const Vector3& offset, float rota)
+{
+	if (linkLines_ == nullptr)
+	{
+		linkLines_ = std::make_unique<Line3D>();
+		linkLines_->Initialize(1000);
+		linkLines_->SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+	}
+
+	// モデルの読み込み
+	std::unique_ptr<Model> model = std::make_unique<Model>(fileName);
+
+	// モデルからメッシュを読み込む
+	Mesh mesh = model->GetMesh()[0];
+
+	// 頂点データ
+	std::vector<Mesh::Vertex> vertices = mesh.GetVertex();
+
+	for (uint32_t i = 0; i < vertices.size() / 3; i++)
+	{
+		for (uint16_t j = 0; j < 3; j++)
+		{
+			// 平行移動
+			float sin = sinf(Util::Degree2Radian(rota));
+			float cos = cosf(Util::Degree2Radian(rota));
+			float oldX = vertices[i * 3 + j].pos.x;
+			float oldY = vertices[i * 3 + j].pos.z;
+			vertices[i * 3 + j].pos.x = cos * oldX - sin * oldY;
+			vertices[i * 3 + j].pos.z = sin * oldX + cos * oldY;
+		}
+
+		cells_.emplace_back(std::make_unique<NavCell>(
+			(uint32_t)cells_.size(), vertices[i * 3].pos + offset, vertices[i * 3 + 1].pos + offset, vertices[i * 3 + 2].pos + offset));
+		cellsCenter_.emplace_back(cells_.back()->GetCenter());
+	}
 }
 
 void NavMesh::CreateCell()
@@ -247,7 +286,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_AB, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
-				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
+				if (linkLines_) linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 
 			// itAセルは辺BC側にリンクしているセルがない かつ
@@ -257,7 +296,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_BC, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
-				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
+				if (linkLines_) linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 
 			// itAセルは辺CA側にリンクしているセルがない かつ
@@ -267,7 +306,7 @@ void NavMesh::LinkCell()
 			{
 				itA->SetLinkID(CellSide::SIDE_CA, itB->GetCellID());
 				itB->SetLinkID(side, itA->GetCellID());
-				linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
+				if (linkLines_) linkLines_->AddPoint(itA->GetCenter() + addVec, itB->GetCenter() + addVec);
 			}
 		}
 	}

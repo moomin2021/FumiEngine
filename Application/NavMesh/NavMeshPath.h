@@ -39,6 +39,7 @@ public:
 	void AddWayPoint(NavCell* pCell, NavCell* pParent);
 	void AddWayPoint(const NavWayPoint& inNavWayPoint);
 	std::vector<NavWayPoint> GetWayPoints() const { return wayPoints_; }
+	std::vector<Vector3> GetWayPoints();
 	void Clear() { wayPoints_.clear(); }
 
 private:

@@ -6,6 +6,7 @@
 #include "Instancing3D.h"
 
 #include "EnemyManager.h"
+#include "NavMesh.h"
 
 #include <unordered_map>
 #include <string>
@@ -54,6 +55,9 @@ private:
 	// スカイドーム
 	std::unique_ptr<Model> mSkydome_	= nullptr;// モデル
 	std::unique_ptr<Object3D> oSkydome_	= nullptr;// オブジェクト
+
+	// ナビメッシュ
+	std::unique_ptr<NavMesh> navMesh_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

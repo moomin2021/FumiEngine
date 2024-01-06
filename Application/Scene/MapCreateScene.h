@@ -26,8 +26,11 @@ private:
 	std::unique_ptr<Model> mSkydome_ = nullptr;// モデル
 	std::unique_ptr<Object3D> oSkydome_ = nullptr;// オブジェクト
 
-	// プレイヤー
-	std::unique_ptr<MapCreatePlayer> player_ = nullptr;
+	// モデル
+	std::unique_ptr<Model> model_ = nullptr;
+
+	// オブジェクト
+	std::unique_ptr<Object3D> object_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数

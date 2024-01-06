@@ -49,12 +49,13 @@ public:
 	// レイがどのセルの上にいるのかを返す
 	int32_t CheckRay2Cell(const Ray& ray);
 
-private:
-	// セルを作成
-	void CreateCell();
+	void AddVertex(std::string fileName, const Vector3& offset, float rota);
 
 	// セルをリンク
 	void LinkCell();
+private:
+	// セルを作成
+	void CreateCell();
 
 	// 指定したIDのセルのポインタを取得
 	NavCell* GetNavCell(int32_t cellID);
