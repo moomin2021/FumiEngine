@@ -72,11 +72,11 @@ private:
 	const float maxDiffusivity_ = 5.0f;// 最大拡散
 	float nowDiffusivity_ = 5.0f;// 現在の拡散
 	float adsRate_ = 0.0f;// ADS率(1.0で完全にADSしている状態になる)
-	float adsRateIncrDecValue_ = 0.1f;// ADS率の増減値
+	float adsRateIncrDecValue_ = 0.2f;// ADS率の増減値
 	bool isAds_ = false;// ADSしているかフラグ
 	const float maxRecoilEyeAngle_ = 10.0f;// 最大リコイル角度
 	float nowRecoilEyeAngle_ = 0.0f;// リコイル角度
-	float decRecoilEyeAngle_ = 0.5f;// リコイル角度の減少値
+	float decRecoilEyeAngle_ = 1.0f;// リコイル角度の減少値
 	Vector3 hitAngle_ = { 0.3f, 1.0f, 0.0f };
 	Vector3 up_ = { 0.0f, 1.0f, 0.0f };
 
@@ -97,9 +97,9 @@ private:
 	float jumpSpd_ = 0.5f;// ジャンプ速度
 
 	// 射撃関連
-	uint8_t maxBullet_ = 99;// 最大弾数
-	uint8_t nowBullet_ = 99;// 現在弾数
-	float shotInterval_ = 0.2f;// 射撃の間隔
+	uint8_t maxBullet_ = 6;// 最大弾数
+	uint8_t nowBullet_ = 6;// 現在弾数
+	float shotInterval_ = 0.15f;// 射撃の間隔
 	uint64_t shotTime_ = 0;// 最後に撃った時間
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間
