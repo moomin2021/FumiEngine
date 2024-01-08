@@ -184,6 +184,7 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 
 void Stage::CreateStage()
 {
+	//LoadSection("Resources/StageJson/testNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
 	LoadSection("Resources/StageJson/startNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
 	LoadSection("Resources/StageJson/2Way_0.json", { -13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_270);
 	LoadSection("Resources/StageJson/4Way_0.json", { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);

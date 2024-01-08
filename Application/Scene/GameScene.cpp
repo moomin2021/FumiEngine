@@ -10,7 +10,8 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() { 
+GameScene::~GameScene()
+{
 	lightGroup_->RemoveDirLight(dirLight_.get());
 }
 
@@ -78,8 +79,7 @@ void GameScene::Initialize()
 #pragma endregion
 
 	// ステージ読み込み
-	stage_->Load("Resources/StageJson/stage1.json", false, true);
-	stage_->Load("Resources/StageJson/stageCol.json", true, false);
+	stage_->CreateStage();
 
 #pragma region ゲームUI
 	sGameUI_ = std::make_unique<Sprite>();
@@ -214,7 +214,8 @@ void GameScene::MatUpdate()
 	stage_->MatUpdate();
 
 	// 3軸を示すオブジェクト
-	for (auto& it : oAxis_) {
+	for (auto& it : oAxis_)
+	{
 		it->MatUpdate();
 	}
 

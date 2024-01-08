@@ -64,7 +64,12 @@ std::vector<Vector3> NavMeshPath::GetStraightPath(float cornerOffSetRatio)
 			// NextRight が PortalLeft を追い越してしまった
 			else
 			{
-				portalLeft = (1 - cornerOffSetRatio) * portalLeft + (cornerOffSetRatio * portalEdges[leftIndex].right);
+				Vector3 vec0 = portalEdges[leftIndex].right - portalLeft;
+				Vector3 vec1 = portalEdges[leftIndex - 1].right - portalLeft;
+				portalLeft += vec0.normalize() * cornerOffSetRatio;
+				portalLeft += vec1.normalize() * cornerOffSetRatio;
+				//portalLeft = (1 - cornerOffSetRatio) * portalLeft + (cornerOffSetRatio * portalEdges[leftIndex].right);
+				//portalLeft = portalLeft + (portalEdges[leftIndex].right);
 				result.emplace_back(portalLeft);
 
 				// 左の点からポータルの頂点を作成
@@ -95,7 +100,12 @@ std::vector<Vector3> NavMeshPath::GetStraightPath(float cornerOffSetRatio)
 			}
 			else
 			{
-				portalRight = (1 - cornerOffSetRatio) * portalRight + (cornerOffSetRatio * portalEdges[rightIndex].left);
+				Vector3 vec0 = portalEdges[rightIndex].left - portalRight;
+				Vector3 vec1 = portalEdges[rightIndex - 1].left - portalRight;
+				portalRight += vec0.normalize() * cornerOffSetRatio;
+				portalRight += vec1.normalize() * cornerOffSetRatio;
+				//portalRight = (1 - cornerOffSetRatio) * portalRight + (cornerOffSetRatio * portalEdges[rightIndex].left);
+				//portalRight = portalRight + (portalEdges[rightIndex].left);
 				result.emplace_back(portalRight);
 
 				portalApex = portalRight;
@@ -114,6 +124,11 @@ std::vector<Vector3> NavMeshPath::GetStraightPath(float cornerOffSetRatio)
 	if (result.size() == 0 || result[result.size() - 1] != portalEdges[portalEdges.size() - 1].left)
 	{
 		result.emplace_back(wayPoints_[wayPoints_.size() - 1].location);
+	}
+
+	if (result.size() > 2)
+	{
+		result.erase(result.begin() + result.size() - 2);
 	}
 
 	std::vector<Vector3> outputVec = result;

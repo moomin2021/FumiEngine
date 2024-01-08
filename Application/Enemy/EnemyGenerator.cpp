@@ -26,5 +26,6 @@ void EnemyGenerator::Update()
 		spawnPos_.x = (Util::GetRandomFloat(minSpawn_, maxSpawn_) * (Util::GetRandomInt(0, 1) * 2 - 1)  ) + offset_.x;
 		spawnPos_.y = offset_.y;
 		spawnPos_.z = (Util::GetRandomFloat(minSpawn_, maxSpawn_) * (Util::GetRandomInt(0, 1) * 2 - 1)) + offset_.z;
+		spawnPos_ = offset_;
 	}
 }
