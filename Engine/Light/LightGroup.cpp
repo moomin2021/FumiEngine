@@ -115,7 +115,7 @@ void LightGroup::TransferConstBuffer() {
 		{// 始
 			std::forward_list<PointLight*>::iterator itPointLight = pointLights_.begin();// イテレーター
 			size_t index = 0;// インデックス
-			while (index < POINT_LIGHT_LIMIT && *itPointLight != nullptr)
+			while (index < POINT_LIGHT_LIMIT)
 			{
 				if (*itPointLight == nullptr)
 				{
