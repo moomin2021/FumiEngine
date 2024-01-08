@@ -1,9 +1,9 @@
 #include "TestScene.h"
-#include "CollisionManager.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
 #include "PipelineManager.h"
+#include "CollisionAttribute.h"
 
 #include <set>
 #include <imgui_impl_DX12.h>
@@ -25,9 +25,15 @@ void TestScene::Initialize()
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
+	colMgr_ = CollisionManager::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
-	EnemyCore::SetLightGroup(lightGroup_);
 	Instancing3D::SetLightGroup(lightGroup_);
+#pragma endregion
+
+#pragma region カメラ
+	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 5.0f, -10.0f });
+	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ライトグループ
@@ -37,188 +43,84 @@ void TestScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region ステージクラス
-	stage_ = std::make_unique<Stage>();
-	stage_->Initialize();
-#pragma endregion
-
-#pragma region プレイヤー
-	player_ = std::make_unique<Player>();
-	player_->Initialize({ 0.0f, 5.0f, 0.0f });
-
-	playerUI_ = std::make_unique<PlayerUI>();
-	playerUI_->Initialize();
-	playerUI_->SetPlayer(player_.get());
-#pragma endregion
-
-#pragma region エネミーマネージャー
-	// エネミーマネージャー生成
-	enemyMgr_ = std::make_unique<EnemyManager>();
-	enemyMgr_->Initialize();
-	enemyMgr_->SetPlayer(player_.get());
-	stage_->SetEnemyManager(enemyMgr_.get());
-#pragma endregion
-
 #pragma region モデル
-	mCube_ = std::make_unique<Model>("cube");
+	model_ = std::make_unique<Model>("stoneBrick");
 #pragma endregion
 
-#pragma region 3軸を示すオブジェクト
-	oAxis_.resize(3);
-	oAxis_[0] = std::make_unique<Object3D>(mCube_.get());
-	oAxis_[1] = std::make_unique<Object3D>(mCube_.get());
-	oAxis_[2] = std::make_unique<Object3D>(mCube_.get());
+#pragma region オブジェクト
+	objects_.resize(3);
 
-	oAxis_[0]->SetPosition({ 5.0f, 0.0f, 0.0f });
-	oAxis_[1]->SetPosition({ 0.0f, 5.0f, 0.0f });
-	oAxis_[2]->SetPosition({ 0.0f, 0.0f, 5.0f });
+	objects_[0] = std::make_unique<Object3D>(model_.get());
+	objects_[0]->SetPosition({ -1.1f, 0.0f, 0.0f });
+	objects_[0]->SetScale({ 2.0f, 1.0f, 1.0f });
 
-	oAxis_[0]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-	oAxis_[1]->SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-	oAxis_[2]->SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
+	objects_[1] = std::make_unique<Object3D>(model_.get());
+	objects_[1]->SetPosition({ 1.1f, 0.0f, 0.0f });
+	objects_[1]->SetScale({ 2.0f, 1.0f, 1.0f });
+
+	objects_[2] = std::make_unique<Object3D>(model_.get());
+	objects_[2]->SetPosition({ 0.0f, 0.0f, -2.0f });
 #pragma endregion
 
-	// ステージ読み込み
-	stage_->CreateStage();
+#pragma region コライダー
+	colliders_.resize(3);
 
-#pragma region ゲームUI
-	sGameUI_ = std::make_unique<Sprite>();
-	sGameUI_->SetSize({ 1920.0f, 1080.0f });
+	colliders_[0] = std::make_unique<AABBCollider>();
+	colliders_[0]->SetAttribute(COL_STAGE_OBJ);
+	colliders_[0]->SetOffset({ 0.0f, 0.0f, 0.0f });
+	colliders_[0]->SetRadius({ 1.0f, 0.5f, 0.5f });
+	colliders_[0]->SetObject3D(objects_[0].get());
+	colMgr_->AddBlockCollider(colliders_[0].get());
 
-	gGameUI_ = LoadTexture("Sprite/GameUI.png");
+	colliders_[1] = std::make_unique<AABBCollider>();
+	colliders_[1]->SetAttribute(COL_STAGE_OBJ);
+	colliders_[1]->SetOffset({ 0.0f, 0.0f, 0.0f });
+	colliders_[1]->SetRadius({ 1.0f, 0.5f, 0.5f });
+	colliders_[1]->SetObject3D(objects_[1].get());
+	colMgr_->AddBlockCollider(colliders_[1].get());
 
-	sObjectiveText_ = std::make_unique<Sprite>();
-	sObjectiveText_->SetAnchorPoint({ 0.5f, 0.5f });
-	sObjectiveText_->SetPosition({ 1700.0f, 300.0f });
-	sObjectiveText_->SetSize({ 400.0f, 200.0f });
-
-	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
+	colliders_[2] = std::make_unique<AABBCollider>();
+	colliders_[2]->SetAttribute(COL_STAGE_OBJ);
+	colliders_[2]->SetOffset({ 0.0f, 0.0f, 0.0f });
+	colliders_[2]->SetRadius({ 0.5f, 0.5f, 0.5f });
+	colliders_[2]->SetObject3D(objects_[2].get());
+	colMgr_->AddCollider(colliders_[2].get());
 #pragma endregion
-
-	deltaTime_.Initialize();
 }
 
 void TestScene::Update()
 {
-	deltaTime_.Update();
+	camera_->Update();
 
-	// プレイヤー
-	player_->Update();
-	playerUI_->Update();
+	Vector3 pos = objects_[2]->GetPosition();
 
-	// エネミーマネージャー
-	enemyMgr_->Update();
+	pos.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.1f;
+	pos.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.1f;
 
-	// 衝突時処理
+	objects_[2]->SetPosition(pos);
+
 	OnCollision();
-
-	// 行列更新処理
 	MatUpdate();
-
-	// デバック
-	Debug();
-
-	enemyMgr_->CheckSceneChange();
-	player_->CheckSceneChange();
 }
 
 void TestScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
-
-	// ステージクラス
-	stage_->Draw();
-
-	// プレイヤー
-	player_->Draw();
-
-	// エネミーマネージャー
-	enemyMgr_->Draw();
-
-	PipelineManager::PreDraw("Object3D");
-
-	// 3軸を示すオブジェクト
-	if (isDebug_)
-	{
-		for (auto& it : oAxis_)
-		{
-			it->Draw();
-		}
-	}
-
-	PipelineManager::PreDraw("Sprite");
-
-	// プレイヤー
-	playerUI_->Draw();
-
-	sGameUI_->Draw(gGameUI_);
-
-	sObjectiveText_->Draw(gObjectiveText_);
+	for (auto& it : objects_) it->Draw();
 }
 
 void TestScene::Debug()
 {
-	if (key_->TriggerKey(DIK_0))
-	{
-		if (isDebug_)
-		{
-			isDebug_ = false;
-			WinAPI::GetInstance()->DisplayCursor(false);
-			WinAPI::GetInstance()->SetClipCursor(true);
-		}
 
-		else
-		{
-			isDebug_ = true;
-			WinAPI::GetInstance()->DisplayCursor(true);
-			WinAPI::GetInstance()->SetClipCursor(false);
-		}
-	}
-
-	if (isDebug_ == false) return;
-
-	ImGui::Begin("DeltaTime");
-	ImGui::Text("deltaTime = %f", deltaTime_.GetDeltaTime());
-	ImGui::End();
-
-	player_->Debug();
-
-	// エネミーマネージャー
-	enemyMgr_->Debug();
 }
 
 void TestScene::OnCollision()
 {
 	// 衝突判定をとる
 	CollisionManager::GetInstance()->CheckAllCollision();
-
-	// プレイヤー
-	player_->OnCollision();
-
-	playerUI_->OnCollision();
-
-	// エネミーマネージャー
-	enemyMgr_->OnCollision();
 }
 
 void TestScene::MatUpdate()
 {
-	// プレイヤー
-	player_->MatUpdate();
-	playerUI_->MatUpdate();
-
-	// エネミーマネージャー
-	enemyMgr_->MatUpdate();
-
-	// ステージクラス
-	stage_->MatUpdate();
-
-	// 3軸を示すオブジェクト
-	for (auto& it : oAxis_)
-	{
-		it->MatUpdate();
-	}
-
-	sGameUI_->MatUpdate();
-	sObjectiveText_->MatUpdate();
+	for (auto& it : objects_) it->MatUpdate();
 }
