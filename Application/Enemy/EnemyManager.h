@@ -10,6 +10,7 @@
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 #include "Zombie.h"
+#include "Magician.h"
 #include "ParticleEmitter.h"
 #include "NavMesh.h"
 #include "EnemyGenerator.h"
@@ -30,12 +31,14 @@ private:
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
 	std::unique_ptr<Model> mZombie_ = nullptr;
+	std::unique_ptr<Model> mMagician_ = nullptr;
 	std::unique_ptr<Model> coreM_ = nullptr;
 	std::unique_ptr<Model> coreFrameM_ = nullptr;
 	std::unique_ptr<Model> coreStandM_ = nullptr;
 
 	// エネミー
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
+	std::deque<std::unique_ptr<Magician>> magicians_ = {};
 
 	// コア
 	std::deque<std::unique_ptr<EnemyCore>> enemyCores_ = {};

@@ -2,6 +2,7 @@
 #include "CollisionAttribute.h"
 #include "PipelineManager.h"
 #include "Zombie.h"
+#include "Magician.h"
 
 #include <iostream>
 #include <fstream>
@@ -39,6 +40,7 @@ void Stage::Initialize()
 	navMesh_ = std::make_unique<NavMesh>();
 	navMesh_->SetIsLinkLineDraw(true);
 	Zombie::SetNavMesh(navMesh_.get());
+	Magician::SetNavMesh(navMesh_.get());
 }
 
 void Stage::MatUpdate()

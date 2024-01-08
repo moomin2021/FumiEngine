@@ -21,6 +21,7 @@ void EnemyManager::Initialize()
 	colMgr_ = CollisionManager::GetInstance();
 
 	Zombie::SetCollisionManager(colMgr_);
+	Magician::SetCollisionManager(colMgr_);
 	EnemyCore::SetCollisionManager(colMgr_);
 #pragma endregion
 
@@ -28,11 +29,13 @@ void EnemyManager::Initialize()
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("stoneGolem");
 	mZombie_ = std::make_unique<Model>("zombie");
+	mMagician_ = std::make_unique<Model>("magician");
 	coreM_ = std::make_unique<Model>("core");
 	coreFrameM_ = std::make_unique<Model>("coreFrame");
 	coreStandM_ = std::make_unique<Model>("coreStand");
 
 	Zombie::SetModel(mZombie_.get());
+	Magician::SetModel(mMagician_.get());
 	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
 #pragma endregion
 
@@ -75,6 +78,22 @@ void EnemyManager::Update()
 		else ++it;
 	}
 
+	for (auto it = magicians_.begin(); it != magicians_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			AddDeathParticle((*it)->GetPosition());
+			it = magicians_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+
 	// コア
 	for (auto it = enemyCores_.begin(); it != enemyCores_.end();)
 	{
@@ -95,6 +114,7 @@ void EnemyManager::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 	for (auto& it : zombies_) it->Draw();
+	for (auto& it : magicians_) it->Draw();
 	for (auto& it : enemyCores_) it->Draw();
 
 	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -104,7 +124,7 @@ void EnemyManager::Draw()
 void EnemyManager::MatUpdate()
 {
 	for (auto& it : zombies_) it->MatUpdate();
-
+	for (auto& it : magicians_) it->MatUpdate();
 	for (auto& it : enemyCores_) it->MatUpdate();
 
 	particle_->Update(BILLBOARD::Y);
@@ -113,18 +133,20 @@ void EnemyManager::MatUpdate()
 void EnemyManager::OnCollision()
 {
 	for (auto& it : zombies_) it->OnCollision();
-
+	for (auto& it : magicians_) it->OnCollision();
 	for (auto& it : enemyCores_) it->OnCollision();
 }
 
 void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 {
 	// 敵の生成
-	std::unique_ptr<Zombie> newZombie = std::make_unique<Zombie>();
-	newZombie->Initialize(pos);
+	//std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
+	std::unique_ptr<Magician> newEnemy = std::make_unique<Magician>();
+	newEnemy->Initialize(pos);
 
 	// エネミー配列に追加
-	zombies_.emplace_back(std::move(newZombie));
+	//zombies_.emplace_back(std::move(newEnemy));
+	magicians_.emplace_back(std::move(newEnemy));
 }
 
 void EnemyManager::AddCore(const Vector3& inPos)
@@ -219,4 +241,5 @@ void EnemyManager::AddDeathParticle(const Vector3& inPos)
 void EnemyManager::SetPlayer(Player* player)
 {
 	Zombie::SetPlayer(player);
+	Magician::SetPlayer(player);
 }
