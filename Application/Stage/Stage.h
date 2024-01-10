@@ -36,6 +36,12 @@ class Stage
 		ROTA_270 = 270,
 	};
 
+	enum class SECTION : uint16_t {
+		WAY2 = 2,
+		WAY3 = 3,
+		WAY4 = 4,
+	};
+
 #pragma region メンバ変数
 private:
 	// 衝突判定管理クラスインスタンス
@@ -58,6 +64,11 @@ private:
 
 	// ナビメッシュ
 	std::unique_ptr<NavMesh> navMesh_ = nullptr;
+
+	// 各区画のバリエーション数
+	const uint16_t max2Way_ = 1;
+	const uint16_t max3Way_ = 1;
+	const uint16_t max4Way_ = 2;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -83,6 +94,8 @@ public:
 	void CreateStage();
 
 	void LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota);
+
+	std::string RandomSection(SECTION selectSection);
 #pragma endregion
 
 #pragma region セッター関数

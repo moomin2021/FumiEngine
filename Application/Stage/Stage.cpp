@@ -188,15 +188,18 @@ void Stage::CreateStage()
 {
 	//LoadSection("Resources/StageJson/testNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
 	LoadSection("Resources/StageJson/startNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/StageJson/2Way_0.json", { -13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_270);
-	LoadSection("Resources/StageJson/4Way_0.json", { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/StageJson/2Way_0.json", { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/StageJson/3Way_0.json", { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
-	LoadSection("Resources/StageJson/4Way_0.json", { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/StageJson/3Way_0.json", { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
-	LoadSection("Resources/StageJson/2Way_0.json", { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection("Resources/StageJson/3Way_0.json", { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection("Resources/StageJson/2Way_0.json", { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+	LoadSection(RandomSection(SECTION::WAY2), {-13.0f, 0.0f, 13.0f}, SECTIONROTA::ROTA_270);
+	LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+	LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+	LoadSection(RandomSection(SECTION::WAY3), { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
+	LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
+	LoadSection(RandomSection(SECTION::WAY3), { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
+	LoadSection(RandomSection(SECTION::WAY2), { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+	LoadSection(RandomSection(SECTION::WAY3), { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+	LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+
+
+
 	navMesh_->LinkCell();
 	enemyMgr_->SetCellsCenter(navMesh_->GetCellsCenter());
 }
@@ -329,4 +332,13 @@ void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA
 			objects_->AddTransform(offset + objectData.translation);
 		}
 	}
+}
+
+std::string Stage::RandomSection(SECTION selectSection)
+{
+	uint16_t selectNum = 0;
+	if (selectSection == SECTION::WAY2) selectNum = Util::GetRandomInt(1, max2Way_);
+	if (selectSection == SECTION::WAY3) selectNum = Util::GetRandomInt(1, max3Way_);
+	if (selectSection == SECTION::WAY4) selectNum = Util::GetRandomInt(1, max4Way_);
+	return "Resources/StageJson/" + std::to_string((uint16_t)selectSection) + "Way_" + std::to_string(selectNum - 1) + ".json";
 }
