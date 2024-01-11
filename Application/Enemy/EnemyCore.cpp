@@ -5,6 +5,8 @@
 
 LightGroup* EnemyCore::sLightGroup_ = nullptr;
 CollisionManager* EnemyCore::sColMgr_ = nullptr;
+Player* EnemyCore::sPlayer_ = nullptr;
+
 Model* EnemyCore::sCoreM_ = nullptr;
 Model* EnemyCore::sCoreFrameM_ = nullptr;
 Model* EnemyCore::sCoreStandM_ = nullptr;
@@ -48,7 +50,25 @@ void EnemyCore::Update()
 	pointLight_->SetPosition(lightPosition_);
 	pointLight_->SetRadius(lightRadius_);
 	pointLight_->SetIntensity(lightIntensity_);
-	//pointLight_->SetDecay(dLightDecay_);
+
+	// プレイヤーからコアまでのベクトル
+	Vector3 core2Player = sPlayer_->GetPosition() - coreO_->GetPosition();
+
+	// 前回スポーンしてからの経過時間
+	float elapsed = (Util::GetTimrMSec() - lastSpawnTime_) / 1000.0f;
+
+	if (elapsed >= interval_ && core2Player.length() <= 8.0f)
+	{
+		isSpawn_ = true;
+		lastSpawnTime_ = Util::GetTimrMSec();
+		spawnPos_.x = (Util::GetRandomFloat(-3.0f, 3.0f) * (Util::GetRandomInt(0, 1) * 2 - 1)) + coreFrameO_->GetPosition().x;
+		spawnPos_.y = coreFrameO_->GetPosition().y;
+		spawnPos_.z = (Util::GetRandomFloat(-3.0f, 3.0f) * (Util::GetRandomInt(0, 1) * 2 - 1)) + coreFrameO_->GetPosition().z;
+	}
+	else
+	{
+		isSpawn_ = false;
+	}
 }
 
 void EnemyCore::Draw()
@@ -64,6 +84,12 @@ void EnemyCore::OnCollision()
 	{
 		lightIntensity_ = maxLightIntensity_;
 		hp_ -= 1;
+
+		isSpawn_ = true;
+		lastSpawnTime_ = Util::GetTimrMSec();
+		spawnPos_.x = (Util::GetRandomFloat(-3.0f, 3.0f) * (Util::GetRandomInt(0, 1) * 2 - 1)) + coreFrameO_->GetPosition().x;
+		spawnPos_.y = coreFrameO_->GetPosition().y;
+		spawnPos_.z = (Util::GetRandomFloat(-3.0f, 3.0f) * (Util::GetRandomInt(0, 1) * 2 - 1)) + coreFrameO_->GetPosition().z;
 
 		if (hp_ <= 0) isAlive_ = false;
 	}

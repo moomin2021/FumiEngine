@@ -242,7 +242,7 @@ void Magician::Rotate()
 	// エネミーからプレイヤーまでの向きを計算
 	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
 	Vector2 player = { 0.0f, 0.0f };
-	if (route_.size() == 0)
+	if (route_.size() != 0)
 	{
 		player = { route_[0].x, route_[0].z };
 	}

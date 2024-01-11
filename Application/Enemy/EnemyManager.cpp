@@ -100,6 +100,11 @@ void EnemyManager::Update()
 	// コア
 	for (auto it = enemyCores_.begin(); it != enemyCores_.end();)
 	{
+		if ((*it)->GetIsSpawn())
+		{
+			CreateAddEnemy0((*it)->GetSpawnPos());
+		}
+
 		// 敵の更新
 		(*it)->Update();
 
@@ -143,14 +148,26 @@ void EnemyManager::OnCollision()
 
 void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 {
-	// 敵の生成
-	//std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
-	std::unique_ptr<Magician> newEnemy = std::make_unique<Magician>();
-	newEnemy->Initialize(pos);
+	uint16_t rnd = 0;
+	rnd = Util::GetRandomInt(0, 10);
 
-	// エネミー配列に追加
-	//zombies_.emplace_back(std::move(newEnemy));
-	magicians_.emplace_back(std::move(newEnemy));
+	if (rnd <= 7)
+	{
+		std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
+		newEnemy->Initialize(pos);
+
+		zombies_.emplace_back(std::move(newEnemy));
+	}
+
+	else
+	{
+		// 敵の生成
+		std::unique_ptr<Magician> newEnemy = std::make_unique<Magician>();
+		newEnemy->Initialize(pos);
+
+		// エネミー配列に追加
+		magicians_.emplace_back(std::move(newEnemy));
+	}
 }
 
 void EnemyManager::AddCore(const Vector3& inPos)
@@ -247,4 +264,5 @@ void EnemyManager::SetPlayer(Player* player)
 	Zombie::SetPlayer(player);
 	Magician::SetPlayer(player);
 	MagicianBullet::SetPlayer(player);
+	EnemyCore::SetPlayer(player);
 }
