@@ -54,6 +54,9 @@ void Magician::Initialize(const Vector3& inPos)
 
 void Magician::Update()
 {
+	// 弾の更新処理
+	BulletUpdate();
+
 	// 状態別更新処理
 	(this->*stateTable[(size_t)state_])();
 
@@ -63,9 +66,9 @@ void Magician::Update()
 	// 回転処理
 	Rotate();
 
+	// プレイヤーの方向にレイを飛ばす
 	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
 	enemy2Player.normalize();
-
 	cEnemy2Player_->SetDir(enemy2Player);
 
 	if (knockBackSpd_ > 0.0f)
@@ -79,18 +82,20 @@ void Magician::Update()
 
 void Magician::Draw()
 {
+	PipelineManager::PreDraw("Object3D");
 	object_->Draw();
 
-	//PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	//// 線
-	//line_->Draw();
-
-	//PipelineManager::PreDraw("Object3D");
+	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
+	for (auto& it : bullet_) it->Draw();
 }
 
 void Magician::OnCollision()
 {
+	for (auto& it : bullet_) it->OnCollision();
+
+	// 
+	LookingPlayer();
+
 	// 接地判定
 	GroundingJudgment();
 
@@ -132,21 +137,12 @@ void Magician::OnCollision()
 	}
 
 	if (state_ == State::CHASE) return;
-
-	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
-
-	// 敵からプレイヤーまでの距離が指定した視認距離より長かったら処理を飛ばす
-	if (enemy2Player.length() > visualRecognitionDist_) return;
-
-	// 視認距離内にオブジェクトがあったら処理を飛ばす
-	//if (cEnemy2Player_->GetIsHit() && cEnemy2Player_->GetDistance() <= visualRecognitionDist_) return;
-
-	state_ = State::CHASE;
 }
 
 void Magician::MatUpdate()
 {
 	object_->MatUpdate();
+	for (auto& it : bullet_) it->MatUpdate();
 	//line_->MatUpdate();
 }
 
@@ -194,19 +190,41 @@ void Magician::Chase()
 
 void Magician::Magic()
 {
+	// クールタイムが始まってからの経過時間
+	float elapsedTime = (Util::GetTimrMSec() - startCoolDown_) / 1000.0f;
 
+	// 経過時間がクールタイムより短かったら処理を飛ばす
+	if (elapsedTime < coolDown_) return;
+
+	// 自分からプレイヤーまでのベクトル
+	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
+
+	// 新しい弾の生成
+	std::unique_ptr<MagicianBullet> newBullet = std::make_unique<MagicianBullet>();
+	newBullet->Initialize(object_->GetPosition() + Vector3(0.0f, 2.5f, 0.0f), enemy2Player);
+	bullet_.emplace_back(std::move(newBullet));
+	startCoolDown_ = Util::GetTimrMSec();
+
+	// ステータス変更
+	state_ = State::CHASE;
 }
 
 void Magician::GroundingJudgment()
 {
+	// 接地フラグを[OFF]にする
 	isGround_ = false;
-	if (cGroundJudgment_->GetIsHit() && cGroundJudgment_->GetDistance() < 2.0f)
-	{
-		float reject = 2.0f - cGroundJudgment_->GetDistance();
-		Vector3 result = object_->GetPosition() + Vector3{ 0.0f, reject, 0.0f };
-		object_->SetPosition(result);
-		isGround_ = true;
-	}
+	
+	// 接地コライダーが衝突していなかったらこの後の処理を飛ばす
+	if (cGroundJudgment_->GetIsHit() == false) return;
+
+	// 衝突したコライダーまでの長さがゾンビの身長より長かったら処理を飛ばす
+	if (cGroundJudgment_->GetDistance() > height_) return;
+
+	// 押し戻し処理をする
+	float reject = height_ - cGroundJudgment_->GetDistance();
+	Vector3 result = object_->GetPosition() + Vector3{ 0.0f, reject, 0.0f };
+	object_->SetPosition(result);
+	isGround_ = true;
 }
 
 void Magician::Gravity()
@@ -271,14 +289,9 @@ void Magician::CreateNavRoute()
 	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
 	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), route_);
-	//line_->ClearPoint();
 
+	// ルート探索がうまくいってなかったらこの後の処理を飛ばす
 	if (!result) return;
-
-	//for (uint16_t i = 0; i < route_.size() - 1; i++)
-	//{
-	//	line_->AddPoint(route_[i] + addVec, route_[i + 1] + addVec);
-	//}
 
 	route_.erase(route_.begin());
 }
@@ -286,4 +299,35 @@ void Magician::CreateNavRoute()
 void Magician::Jump()
 {
 	if (isGround_) velocity_ = JumpSpd_;
+}
+
+void Magician::LookingPlayer()
+{
+	// 自分からプレイヤーまでのベクトル
+	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
+
+	// プレイヤーと敵の間に障害物があったら処理を飛ばす
+	if (cEnemy2Player_->GetDistance() < enemy2Player.length()) return;
+
+	// プレイヤーが射程範囲外なら処理を飛ばす
+	if (enemy2Player.length() > range_) return;
+	
+	// ステータスの変更
+	state_ = State::MAGIC;
+}
+
+void Magician::BulletUpdate()
+{
+	for (auto it = bullet_.begin(); it != bullet_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			it = bullet_.erase(it);
+		}
+		else ++it;
+	}
 }

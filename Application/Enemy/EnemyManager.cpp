@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "WinAPI.h"
 #include "PipelineManager.h"
+#include "MagicianBullet.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -23,6 +24,7 @@ void EnemyManager::Initialize()
 	Zombie::SetCollisionManager(colMgr_);
 	Magician::SetCollisionManager(colMgr_);
 	EnemyCore::SetCollisionManager(colMgr_);
+	MagicianBullet::SetCollisionManager(colMgr_);
 #pragma endregion
 
 #pragma region モデル
@@ -42,6 +44,7 @@ void EnemyManager::Initialize()
 #pragma region パーティクル
 	particle_ = std::make_unique<ParticleEmitter>();
 	deathParticleH_ = LoadTexture("Sprite/deathParticle.png");
+	MagicianBullet::SetParticleHandle(deathParticleH_);
 #pragma endregion
 
 	deltaTime_.Initialize();
@@ -115,6 +118,7 @@ void EnemyManager::Draw()
 	PipelineManager::PreDraw("Object3D");
 	for (auto& it : zombies_) it->Draw();
 	for (auto& it : magicians_) it->Draw();
+	PipelineManager::PreDraw("Object3D");
 	for (auto& it : enemyCores_) it->Draw();
 
 	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);

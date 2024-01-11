@@ -141,6 +141,7 @@
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp" />
     <ClCompile Include="Engine\Base\Instancing3D.cpp" />
     <ClCompile Include="Application\Enemy\Magician.cpp" />
+    <ClCompile Include="Application\Enemy\MagicianBullet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="Application\Result\Number.h" />
     <ClInclude Include="Application\Result\ResultData.h" />
     <ClInclude Include="Application\Enemy\Magician.h" />
+    <ClInclude Include="Application\Enemy\MagicianBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

@@ -9,8 +9,10 @@
 #include "AABBCollider.h"
 
 #include "Player.h"
+#include "MagicianBullet.h"
 
 #include <memory>
+#include <deque>
 
 class Magician
 {
@@ -38,11 +40,13 @@ private:
 	std::unique_ptr<AABBCollider> cHit_ = nullptr;// プレイヤーの玉などと衝突判定をとる
 
 	// ステート
-	State state_ = State::WAIT;
+	State state_ = State::CHASE;
 
 	// HP
 	int8_t hp_ = 3;
 
+	// ゾンビの高さ
+	float height_ = 2.0f;
 
 	// 生存フラグ
 	bool isAlive_ = true;
@@ -69,12 +73,22 @@ private:
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.05f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
+	float range_ = 3.0f;// 射程
+
+	float coolDown_ = 5.0f;
+	uint64_t startCoolDown_ = 0;
 
 	Vector3 knockBackVec_ = { 0.0f, 0.0f, 0.0f };
 	float knockBackSpd_ = 0.0f;
 
 	float hitReactionDuringTime_ = 0.2f;
 	uint64_t hitTime_ = 0;
+
+	// プレイヤーを視認しているか
+	bool isLookingPlayer_ = false;
+
+	// 魔法
+	std::deque<std::unique_ptr<MagicianBullet>> bullet_ = {};
 
 #pragma endregion
 
@@ -114,6 +128,8 @@ private:
 	void Rotate();// 回転処理
 	void CreateNavRoute();// ルート作成
 	void Jump();
+	void LookingPlayer();// プレイヤーの間に障害物がないか
+	void BulletUpdate();
 #pragma endregion
 
 #pragma region セッター関数
