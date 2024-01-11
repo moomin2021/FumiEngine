@@ -90,6 +90,8 @@ private:
 	// 魔法
 	std::deque<std::unique_ptr<MagicianBullet>> bullet_ = {};
 
+	bool isDebug_ = false;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -113,7 +115,7 @@ public:
 	void MatUpdate();
 
 	// デバック処理
-	void Debug();
+	void Debug(bool isDebug);
 
 private:
 	// 状態別処理

@@ -200,11 +200,13 @@ void EnemyManager::CheckSceneChange()
 	}
 }
 
-void EnemyManager::Debug()
+void EnemyManager::Debug(bool isDebug)
 {
-	for (auto& it : zombies_) it->Debug();
-	for (auto& it : enemyCores_) it->Debug();
+	for (auto& it : zombies_) it->Debug(isDebug);
+	for (auto& it : magicians_) it->Debug(isDebug);
+	if (isDebug) for (auto& it : enemyCores_) it->Debug();
 
+	if (isDebug == false) return;
 	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 
 	ImGui::Begin("Enemy");

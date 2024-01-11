@@ -84,7 +84,7 @@ void Zombie::Draw()
 	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	// 線
-	line_->Draw();
+	if (isDebug_) line_->Draw();
 
 	PipelineManager::PreDraw("Object3D");
 }
@@ -150,8 +150,10 @@ void Zombie::MatUpdate()
 	line_->MatUpdate();
 }
 
-void Zombie::Debug()
+void Zombie::Debug(bool isDebug)
 {
+	isDebug_ = isDebug;
+	if (isDebug == false) return;
 	ImGui::Begin("Enemy");
 	ImGui::Text("angle = %f", angle_);
 	ImGui::End();

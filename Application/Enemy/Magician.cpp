@@ -91,7 +91,7 @@ void Magician::Draw()
 	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	// 線
-	line_->Draw();
+	if (isDebug_) line_->Draw();
 
 	PipelineManager::PreDraw("Object3D");
 }
@@ -153,8 +153,11 @@ void Magician::MatUpdate()
 	line_->MatUpdate();
 }
 
-void Magician::Debug()
+void Magician::Debug(bool isDebug)
 {
+	isDebug_ = isDebug;
+
+	if (isDebug == false) return;
 	ImGui::Begin("Enemy");
 	ImGui::Text("angle = %f", angle_);
 	ImGui::End();
@@ -335,6 +338,9 @@ void Magician::LookingPlayer()
 	// プレイヤーが射程範囲外なら処理を飛ばす
 	if (enemy2Player.length() > range_) return;
 	
+	// ルートを削除
+	route_.clear();
+
 	// ステータスの変更
 	state_ = State::MAGIC;
 }

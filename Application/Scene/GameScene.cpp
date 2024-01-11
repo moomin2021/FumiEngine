@@ -147,6 +147,9 @@ void GameScene::Debug()
 
 	stage_->Debug(isDebug_);
 
+	// エネミーマネージャー
+	enemyMgr_->Debug(isDebug_);
+
 	if (isDebug_ == false) return;
 
 	ImGui::Begin("DeltaTime");
@@ -154,9 +157,6 @@ void GameScene::Debug()
 	ImGui::End();
 
 	player_->Debug();
-
-	// エネミーマネージャー
-	enemyMgr_->Debug();
 }
 
 void GameScene::OnCollision()

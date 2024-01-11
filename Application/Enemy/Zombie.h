@@ -75,6 +75,8 @@ private:
 	float hitReactionDuringTime_ = 0.2f;
 	uint64_t hitTime_ = 0;
 
+	bool isDebug_ = false;
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -98,7 +100,7 @@ public:
 	void MatUpdate();
 
 	// デバック処理
-	void Debug();
+	void Debug(bool isDebug);
 
 private:
 	// 状態別処理

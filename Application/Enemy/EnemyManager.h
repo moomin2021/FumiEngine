@@ -97,7 +97,7 @@ public:
 	void CheckSceneChange();
 
 	// デバック
-	void Debug();
+	void Debug(bool isDebug);
 
 private:
 	// 死亡パーティクルの追加
