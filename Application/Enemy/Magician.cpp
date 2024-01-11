@@ -197,7 +197,8 @@ void Magician::Magic()
 	if (elapsedTime < coolDown_) return;
 
 	// 自分からプレイヤーまでのベクトル
-	Vector3 enemy2Player = sPlayer_->GetPosition() - object_->GetPosition();
+	Vector3 enemy2Player = (sPlayer_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f)) - (object_->GetPosition() + Vector3(0.0f, 2.5f, 0.0f));
+	enemy2Player.normalize();
 
 	// 新しい弾の生成
 	std::unique_ptr<MagicianBullet> newBullet = std::make_unique<MagicianBullet>();
@@ -240,8 +241,16 @@ void Magician::Rotate()
 {
 	// エネミーからプレイヤーまでの向きを計算
 	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
-	if (route_.size() == 0) return;
-	Vector2 player = { route_[0].x, route_[0].z };
+	Vector2 player = { 0.0f, 0.0f };
+	if (route_.size() == 0)
+	{
+		player = { route_[0].x, route_[0].z };
+	}
+
+	else
+	{
+		player = { sPlayer_->GetPosition().x, sPlayer_->GetPosition().z };
+	}
 	Vector2 enemy2Player = player - enemy;
 	enemy2Player.normalize();
 

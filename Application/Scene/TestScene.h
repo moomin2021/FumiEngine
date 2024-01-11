@@ -6,14 +6,7 @@
 #include "DirectionalLight.h"
 #include "Key.h"
 
-#include "Stage.h"
-#include "Player.h"
-#include "PlayerUI.h"
-#include "EnemyManager.h"
-#include "NavMesh.h"
-#include "DeltaTime.h"
-#include "CollisionManager.h"
-#include "AABBCollider.h"
+#include "ParticleEmitter.h"
 
 #include <memory>
 
@@ -24,7 +17,6 @@ private:
 	// インスタンス
 	Key* key_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
-	CollisionManager* colMgr_ = nullptr;
 
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
@@ -32,14 +24,11 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
-
-	// オブジェクト
-	std::vector<std::unique_ptr<Object3D>> objects_ = {};
-
-	// コライダー
-	std::vector<std::unique_ptr<AABBCollider>> colliders_ = {};
+	// パーティクルエミッター
+	std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
+	uint16_t particleHandle_ = 0;
+	Vector3 pos_ = { 0.0f, 0.0f, 0.0f };
+	float speed_ = 0.1f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -68,5 +57,8 @@ private:
 
 	// 行列更新処理
 	void MatUpdate();
+
+	// パーティクルの生成
+	void CreateParticle();
 #pragma endregion
 };

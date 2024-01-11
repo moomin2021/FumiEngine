@@ -5,6 +5,7 @@
 
 CollisionManager* MagicianBullet::sColMgr_ = nullptr;
 uint16_t MagicianBullet::sParticleHandle_ = 0;
+Player* MagicianBullet::sPlayer_ = nullptr;
 
 void MagicianBullet::Initialize(const Vector3& startPos, const Vector3& inDir)
 {
@@ -42,8 +43,12 @@ void MagicianBullet::Draw()
 
 void MagicianBullet::OnCollision()
 {
-	// コライダーがヒットしたら生存フラグを[OFF]にする
-	if (collider_->GetIsHit()) isAlive_ = false;
+	// コライダーがヒットしていなかったら処理を飛ばす
+	if (collider_->GetIsHit() == false) return;
+
+	// 衝突した属性によって処理を変える
+	HitStageObj();
+	HitPlayer();
 }
 
 void MagicianBullet::MatUpdate()
@@ -63,5 +68,23 @@ void MagicianBullet::CreateParticle()
 	pos.x = Util::GetRandomFloat(-radius_, radius_);
 	pos.y = Util::GetRandomFloat(-radius_, radius_);
 	pos.z = Util::GetRandomFloat(-radius_, radius_);
-	particleEmitter_->Add(particleLife_, pos, -dir_ * 0.5f, Vector3(0.0f, 0.0f, 0.0f), 0.1f, 0.0f);
+	particleEmitter_->Add(particleLife_, pos, -dir_ * particleSpeed_, Vector3(0.0f, 0.0f, 0.0f), 0.1f, 0.0f);
+}
+
+void MagicianBullet::HitStageObj()
+{
+	// 衝突したのがステージのオブジェクトではなかったら処理を飛ばす
+	if (collider_->GetHitCollider()->GetAttribute() != COL_STAGE_OBJ) return;
+
+	// 生存フラグを[OFF]にする
+	isAlive_ = false;
+}
+
+void MagicianBullet::HitPlayer()
+{
+	// 衝突したのがプレイヤーではなかったら処理を飛ばす
+	if (collider_->GetHitCollider()->GetAttribute() != COL_PLAYER) return;
+
+	// 弾の進行方向を設定しプレイヤーをノックバックさせる
+	sPlayer_->SetKnock(dir_);
 }

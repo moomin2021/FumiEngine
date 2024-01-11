@@ -73,7 +73,7 @@ private:
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.05f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
-	float range_ = 3.0f;// 射程
+	float range_ = 10.0f;// 射程
 
 	float coolDown_ = 5.0f;
 	uint64_t startCoolDown_ = 0;

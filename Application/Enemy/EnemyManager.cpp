@@ -44,7 +44,7 @@ void EnemyManager::Initialize()
 #pragma region パーティクル
 	particle_ = std::make_unique<ParticleEmitter>();
 	deathParticleH_ = LoadTexture("Sprite/deathParticle.png");
-	MagicianBullet::SetParticleHandle(deathParticleH_);
+	MagicianBullet::SetParticleHandle(LoadTexture("Sprite/enemyBulletParticle.png"));
 #pragma endregion
 
 	deltaTime_.Initialize();
@@ -246,4 +246,5 @@ void EnemyManager::SetPlayer(Player* player)
 {
 	Zombie::SetPlayer(player);
 	Magician::SetPlayer(player);
+	MagicianBullet::SetPlayer(player);
 }

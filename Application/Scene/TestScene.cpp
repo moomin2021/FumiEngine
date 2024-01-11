@@ -4,6 +4,7 @@
 
 #include "PipelineManager.h"
 #include "CollisionAttribute.h"
+#include "Util.h"
 
 #include <set>
 #include <imgui_impl_DX12.h>
@@ -25,15 +26,12 @@ void TestScene::Initialize()
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
-	colMgr_ = CollisionManager::GetInstance();
-	Object3D::SetLightGroup(lightGroup_);
-	Instancing3D::SetLightGroup(lightGroup_);
 #pragma endregion
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
 	camera_->SetEye({ 0.0f, 5.0f, -10.0f });
-	Object3D::SetCamera(camera_.get());
+	ParticleEmitter::SetCamera(camera_.get());
 #pragma endregion
 
 #pragma region ライトグループ
@@ -43,48 +41,9 @@ void TestScene::Initialize()
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region モデル
-	model_ = std::make_unique<Model>("stoneBrick");
-#pragma endregion
-
-#pragma region オブジェクト
-	objects_.resize(3);
-
-	objects_[0] = std::make_unique<Object3D>(model_.get());
-	objects_[0]->SetPosition({ -1.1f, 0.0f, 0.0f });
-	objects_[0]->SetScale({ 2.0f, 1.0f, 1.0f });
-
-	objects_[1] = std::make_unique<Object3D>(model_.get());
-	objects_[1]->SetPosition({ 1.1f, 0.0f, 0.0f });
-	objects_[1]->SetScale({ 2.0f, 1.0f, 1.0f });
-
-	objects_[2] = std::make_unique<Object3D>(model_.get());
-	objects_[2]->SetPosition({ 0.0f, 0.0f, -2.0f });
-#pragma endregion
-
-#pragma region コライダー
-	colliders_.resize(3);
-
-	colliders_[0] = std::make_unique<AABBCollider>();
-	colliders_[0]->SetAttribute(COL_STAGE_OBJ);
-	colliders_[0]->SetOffset({ 0.0f, 0.0f, 0.0f });
-	colliders_[0]->SetRadius({ 1.0f, 0.5f, 0.5f });
-	colliders_[0]->SetObject3D(objects_[0].get());
-	colMgr_->AddBlockCollider(colliders_[0].get());
-
-	colliders_[1] = std::make_unique<AABBCollider>();
-	colliders_[1]->SetAttribute(COL_STAGE_OBJ);
-	colliders_[1]->SetOffset({ 0.0f, 0.0f, 0.0f });
-	colliders_[1]->SetRadius({ 1.0f, 0.5f, 0.5f });
-	colliders_[1]->SetObject3D(objects_[1].get());
-	colMgr_->AddBlockCollider(colliders_[1].get());
-
-	colliders_[2] = std::make_unique<AABBCollider>();
-	colliders_[2]->SetAttribute(COL_STAGE_OBJ);
-	colliders_[2]->SetOffset({ 0.0f, 0.0f, 0.0f });
-	colliders_[2]->SetRadius({ 0.5f, 0.5f, 0.5f });
-	colliders_[2]->SetObject3D(objects_[2].get());
-	colMgr_->AddCollider(colliders_[2].get());
+#pragma region パーティクルエミッター
+	particleEmitter_ = std::make_unique<ParticleEmitter>();
+	particleHandle_ = LoadTexture("Sprite/deathParticle.png");
 #pragma endregion
 }
 
@@ -92,12 +51,15 @@ void TestScene::Update()
 {
 	camera_->Update();
 
-	Vector3 pos = objects_[2]->GetPosition();
+	pos_.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * speed_;
+	pos_.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * speed_;
+	particleEmitter_->SetSpawnPos(pos_);
 
-	pos.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.1f;
-	pos.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.1f;
-
-	objects_[2]->SetPosition(pos);
+	if (key_->PushKey(DIK_P))
+	{
+		CreateParticle();
+		CreateParticle();
+	}
 
 	OnCollision();
 	MatUpdate();
@@ -105,8 +67,8 @@ void TestScene::Update()
 
 void TestScene::Draw()
 {
-	PipelineManager::PreDraw("Object3D");
-	for (auto& it : objects_) it->Draw();
+	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
+	particleEmitter_->Draw(particleHandle_);
 }
 
 void TestScene::Debug()
@@ -116,11 +78,23 @@ void TestScene::Debug()
 
 void TestScene::OnCollision()
 {
-	// 衝突判定をとる
-	CollisionManager::GetInstance()->CheckAllCollision();
+
 }
 
 void TestScene::MatUpdate()
 {
-	for (auto& it : objects_) it->MatUpdate();
+	particleEmitter_->Update();
+}
+
+void TestScene::CreateParticle()
+{
+	uint16_t life = 60;
+	Vector3 pos = { 0.0f, 0.0f, 0.0f };
+	Vector3 dir = { 1.0f, 0.0f, 0.0f };
+
+	pos.x = Util::GetRandomFloat(-0.2f, 0.2f);
+	pos.y = Util::GetRandomFloat(-0.2f, 0.2f);
+	pos.z = Util::GetRandomFloat(-0.2f, 0.2f);
+
+	particleEmitter_->Add(life, pos, dir * 0.1f, { 0.0f, 0.0f, 0.0f }, 1.0f, 0.0f);
 }
