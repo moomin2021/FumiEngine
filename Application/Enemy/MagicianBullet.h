@@ -15,8 +15,8 @@ private:
 
 	Vector3 pos_ = { 0.0f, 0.0f, 0.0f };// 座標
 	Vector3 dir_ = { 0.0f, 0.0f, 0.0f };// 方向
-	float speed_ = 0.1f;// 速度
-	float radius_ = 0.25f;// 半径
+	float speed_ = 0.01f;// 速度
+	float radius_ = 0.2f;// 半径
 	bool isAlive_ = true;// 生存フラグ
 
 	// パーティクルエミッター
