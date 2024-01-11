@@ -14,17 +14,17 @@ void PlayerUI::Initialize()
 #pragma region スプライト
 	hpBarS_ = std::make_unique<Sprite>();
 	hpBarS_->SetAnchorPoint({ 0.0f, 0.0f });
-	hpBarS_->SetPosition({ 102.0f, winSize.y - 98.0f });
+	hpBarS_->SetPosition({ 72.0f, 60.0f });
 	hpBarS_->SetSize({ 434.0f, 34.0f });
 
 	hpFrameS_ = std::make_unique<Sprite>();
 	hpFrameS_->SetAnchorPoint({ 0.0f, 0.0f });
-	hpFrameS_->SetPosition({ 100.0f, winSize.y - 100.0f });
+	hpFrameS_->SetPosition({ 70.0f, 60.0f });
 	hpFrameS_->SetSize({ 440.0f, 40.0f });
 
 	hpFrameShadowS_ = std::make_unique<Sprite>();
 	hpFrameShadowS_->SetAnchorPoint({ 0.0f, 0.0f });
-	hpFrameShadowS_->SetPosition({ 100.0f, winSize.y - 100.0f });
+	hpFrameShadowS_->SetPosition({ 70.0f, 60.0f });
 	hpFrameShadowS_->SetSize({ 440.0f, 40.0f });
 
 	reloadUIS_ = std::make_unique<Sprite>();
@@ -36,6 +36,34 @@ void PlayerUI::Initialize()
 	crossHairS_->SetAnchorPoint({ 0.5f, 0.5f });
 	crossHairS_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
 	crossHairS_->SetSize({ 26.0f, 26.0f });
+
+	// 残弾数表示UI用のスプライトを生成
+	sBulletValueDisplayFrame_ = std::make_unique<Sprite>();
+	sBulletValueDisplayFrame_->SetAnchorPoint({ 0.5f, 0.5f });
+	sBulletValueDisplayFrame_->SetSize({ 300.0f, 140.0f });
+	sBulletValueDisplayFrame_->SetPosition({ winSize.x - 150.0f, winSize.y - 120.0f });
+
+	// 最大弾数表示用スプライト生成
+	sMaxBulletUI_.resize(2);
+	sMaxBulletUI_[0] = std::make_unique<Sprite>();
+	sMaxBulletUI_[1] = std::make_unique<Sprite>();
+	sMaxBulletUI_[0]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[1]->SetAnchorPoint({ 1.0f, 1.0f });
+	sMaxBulletUI_[0]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[1]->SetSize({ 35.25f, 54.0f });
+	sMaxBulletUI_[0]->SetPosition({ winSize.x - 85.75f, winSize.y - 80.0f });
+	sMaxBulletUI_[1]->SetPosition({ winSize.x - 45.0f, winSize.y - 80.0f });
+
+	// 残弾数表示スプライト
+	sNowBulletUI_.resize(2);
+	sNowBulletUI_[0] = std::make_unique<Sprite>();
+	sNowBulletUI_[1] = std::make_unique<Sprite>();
+	sNowBulletUI_[0]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[1]->SetAnchorPoint({ 0.5f, 1.0f });
+	sNowBulletUI_[0]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[1]->SetSize({ 47.0f, 72.0f });
+	sNowBulletUI_[0]->SetPosition({ winSize.x - 247.0f, winSize.y - 80.0f });
+	sNowBulletUI_[1]->SetPosition({ winSize.x - 195.0f, winSize.y - 80.0f });
 #pragma endregion
 
 #pragma region 画像ハンドル
@@ -44,6 +72,18 @@ void PlayerUI::Initialize()
 	hpFrameShadowH_ = LoadTexture("Sprite/hpFrameShadow.png");
 	reloadUIH_ = LoadTexture("Sprite/reloadUI.png");
 	crossHairH_ = LoadTexture("Sprite/crossHair.png");
+	bulletValueDisplayFrameHandle_ = LoadTexture("Sprite/BulletValueDisplayFrame.png");
+	numberHandle_.resize(10);
+	numberHandle_[0] = LoadTexture("Sprite/number0.png");
+	numberHandle_[1] = LoadTexture("Sprite/number1.png");
+	numberHandle_[2] = LoadTexture("Sprite/number2.png");
+	numberHandle_[3] = LoadTexture("Sprite/number3.png");
+	numberHandle_[4] = LoadTexture("Sprite/number4.png");
+	numberHandle_[5] = LoadTexture("Sprite/number5.png");
+	numberHandle_[6] = LoadTexture("Sprite/number6.png");
+	numberHandle_[7] = LoadTexture("Sprite/number7.png");
+	numberHandle_[8] = LoadTexture("Sprite/number8.png");
+	numberHandle_[9] = LoadTexture("Sprite/number9.png");
 #pragma endregion
 }
 
@@ -63,6 +103,17 @@ void PlayerUI::Update()
 
 void PlayerUI::Draw()
 {
+	// 最大弾数を表示
+	sMaxBulletUI_[0]->Draw(numberHandle_[pPlayer_->GetMaxBullet() / 10]);
+	sMaxBulletUI_[1]->Draw(numberHandle_[pPlayer_->GetMaxBullet() % 10]);
+
+	// 残弾数を表示
+	sNowBulletUI_[0]->Draw(numberHandle_[pPlayer_->GetNowBullet() / 10]);
+	sNowBulletUI_[1]->Draw(numberHandle_[pPlayer_->GetNowBullet() % 10]);
+
+	// 残弾数表示枠を描画
+	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
+
 	hpFrameShadowS_->Draw(hpFrameShadowH_);
 	hpBarS_->Draw(hpBarH_);
 	hpFrameS_->Draw(hpFrameH_);
@@ -82,6 +133,16 @@ void PlayerUI::MatUpdate()
 	hpFrameShadowS_->MatUpdate();
 	reloadUIS_->MatUpdate();
 	crossHairS_->MatUpdate();
+	// 残弾数表示UIハンドル
+	sBulletValueDisplayFrame_->MatUpdate();
+
+	// 最大弾数表示スプライト
+	sMaxBulletUI_[0]->MatUpdate();
+	sMaxBulletUI_[1]->MatUpdate();
+
+	// 残弾数表示スプライト
+	sNowBulletUI_[0]->MatUpdate();
+	sNowBulletUI_[1]->MatUpdate();
 }
 
 void PlayerUI::HPUI()

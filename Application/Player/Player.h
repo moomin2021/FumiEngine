@@ -170,5 +170,7 @@ public:
 	inline uint8_t GetHP() { return hp_; }
 	inline uint8_t GetMAXHP() { return maxHp_; }
 	inline bool GetIsReload() { return isReload_; }
+	uint16_t GetMaxBullet() { return maxBullet_; }
+	uint16_t GetNowBullet() { return nowBullet_; }
 #pragma endregion
 };
