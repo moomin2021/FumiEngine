@@ -190,7 +190,7 @@ void Player::Air()
 	Shot();
 
 	// ジャンプ処理
-	Jump();
+	//Jump();
 
 	// 落下処理
 	Fall();
