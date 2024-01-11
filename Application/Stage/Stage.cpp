@@ -38,7 +38,6 @@ void Stage::Initialize()
 
 	// ナビメッシュ
 	navMesh_ = std::make_unique<NavMesh>();
-	navMesh_->SetIsLinkLineDraw(true);
 	Zombie::SetNavMesh(navMesh_.get());
 	Magician::SetNavMesh(navMesh_.get());
 }
@@ -66,6 +65,12 @@ void Stage::Draw()
 	oSkydome_->Draw();
 
 	navMesh_->Draw();
+}
+
+void Stage::Debug(bool isDebug)
+{
+	if (isDebug) navMesh_->SetIsLinkLineDraw(true);
+	else navMesh_->SetIsLinkLineDraw(false);
 }
 
 void Stage::Load(std::string fileName, bool isCol, bool isCore)

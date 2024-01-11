@@ -59,25 +59,6 @@ void GameScene::Initialize()
 	stage_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
-#pragma region モデル
-	mCube_ = std::make_unique<Model>("cube");
-#pragma endregion
-
-#pragma region 3軸を示すオブジェクト
-	oAxis_.resize(3);
-	oAxis_[0] = std::make_unique<Object3D>(mCube_.get());
-	oAxis_[1] = std::make_unique<Object3D>(mCube_.get());
-	oAxis_[2] = std::make_unique<Object3D>(mCube_.get());
-
-	oAxis_[0]->SetPosition({ 5.0f, 0.0f, 0.0f });
-	oAxis_[1]->SetPosition({ 0.0f, 5.0f, 0.0f });
-	oAxis_[2]->SetPosition({ 0.0f, 0.0f, 5.0f });
-
-	oAxis_[0]->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-	oAxis_[1]->SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
-	oAxis_[2]->SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
-#pragma endregion
-
 	// ステージ読み込み
 	stage_->CreateStage();
 
@@ -135,17 +116,6 @@ void GameScene::Draw()
 	// エネミーマネージャー
 	enemyMgr_->Draw();
 
-	PipelineManager::PreDraw("Object3D");
-
-	// 3軸を示すオブジェクト
-	if (isDebug_)
-	{
-		for (auto& it : oAxis_)
-		{
-			it->Draw();
-		}
-	}
-
 	PipelineManager::PreDraw("Sprite");
 
 	// プレイヤー
@@ -174,6 +144,8 @@ void GameScene::Debug()
 			WinAPI::GetInstance()->SetClipCursor(false);
 		}
 	}
+
+	stage_->Debug(isDebug_);
 
 	if (isDebug_ == false) return;
 
@@ -212,12 +184,6 @@ void GameScene::MatUpdate()
 
 	// ステージクラス
 	stage_->MatUpdate();
-
-	// 3軸を示すオブジェクト
-	for (auto& it : oAxis_)
-	{
-		it->MatUpdate();
-	}
 
 	sGameUI_->MatUpdate();
 	sObjectiveText_->MatUpdate();

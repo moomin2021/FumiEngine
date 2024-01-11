@@ -47,9 +47,9 @@ void Zombie::Initialize(const Vector3& inPos)
 	sColMgr_->AddCollider(cEnemy2Player_.get());
 #pragma endregion
 
-	//line_ = std::make_unique<Line3D>();
-	//line_->Initialize(100);
-	//line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	line_ = std::make_unique<Line3D>();
+	line_->Initialize(100);
+	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 }
 
 void Zombie::Update()
@@ -81,12 +81,12 @@ void Zombie::Draw()
 {
 	object_->Draw();
 
-	//PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	//// 線
-	//line_->Draw();
+	// 線
+	line_->Draw();
 
-	//PipelineManager::PreDraw("Object3D");
+	PipelineManager::PreDraw("Object3D");
 }
 
 void Zombie::OnCollision()
@@ -147,7 +147,7 @@ void Zombie::OnCollision()
 void Zombie::MatUpdate()
 {
 	object_->MatUpdate();
-	//line_->MatUpdate();
+	line_->MatUpdate();
 }
 
 void Zombie::Debug()
@@ -265,14 +265,16 @@ void Zombie::CreateNavRoute()
 	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
 	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), route_);
-	//line_->ClearPoint();
+	line_->ClearPoint();
 
 	if (!result) return;
 
-	//for (uint16_t i = 0; i < route_.size() - 1; i++)
-	//{
-	//	line_->AddPoint(route_[i] + addVec, route_[i + 1] + addVec);
-	//}
+	for (uint16_t i = 0; i < route_.size() - 1; i++)
+	{
+		route_[i].y = 1.0f;
+		route_[i + 1].y = 1.0f;
+		line_->AddPoint(route_[i], route_[i + 1]);
+	}
 
 	route_.erase(route_.begin());
 }

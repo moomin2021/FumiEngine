@@ -88,6 +88,8 @@ public:
 	// 描画更新処理
 	void Draw();
 
+	void Debug(bool isDebug);
+
 	// ステージ情報読み込み
 	void Load(std::string fileName, bool isCol = true, bool isCore = false);
 

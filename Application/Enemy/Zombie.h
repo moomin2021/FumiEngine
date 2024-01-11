@@ -63,7 +63,7 @@ private:
 
 	// ルート探索
 	std::vector<Vector3> route_ = {};
-	//std::unique_ptr<Line3D> line_ = nullptr;
+	std::unique_ptr<Line3D> line_ = nullptr;
 	float routeSearchInterval_ = 1.0f;// ルート探索のインターバル[s]
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.05f;

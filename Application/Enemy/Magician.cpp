@@ -47,9 +47,9 @@ void Magician::Initialize(const Vector3& inPos)
 	sColMgr_->AddCollider(cEnemy2Player_.get());
 #pragma endregion
 
-	//line_ = std::make_unique<Line3D>();
-	//line_->Initialize(100);
-	//line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	line_ = std::make_unique<Line3D>();
+	line_->Initialize(100);
+	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 }
 
 void Magician::Update()
@@ -87,6 +87,13 @@ void Magician::Draw()
 
 	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 	for (auto& it : bullet_) it->Draw();
+
+	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	// 線
+	line_->Draw();
+
+	PipelineManager::PreDraw("Object3D");
 }
 
 void Magician::OnCollision()
@@ -143,7 +150,7 @@ void Magician::MatUpdate()
 {
 	object_->MatUpdate();
 	for (auto& it : bullet_) it->MatUpdate();
-	//line_->MatUpdate();
+	line_->MatUpdate();
 }
 
 void Magician::Debug()
@@ -298,9 +305,16 @@ void Magician::CreateNavRoute()
 	Vector3 addVec = { 0.0f, 2.0f, 0.0f };
 
 	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), sPlayer_->GetPosition() + Vector3(0.0f, 1.0f, 0.0f), route_);
+	line_->ClearPoint();
 
-	// ルート探索がうまくいってなかったらこの後の処理を飛ばす
 	if (!result) return;
+
+	for (uint16_t i = 0; i < route_.size() - 1; i++)
+	{
+		route_[i].y = 1.0f;
+		route_[i + 1].y = 1.0f;
+		line_->AddPoint(route_[i], route_[i + 1]);
+	}
 
 	route_.erase(route_.begin());
 }
