@@ -29,7 +29,7 @@ void Magician::Initialize(const Vector3& inPos)
 	cHit_ = std::make_unique<AABBCollider>();
 	cHit_->SetOffset({ 0.0f, 0.9f, 0.0f });
 	cHit_->SetRadius({ 0.3f, 0.9f, 0.3f });
-	cHit_->SetAttribute(COL_ENEMY);
+	cHit_->SetAttribute(COL_ENEMY_BODY);
 	cHit_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cHit_.get());
 

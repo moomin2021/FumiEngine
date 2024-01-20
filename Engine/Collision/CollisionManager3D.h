@@ -44,7 +44,7 @@ public:
 	void AddBlockCollider(AABBCollider* collider) { blockColliders_.emplace_front(collider); }
 
 	// 押し戻し用のレイコライダー削除
-	void RemovePusBackRayCollider(RayCollider* collider) { pushBackRayColliders_.remove(collider); }
+	void RemovePushBackRayCollider(RayCollider* collider) { pushBackRayColliders_.remove(collider); }
 
 	// コライダー削除
 	void RemoveCollider(BaseCollider* collider);

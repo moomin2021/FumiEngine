@@ -1,52 +1,60 @@
-#pragma once
-#include "Model.h"
-#include "Object3D.h"
-#include "CollisionManager3D.h"
-#include "RayCollider.h"
-#include "SphereCollider.h"
-#include "Line3D.h"
-#include "NavMesh.h"
-#include "AABBCollider.h"
+/**
+ * @file Zombie.h
+ * @brief ゾンビのクラス
+ * @author moomin
+ * @date 2024/01/20
+ */
 
+#pragma once
+#include "Object3D.h"
+
+#include "CollisionManager3D.h"
+#include "AABBCollider.h"
+#include "RayCollider.h"
+
+#include "NavMesh.h"
 #include "Player.h"
 
 #include <memory>
 
-class Zombie
-{
+class Zombie {
 private:
+	// 状態
 	enum class State {
 		WAIT,
-		PATROL,
 		CHASE,
 	};
 
 #pragma region メンバ変数
 private:
-	static CollisionManager3D* sColMgr_;// 衝突判定管理クラス
-	static Model* sModel_;// モデル
-	static Player* sPlayer_;// プレイヤー
-	static NavMesh* sNavMesh_;// ナビメッシュ
+	static CollisionManager3D* sColMgr_;
+	static Model* sModel_;
+	static Player* sPlayer_;
+	static NavMesh* sNavMesh_;
 
 	// オブジェクト3D
 	std::unique_ptr<Object3D> object_ = nullptr;
 
 	// コライダー
-	std::unique_ptr<RayCollider> cGroundJudgment_ = nullptr;// 接地判定を取るコライダー
-	std::unique_ptr<RayCollider> cEnemy2Player_ = nullptr;// 敵からプレイヤーまでのレイ
-	std::unique_ptr<AABBCollider> cHit_ = nullptr;// プレイヤーの玉などと衝突判定をとる
+	std::unique_ptr<AABBCollider> headC_ = nullptr;// 頭
+	std::unique_ptr<AABBCollider> bodyC_ = nullptr;// 体
+	std::unique_ptr<RayCollider> legC_ = nullptr;// 接地
 
-	// ステート
-	State state_ = State::WAIT;
+	Vector3 headOffset_ = { 0.0f, 1.75f, 0.0f };
+	Vector3 headRadius_ = { 0.25f, 0.25f, 0.25f };
+	Vector3 bodyOffset_ = { 0.0f, 0.75f, 0.0f };
+	Vector3 bodyRadius_ = { 0.25f, 0.75f, 0.25f };
+
+	// 状態
+	State state_ = State::CHASE;
 
 	// HP
-	int8_t hp_ = 3;
-
+	uint8_t hp_ = 3;
 
 	// 生存フラグ
 	bool isAlive_ = true;
 
-	// 接地している
+	// 接地フラグ
 	bool isGround_ = false;
 
 	// 重力
@@ -76,12 +84,14 @@ private:
 	uint64_t hitTime_ = 0;
 
 	bool isDebug_ = false;
-
 #pragma endregion
 
 #pragma region メンバ関数
 public:
+	// コンストラクタ
 	Zombie() {}
+
+	// デストラクタ
 	~Zombie();
 
 	// 初期化処理
@@ -99,20 +109,34 @@ public:
 	// 行列更新処理
 	void MatUpdate();
 
-	// デバック処理
+	// デバック
 	void Debug(bool isDebug);
 
 private:
 	// 状態別処理
 	static void (Zombie::* stateTable[]) ();
-	void Wait();		// 待機状態
-	void Patrol();		// 見回り状態
-	void Chase();		// 追跡状態
+	void Wait();	// 待機
+	void Chase();	// 追跡
 
-	void GroundingJudgment();// 接地判定
-	void Gravity();// 重力処理
-	void Rotate();// 回転処理
-	void CreateNavRoute();// ルート作成
+	// ルート作成
+	void CreateRoute();
+
+	// 移動処理
+	void Move();
+
+	// 接地判定
+	void GroundingJudgment();
+
+	// 重力処理
+	void Gravity();
+
+	// 回転処理
+	void Rotate();
+
+	// 攻撃を受けた際の処理
+	void Hit();
+
+	// ジャンプ処理
 	void Jump();
 #pragma endregion
 
