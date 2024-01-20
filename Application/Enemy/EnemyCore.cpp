@@ -4,7 +4,7 @@
 #include <imgui_impl_DX12.h>
 
 LightGroup* EnemyCore::sLightGroup_ = nullptr;
-CollisionManager* EnemyCore::sColMgr_ = nullptr;
+CollisionManager3D* EnemyCore::sColMgr_ = nullptr;
 Player* EnemyCore::sPlayer_ = nullptr;
 
 Model* EnemyCore::sCoreM_ = nullptr;

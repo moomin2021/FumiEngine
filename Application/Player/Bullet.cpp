@@ -1,6 +1,6 @@
-﻿#include "Bullet.h"
+#include "Bullet.h"
 #include "CollisionAttribute.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 
 Bullet::Bullet(Model* model, BulletType type, const Vector3& iniPos, const Vector3& moveVec)
 {
@@ -27,7 +27,7 @@ Bullet::Bullet(Model* model, BulletType type, const Vector3& iniPos, const Vecto
 		data_.col->SetAttribute(COL_ENEMY_BULLET);
 		data_.col->SetRadius(0.5f);
 		data_.col->SetObject3D(data_.object.get());
-		CollisionManager::GetInstance()->AddCollider(data_.col.get());
+		CollisionManager3D::GetInstance()->AddCollider(data_.col.get());
 		data_.moveVec = moveVec;
 		data_.bulletSpd = 2.0f;
 		data_.aliveTime = 30;
@@ -38,7 +38,7 @@ Bullet::Bullet(Model* model, BulletType type, const Vector3& iniPos, const Vecto
 
 Bullet::~Bullet()
 {
-	CollisionManager::GetInstance()->RemoveCollider(data_.col.get());
+	CollisionManager3D::GetInstance()->RemoveCollider(data_.col.get());
 }
 
 void Bullet::Update()

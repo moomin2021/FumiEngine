@@ -3,7 +3,7 @@
 #include "CollisionAttribute.h"
 #include "Util.h"
 
-CollisionManager* MagicianBullet::sColMgr_ = nullptr;
+CollisionManager3D* MagicianBullet::sColMgr_ = nullptr;
 uint16_t MagicianBullet::sParticleHandle_ = 0;
 Player* MagicianBullet::sPlayer_ = nullptr;
 
@@ -74,7 +74,7 @@ void MagicianBullet::CreateParticle()
 void MagicianBullet::HitStageObj()
 {
 	// 衝突したのがステージのオブジェクトではなかったら処理を飛ばす
-	if (collider_->GetHitCollider()->GetAttribute() != COL_STAGE_OBJ) return;
+	if (collider_->GetHitCollider()->GetAttribute() != COL_BLOCK) return;
 
 	// 生存フラグを[OFF]にする
 	isAlive_ = false;

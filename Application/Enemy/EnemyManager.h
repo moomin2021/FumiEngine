@@ -8,7 +8,7 @@
 #pragma once
 #include "Object3D.h"
 #include "SphereCollider.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include "Zombie.h"
 #include "Magician.h"
 #include "ParticleEmitter.h"
@@ -25,7 +25,7 @@ class EnemyManager
 #pragma region メンバ変数
 private:
 	// インスタンス
-	CollisionManager* colMgr_ = nullptr;
+	CollisionManager3D* colMgr_ = nullptr;
 
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;

@@ -20,14 +20,6 @@ AABBCollider::AABBCollider(const Vector3& inOffset, const Vector3& inRadius)
 
 void AABBCollider::Update()
 {
-	// 衝突フラグを初期化
-	isHit_ = false;
-
-	// 衝突したコライダーをリセット
-	hitCol_ = nullptr;
-
-	reject_ = { 0.0f, 0.0f, 0.0f };
-
 	// オブジェクト3Dが紐づけられていたら
 	if (object_)
 	{
@@ -40,6 +32,17 @@ void AABBCollider::Update()
 	}
 }
 
+void AABBCollider::Reset()
+{
+	// 衝突フラグを初期化
+	isHit_ = false;
+
+	// 衝突したコライダーをリセット
+	hitCol_ = nullptr;
+
+	reject_ = { 0.0f, 0.0f, 0.0f };
+}
+
 void AABBCollider::PushBack(const Vector3& reject)
 {
 	// オブジェクト3Dが紐づけられていたら
@@ -48,4 +51,12 @@ void AABBCollider::PushBack(const Vector3& reject)
 		object_->SetPosition(object_->GetPosition() + reject);
 		AABB::center = object_->GetPosition() + offset_;
 	}
+
+	//// 衝突フラグを初期化
+	//isHit_ = false;
+
+	//// 衝突したコライダーをリセット
+	//hitCol_ = nullptr;
+
+	//reject_ = { 0.0f, 0.0f, 0.0f };
 }

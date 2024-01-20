@@ -32,7 +32,7 @@ void CollisionManager::CheckAllCollision()
 		++itB;
 
 		// ブロックと属性が合ったら
-		if ((*itA)->attribute_ & COL_STAGE_OBJ)
+		if ((*itA)->attribute_ & COL_BLOCK)
 		{
 			if ((*itA)->shapeType_ == SHAPE_RAY)
 			{

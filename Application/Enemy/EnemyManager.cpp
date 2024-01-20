@@ -19,7 +19,7 @@ EnemyManager::~EnemyManager()
 void EnemyManager::Initialize()
 {
 #pragma region インスタンス
-	colMgr_ = CollisionManager::GetInstance();
+	colMgr_ = CollisionManager3D::GetInstance();
 
 	Zombie::SetCollisionManager(colMgr_);
 	Magician::SetCollisionManager(colMgr_);

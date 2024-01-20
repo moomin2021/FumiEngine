@@ -23,7 +23,7 @@ void Player::Initialize(const Vector3& startPos)
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
-	colMgr_ = CollisionManager::GetInstance();
+	colMgr_ = CollisionManager3D::GetInstance();
 #pragma endregion
 
 #pragma region モデル

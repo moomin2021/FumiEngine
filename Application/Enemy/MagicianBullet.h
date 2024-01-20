@@ -12,7 +12,7 @@ class MagicianBullet
 {
 #pragma region メンバ変数
 private:
-	static CollisionManager* sColMgr_;
+	static CollisionManager3D* sColMgr_;
 	static uint16_t sParticleHandle_;
 	static Player* sPlayer_;
 
@@ -63,7 +63,7 @@ private:
 #pragma region セッター関数
 public:
 	// 衝突判定マネージャーを設定
-	static void SetCollisionManager(CollisionManager* inColMgr) { sColMgr_ = inColMgr; }
+	static void SetCollisionManager(CollisionManager3D* inColMgr) { sColMgr_ = inColMgr; }
 
 	// パーティクルの画像の設定
 	static void SetParticleHandle(uint16_t inHandle) { sParticleHandle_ = inHandle; }

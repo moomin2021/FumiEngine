@@ -219,9 +219,6 @@
     <ClCompile Include="Engine\Util\ImGuiManager.cpp">
       <Filter>Engine\ソース ファイル\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Player\ItemManager.cpp">
-      <Filter>Application\ソースファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Application\ソースファイル</Filter>
     </ClCompile>
@@ -351,6 +348,9 @@
     <ClCompile Include="Application\Enemy\MagicianBullet.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionManager3D.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -475,9 +475,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Util\ImGuiManager.h">
       <Filter>Engine\ヘッダー ファイル\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\ItemManager.h">
-      <Filter>Application\ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Material.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
@@ -606,6 +603,9 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\MagicianBullet.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionManager3D.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

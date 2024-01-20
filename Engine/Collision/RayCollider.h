@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
@@ -8,6 +8,7 @@ class RayCollider : public BaseCollider, public Ray
 private:
 	// オブジェクト中心からのオフセット
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
+	float pushBackDis_ = 0.0f;
 
 	// 衝突したときの情報
 	Vector3 inter_ = { 0.0f, 0.0f, 0.0f };// 交点
@@ -21,6 +22,11 @@ public:
 
 	// 更新処理
 	void Update() override;
+
+	// リセット処理
+	void Reset();
+
+	void PushBack();
 #pragma endregion
 
 #pragma region セッター関数
@@ -36,6 +42,9 @@ public:
 
 	// 交点までの距離を設定
 	inline void SetDistance(float distance) { minDistance_ = distance; }
+
+	// 押し戻す距離の設定
+	inline void SetPushBackDistance(float distance) { pushBackDis_ = distance; }
 #pragma endregion
 
 #pragma region ゲッター関数

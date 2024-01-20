@@ -49,7 +49,7 @@ public:
 #pragma region ゲッター関数
 public:
 	// インスタンス取得
-	static CollisionManager* GetInstance();
+	CollisionManager* GetInstance();
 #pragma endregion
 
 #pragma region 特殊関数

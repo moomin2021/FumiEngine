@@ -2,7 +2,7 @@
 #include "Model.h"
 #include "Object3D.h"
 #include "AABBCollider.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include "Instancing3D.h"
 
 #include "EnemyManager.h"
@@ -45,7 +45,7 @@ class Stage
 #pragma region メンバ変数
 private:
 	// 衝突判定管理クラスインスタンス
-	CollisionManager* colMgr_ = nullptr;
+	CollisionManager3D* colMgr_ = nullptr;
 	EnemyManager* enemyMgr_ = nullptr;
 
 	// モデル保存用連想配列

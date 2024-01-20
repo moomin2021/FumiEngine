@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
@@ -162,7 +162,7 @@ void GameScene::Debug()
 void GameScene::OnCollision()
 {
 	// 衝突判定をとる
-	CollisionManager::GetInstance()->CheckAllCollision();
+	CollisionManager3D::GetInstance()->CheckAllCollision();
 
 	// プレイヤー
 	player_->OnCollision();

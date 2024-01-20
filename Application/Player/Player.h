@@ -12,7 +12,7 @@
 #include "Model.h"
 #include "Camera.h"
 
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include "AABBCollider.h"
 #include "RayCollider.h"
 
@@ -37,7 +37,7 @@ private:
 	// インスタンス
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
-	CollisionManager* colMgr_ = nullptr;
+	CollisionManager3D* colMgr_ = nullptr;
 
 	// モデル
 	std::unique_ptr<Model> playerM_ = nullptr;

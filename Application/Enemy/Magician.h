@@ -1,7 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Object3D.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include "RayCollider.h"
 #include "SphereCollider.h"
 #include "Line3D.h"
@@ -26,7 +26,7 @@ private:
 
 #pragma region メンバ変数
 private:
-	static CollisionManager* sColMgr_;// 衝突判定管理クラス
+	static CollisionManager3D* sColMgr_;// 衝突判定管理クラス
 	static Model* sModel_;// モデル
 	static Player* sPlayer_;// プレイヤー
 	static NavMesh* sNavMesh_;// ナビメッシュ
@@ -136,7 +136,7 @@ private:
 
 #pragma region セッター関数
 public:
-	static void SetCollisionManager(CollisionManager* inColMgr) { sColMgr_ = inColMgr; }
+	static void SetCollisionManager(CollisionManager3D* inColMgr) { sColMgr_ = inColMgr; }
 	static void SetModel(Model* inModel) { sModel_ = inModel; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }

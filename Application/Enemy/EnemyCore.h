@@ -15,7 +15,7 @@ class EnemyCore
 #pragma region メンバ変数
 private:
 	static LightGroup* sLightGroup_;
-	static CollisionManager* sColMgr_;
+	static CollisionManager3D* sColMgr_;
 	static Player* sPlayer_;
 
 	// モデル
@@ -93,7 +93,7 @@ public:
 	}
 
 	static void SetLightGroup(LightGroup* inLightGroup) { sLightGroup_ = inLightGroup; }
-	static void SetCollisionManager(CollisionManager* inColMgr) { sColMgr_ = inColMgr; }
+	static void SetCollisionManager(CollisionManager3D* inColMgr) { sColMgr_ = inColMgr; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 #pragma endregion
 

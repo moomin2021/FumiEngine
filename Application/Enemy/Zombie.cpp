@@ -6,14 +6,14 @@
 
 #include <imgui_impl_DX12.h>
 
-CollisionManager* Zombie::sColMgr_ = nullptr;
+CollisionManager3D* Zombie::sColMgr_ = nullptr;
 Model* Zombie::sModel_ = nullptr;
 Player* Zombie::sPlayer_ = nullptr;
 NavMesh* Zombie::sNavMesh_ = nullptr;
 
 Zombie::~Zombie()
 {
-	sColMgr_->RemoveCollider(cGroundJudgment_.get());
+	sColMgr_->RemovePusBackRayCollider(cGroundJudgment_.get());
 	sColMgr_->RemoveCollider(cEnemy2Player_.get());
 	sColMgr_->RemoveCollider(cHit_.get());
 }
@@ -27,8 +27,8 @@ void Zombie::Initialize(const Vector3& inPos)
 
 #pragma region コライダー
 	cHit_ = std::make_unique<AABBCollider>();
-	cHit_->SetOffset({ 0.0f, 2.0f, 0.0f });
-	cHit_->SetRadius({ 0.3f, 0.975f, 0.3f });
+	cHit_->SetOffset({ 0.0f, 0.975f, 0.0f });
+	cHit_->SetRadius({ 0.3f, 0.9f, 0.3f });
 	cHit_->SetAttribute(COL_ENEMY);
 	cHit_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cHit_.get());
@@ -36,9 +36,10 @@ void Zombie::Initialize(const Vector3& inPos)
 	cGroundJudgment_ = std::make_unique<RayCollider>();
 	cGroundJudgment_->SetOffSet({ 0.0f, 2.0f, 0.0f });
 	cGroundJudgment_->SetDir({ 0.0f, -1.0f, 0.0f });
+	cGroundJudgment_->SetPushBackDistance(2.0f);
 	cGroundJudgment_->SetAttribute(COL_LEG);
 	cGroundJudgment_->SetObject3D(object_.get());
-	sColMgr_->AddCollider(cGroundJudgment_.get());
+	sColMgr_->AddPushBackRayCollider(cGroundJudgment_.get());
 
 	cEnemy2Player_ = std::make_unique<RayCollider>();
 	cEnemy2Player_->SetOffSet({ 0.0f, 1.7f, 0.0f });
@@ -94,6 +95,15 @@ void Zombie::OnCollision()
 	// 接地判定
 	GroundingJudgment();
 
+	if (cHit_->GetIsHit())
+	{
+		object_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	}
+	else
+	{
+		object_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+	}
+
 	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
 	{
 		velocity_ = 0.0f;
@@ -108,7 +118,7 @@ void Zombie::OnCollision()
 		hitTime_ = Util::GetTimrMSec();
 	}
 
-	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_STAGE_OBJ)
+	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_BLOCK)
 	{
 		Jump();
 	}
@@ -195,14 +205,7 @@ void Zombie::Chase()
 
 void Zombie::GroundingJudgment()
 {
-	isGround_ = false;
-	if (cGroundJudgment_->GetIsHit() && cGroundJudgment_->GetDistance() < 2.0f)
-	{
-		float reject = 2.0f - cGroundJudgment_->GetDistance();
-		Vector3 result = object_->GetPosition() + Vector3{ 0.0f, reject, 0.0f };
-		object_->SetPosition(result);
-		isGround_ = true;
-	}
+	isGround_ = cHit_->GetIsHit();
 }
 
 void Zombie::Gravity()

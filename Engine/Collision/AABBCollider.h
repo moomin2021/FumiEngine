@@ -9,6 +9,7 @@ private:
 	// オブジェクト中心からのオフセット
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
 	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };
+	float pushBackRate_ = 0.1f;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -19,6 +20,9 @@ public:
 
 	// 更新処理
 	void Update() override;
+
+	// リセット処理
+	void Reset();
 
 	void PushBack(const Vector3& reject);
 #pragma endregion
@@ -37,5 +41,6 @@ public:
 
 #pragma region ゲッター関数
 	inline const Vector3& GetReject() { return reject_; }
+	inline const float GetPushBackRate() { return pushBackRate_; }
 #pragma endregion
 };

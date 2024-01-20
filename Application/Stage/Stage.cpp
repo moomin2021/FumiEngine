@@ -22,7 +22,7 @@ Stage::~Stage()
 void Stage::Initialize()
 {
 	// 衝突判定管理クラスインスタンス
-	colMgr_ = CollisionManager::GetInstance();
+	colMgr_ = CollisionManager3D::GetInstance();
 
 	// インスタンシング描画初期化
 	objects_ = std::make_unique<Instancing3D>((uint16_t)5000);
@@ -182,7 +182,7 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 				colliders_.emplace_front(std::make_unique<AABBCollider>());
 				colliders_.front()->SetOffset(objectData.translation);
 				colliders_.front()->SetRadius(objectData.scale / 2.0f);
-				colliders_.front()->SetAttribute(COL_STAGE_OBJ);
+				colliders_.front()->SetAttribute(COL_BLOCK);
 				colMgr_->AddBlockCollider(colliders_.front().get());
 			}
 		}
@@ -325,7 +325,7 @@ void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA
 			colliders_.emplace_front(std::make_unique<AABBCollider>());
 			colliders_.front()->SetOffset(offset + objectData.translation);
 			colliders_.front()->SetRadius(objectData.scale / 2.0f);
-			colliders_.front()->SetAttribute(COL_STAGE_OBJ);
+			colliders_.front()->SetAttribute(COL_BLOCK);
 			colMgr_->AddBlockCollider(colliders_.front().get());
 		}
 

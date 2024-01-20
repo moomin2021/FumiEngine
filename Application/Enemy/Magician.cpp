@@ -6,7 +6,7 @@
 
 #include <imgui_impl_DX12.h>
 
-CollisionManager* Magician::sColMgr_ = nullptr;
+CollisionManager3D* Magician::sColMgr_ = nullptr;
 Model* Magician::sModel_ = nullptr;
 Player* Magician::sPlayer_ = nullptr;
 NavMesh* Magician::sNavMesh_ = nullptr;
@@ -27,8 +27,8 @@ void Magician::Initialize(const Vector3& inPos)
 
 #pragma region コライダー
 	cHit_ = std::make_unique<AABBCollider>();
-	cHit_->SetOffset({ 0.0f, 2.0f, 0.0f });
-	cHit_->SetRadius({ 0.3f, 0.975f, 0.3f });
+	cHit_->SetOffset({ 0.0f, 0.9f, 0.0f });
+	cHit_->SetRadius({ 0.3f, 0.9f, 0.3f });
 	cHit_->SetAttribute(COL_ENEMY);
 	cHit_->SetObject3D(object_.get());
 	sColMgr_->AddCollider(cHit_.get());
@@ -120,7 +120,7 @@ void Magician::OnCollision()
 		hitTime_ = Util::GetTimrMSec();
 	}
 
-	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_STAGE_OBJ)
+	if (cHit_->GetIsHit() && cHit_->GetHitCollider()->GetAttribute() == COL_BLOCK)
 	{
 		Jump();
 	}
