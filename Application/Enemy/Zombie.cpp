@@ -264,6 +264,7 @@ void Zombie::Hit()
 	if (headC_->GetIsHit() && headC_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
 	{
 		isAlive_ = false;
+		isHead_ = true;
 		hp_ = 0;
 	}
 

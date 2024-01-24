@@ -25,6 +25,12 @@ private:
 		CHASE,
 	};
 
+	// 役割
+	enum class Role {
+		Attacker,
+		Defender,
+	};
+
 #pragma region メンバ変数
 private:
 	static CollisionManager3D* sColMgr_;
@@ -53,6 +59,7 @@ private:
 
 	// 生存フラグ
 	bool isAlive_ = true;
+	bool isHead_ = false;
 
 	// 接地フラグ
 	bool isGround_ = false;
@@ -151,6 +158,7 @@ public:
 #pragma region ゲッター関数
 public:
 	bool GetIsAlive() { return isAlive_; }
+	bool GetIsHead() { return isHead_; }
 	const Vector3& GetPosition() { return object_->GetPosition(); }
 #pragma endregion
 };

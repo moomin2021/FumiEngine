@@ -45,6 +45,10 @@ void EnemyManager::Initialize()
 	particle_ = std::make_unique<ParticleEmitter>();
 	deathParticleH_ = LoadTexture("Sprite/deathParticle.png");
 	MagicianBullet::SetParticleHandle(LoadTexture("Sprite/enemyBulletParticle.png"));
+
+	headP0_ = std::make_unique<ParticleEmitter>();
+	headP1_ = std::make_unique<ParticleEmitter>();
+	headH_ = LoadTexture("Sprite/dot.png");
 #pragma endregion
 
 	deltaTime_.Initialize();
@@ -73,6 +77,11 @@ void EnemyManager::Update()
 		// 敵の生存フラグが[OFF]になったら消す
 		if ((*it)->GetIsAlive() == false)
 		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
 			AddDeathParticle((*it)->GetPosition());
 			it = zombies_.erase(it);
 			enemyDeathCounter_++;
@@ -128,6 +137,8 @@ void EnemyManager::Draw()
 
 	PipelineManager::PreDraw("Particle", D3D10_PRIMITIVE_TOPOLOGY_POINTLIST);
 	particle_->Draw(deathParticleH_);
+	headP0_->Draw(headH_);
+	headP1_->Draw(headH_);
 }
 
 void EnemyManager::MatUpdate()
@@ -137,6 +148,8 @@ void EnemyManager::MatUpdate()
 	for (auto& it : enemyCores_) it->MatUpdate();
 
 	particle_->Update(BILLBOARD::Y);
+	headP0_->Update(BILLBOARD::Y);
+	headP1_->Update(BILLBOARD::Y);
 }
 
 void EnemyManager::OnCollision()
@@ -149,7 +162,7 @@ void EnemyManager::OnCollision()
 void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 {
 	uint16_t rnd = 0;
-	rnd = Util::GetRandomInt(0, 10);
+	rnd = Util::GetRandomInt(0, 5);
 
 	if (rnd <= 7)
 	{
@@ -255,9 +268,34 @@ void EnemyManager::AddDeathParticle(const Vector3& inPos)
 		velocity.z = Util::GetRandomFloat(particleRnd_.x, particleRnd_.y);
 		velocity.normalize();
 		velocity /= (float)particleLife_;
-		particle_->Add(particleLife_, inPos + offset, velocity,
+		particle_->Add(particleLife_, inPos + offset + Vector3(0.0f, 1.5f, 0.0f), velocity,
 			{ -velocity.x / particleLife_, -velocity.y / particleLife_, -velocity.z / particleLife_ },
 			startParticleScale_, endParticleScale_);
+	}
+}
+
+void EnemyManager::CreateHeadP(const Vector3& inPos)
+{
+	for (size_t i = 0; i < 50; i++)
+	{
+		Vector3 dir = Vector3();
+
+		dir.x = Util::GetRandomFloat(-0.1f, 0.1f);
+		dir.y = Util::GetRandomFloat(0.1f, 0.4f);
+		dir.z = Util::GetRandomFloat(-0.1f, 0.1f);
+
+		headP0_->Add(20, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 20.0f, 1.0f / 16.0f, 1.0f / 16.0f);
+	}
+
+	for (size_t i = 0; i < 25; i++)
+	{
+		Vector3 dir = Vector3();
+
+		dir.x = Util::GetRandomFloat(-0.1f, 0.1f);
+		dir.y = Util::GetRandomFloat(0.1f, 0.15f);
+		dir.z = Util::GetRandomFloat(-0.1f, 0.1f);
+
+		headP1_->Add(20, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 20.0f, 1.0f / 16.0f, 1.0f / 16.0f);
 	}
 }
 

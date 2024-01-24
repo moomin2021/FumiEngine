@@ -24,10 +24,15 @@ private:
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
+	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Object3D> object_ = nullptr;
+
 	// パーティクルエミッター
 	std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
+	std::unique_ptr<ParticleEmitter> smokeP_ = nullptr;
 	uint16_t particleHandle_ = 0;
-	Vector3 pos_ = { 0.0f, 0.0f, 0.0f };
+	uint16_t smokeHandle_ = 0;
+	Vector3 pos_ = { 0.0f, 1.75f, 0.0f };
 	float speed_ = 0.1f;
 #pragma endregion
 
@@ -59,6 +64,7 @@ private:
 	void MatUpdate();
 
 	// パーティクルの生成
-	void CreateParticle();
+	void CreateParticle(uint16_t i);
+	void CreateSmoke();
 #pragma endregion
 };

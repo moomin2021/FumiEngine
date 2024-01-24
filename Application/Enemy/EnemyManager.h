@@ -50,6 +50,9 @@ private:
 	// パーティクル
 	std::unique_ptr<ParticleEmitter> particle_ = nullptr;
 	uint16_t deathParticleH_ = 0;
+	std::unique_ptr<ParticleEmitter> headP0_ = nullptr;
+	uint16_t headH_ = 0;
+	std::unique_ptr<ParticleEmitter> headP1_ = nullptr;
 
 	uint16_t enemyDeathCounter_ = 0;
 
@@ -60,7 +63,7 @@ private:
 
 	// 一回に生成するパーティクルの数
 	const uint16_t particleNum_ = 10;
-	const uint16_t particleLife_ = 60;
+	const uint16_t particleLife_ = 20;
 	const float startParticleScale_ = 0.5f;
 	const float endParticleScale_ = 0.0f;
 	Vector2 particleRnd_ = { -0.5f, 0.5f };
@@ -102,6 +105,8 @@ public:
 private:
 	// 死亡パーティクルの追加
 	void AddDeathParticle(const Vector3& inPos);
+
+	void CreateHeadP(const Vector3& inPos);
 #pragma endregion
 
 #pragma region セッター関数

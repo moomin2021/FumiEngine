@@ -26,10 +26,10 @@ void EnemyCore::Initialize(const Vector3& inPos)
 #pragma endregion
 
 #pragma region コライダー
-	collider_ = std::make_unique<SphereCollider>();
-	collider_->SetObject3D(coreO_.get());
-	collider_->SetRadius(0.8f);
+	collider_ = std::make_unique<AABBCollider>();
 	collider_->SetAttribute(COL_ENEMY_CORE);
+	collider_->SetRadius({ 0.8f, 0.8f, 0.8f });
+	collider_->SetObject3D(coreO_.get());
 	sColMgr_->AddCollider(collider_.get());
 #pragma endregion
 

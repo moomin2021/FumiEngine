@@ -4,7 +4,7 @@
 #include "PointLight.h"
 #include "LightGroup.h"
 #include "CollisionManager.h"
-#include "SphereCollider.h"
+#include "AABBCollider.h"
 
 #include "Player.h"
 
@@ -29,7 +29,7 @@ private:
 	std::unique_ptr<Object3D> coreStandO_ = nullptr;
 
 	// コライダー
-	std::unique_ptr<SphereCollider> collider_ = nullptr;
+	std::unique_ptr<AABBCollider> collider_ = nullptr;
 
 	// オブジェクトのオフセット
 	Vector3 offset0_ = { 0.0f, 0.0f, 0.0f };
