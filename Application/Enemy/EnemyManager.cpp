@@ -162,7 +162,7 @@ void EnemyManager::OnCollision()
 void EnemyManager::CreateAddEnemy0(const Vector3& pos)
 {
 	uint16_t rnd = 0;
-	rnd = Util::GetRandomInt(0, 5);
+	rnd = Util::GetRandomInt(0, 10);
 
 	if (rnd <= 7)
 	{
@@ -281,21 +281,21 @@ void EnemyManager::CreateHeadP(const Vector3& inPos)
 		Vector3 dir = Vector3();
 
 		dir.x = Util::GetRandomFloat(-0.1f, 0.1f);
-		dir.y = Util::GetRandomFloat(0.1f, 0.4f);
+		dir.y = Util::GetRandomFloat(0.5f, 0.8f);
 		dir.z = Util::GetRandomFloat(-0.1f, 0.1f);
 
-		headP0_->Add(20, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 20.0f, 1.0f / 16.0f, 1.0f / 16.0f);
+		headP0_->Add(10, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 10.0f, 1.0f / 16.0f, 1.0f / 16.0f);
 	}
 
 	for (size_t i = 0; i < 25; i++)
 	{
 		Vector3 dir = Vector3();
 
-		dir.x = Util::GetRandomFloat(-0.1f, 0.1f);
-		dir.y = Util::GetRandomFloat(0.1f, 0.15f);
-		dir.z = Util::GetRandomFloat(-0.1f, 0.1f);
+		dir.x = Util::GetRandomFloat(-0.2f, 0.2f);
+		dir.y = Util::GetRandomFloat(0.1f, 0.4f);
+		dir.z = Util::GetRandomFloat(-0.2f, 0.2f);
 
-		headP1_->Add(20, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 20.0f, 1.0f / 16.0f, 1.0f / 16.0f);
+		headP1_->Add(10, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 10.0f, 1.0f / 16.0f, 1.0f / 16.0f);
 	}
 }
 

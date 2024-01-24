@@ -53,5 +53,8 @@ public:
 
 	// 交点までの距離を取得
 	inline float GetDistance() { return minDistance_; }
+
+	// 押し戻し距離を取得
+	inline float GetPushBackDis() { return pushBackDis_; }
 #pragma endregion
 };

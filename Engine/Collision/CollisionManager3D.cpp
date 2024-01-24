@@ -137,7 +137,7 @@ void CollisionManager3D::PushBackRayAndBlockCollision()
 		if (result == false) continue;
 
 		// 衝突フラグを[TRUE]にする
-		itA->SetIsHit(true);
+		if (itA->GetPushBackDis() > distance) itA->SetIsHit(true);
 		it_hit->SetIsHit(true);
 
 		// お互いを衝突したコライダーとして登録する
