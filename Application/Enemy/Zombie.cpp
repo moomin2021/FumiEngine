@@ -5,7 +5,8 @@
 #include "CollisionAttribute.h"
 
 CollisionManager3D* Zombie::sColMgr_ = nullptr;
-Model* Zombie::sModel_ = nullptr;
+Model* Zombie::sModel0_ = nullptr;
+Model* Zombie::sModel1_ = nullptr;
 Player* Zombie::sPlayer_ = nullptr;
 NavMesh* Zombie::sNavMesh_ = nullptr;
 
@@ -16,10 +17,12 @@ Zombie::~Zombie()
 	sColMgr_->RemovePushBackRayCollider(legC_.get());
 }
 
-void Zombie::Initialize(const Vector3& inPos)
+void Zombie::Initialize(const Vector3& inPos, const Vector3& inWanderingPos)
 {
+	wanderingPos_ = inWanderingPos;
+
 #pragma region オブジェクト
-	object_ = std::make_unique<Object3D>(sModel_);
+	object_ = std::make_unique<Object3D>(sModel0_);
 	object_->SetPosition(inPos);
 #pragma endregion
 

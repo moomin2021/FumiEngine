@@ -30,7 +30,8 @@ private:
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
 	std::unique_ptr<Model> mEnemy0_ = nullptr;
-	std::unique_ptr<Model> mZombie_ = nullptr;
+	std::unique_ptr<Model> mZombie0_ = nullptr;
+	std::unique_ptr<Model> mZombie1_ = nullptr;
 	std::unique_ptr<Model> mMagician_ = nullptr;
 	std::unique_ptr<Model> coreM_ = nullptr;
 	std::unique_ptr<Model> coreFrameM_ = nullptr;
@@ -93,7 +94,7 @@ public:
 	void OnCollision();
 
 	// エネミーを生成追加
-	void CreateAddEnemy0(const Vector3& pos);
+	void CreateAddEnemy0(const Vector3& pos, const Vector3& offset);
 
 	void AddCore(const Vector3& inPos);
 

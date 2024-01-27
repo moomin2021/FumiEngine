@@ -36,6 +36,7 @@ public:
 
 #pragma region ゲッター関数
 	bool GetSpawnFrag() { return isSpawn_; }
+	const Vector3& GetOffset() { return offset_; }
 	const Vector3& GetSpawnPos() { return spawnPos_; }
 #pragma endregion
 };

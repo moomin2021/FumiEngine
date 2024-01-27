@@ -9,7 +9,7 @@ private:
 	// オブジェクト中心からのオフセット
 	Vector3 offset_ = { 0.0f, 0.0f, 0.0f };
 	Vector3 reject_ = { 0.0f, 0.0f, 0.0f };
-	float pushBackRate_ = 0.1f;
+	float pushBackRate_ = 0.25f;
 #pragma endregion
 
 #pragma region メンバ関数

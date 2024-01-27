@@ -23,6 +23,7 @@ private:
 	enum class State {
 		WAIT,
 		CHASE,
+		WANDERING,
 	};
 
 	// 役割
@@ -34,7 +35,8 @@ private:
 #pragma region メンバ変数
 private:
 	static CollisionManager3D* sColMgr_;
-	static Model* sModel_;
+	static Model* sModel0_;
+	static Model* sModel1_;
 	static Player* sPlayer_;
 	static NavMesh* sNavMesh_;
 
@@ -83,6 +85,8 @@ private:
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
 	float moveSpd_ = 0.05f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
+	Vector3 wanderingPos_ = Vector3();// 徘徊位置
+	float wanderingRadius_ = 0.0f;
 
 	Vector3 knockBackVec_ = { 0.0f, 0.0f, 0.0f };
 	float knockBackSpd_ = 0.0f;
@@ -102,7 +106,7 @@ public:
 	~Zombie();
 
 	// 初期化処理
-	void Initialize(const Vector3& inPos);
+	void Initialize(const Vector3& inPos, const Vector3& inWanderingPos);
 
 	// 更新処理
 	void Update();
@@ -150,7 +154,7 @@ private:
 #pragma region セッター関数
 public:
 	static void SetCollisionManager(CollisionManager3D* inColMgr) { sColMgr_ = inColMgr; }
-	static void SetModel(Model* inModel) { sModel_ = inModel; }
+	static void SetModel(Model* inModel0, Model* inModel1) { sModel0_ = inModel0, sModel1_ = inModel1; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
 #pragma endregion

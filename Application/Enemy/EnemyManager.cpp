@@ -30,13 +30,14 @@ void EnemyManager::Initialize()
 #pragma region モデル
 	mBossGenerator_ = std::make_unique<Model>("bossGenerator");
 	mEnemy0_ = std::make_unique<Model>("stoneGolem");
-	mZombie_ = std::make_unique<Model>("zombie");
+	mZombie0_ = std::make_unique<Model>("zombie0");
+	mZombie1_ = std::make_unique<Model>("zombie1");
 	mMagician_ = std::make_unique<Model>("magician");
 	coreM_ = std::make_unique<Model>("core");
 	coreFrameM_ = std::make_unique<Model>("coreFrame");
 	coreStandM_ = std::make_unique<Model>("coreStand");
 
-	Zombie::SetModel(mZombie_.get());
+	Zombie::SetModel(mZombie0_.get(), mZombie1_.get());
 	Magician::SetModel(mMagician_.get());
 	EnemyCore::SetModel(coreM_.get(), coreFrameM_.get(), coreStandM_.get());
 #pragma endregion
@@ -65,7 +66,7 @@ void EnemyManager::Update()
 	{
 		if (it.GetSpawnFrag())
 		{
-			CreateAddEnemy0(it.GetSpawnPos());
+			CreateAddEnemy0(it.GetSpawnPos(), it.GetOffset());
 		}
 	}
 
@@ -111,7 +112,7 @@ void EnemyManager::Update()
 	{
 		if ((*it)->GetIsSpawn())
 		{
-			CreateAddEnemy0((*it)->GetSpawnPos());
+			CreateAddEnemy0((*it)->GetSpawnPos(), (*it)->GetPosition());
 		}
 
 		// 敵の更新
@@ -159,15 +160,15 @@ void EnemyManager::OnCollision()
 	for (auto& it : enemyCores_) it->OnCollision();
 }
 
-void EnemyManager::CreateAddEnemy0(const Vector3& pos)
+void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset)
 {
 	uint16_t rnd = 0;
-	rnd = Util::GetRandomInt(0, 10);
+	rnd = Util::GetRandomInt(0, 5);
 
 	if (rnd <= 7)
 	{
 		std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
-		newEnemy->Initialize(pos);
+		newEnemy->Initialize(pos, offset);
 
 		zombies_.emplace_back(std::move(newEnemy));
 	}
@@ -228,7 +229,7 @@ void EnemyManager::Debug(bool isDebug)
 	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
 	if (ImGui::Button("CreateEnemy"))
 	{
-		CreateAddEnemy0(enemyCreatePos);
+		CreateAddEnemy0(enemyCreatePos, enemyCreatePos);
 	}
 
 	if (ImGui::Button("DeleteEnemy"))
