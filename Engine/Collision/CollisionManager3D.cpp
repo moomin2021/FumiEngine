@@ -166,32 +166,35 @@ void CollisionManager3D::AABBCollision()
 		itB = itA;
 		++itB;
 
-		// イテレーターが最後だったら処理を飛ばす
-		if (itB == aabbColliders_.end()) continue;
-
-		// 属性が合わなければ処理を飛ばす
-		if (!((*itA)->GetAttribute() & (*itB)->GetAttribute())) continue;
-
-		// 押し戻しベクトル
-		Vector3 pushBackVec = Vector3();
-
-		// コライダーの更新
-		(*itA)->Update();
-		(*itB)->Update();
-
-		if (Collision::CheckAABB2AABB(*(*itA), *(*itB), &pushBackVec))
+		for (; itB != aabbColliders_.end(); ++itB)
 		{
-			// 衝突フラグを[TRUE]にする
-			(*itA)->SetIsHit(true);
-			(*itB)->SetIsHit(true);
+			// イテレーターが最後だったら処理を飛ばす
+			if (itB == aabbColliders_.end()) continue;
 
-			// お互いを衝突したコライダーとして登録する
-			(*itA)->SetHitCollider(*itB);
-			(*itB)->SetHitCollider(*itA);
+			// 属性が合わなければ処理を飛ばす
+			if (!((*itA)->GetAttribute() & (*itB)->GetAttribute())) continue;
 
-			// 押し戻し処理
-			(*itA)->PushBack(pushBackVec * (*itB)->GetPushBackRate());
-			(*itB)->PushBack(pushBackVec * (*itA)->GetPushBackRate());
+			// 押し戻しベクトル
+			Vector3 pushBackVec = Vector3();
+
+			// コライダーの更新
+			(*itA)->Update();
+			(*itB)->Update();
+
+			if (Collision::CheckAABB2AABB(*(*itA), *(*itB), &pushBackVec))
+			{
+				// 衝突フラグを[TRUE]にする
+				(*itA)->SetIsHit(true);
+				(*itB)->SetIsHit(true);
+
+				// お互いを衝突したコライダーとして登録する
+				(*itA)->SetHitCollider(*itB);
+				(*itB)->SetHitCollider(*itA);
+
+				// 押し戻し処理
+				(*itA)->PushBack(pushBackVec * (*itB)->GetPushBackRate());
+				(*itB)->PushBack(-pushBackVec * (*itA)->GetPushBackRate());
+			}
 		}
 	}
 }

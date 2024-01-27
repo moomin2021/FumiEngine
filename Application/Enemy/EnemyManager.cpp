@@ -63,13 +63,13 @@ void EnemyManager::Update()
 
 	for (auto& it : enemyGenerators_) it.Update();
 
-	for (auto& it : enemyGenerators_)
-	{
-		if (it.GetSpawnFrag())
-		{
-			CreateAddEnemy0(it.GetSpawnPos(), it.GetOffset());
-		}
-	}
+	//for (auto& it : enemyGenerators_)
+	//{
+	//	if (it.GetSpawnFrag())
+	//	{
+	//		CreateAddEnemy0(it.GetSpawnPos(), it.GetOffset());
+	//	}
+	//}
 
 	for (auto it = zombies_.begin(); it != zombies_.end();)
 	{
@@ -119,7 +119,7 @@ void EnemyManager::Update()
 	{
 		if ((*it)->GetIsSpawn())
 		{
-			CreateAddEnemy0((*it)->GetSpawnPos(), (*it)->GetPosition());
+			if (rushT_.GetOn()) CreateAddEnemy0((*it)->GetSpawnPos(), (*it)->GetPosition());
 		}
 
 		// 敵の更新
@@ -203,7 +203,12 @@ void EnemyManager::AddCore(const Vector3& inPos)
 
 	enemyGenerators_.emplace_back();
 	enemyGenerators_.back().SetOffset(inPos);
-	enemyGenerators_.back().AddSpawnNum(1);
+	enemyGenerators_.back().AddSpawnNum(10);
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		CreateAddEnemy0(inPos, inPos);
+	}
 }
 
 void EnemyManager::CheckSceneChange()
