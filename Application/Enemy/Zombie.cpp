@@ -53,6 +53,8 @@ void Zombie::Initialize(const Vector3& inPos, const Vector3& inWanderingPos)
 	line_ = std::make_unique<Line3D>();
 	line_->Initialize(100);
 	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	waitT_.coolTime = 3.0f;
 }
 
 void Zombie::Update()
@@ -62,9 +64,6 @@ void Zombie::Update()
 
 	// 重力処理
 	Gravity();
-
-	// 回転処理
-	Rotate();
 }
 
 void Zombie::Draw()
@@ -98,41 +97,71 @@ void Zombie::Debug(bool isDebug)
 
 void (Zombie::* Zombie::stateTable[]) () = {
 	&Zombie::Wait,		// 待機状態
+	&Zombie::Wandering,	// 徘徊状態
 	&Zombie::Chase,		// 追跡状態
 };
 
 void Zombie::Wait()
 {
+	if (waitT_.GetOn())
+	{
+		while (true)
+		{
+			Vector3 offset = Vector3();
+			offset.x = Util::GetRandomFloat(wanderingPos_.x - wanderingRadius_, wanderingPos_.x + wanderingRadius_);
+			offset.y = 3.0f;
+			offset.z = Util::GetRandomFloat(wanderingPos_.z - wanderingRadius_, wanderingPos_.z + wanderingRadius_);
+			bool result = CreateRoute(offset);
+			if (result) break;
+		}
+		state_ = State::WANDERING;
+	}
+}
+
+void Zombie::Wandering()
+{
+	bool result = Move();
+	if (result == false)
+	{
+		waitT_.last = Util::GetTimrMSec();
+		state_ = State::WAIT;
+	}
+
+	// 回転処理
+	Rotate();
 }
 
 void Zombie::Chase()
 {
 	// ルート探索
-	CreateRoute();
+	CreateRoute(sPlayer_->GetPosition());
 
 	// 移動処理
 	Move();
+
+	// 回転処理
+	Rotate();
 }
 
-void Zombie::CreateRoute()
+bool Zombie::CreateRoute(const Vector3& goalPos)
 {
-	// 最後にルート探索してからの経過時間
-	float elapsedTime = (Util::GetTimrMSec() - lastRouteSearchTime_) / 1000.0f;
+	//// 最後にルート探索してからの経過時間
+	//float elapsedTime = (Util::GetTimrMSec() - lastRouteSearchTime_) / 1000.0f;
 
-	// 経過時間がインターバルを過ぎていたらルート探索をする
-	if (!(routeSearchInterval_ <= elapsedTime)) return;
+	//// 経過時間がインターバルを過ぎていたらルート探索をする
+	//if (!(routeSearchInterval_ <= elapsedTime)) return false;
 
-	// 最後にルート探索した時間を更新
-	lastRouteSearchTime_ = Util::GetTimrMSec();
+	//// 最後にルート探索した時間を更新
+	//lastRouteSearchTime_ = Util::GetTimrMSec();
 
 	// ルート探索する際に加算するベクトル
 	Vector3 addVec = { 0.0f, 1.0f, 0.0f };
 
 	// ルートを検索
-	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + addVec, sPlayer_->GetPosition() + addVec, route_);
+	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + addVec, goalPos + addVec, route_);
 
 	// ルート検索が失敗したら処理を飛ばす
-	if (result == false) return;
+	if (result == false) return false;
 
 	// ルート描画用変数の初期化
 	line_->ClearPoint();
@@ -145,12 +174,14 @@ void Zombie::CreateRoute()
 
 	// 最初の座標を削除
 	route_.erase(route_.begin());
+
+	return true;
 }
 
-void Zombie::Move()
+bool Zombie::Move()
 {
 	// ルートがなかったら処理を飛ばす
-	if (route_.size() == 0) return;
+	if (route_.size() == 0) return false;
 
 	// 移動方向を計算
 	Vector3 moveVec = route_[0] - object_->GetPosition();
@@ -164,6 +195,8 @@ void Zombie::Move()
 
 	// オブジェクトの座標を更新
 	object_->SetPosition(object_->GetPosition() + moveVec * moveSpd_);
+
+	return true;
 }
 
 void Zombie::GroundingJudgment()
@@ -314,4 +347,15 @@ void Zombie::Jump()
 	velocity_ = JumpSpd_;
 
 	isGround_ = false;
+}
+
+bool Timer::GetOn()
+{
+	float elapsed = (Util::GetTimrMSec() - last) / 1000.0f;
+	if (elapsed >= coolTime)
+	{
+		last = Util::GetTimrMSec();
+		return true;
+	}
+	return false;
 }

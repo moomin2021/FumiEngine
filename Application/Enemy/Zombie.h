@@ -17,13 +17,21 @@
 
 #include <memory>
 
+struct Timer {
+	float coolTime = 0.0f;
+	int64_t last = 0;
+
+public:
+	bool GetOn();
+};
+
 class Zombie {
 private:
 	// 状態
 	enum class State {
 		WAIT,
-		CHASE,
 		WANDERING,
+		CHASE,
 	};
 
 	// 役割
@@ -54,7 +62,7 @@ private:
 	Vector3 bodyRadius_ = { 0.25f, 0.75f, 0.25f };
 
 	// 状態
-	State state_ = State::CHASE;
+	State state_ = State::WAIT;
 
 	// HP
 	uint8_t hp_ = 3;
@@ -86,7 +94,7 @@ private:
 	float moveSpd_ = 0.05f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
 	Vector3 wanderingPos_ = Vector3();// 徘徊位置
-	float wanderingRadius_ = 0.0f;
+	float wanderingRadius_ = 5.5f;
 
 	Vector3 knockBackVec_ = { 0.0f, 0.0f, 0.0f };
 	float knockBackSpd_ = 0.0f;
@@ -95,6 +103,8 @@ private:
 	uint64_t hitTime_ = 0;
 
 	bool isDebug_ = false;
+
+	Timer waitT_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
@@ -127,13 +137,14 @@ private:
 	// 状態別処理
 	static void (Zombie::* stateTable[]) ();
 	void Wait();	// 待機
+	void Wandering();// 徘徊
 	void Chase();	// 追跡
 
 	// ルート作成
-	void CreateRoute();
+	bool CreateRoute(const Vector3& goalPos);
 
 	// 移動処理
-	void Move();
+	bool Move();
 
 	// 接地判定
 	void GroundingJudgment();
