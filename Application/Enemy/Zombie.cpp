@@ -285,7 +285,7 @@ void Zombie::Rotate()
 		else angle_ += turnSpd_;
 	}
 
-	else
+	else if (forwardVec_.cross(enemy2Player) > 0)
 	{
 		if (result < turnSpd_) angle_ -= result;
 		else angle_ -= turnSpd_;
