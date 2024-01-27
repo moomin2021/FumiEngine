@@ -6,7 +6,7 @@
                 "translation": [
                     1.0,
                     -1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -20,7 +20,7 @@
                 "translation": [
                     -1.0,
                     -1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -34,7 +34,7 @@
                 "translation": [
                     -1.0,
                     1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -48,7 +48,7 @@
                 "translation": [
                     1.0,
                     1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -3729,20 +3729,6 @@
             "transform": {
                 "translation": [
                     0.0,
-                    -6.0,
-                    3.5
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            }
-        },
-        {
-            "transform": {
-                "translation": [
-                    -1.0,
                     -6.0,
                     3.5
                 ],
@@ -3758,6 +3744,20 @@
                 "translation": [
                     -1.0,
                     -6.0,
+                    3.5
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "transform": {
+                "translation": [
+                    -1.0,
+                    -6.0,
                     1.5
                 ],
                 "scaling": [
@@ -4024,7 +4024,7 @@
                 "translation": [
                     1.0,
                     0.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -4052,7 +4052,7 @@
                 "translation": [
                     -1.0,
                     0.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -4094,7 +4094,7 @@
                 "translation": [
                     0.0,
                     1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -4108,7 +4108,7 @@
                 "translation": [
                     0.0,
                     0.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -4122,7 +4122,7 @@
                 "translation": [
                     0.0,
                     -1.0,
-                    0.5
+                    -0.5
                 ],
                 "scaling": [
                     1.0,
@@ -4136,7 +4136,7 @@
                 "translation": [
                     0.0,
                     0.0,
-                    1.5
+                    0.0
                 ],
                 "scaling": [
                     1.0,
@@ -4247,21 +4247,6 @@
                     1.0,
                     4.0,
                     4.0
-                ]
-            },
-            "class_name": "collision"
-        },
-        {
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    0.5
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    1.0
                 ]
             },
             "class_name": "collision"
