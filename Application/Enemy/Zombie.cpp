@@ -235,37 +235,6 @@ void Zombie::Rotate()
 	// ルートがなかったら処理を飛ばす
 	if (route_.size() == 0) return;
 
-	//// 自分から次のルートまでのベクトル計算
-	//Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
-	//Vector2 nextPoint = { route_[0].x, route_[0].z };
-	//Vector2 enemy2NextPoint = nextPoint - enemy;
-
-	//// 自分の向きを計算
-	//forwardVec_ = { sinf(Util::Degree2Radian(angle_)), cosf(Util::Degree2Radian(angle_)) };
-
-	//// 正面ベクトルと自分からプレイヤーまでのベクトルのなす角を計算
-	//float lengthA = enemy2NextPoint.length();
-	//float lengthB = forwardVec_.length();
-	//float cosSita = enemy2NextPoint.dot(forwardVec_) / (lengthA * lengthB);
-	//float sita = acosf(cosSita);
-	//sita = Util::Radian2Degree(sita);
-
-	//// プレイヤーが正面からみて左右どちらにいるか判定
-	//if (forwardVec_.cross(enemy2NextPoint) < 0)
-	//{
-	//	if (sita < turnSpd_) angle_ += sita;
-	//	angle_ += turnSpd_;
-	//}
-
-	//else
-	//{
-	//	if (sita < turnSpd_) angle_ -= sita;
-	//	angle_ -= turnSpd_;
-	//}
-
-	//// オブジェクトの回転を更新
-	//object_->SetRotation({ 0.0f, angle_, 0.0f });
-
 	// エネミーからプレイヤーまでの向きを計算
 	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
 	Vector2 player = { route_[0].x, route_[0].z };
