@@ -17,13 +17,25 @@ Zombie::~Zombie()
 	sColMgr_->RemovePushBackRayCollider(legC_.get());
 }
 
-void Zombie::Initialize(const Vector3& inPos, const Vector3& inWanderingPos)
+void Zombie::Initialize(const Vector3& inPos, const Vector3& inWanderingPos, State inState)
 {
 	wanderingPos_ = inWanderingPos;
+	state_ = inState;
 
 #pragma region オブジェクト
-	object_ = std::make_unique<Object3D>(sModel0_);
-	object_->SetPosition(inPos);
+	if (inState == State::CHASE)
+	{
+		object_ = std::make_unique<Object3D>(sModel1_);
+		object_->SetPosition(inPos);
+		speed_ = rushSpd_;
+	}
+
+	else
+	{
+		object_ = std::make_unique<Object3D>(sModel0_);
+		object_->SetPosition(inPos);
+		speed_ = defSpd_;
+	}
 #pragma endregion
 
 #pragma region コライダー
@@ -188,13 +200,13 @@ bool Zombie::Move()
 	moveVec = { moveVec.x, 0.0f, moveVec.z };
 
 	// ルートの通過点を通ったら点を消す
-	if (moveVec.length() < moveSpd_) route_.erase(route_.begin());
+	if (moveVec.length() < speed_) route_.erase(route_.begin());
 
 	// 移動方向ベクトルを正規化
 	moveVec.normalize();
 
 	// オブジェクトの座標を更新
-	object_->SetPosition(object_->GetPosition() + moveVec * moveSpd_);
+	object_->SetPosition(object_->GetPosition() + moveVec * speed_);
 
 	return true;
 }
@@ -265,6 +277,8 @@ void Zombie::Rotate()
 
 void Zombie::Hit()
 {
+	isBody_ = false;
+
 	// 頭に攻撃を受けたら
 	if (headC_->GetIsHit() && headC_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
 	{
@@ -282,6 +296,10 @@ void Zombie::Hit()
 		knockBackVec_.y = 1.0f;
 		knockBackSpd_ = 0.5f;
 		hp_ -= 1;
+		if (state_ != State::CHASE)
+		{
+			isBody_ = true;
+		}
 
 		if (hp_ <= 0) isAlive_ = false;
 
@@ -318,13 +336,9 @@ void Zombie::Jump()
 	isGround_ = false;
 }
 
-bool Timer::GetOn()
+void Zombie::SetRushMode()
 {
-	float elapsed = (Util::GetTimrMSec() - last) / 1000.0f;
-	if (elapsed >= coolTime)
-	{
-		last = Util::GetTimrMSec();
-		return true;
-	}
-	return false;
+	state_ = State::CHASE;
+	object_->SetModel(sModel1_);
+	speed_ = rushSpd_;
 }

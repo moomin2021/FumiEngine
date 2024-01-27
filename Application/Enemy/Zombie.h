@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Object3D.h"
+#include "Timer.h"
 
 #include "CollisionManager3D.h"
 #include "AABBCollider.h"
@@ -17,16 +18,8 @@
 
 #include <memory>
 
-struct Timer {
-	float coolTime = 0.0f;
-	int64_t last = 0;
-
-public:
-	bool GetOn();
-};
-
 class Zombie {
-private:
+public:
 	// 状態
 	enum class State {
 		WAIT,
@@ -70,6 +63,7 @@ private:
 	// 生存フラグ
 	bool isAlive_ = true;
 	bool isHead_ = false;
+	bool isBody_ = false;
 
 	// 接地フラグ
 	bool isGround_ = false;
@@ -91,7 +85,9 @@ private:
 	std::unique_ptr<Line3D> line_ = nullptr;
 	float routeSearchInterval_ = 1.0f;// ルート探索のインターバル[s]
 	uint64_t lastRouteSearchTime_ = 0;// 最後にルート探索した時間
-	float moveSpd_ = 0.05f;
+	float speed_ = 0.0f;
+	float defSpd_ = 0.05f;
+	float rushSpd_ = 0.1f;
 	float visualRecognitionDist_ = 40.0f;// 視認距離
 	Vector3 wanderingPos_ = Vector3();// 徘徊位置
 	float wanderingRadius_ = 5.5f;
@@ -116,7 +112,7 @@ public:
 	~Zombie();
 
 	// 初期化処理
-	void Initialize(const Vector3& inPos, const Vector3& inWanderingPos);
+	void Initialize(const Vector3& inPos, const Vector3& inWanderingPos, State inState);
 
 	// 更新処理
 	void Update();
@@ -168,12 +164,14 @@ public:
 	static void SetModel(Model* inModel0, Model* inModel1) { sModel0_ = inModel0, sModel1_ = inModel1; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
+	void SetRushMode();
 #pragma endregion
 
 #pragma region ゲッター関数
 public:
 	bool GetIsAlive() { return isAlive_; }
 	bool GetIsHead() { return isHead_; }
+	bool GetIsBody() { return isBody_; }
 	const Vector3& GetPosition() { return object_->GetPosition(); }
 #pragma endregion
 };

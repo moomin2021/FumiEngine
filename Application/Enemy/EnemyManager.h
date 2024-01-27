@@ -17,6 +17,7 @@
 #include "EnemyCore.h"
 #include "DeltaTime.h"
 #include "ResultData.h"
+#include "Timer.h"
 
 #include <memory>
 
@@ -68,6 +69,9 @@ private:
 	const float startParticleScale_ = 0.5f;
 	const float endParticleScale_ = 0.0f;
 	Vector2 particleRnd_ = { -0.5f, 0.5f };
+
+	Timer rushT_ = Timer();
+	Timer rushCoolT_ = Timer();
 #pragma endregion
 
 #pragma region メンバ関数
@@ -108,6 +112,8 @@ private:
 	void AddDeathParticle(const Vector3& inPos);
 
 	void CreateHeadP(const Vector3& inPos);
+
+	void ZombieRushMode();
 #pragma endregion
 
 #pragma region セッター関数

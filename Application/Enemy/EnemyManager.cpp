@@ -53,6 +53,7 @@ void EnemyManager::Initialize()
 #pragma endregion
 
 	deltaTime_.Initialize();
+	rushT_.coolTime = 20.0f;
 }
 
 void EnemyManager::Update()
@@ -74,6 +75,12 @@ void EnemyManager::Update()
 	{
 		// 敵の更新
 		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			rushT_.last = Util::GetTimrMSec();
+			ZombieRushMode();
+		}
 
 		// 敵の生存フラグが[OFF]になったら消す
 		if ((*it)->GetIsAlive() == false)
@@ -168,7 +175,8 @@ void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset)
 	if (rnd <= 7)
 	{
 		std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
-		newEnemy->Initialize(pos, offset);
+		if (rushCoolT_.GetOn() == false) newEnemy->Initialize(pos, offset, Zombie::State::CHASE);
+		else newEnemy->Initialize(pos, offset, Zombie::State::WAIT);
 
 		zombies_.emplace_back(std::move(newEnemy));
 	}
@@ -297,6 +305,14 @@ void EnemyManager::CreateHeadP(const Vector3& inPos)
 		dir.z = Util::GetRandomFloat(-0.2f, 0.2f);
 
 		headP1_->Add(10, inPos + Vector3(0.0f, 1.75f, 0.0f), dir, -dir / 10.0f, 1.0f / 16.0f, 1.0f / 16.0f);
+	}
+}
+
+void EnemyManager::ZombieRushMode()
+{
+	for (auto& it : zombies_)
+	{
+		it->SetRushMode();
 	}
 }
 
