@@ -63,31 +63,8 @@ void EnemyManager::Update()
 
 	for (auto& it : enemyGenerators_) it.Update();
 
-	for (auto it = zombies_.begin(); it != zombies_.end();)
-	{
-		// 敵の更新
-		(*it)->Update();
-
-		if ((*it)->GetIsBody())
-		{
-			ZombieRangeSearch((*it)->GetPosition());
-		}
-
-		// 敵の生存フラグが[OFF]になったら消す
-		if ((*it)->GetIsAlive() == false)
-		{
-			if ((*it)->GetIsHead())
-			{
-				CreateHeadP((*it)->GetPosition());
-			}
-
-			AddDeathParticle((*it)->GetPosition());
-			it = zombies_.erase(it);
-			enemyDeathCounter_++;
-			killEnemy_++;
-		}
-		else ++it;
-	}
+	BoidCohesion();
+	ZombieUpdate();
 
 	for (auto it = magicians_.begin(); it != magicians_.end();)
 	{
@@ -105,12 +82,14 @@ void EnemyManager::Update()
 		else ++it;
 	}
 
+	uint8_t counter = 0;
+
 	// コア
 	for (auto it = enemyCores_.begin(); it != enemyCores_.end();)
 	{
 		if ((*it)->GetIsSpawn())
 		{
-			if (rushT_.GetOn()) CreateAddEnemy0((*it)->GetSpawnPos(), (*it)->GetPosition());
+			if (rushT_.GetOn()) CreateAddEnemy0((*it)->GetSpawnPos(), (*it)->GetPosition(), counter);
 		}
 
 		// 敵の更新
@@ -125,6 +104,8 @@ void EnemyManager::Update()
 			ZombieAllRushMode();
 		}
 		else ++it;
+
+		counter++;
 	}
 }
 
@@ -132,6 +113,10 @@ void EnemyManager::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 	for (auto& it : zombies_) it->Draw();
+	for (auto& it : zombies0_) it->Draw();
+	for (auto& it : zombies1_) it->Draw();
+	for (auto& it : zombies2_) it->Draw();
+	for (auto& it : zombies3_) it->Draw();
 	for (auto& it : magicians_) it->Draw();
 	PipelineManager::PreDraw("Object3D");
 	for (auto& it : enemyCores_) it->Draw();
@@ -145,6 +130,10 @@ void EnemyManager::Draw()
 void EnemyManager::MatUpdate()
 {
 	for (auto& it : zombies_) it->MatUpdate();
+	for (auto& it : zombies0_) it->MatUpdate();
+	for (auto& it : zombies1_) it->MatUpdate();
+	for (auto& it : zombies2_) it->MatUpdate();
+	for (auto& it : zombies3_) it->MatUpdate();
 	for (auto& it : magicians_) it->MatUpdate();
 	for (auto& it : enemyCores_) it->MatUpdate();
 
@@ -156,33 +145,49 @@ void EnemyManager::MatUpdate()
 void EnemyManager::OnCollision()
 {
 	for (auto& it : zombies_) it->OnCollision();
+	for (auto& it : zombies0_) it->OnCollision();
+	for (auto& it : zombies1_) it->OnCollision();
+	for (auto& it : zombies2_) it->OnCollision();
+	for (auto& it : zombies3_) it->OnCollision();
 	for (auto& it : magicians_) it->OnCollision();
 	for (auto& it : enemyCores_) it->OnCollision();
 }
 
-void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset)
+//void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset)
+//{
+//	uint16_t rnd = 0;
+//	rnd = Util::GetRandomInt(0, 5);
+//
+//	if (rnd <= 7)
+//	{
+//		std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
+//		if (rushCoolT_.GetOn() == false) newEnemy->Initialize(pos, offset, Zombie::State::CHASE);
+//		else newEnemy->Initialize(pos, offset, Zombie::State::WAIT);
+//
+//		zombies_.emplace_back(std::move(newEnemy));
+//	}
+//
+//	else
+//	{
+//		// 敵の生成
+//		std::unique_ptr<Magician> newEnemy = std::make_unique<Magician>();
+//		newEnemy->Initialize(pos);
+//
+//		// エネミー配列に追加
+//		magicians_.emplace_back(std::move(newEnemy));
+//	}
+//}
+
+void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset, uint8_t id)
 {
-	uint16_t rnd = 0;
-	rnd = Util::GetRandomInt(0, 5);
+	std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
+	if (rushCoolT_.GetOn() == false) newEnemy->Initialize(pos, offset, Zombie::State::CHASE);
+	else newEnemy->Initialize(pos, offset, Zombie::State::WAIT);
 
-	if (rnd <= 7)
-	{
-		std::unique_ptr<Zombie> newEnemy = std::make_unique<Zombie>();
-		if (rushCoolT_.GetOn() == false) newEnemy->Initialize(pos, offset, Zombie::State::CHASE);
-		else newEnemy->Initialize(pos, offset, Zombie::State::WAIT);
-
-		zombies_.emplace_back(std::move(newEnemy));
-	}
-
-	else
-	{
-		// 敵の生成
-		std::unique_ptr<Magician> newEnemy = std::make_unique<Magician>();
-		newEnemy->Initialize(pos);
-
-		// エネミー配列に追加
-		magicians_.emplace_back(std::move(newEnemy));
-	}
+	if (id == 0) zombies0_.emplace_back(std::move(newEnemy));
+	if (id == 1) zombies1_.emplace_back(std::move(newEnemy));
+	if (id == 2) zombies2_.emplace_back(std::move(newEnemy));
+	if (id == 3) zombies3_.emplace_back(std::move(newEnemy));
 }
 
 void EnemyManager::AddCore(const Vector3& inPos)
@@ -200,8 +205,10 @@ void EnemyManager::AddCore(const Vector3& inPos)
 
 	for (size_t i = 0; i < 10; i++)
 	{
-		CreateAddEnemy0(inPos, inPos);
+		CreateAddEnemy0(inPos, inPos, coreCounter_);
 	}
+
+	coreCounter_++;
 }
 
 void EnemyManager::CheckSceneChange()
@@ -235,7 +242,7 @@ void EnemyManager::Debug(bool isDebug)
 	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
 	if (ImGui::Button("CreateEnemy"))
 	{
-		CreateAddEnemy0(enemyCreatePos, enemyCreatePos);
+		//CreateAddEnemy0(enemyCreatePos, enemyCreatePos);
 	}
 
 	if (ImGui::Button("DeleteEnemy"))
@@ -306,17 +313,317 @@ void EnemyManager::CreateHeadP(const Vector3& inPos)
 	}
 }
 
+void EnemyManager::ZombieUpdate()
+{
+	for (auto it = zombies_.begin(); it != zombies_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			ZombieRangeSearch((*it)->GetPosition());
+		}
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
+			AddDeathParticle((*it)->GetPosition());
+			it = zombies_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+
+	for (auto it = zombies0_.begin(); it != zombies0_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			ZombieRangeSearch((*it)->GetPosition());
+		}
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
+			AddDeathParticle((*it)->GetPosition());
+			it = zombies0_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+
+	for (auto it = zombies1_.begin(); it != zombies1_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			ZombieRangeSearch((*it)->GetPosition());
+		}
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
+			AddDeathParticle((*it)->GetPosition());
+			it = zombies1_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+
+	for (auto it = zombies2_.begin(); it != zombies2_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			ZombieRangeSearch((*it)->GetPosition());
+		}
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
+			AddDeathParticle((*it)->GetPosition());
+			it = zombies2_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+
+	for (auto it = zombies3_.begin(); it != zombies3_.end();)
+	{
+		// 敵の更新
+		(*it)->Update();
+
+		if ((*it)->GetIsBody())
+		{
+			ZombieRangeSearch((*it)->GetPosition());
+		}
+
+		// 敵の生存フラグが[OFF]になったら消す
+		if ((*it)->GetIsAlive() == false)
+		{
+			if ((*it)->GetIsHead())
+			{
+				CreateHeadP((*it)->GetPosition());
+			}
+
+			AddDeathParticle((*it)->GetPosition());
+			it = zombies3_.erase(it);
+			enemyDeathCounter_++;
+			killEnemy_++;
+		}
+		else ++it;
+	}
+}
+
+void EnemyManager::BoidSeparation()
+{
+	for (size_t i = 0; i < zombies0_.size(); i++)
+	{
+		Vector3 vec = Vector3();
+		float min = FLT_MAX;
+		size_t index = 0;
+		for (size_t j = 0; j < zombies0_.size(); j++)
+		{
+			if (i == j) continue;
+
+			Vector3 zombie2zombie = zombies0_[i]->GetPosition() - zombies0_[j]->GetPosition();
+			if (zombie2zombie.length() < min)
+			{
+				vec = zombie2zombie;
+				min = zombie2zombie.length();
+				index = j;
+			}
+		}
+
+		zombies0_[i]->AddMoveVec(vec);
+	}
+
+	for (size_t i = 0; i < zombies1_.size(); i++)
+	{
+		Vector3 vec = Vector3();
+		float min = FLT_MAX;
+		size_t index = 0;
+		for (size_t j = 0; j < zombies1_.size(); j++)
+		{
+			if (i == j) continue;
+
+			Vector3 zombie2zombie = zombies1_[i]->GetPosition() - zombies1_[j]->GetPosition();
+			if (zombie2zombie.length() < min)
+			{
+				vec = zombie2zombie;
+				min = zombie2zombie.length();
+				index = j;
+			}
+		}
+
+		zombies1_[i]->AddMoveVec(vec);
+	}
+	
+	for (size_t i = 0; i < zombies2_.size(); i++)
+	{
+		Vector3 vec = Vector3();
+		float min = FLT_MAX;
+		size_t index = 0;
+		for (size_t j = 0; j < zombies2_.size(); j++)
+		{
+			if (i == j) continue;
+
+			Vector3 zombie2zombie = zombies2_[i]->GetPosition() - zombies2_[j]->GetPosition();
+			if (zombie2zombie.length() < min)
+			{
+				vec = zombie2zombie;
+				min = zombie2zombie.length();
+				index = j;
+			}
+		}
+
+		zombies2_[i]->AddMoveVec(vec);
+	}
+
+	for (size_t i = 0; i < zombies3_.size(); i++)
+	{
+		Vector3 vec = Vector3();
+		float min = FLT_MAX;
+		size_t index = 0;
+		for (size_t j = 0; j < zombies3_.size(); j++)
+		{
+			if (i == j) continue;
+
+			Vector3 zombie2zombie = zombies3_[i]->GetPosition() - zombies3_[j]->GetPosition();
+			if (zombie2zombie.length() < min)
+			{
+				vec = zombie2zombie;
+				min = zombie2zombie.length();
+				index = j;
+			}
+		}
+
+		zombies3_[i]->AddMoveVec(vec);
+	}
+}
+
+void EnemyManager::BoidCohesion()
+{
+	Vector3 center = Vector3();
+	for (auto& it : zombies0_)
+	{
+		center += it->GetPosition();
+	}
+	center /= (float)zombies0_.size();
+
+	for (auto& it : zombies0_)
+	{
+		it->AddMoveVec(center - it->GetPosition());
+	}
+
+	center = Vector3();
+	for (auto& it : zombies1_)
+	{
+		center += it->GetPosition();
+	}
+	center /= (float)zombies1_.size();
+
+	for (auto& it : zombies1_)
+	{
+		it->AddMoveVec(center - it->GetPosition());
+	}
+
+	center = Vector3();
+	for (auto& it : zombies2_)
+	{
+		center += it->GetPosition();
+	}
+	center /= (float)zombies2_.size();
+
+	for (auto& it : zombies2_)
+	{
+		it->AddMoveVec(center - it->GetPosition());
+	}
+
+	center = Vector3();
+	for (auto& it : zombies3_)
+	{
+		center += it->GetPosition();
+	}
+	center /= (float)zombies3_.size();
+
+	for (auto& it : zombies3_)
+	{
+		it->AddMoveVec(center - it->GetPosition());
+	}
+}
+
 void EnemyManager::ZombieAllRushMode()
 {
 	for (auto& it : zombies_)
 	{
 		it->SetRushMode();
 	}
+
+	for (auto& it : zombies0_) it->SetRushMode();
+	for (auto& it : zombies1_) it->SetRushMode();
+	for (auto& it : zombies2_) it->SetRushMode();
+	for (auto& it : zombies3_) it->SetRushMode();
 }
 
 void EnemyManager::ZombieRangeSearch(const Vector3& inPos)
 {
 	for (auto& it : zombies_)
+	{
+		Vector3 v = inPos - it->GetPosition();
+		if (v.length() <= 10.0f) it->SetRushMode();
+	}
+
+	for (auto& it : zombies0_)
+	{
+		Vector3 v = inPos - it->GetPosition();
+		if (v.length() <= 10.0f) it->SetRushMode();
+	}
+
+	for (auto& it : zombies1_)
+	{
+		Vector3 v = inPos - it->GetPosition();
+		if (v.length() <= 10.0f) it->SetRushMode();
+	}
+
+	for (auto& it : zombies2_)
+	{
+		Vector3 v = inPos - it->GetPosition();
+		if (v.length() <= 10.0f) it->SetRushMode();
+	}
+
+	for (auto& it : zombies3_)
 	{
 		Vector3 v = inPos - it->GetPosition();
 		if (v.length() <= 10.0f) it->SetRushMode();

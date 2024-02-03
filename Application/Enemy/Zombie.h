@@ -79,6 +79,7 @@ private:
 	float turnSpd_ = 8.0f;
 	float angle_ = 0.0f;
 	Vector2 forwardVec_ = { 0.0f, 1.0f };
+	Vector3 moveVec_ = { 0.0f, 0.0f, 0.0f };
 
 	// ルート探索
 	std::vector<Vector3> route_ = {};
@@ -129,6 +130,8 @@ public:
 	// デバック
 	void Debug(bool isDebug);
 
+	void AddMoveVec(const Vector3& inVec) { moveVec_ += inVec; }
+
 private:
 	// 状態別処理
 	static void (Zombie::* stateTable[]) ();
@@ -141,6 +144,7 @@ private:
 
 	// 移動処理
 	bool Move();
+	bool RushMove();
 
 	// 接地判定
 	void GroundingJudgment();

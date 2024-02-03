@@ -149,7 +149,7 @@ void Zombie::Chase()
 	CreateRoute(sPlayer_->GetPosition());
 
 	// 移動処理
-	Move();
+	RushMove();
 
 	// 回転処理
 	Rotate();
@@ -207,6 +207,28 @@ bool Zombie::Move()
 
 	// オブジェクトの座標を更新
 	object_->SetPosition(object_->GetPosition() + moveVec * speed_);
+
+	return true;
+}
+
+bool Zombie::RushMove()
+{
+	Vector3 resultMoveVec = { moveVec_.x, 0.0f, moveVec_.z };
+	resultMoveVec.normalize();
+
+	if (route_.size() != 0)
+	{
+		Vector3 routeVec = route_[0] - object_->GetPosition();
+		if (routeVec.length() < speed_) route_.erase(route_.begin());
+		resultMoveVec += routeVec;
+	}
+
+	resultMoveVec.normalize();
+
+	// オブジェクトの座標を更新
+	object_->SetPosition(object_->GetPosition() + resultMoveVec * speed_);
+
+	resultMoveVec = Vector3();
 
 	return true;
 }

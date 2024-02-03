@@ -42,6 +42,12 @@ private:
 	std::deque<std::unique_ptr<Zombie>> zombies_ = {};
 	std::deque<std::unique_ptr<Magician>> magicians_ = {};
 
+	std::deque<std::unique_ptr<Zombie>> zombies0_ = {};
+	std::deque<std::unique_ptr<Zombie>> zombies1_ = {};
+	std::deque<std::unique_ptr<Zombie>> zombies2_ = {};
+	std::deque<std::unique_ptr<Zombie>> zombies3_ = {};
+	uint8_t coreCounter_ = 0;
+
 	// コア
 	std::deque<std::unique_ptr<EnemyCore>> enemyCores_ = {};
 
@@ -98,7 +104,7 @@ public:
 	void OnCollision();
 
 	// エネミーを生成追加
-	void CreateAddEnemy0(const Vector3& pos, const Vector3& offset);
+	void CreateAddEnemy0(const Vector3& pos, const Vector3& offset, uint8_t id);
 
 	void AddCore(const Vector3& inPos);
 
@@ -112,7 +118,10 @@ private:
 	void AddDeathParticle(const Vector3& inPos);
 
 	void CreateHeadP(const Vector3& inPos);
+	void ZombieUpdate();
 
+	void BoidSeparation();
+	void BoidCohesion();
 	void ZombieAllRushMode();
 	void ZombieRangeSearch(const Vector3& inPos);
 #pragma endregion
