@@ -63,14 +63,6 @@ void EnemyManager::Update()
 
 	for (auto& it : enemyGenerators_) it.Update();
 
-	//for (auto& it : enemyGenerators_)
-	//{
-	//	if (it.GetSpawnFrag())
-	//	{
-	//		CreateAddEnemy0(it.GetSpawnPos(), it.GetOffset());
-	//	}
-	//}
-
 	for (auto it = zombies_.begin(); it != zombies_.end();)
 	{
 		// 敵の更新
@@ -78,8 +70,7 @@ void EnemyManager::Update()
 
 		if ((*it)->GetIsBody())
 		{
-			rushT_.last = Util::GetTimrMSec();
-			ZombieRushMode();
+			ZombieRangeSearch((*it)->GetPosition());
 		}
 
 		// 敵の生存フラグが[OFF]になったら消す
@@ -130,6 +121,8 @@ void EnemyManager::Update()
 		{
 			it = enemyCores_.erase(it);
 			breakCore_++;
+			rushT_.last = Util::GetTimrMSec();
+			ZombieAllRushMode();
 		}
 		else ++it;
 	}
@@ -313,11 +306,20 @@ void EnemyManager::CreateHeadP(const Vector3& inPos)
 	}
 }
 
-void EnemyManager::ZombieRushMode()
+void EnemyManager::ZombieAllRushMode()
 {
 	for (auto& it : zombies_)
 	{
 		it->SetRushMode();
+	}
+}
+
+void EnemyManager::ZombieRangeSearch(const Vector3& inPos)
+{
+	for (auto& it : zombies_)
+	{
+		Vector3 v = inPos - it->GetPosition();
+		if (v.length() <= 10.0f) it->SetRushMode();
 	}
 }
 

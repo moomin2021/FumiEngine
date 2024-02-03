@@ -113,7 +113,8 @@ private:
 
 	void CreateHeadP(const Vector3& inPos);
 
-	void ZombieRushMode();
+	void ZombieAllRushMode();
+	void ZombieRangeSearch(const Vector3& inPos);
 #pragma endregion
 
 #pragma region セッター関数
