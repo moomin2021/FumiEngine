@@ -1,9 +1,20 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #include <DirectXTex.h>
 #include <wrl.h>
 #include <string>
 #include <map>
+
+struct FileName {
+	// ディレクトリパス
+	std::wstring directoryPath = {};
+
+	// ファイル名
+	std::wstring fileName = {};
+
+	// ファイル拡張子
+	std::wstring fileExt = {};
+};
 
 class Texture {
 private:
@@ -44,7 +55,7 @@ public:
 	void Initialize();
 
 	// 画像イメージを読み取る
-	void LoadImageFile(const std::string filePath, DirectX::ScratchImage& scratchImage, DirectX::TexMetadata& metadata);
+	void LoadImageFile(const std::string filePath, DirectX::ScratchImage& scratchImage, DirectX::TexMetadata& metadata, FileName fileName);
 
 	// テクスチャバッファを生成
 	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata, D3D12_RESOURCE_DESC& texResourceDesc);
@@ -80,6 +91,19 @@ private:
 	/// SRV用でスクリプタヒープ生成
 	/// </summary>
 	void CreateDescriptorHeap();
+
+	/// <summary>
+	/// フォルダパスとファイル名を分離する
+	/// </summary>
+	/// <param name="filePath"> ファイルパス </param>
+	FileName SeparateFilePath(const std::wstring& filePath);
+
+	/// <summary>
+	/// マルチバイト文字列をワイド文字列も変換
+	/// </summary>
+	/// <param name="mString"> マルチバイト文字列 </param>
+	/// <returns> ワイド文字列 </returns>
+	static std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
 
 #pragma endregion
 

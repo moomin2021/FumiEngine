@@ -7,12 +7,7 @@
 
 // シーン列挙型
 enum SCENE {
-	TITLE,
-	GAME,
-	MAPCREATE,
-	TEST,
-	GAMEOVER,
-	TRANSITION,
+	GAME
 };
 
 enum PostEffectType {
@@ -32,7 +27,7 @@ private:
 	// 現在のシーン
 	std::unique_ptr<BaseScene> nowScene_;
 
-	SCENE nextScene_ = TITLE;
+	SCENE nextScene_ = GAME;
 
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> gaussianPostEffect_;

@@ -3,13 +3,7 @@
 #include "PipelineManager.h"
 #include "ImGuiManager.h"
 
-#include "TitleScene.h"
 #include "GameScene.h"
-#include "MapCreateScene.h"
-#include "TestScene.h"
-#include "GameOverScene.h"
-#include "TransitionScene.h"
-#include "TestScene.h"
 
 // インスタンス取得
 SceneManager* SceneManager::GetInstance()
@@ -41,7 +35,7 @@ SceneManager::SceneManager() :
 	key_ = Key::GetInstance();
 
 	// 最初のシーン
-	nowScene_ = std::make_unique<TitleScene>();
+	nowScene_ = std::make_unique<GameScene>();
 	nowScene_->Initialize();
 
 	gaussianPostEffect_ = std::make_unique<PostEffect>();
@@ -62,28 +56,8 @@ void SceneManager::ChangeScene(SCENE changeSceneNum)
 
 	switch (changeSceneNum)
 	{
-	case SCENE::TITLE:
-		nowScene_ = std::make_unique<TitleScene>();
-		nowScene_->Initialize();
-		break;
 	case SCENE::GAME:
 		nowScene_ = std::make_unique<GameScene>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::MAPCREATE:
-		nowScene_ = std::make_unique<MapCreateScene>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::TEST:
-		nowScene_ = std::make_unique<TestScene>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::GAMEOVER:
-		nowScene_ = std::make_unique<GameOverScene>();
-		nowScene_->Initialize();
-		break;
-	case SCENE::TRANSITION:
-		nowScene_ = std::make_unique<TransitionScene>();
 		nowScene_->Initialize();
 		break;
 	}
@@ -103,17 +77,11 @@ void SceneManager::Update() {
 	//if (key_->TriggerKey(DIK_2)) postEffectType_ = PostEffectType::BLUR;
 	//if (key_->TriggerKey(DIK_3)) postEffectType_ = PostEffectType::BLOOM;
 
-	if (key_->TriggerKey(DIK_1)) SceneTransition(TEST);
 
 	ImGuiManager::GetInstance()->Begin();
 
 	nowScene_->Update();
 
-	if (isTransition_)
-	{
-		isTransition_ = false;
-		ChangeScene(TRANSITION);
-	}
 }
 
 // 描画処理
