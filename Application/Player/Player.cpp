@@ -119,6 +119,8 @@ void Player::Debug()
 	ImGui::Text("playerPos = { %f, %f, %f }", playerPos.x, playerPos.y, playerPos.z);
 	ImGui::Text("distance = %f", groundJudgmentC_->GetDistance());
 	ImGui::End();
+
+	eyeAngle_.x = 0.0f;
 }
 
 void Player::SetKnock(const Vector3& vec)

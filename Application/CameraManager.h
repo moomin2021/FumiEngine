@@ -29,6 +29,9 @@ public:
 	// 行列更新処理
 	void MatUpdate();
 
+	// カメラ変更
+	void ChangeCamera(Camera* inCamera);
+
 	CameraManager() {}
 	~CameraManager() {}
 #pragma endregion

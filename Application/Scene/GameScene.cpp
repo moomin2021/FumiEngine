@@ -64,6 +64,11 @@ void GameScene::Initialize()
 	cameraMgr_->Initialize(player_->GetCamera());
 #pragma endregion
 
+#pragma region デバックカメラ
+	debugCamera_ = std::make_unique<DebugCamera>();
+	debugCamera_->Initialize(player_.get());
+#pragma endregion
+
 	// ステージ読み込み
 	stage_->CreateStage();
 
@@ -94,6 +99,8 @@ void GameScene::Update()
 
 	// エネミーマネージャー
 	enemyMgr_->Update();
+
+	debugCamera_->Update();
 
 	// 衝突時処理
 	OnCollision();
@@ -140,6 +147,8 @@ void GameScene::Debug()
 			isDebug_ = false;
 			WinAPI::GetInstance()->DisplayCursor(false);
 			WinAPI::GetInstance()->SetClipCursor(true);
+
+			cameraMgr_->ChangeCamera(player_->GetCamera());
 		}
 
 		else
@@ -147,6 +156,8 @@ void GameScene::Debug()
 			isDebug_ = true;
 			WinAPI::GetInstance()->DisplayCursor(true);
 			WinAPI::GetInstance()->SetClipCursor(false);
+
+			cameraMgr_->ChangeCamera(debugCamera_->GetCamera());
 		}
 	}
 
@@ -160,6 +171,8 @@ void GameScene::Debug()
 	ImGui::Begin("DeltaTime");
 	ImGui::Text("deltaTime = %f", deltaTime_.GetDeltaTime());
 	ImGui::End();
+
+	debugCamera_->Debug();
 
 	player_->Debug();
 }
@@ -191,6 +204,8 @@ void GameScene::MatUpdate()
 
 	// ステージクラス
 	stage_->MatUpdate();
+
+	debugCamera_->MatUpdate();
 
 	sGameUI_->MatUpdate();
 	sObjectiveText_->MatUpdate();

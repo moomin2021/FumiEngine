@@ -13,6 +13,7 @@
 #include "NavMesh.h"
 #include "DeltaTime.h"
 #include "CameraManager.h"
+#include "DebugCamera.h"
 
 #include <memory>
 
@@ -39,6 +40,9 @@ private:
 
 	// カメラマネージャー
 	std::unique_ptr<CameraManager> cameraMgr_ = nullptr;
+
+	// デバックカメラ
+	std::unique_ptr<DebugCamera> debugCamera_ = nullptr;
 
 	// デバック
 	bool isDebug_ = false;

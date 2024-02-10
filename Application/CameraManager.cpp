@@ -22,3 +22,16 @@ void CameraManager::MatUpdate()
 {
 	nowCamera_->Update();
 }
+
+void CameraManager::ChangeCamera(Camera* inCamera)
+{
+	// カメラを登録
+	nowCamera_ = inCamera;
+
+	// カメラを設定
+	Object3D::SetCamera(nowCamera_);
+	Sprite::SetCamera(nowCamera_);
+	Line3D::SetCamera(nowCamera_);
+	Instancing3D::SetCamera(nowCamera_);
+	ParticleEmitter::SetCamera(nowCamera_);
+}
