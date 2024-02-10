@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="Application\Enemy\EnemyGenerator.cpp" />
     <ClCompile Include="Application\Enemy\EnemyCore.cpp" />
+    <ClCompile Include="Application\CameraManager.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp" />
     <ClCompile Include="Engine\Util\DeltaTime.cpp" />
     <ClCompile Include="Engine\Util\Buffer.cpp" />
@@ -177,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
     <ClInclude Include="Application\Enemy\EnemyCore.h" />
+    <ClInclude Include="Application\CameraManager.h" />
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
     <ClInclude Include="Engine\Util\DeltaTime.h" />
     <ClInclude Include="Engine\Util\Buffer.h" />

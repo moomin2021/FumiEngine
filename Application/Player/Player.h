@@ -172,5 +172,6 @@ public:
 	inline bool GetIsReload() { return isReload_; }
 	uint16_t GetMaxBullet() { return maxBullet_; }
 	uint16_t GetNowBullet() { return nowBullet_; }
+	Camera* GetCamera() { return camera_.get(); }
 #pragma endregion
 };

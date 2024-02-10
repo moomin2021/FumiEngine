@@ -12,6 +12,7 @@
 #include "EnemyManager.h"
 #include "NavMesh.h"
 #include "DeltaTime.h"
+#include "CameraManager.h"
 
 #include <memory>
 
@@ -35,6 +36,9 @@ private:
 
 	// エネミーマネージャー
 	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
+
+	// カメラマネージャー
+	std::unique_ptr<CameraManager> cameraMgr_ = nullptr;
 
 	// デバック
 	bool isDebug_ = false;

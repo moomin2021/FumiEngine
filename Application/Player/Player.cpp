@@ -62,11 +62,6 @@ void Player::Initialize(const Vector3& startPos)
 
 #pragma region カメラ
 	camera_ = std::make_unique<Camera>();
-	Object3D::SetCamera(camera_.get());
-	Sprite::SetCamera(camera_.get());
-	Line3D::SetCamera(camera_.get());
-	Instancing3D::SetCamera(camera_.get());
-	ParticleEmitter::SetCamera(camera_.get());
 #pragma endregion
 }
 

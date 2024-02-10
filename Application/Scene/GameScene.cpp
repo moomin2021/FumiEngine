@@ -59,6 +59,11 @@ void GameScene::Initialize()
 	stage_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
+#pragma region カメラマネージャー
+	cameraMgr_ = std::make_unique<CameraManager>();
+	cameraMgr_->Initialize(player_->GetCamera());
+#pragma endregion
+
 	// ステージ読み込み
 	stage_->CreateStage();
 
@@ -175,6 +180,8 @@ void GameScene::OnCollision()
 
 void GameScene::MatUpdate()
 {
+	cameraMgr_->MatUpdate();
+
 	// プレイヤー
 	player_->MatUpdate();
 	playerUI_->MatUpdate();
