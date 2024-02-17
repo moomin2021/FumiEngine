@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 // DirectXInput
 #include <dinput.h>
 
@@ -51,6 +51,8 @@ public:
 	/// <param name="button"> 判定したいマウスボタン </param>
 	/// <returns></returns>
 	bool PushMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80); }
+
+	int GetMouseWheel() { return nowMouse_.lZ; }
 
 	/// <summary>
 	/// 指定されたマウスのボタンが押された瞬間だったら、1を返し、そうでなかった場合0を返す

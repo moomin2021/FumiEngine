@@ -1,4 +1,6 @@
 #pragma once
+#include "Key.h"
+#include "Mouse.h"
 #include "Camera.h"
 #include "Player.h"
 
@@ -8,11 +10,15 @@ class DebugCamera
 {
 #pragma region メンバ変数
 private:
+	// インスタンス
+	Key* key_ = nullptr;
+	Mouse* mouse_ = nullptr;
+
 	// カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 
 	// 情報
-	Vector3 eye_ = Vector3(0.0f, 10.0f, 0.0f);
+	Vector3 eye_ = Vector3(0.0f, 15.0f, 0.0f);
 	Vector3 target_ = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 up_ = Vector3(0.0f, 1.0f, 0.0f);
 
