@@ -93,7 +93,7 @@ void Player::OnCollision()
 	else isDash_ = false;
 
 	// ADS入力をとる
-	if (mouse_->PushMouseButton(MouseButton::M_RIGHT)) isAds_ = true;
+	if (mouse_->PushMouseButton(MouseButton::M_RIGHT) && nowBullet_ != 0) isAds_ = true;
 	else isAds_ = false;
 }
 
