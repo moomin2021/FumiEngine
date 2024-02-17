@@ -103,6 +103,7 @@ private:
 	uint64_t shotTime_ = 0;// 最後に撃った時間
 	bool isReload_ = false;	// リロードしているか
 	uint8_t reloadTime_ = 3;// リロード時間
+	uint64_t startReloadTime_ = 0;
 
 	uint8_t damageCooldown_ = 30;
 	uint8_t damageCount_ = 30;

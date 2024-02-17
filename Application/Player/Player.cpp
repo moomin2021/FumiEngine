@@ -363,6 +363,14 @@ void Player::Shot()
 	// 残弾を減らす
 	nowBullet_--;
 
+	// 0発になったらリロードを開始
+	if (nowBullet_ == 0 && isReload_ == false)
+	{
+		isReload_ = true;
+		startReloadTime_ = Util::GetTimeSec();
+		nowBullet_ = 0;
+	}
+
 	// 拡散の計算
 	nowDiffusivity_ = Easing::lerp(maxDiffusivity_, 0.0f, adsRate_);
 	Vector3 shotAngle = {
@@ -387,14 +395,11 @@ void Player::Shot()
 
 void Player::Reload()
 {
-	// リロード開始時間[s]
-	static uint64_t startReloadTime = 0;
-
 	// [R]キーが押されたらリロードを開始
 	if (key_->TriggerKey(DIK_R) && isReload_ == false)
 	{
 		isReload_ = true;
-		startReloadTime = Util::GetTimeSec();
+		startReloadTime_ = Util::GetTimeSec();
 		nowBullet_ = 0;
 	}
 
@@ -402,7 +407,7 @@ void Player::Reload()
 	if (isReload_)
 	{
 		// 何秒リロードしたか
-		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime;
+		uint64_t elapsedReloadTime = Util::GetTimeSec() - startReloadTime_;
 		// リロード時間を超えたらリロードを終える
 		if (elapsedReloadTime >= reloadTime_)
 		{
