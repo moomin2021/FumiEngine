@@ -145,6 +145,9 @@ void Zombie::Wandering()
 
 void Zombie::Chase()
 {
+	speed_ += 0.01f;
+	speed_ = Util::Min(speed_, rushSpd_);
+
 	// ルート探索
 	CreateRoute(sPlayer_->GetPosition());
 
@@ -318,6 +321,7 @@ void Zombie::Hit()
 		knockBackVec_.y = 1.0f;
 		knockBackSpd_ = 0.5f;
 		hp_ -= 1;
+		speed_ = 0.0f;
 		if (state_ != State::CHASE)
 		{
 			isBody_ = true;
