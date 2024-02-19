@@ -5,6 +5,8 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 #include "Key.h"
+#include "Mouse.h"
+#include "Matrix4.h"
 
 #include "ParticleEmitter.h"
 
@@ -16,6 +18,7 @@ class TestScene : public BaseScene
 private:
 	// インスタンス
 	Key* key_ = nullptr;
+	Mouse* mouse_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
 
 	// カメラ
@@ -27,13 +30,10 @@ private:
 	std::unique_ptr<Model> model_ = nullptr;
 	std::unique_ptr<Object3D> object_ = nullptr;
 
-	// パーティクルエミッター
-	std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
-	std::unique_ptr<ParticleEmitter> smokeP_ = nullptr;
-	uint16_t particleHandle_ = 0;
-	uint16_t smokeHandle_ = 0;
-	Vector3 pos_ = { 0.0f, 1.75f, 0.0f };
-	float speed_ = 0.1f;
+	Matrix4 screen_ = {};
+	Vector3 result0_ = Vector3();
+	Vector3 result1_ = Vector3();
+
 #pragma endregion
 
 #pragma region メンバ関数
@@ -62,9 +62,5 @@ private:
 
 	// 行列更新処理
 	void MatUpdate();
-
-	// パーティクルの生成
-	void CreateParticle(uint16_t i);
-	void CreateSmoke();
 #pragma endregion
 };
