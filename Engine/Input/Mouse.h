@@ -4,6 +4,7 @@
 
 // ComPtr用
 #include <wrl.h>
+#include <stdint.h>
 
 // Vector2
 #include "Vector2.h"
@@ -52,7 +53,7 @@ public:
 	/// <returns></returns>
 	bool PushMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80); }
 
-	int GetMouseWheel() { return nowMouse_.lZ; }
+	uint8_t GetMouseWheel() { return (uint8_t)nowMouse_.lZ; }
 
 	/// <summary>
 	/// 指定されたマウスのボタンが押された瞬間だったら、1を返し、そうでなかった場合0を返す
