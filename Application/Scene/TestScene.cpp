@@ -57,21 +57,6 @@ void TestScene::Update()
 {
 	camera_->Update();
 
-	Vector3 mousePos = { mouse_->MousePos().x, mouse_->MousePos().y, 0.0f };
-
-	Matrix4 invView, invPrj, vp, invViewport;
-	invView = Matrix4Inverse(camera_->GetMatView());
-	invPrj = Matrix4Inverse(camera_->GetMatProjection());
-	vp = Matrix4Identity();
-	vp.m[0][0] = 1920.0f / 2.0f, vp.m[1][1] = -1080.0f / 2.0f;
-	vp.m[3][0] = 1920.0f / 2.0f, vp.m[3][1] = 1080.0f / 2.0f;
-	invViewport = Matrix4Inverse(vp);
-
-	Matrix4 tmp = invViewport * invPrj * invView;
-	result0_ = Matrix4Transform(mousePos, tmp);
-	mousePos.z = 1.0f;
-	result1_ = Matrix4Transform(mousePos, tmp);
-
 	OnCollision();
 	MatUpdate();
 	Debug();

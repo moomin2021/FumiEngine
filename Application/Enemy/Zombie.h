@@ -25,6 +25,7 @@ public:
 		WAIT,
 		WANDERING,
 		CHASE,
+		DEBUG,
 	};
 
 	// 役割
@@ -40,6 +41,7 @@ private:
 	static Model* sModel1_;
 	static Player* sPlayer_;
 	static NavMesh* sNavMesh_;
+	static Vector3* sDebugNavGoal_;
 
 	// オブジェクト3D
 	std::unique_ptr<Object3D> object_ = nullptr;
@@ -138,6 +140,7 @@ private:
 	void Wait();	// 待機
 	void Wandering();// 徘徊
 	void Chase();	// 追跡
+	void DebugMove();// デバック時
 
 	// ルート作成
 	bool CreateRoute(const Vector3& goalPos);
@@ -168,6 +171,7 @@ public:
 	static void SetModel(Model* inModel0, Model* inModel1) { sModel0_ = inModel0, sModel1_ = inModel1; }
 	static void SetPlayer(Player* inPlayer) { sPlayer_ = inPlayer; }
 	static void SetNavMesh(NavMesh* inNavMesh) { sNavMesh_ = inNavMesh; }
+	static void SetDebugNavGoal(Vector3* inDebugNavGoal) { sDebugNavGoal_ = inDebugNavGoal; }
 	void SetRushMode();
 #pragma endregion
 

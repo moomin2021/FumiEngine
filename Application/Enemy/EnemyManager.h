@@ -18,6 +18,7 @@
 #include "DeltaTime.h"
 #include "ResultData.h"
 #include "Timer.h"
+#include "RayCollider.h"
 
 #include <memory>
 
@@ -27,6 +28,7 @@ class EnemyManager
 private:
 	// インスタンス
 	CollisionManager3D* colMgr_ = nullptr;
+	Mouse* mouse_ = nullptr;
 
 	// モデル
 	std::unique_ptr<Model> mBossGenerator_ = nullptr;
@@ -78,6 +80,12 @@ private:
 
 	Timer rushT_ = Timer();
 	Timer rushCoolT_ = Timer();
+
+	Vector3 debugGoal_ = Vector3(1000.0f, 1000.0f, 1000.0f);
+	Camera* debugCamera_ = nullptr;
+
+	Player* pPlayer_ = nullptr;
+	std::unique_ptr<RayCollider> mouseRay_ = nullptr;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -129,6 +137,7 @@ private:
 #pragma region セッター関数
 public:
 	// プレイヤーを設定
+	void SetDebugCamera(Camera* inDebugCamera) { debugCamera_ = inDebugCamera; }
 	void SetPlayer(Player* player);
 	void SetCellsCenter(std::vector<Vector3> inCellsCenter) { cellsCenter_ = inCellsCenter; }
 #pragma endregion

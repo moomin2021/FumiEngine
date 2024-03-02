@@ -87,6 +87,7 @@ void GameScene::Initialize()
 #pragma endregion
 
 	deltaTime_.Initialize();
+	enemyMgr_->SetDebugCamera(debugCamera_->GetCamera());
 }
 
 void GameScene::Update()

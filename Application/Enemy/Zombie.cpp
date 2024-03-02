@@ -9,6 +9,7 @@ Model* Zombie::sModel0_ = nullptr;
 Model* Zombie::sModel1_ = nullptr;
 Player* Zombie::sPlayer_ = nullptr;
 NavMesh* Zombie::sNavMesh_ = nullptr;
+Vector3* Zombie::sDebugNavGoal_ = nullptr;
 
 Zombie::~Zombie()
 {
@@ -104,13 +105,19 @@ void Zombie::MatUpdate()
 
 void Zombie::Debug(bool isDebug)
 {
-	if (isDebug == false) return;
+	isDebug_ = isDebug;
+	//if (isDebug == false) return;
+	if (isDebug == true)
+	{
+		state_ = State::DEBUG;
+	}
 }
 
 void (Zombie::* Zombie::stateTable[]) () = {
 	&Zombie::Wait,		// 待機状態
 	&Zombie::Wandering,	// 徘徊状態
 	&Zombie::Chase,		// 追跡状態
+	&Zombie::DebugMove
 };
 
 void Zombie::Wait()
@@ -150,6 +157,21 @@ void Zombie::Chase()
 
 	// ルート探索
 	CreateRoute(sPlayer_->GetPosition());
+
+	// 移動処理
+	RushMove();
+
+	// 回転処理
+	Rotate();
+}
+
+void Zombie::DebugMove()
+{
+	speed_ += 0.01f;
+	speed_ = Util::Min(speed_, rushSpd_);
+
+	// ルート探索
+	CreateRoute(*sDebugNavGoal_);
 
 	// 移動処理
 	RushMove();

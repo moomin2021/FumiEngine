@@ -6,20 +6,23 @@
 #include "WinAPI.h"
 #include "PipelineManager.h"
 #include "MagicianBullet.h"
+#include "CollisionAttribute.h"
 
 #include <imgui_impl_DX12.h>
+
 
 EnemyManager::EnemyManager() {}
 
 EnemyManager::~EnemyManager()
 {
-	
+	colMgr_->RemoveCollider(mouseRay_.get());
 }
 
 void EnemyManager::Initialize()
 {
 #pragma region インスタンス
 	colMgr_ = CollisionManager3D::GetInstance();
+	mouse_ = Mouse::GetInstance();
 
 	Zombie::SetCollisionManager(colMgr_);
 	Magician::SetCollisionManager(colMgr_);
@@ -54,6 +57,13 @@ void EnemyManager::Initialize()
 
 	deltaTime_.Initialize();
 	rushT_.coolTime = 20.0f;
+
+#pragma region コライダー
+	mouseRay_ = std::make_unique<RayCollider>();
+	mouseRay_->SetAttribute(0);
+	colMgr_->AddCollider(mouseRay_.get());
+	Zombie::SetDebugNavGoal(&debugGoal_);
+#pragma endregion
 }
 
 void EnemyManager::Update()
@@ -151,6 +161,11 @@ void EnemyManager::OnCollision()
 	for (auto& it : zombies3_) it->OnCollision();
 	for (auto& it : magicians_) it->OnCollision();
 	for (auto& it : enemyCores_) it->OnCollision();
+
+	if (mouseRay_->GetIsHit())
+	{
+		//debugGoal_ = mouseRay_->GetInter() + Vector3(0.0f, 1.0f, 0.0f);
+	}
 }
 
 //void EnemyManager::CreateAddEnemy0(const Vector3& pos, const Vector3& offset)
@@ -231,15 +246,59 @@ void EnemyManager::Debug(bool isDebug)
 {
 	for (auto& it : zombies_) it->Debug(isDebug);
 	for (auto& it : magicians_) it->Debug(isDebug);
+	for (auto& it : zombies0_) it->Debug(isDebug);
+	for (auto& it : zombies1_) it->Debug(isDebug);
+	for (auto& it : zombies2_) it->Debug(isDebug);
+	for (auto& it : zombies3_) it->Debug(isDebug);
 	if (isDebug) for (auto& it : enemyCores_) it->Debug();
 
 	if (isDebug == false) return;
 	static Vector3 enemyCreatePos = { 0.0f, 0.0f, 0.0f };
 
+#pragma region 視線先
+
+	if (mouse_->TriggerMouseButton(MouseButton::M_LEFT))
+	{
+		Vector3 start = Vector3();
+		Vector3 end = Vector3();
+		Vector3 mousePos = { mouse_->MousePos().x, mouse_->MousePos().y, 0.0f };
+
+		Matrix4 invView, invPrj, vp, invViewport;
+		invView = Matrix4Inverse(debugCamera_->GetMatView());
+		invPrj = Matrix4Inverse(debugCamera_->GetMatProjection());
+		vp = Matrix4Identity();
+		vp.m[0][0] = 1920.0f / 2.0f, vp.m[1][1] = -1080.0f / 2.0f;
+		vp.m[3][0] = 1920.0f / 2.0f, vp.m[3][1] = 1080.0f / 2.0f;
+		invViewport = Matrix4Inverse(vp);
+
+		Matrix4 tmp = invViewport * invPrj * invView;
+		start = Matrix4Transform(mousePos, tmp);
+		mousePos.z = 1.0f;
+		end = Matrix4Transform(mousePos, tmp);
+
+		Vector3 dir = end - start;
+		dir.normalize();
+		mouseRay_->SetDir(dir);
+		mouseRay_->SetAttribute(COL_DEBUG);
+		mouseRay_->SetOffSet(debugCamera_->GetEye());
+
+		debugGoal_ = debugCamera_->GetEye() + (dir * 15.0f) + Vector3(0.0f, 1.0f, 0.0f);
+		debugGoal_ = debugGoal_;
+	}
+
+	else
+	{
+		mouseRay_->SetAttribute(0);
+		//mouseRay_->SetDir(Vector3());
+	}
+
+#pragma endregion
+
 	ImGui::Begin("Enemy");
 	ImGui::SliderFloat("CreateEnemyPosX", &enemyCreatePos.x, -100.0f, 100.0f);
 	ImGui::SliderFloat("CreateEnemyPosY", &enemyCreatePos.y, -100.0f, 100.0f);
 	ImGui::SliderFloat("CreateEnemyPosZ", &enemyCreatePos.z, -100.0f, 100.0f);
+	//ImGui::Text("inter = { %f, %f, %f }")
 	if (ImGui::Button("CreateEnemy"))
 	{
 		//CreateAddEnemy0(enemyCreatePos, enemyCreatePos);
@@ -636,4 +695,5 @@ void EnemyManager::SetPlayer(Player* player)
 	Magician::SetPlayer(player);
 	MagicianBullet::SetPlayer(player);
 	EnemyCore::SetPlayer(player);
+	pPlayer_ = player;
 }
