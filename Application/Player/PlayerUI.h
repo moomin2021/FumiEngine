@@ -16,6 +16,7 @@ private:
 	std::unique_ptr<Sprite> hpFrameS_ = nullptr;
 	std::unique_ptr<Sprite> hpFrameShadowS_ = nullptr;
 	std::unique_ptr<Sprite> reloadUIS_ = nullptr;
+	std::unique_ptr<Sprite> reloadBackUIS_ = nullptr;
 	std::unique_ptr<Sprite> crossHairS_ = nullptr;
 	std::vector<std::unique_ptr<Sprite>> sMaxBulletUI_ = {};// 最大弾数表示スプライト
 	std::vector<std::unique_ptr<Sprite>> sNowBulletUI_ = {};// 残弾数表示スプライト
@@ -25,6 +26,7 @@ private:
 	uint16_t hpFrameH_ = 0;
 	uint16_t hpFrameShadowH_ = 0;
 	uint16_t reloadUIH_ = 0;
+	uint16_t reloadBackUIH_ = 0;
 	uint16_t crossHairH_ = 0;
 	uint16_t bulletValueDisplayFrameHandle_ = 0;// 残弾数表示UIフレームハンドル
 	std::vector<uint16_t> numberHandle_ = {};// 数字ハンドル

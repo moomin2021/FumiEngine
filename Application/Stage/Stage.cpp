@@ -189,21 +189,27 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 	}
 }
 
-void Stage::CreateStage()
+void Stage::CreateStage(bool isTest)
 {
-	//LoadSection("Resources/StageJson/testNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
-	LoadSection("Resources/StageJson/startNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
-	LoadSection(RandomSection(SECTION::WAY2), {-13.0f, 0.0f, 13.0f}, SECTIONROTA::ROTA_270);
-	LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
-	LoadSection(RandomSection(SECTION::WAY3), { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
-	LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
-	LoadSection(RandomSection(SECTION::WAY3), { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
-	LoadSection(RandomSection(SECTION::WAY2), { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection(RandomSection(SECTION::WAY3), { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
-	LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+	if (isTest == false)
+	{
+		//LoadSection("Resources/StageJson/testNav.json", {0.0f, 0.0f, 0.0f}, SECTIONROTA::ROTA_0);
+		LoadSection("Resources/StageJson/startNav.json", { 0.0f, 0.0f, 0.0f }, SECTIONROTA::ROTA_0);
+		LoadSection(RandomSection(SECTION::WAY2), { -13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_270);
+		LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+		LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 13.0f }, SECTIONROTA::ROTA_0);
+		LoadSection(RandomSection(SECTION::WAY3), { -13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_270);
+		LoadSection(RandomSection(SECTION::WAY4), { 0.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_0);
+		LoadSection(RandomSection(SECTION::WAY3), { 13.0f, 0.0f, 26.0f }, SECTIONROTA::ROTA_90);
+		LoadSection(RandomSection(SECTION::WAY2), { -13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+		LoadSection(RandomSection(SECTION::WAY3), { 0.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_180);
+		LoadSection(RandomSection(SECTION::WAY2), { 13.0f, 0.0f, 39.0f }, SECTIONROTA::ROTA_90);
+	}
 
-
+	else
+	{
+		LoadSection("Resources/StageJson/test.json", { 0.0f, 0.0f, 0.0f }, SECTIONROTA::ROTA_0);
+	}
 
 	navMesh_->LinkCell();
 	enemyMgr_->SetCellsCenter(navMesh_->GetCellsCenter());

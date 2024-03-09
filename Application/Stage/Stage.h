@@ -93,7 +93,7 @@ public:
 	// ステージ情報読み込み
 	void Load(std::string fileName, bool isCol = true, bool isCore = false);
 
-	void CreateStage();
+	void CreateStage(bool isTest = false);
 
 	void LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota);
 

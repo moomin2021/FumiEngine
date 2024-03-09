@@ -5,10 +5,15 @@
 #include "LightGroup.h"
 #include "DirectionalLight.h"
 #include "Key.h"
-#include "Mouse.h"
-#include "Matrix4.h"
 
-#include "ParticleEmitter.h"
+#include "Stage.h"
+#include "Player.h"
+#include "PlayerUI.h"
+#include "EnemyManager.h"
+#include "NavMesh.h"
+#include "DeltaTime.h"
+#include "CameraManager.h"
+#include "DebugCamera.h"
 
 #include <memory>
 
@@ -18,22 +23,38 @@ class TestScene : public BaseScene
 private:
 	// インスタンス
 	Key* key_ = nullptr;
-	Mouse* mouse_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
-
-	// カメラ
-	std::unique_ptr<Camera> camera_ = nullptr;
 
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
 
-	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Object3D> object_ = nullptr;
+	// ステージオブジェクトの管理クラス
+	std::unique_ptr<Stage> stage_ = nullptr;
 
-	Matrix4 screen_ = {};
-	Vector3 result0_ = Vector3();
-	Vector3 result1_ = Vector3();
+	// プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
+	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
+	// エネミーマネージャー
+	std::unique_ptr<EnemyManager> enemyMgr_ = nullptr;
+
+	// カメラマネージャー
+	std::unique_ptr<CameraManager> cameraMgr_ = nullptr;
+
+	// デバックカメラ
+	std::unique_ptr<DebugCamera> debugCamera_ = nullptr;
+
+	// デバック
+	bool isDebug_ = false;
+
+	// ゲームUI
+	std::unique_ptr<Sprite> sGameUI_ = nullptr;
+	uint16_t gGameUI_ = 0;
+
+	std::unique_ptr<Sprite> sObjectiveText_ = nullptr;
+	uint16_t gObjectiveText_ = 0;
+
+	DeltaTime deltaTime_ = {};
 #pragma endregion
 
 #pragma region メンバ関数

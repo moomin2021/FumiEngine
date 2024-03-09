@@ -32,6 +32,11 @@ void PlayerUI::Initialize()
 	reloadUIS_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
 	reloadUIS_->SetSize({ 100.0f, 100.0f });
 
+	reloadBackUIS_ = std::make_unique<Sprite>();
+	reloadBackUIS_->SetAnchorPoint({ 0.5f, 0.5f });
+	reloadBackUIS_->SetPosition({ winSize.x / 2.0f + 5.0f, winSize.y / 2.0f + 10.0f });
+	reloadBackUIS_->SetSize({ 100.0f, 100.0f });
+
 	crossHairS_ = std::make_unique<Sprite>();
 	crossHairS_->SetAnchorPoint({ 0.5f, 0.5f });
 	crossHairS_->SetPosition({ winSize.x / 2.0f, winSize.y / 2.0f });
@@ -71,6 +76,7 @@ void PlayerUI::Initialize()
 	hpFrameH_ = LoadTexture("Sprite/hpFrame.png");
 	hpFrameShadowH_ = LoadTexture("Sprite/hpFrameShadow.png");
 	reloadUIH_ = LoadTexture("Sprite/reloadUI.png");
+	reloadBackUIH_ = LoadTexture("Sprite/reloadBackUI.png");
 	crossHairH_ = LoadTexture("Sprite/crossHair.png");
 	bulletValueDisplayFrameHandle_ = LoadTexture("Sprite/BulletValueDisplayFrame.png");
 	numberHandle_.resize(10);
@@ -98,6 +104,7 @@ void PlayerUI::Update()
 	{
 		rotaY -= 3.0f;
 		reloadUIS_->SetRotation(rotaY);
+		reloadBackUIS_->SetRotation(rotaY);
 	}
 }
 
@@ -117,6 +124,7 @@ void PlayerUI::Draw()
 	hpFrameShadowS_->Draw(hpFrameShadowH_);
 	hpBarS_->Draw(hpBarH_);
 	hpFrameS_->Draw(hpFrameH_);
+	if (pPlayer_->GetIsReload())reloadBackUIS_->Draw(reloadBackUIH_);
 	if (pPlayer_->GetIsReload())reloadUIS_->Draw(reloadUIH_);
 	if (!pPlayer_->GetIsReload()) crossHairS_->Draw(crossHairH_);
 }
@@ -132,6 +140,7 @@ void PlayerUI::MatUpdate()
 	hpFrameS_->MatUpdate();
 	hpFrameShadowS_->MatUpdate();
 	reloadUIS_->MatUpdate();
+	reloadBackUIS_->MatUpdate();
 	crossHairS_->MatUpdate();
 	// 残弾数表示UIハンドル
 	sBulletValueDisplayFrame_->MatUpdate();

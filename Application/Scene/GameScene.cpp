@@ -110,7 +110,7 @@ void GameScene::Update()
 	MatUpdate();
 
 	// デバック
-	Debug();
+	if (!isDebug_) Debug();
 
 	enemyMgr_->CheckSceneChange();
 	player_->CheckSceneChange();
