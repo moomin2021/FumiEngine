@@ -1,9 +1,7 @@
 #include "MapCreateScene.h"
 #include "PipelineManager.h"
 
-MapCreateScene::~MapCreateScene()
-{
-}
+MapCreateScene::MapCreateScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void MapCreateScene::Initialize()
 {
@@ -40,7 +38,7 @@ void MapCreateScene::Initialize()
 
 void MapCreateScene::Update()
 {
-	OnCollision();
+	Collision();
 	MatUpdate();
 	Debug();
 }
@@ -53,7 +51,11 @@ void MapCreateScene::Draw()
 	object_->Draw();
 }
 
-void MapCreateScene::OnCollision()
+void MapCreateScene::Finalize()
+{
+}
+
+void MapCreateScene::Collision()
 {
 
 }

@@ -86,6 +86,8 @@ private:
 
 	Player* pPlayer_ = nullptr;
 	std::unique_ptr<RayCollider> mouseRay_ = nullptr;
+
+	bool isClear_ = false;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -140,5 +142,9 @@ public:
 	void SetDebugCamera(Camera* inDebugCamera) { debugCamera_ = inDebugCamera; }
 	void SetPlayer(Player* player);
 	void SetCellsCenter(std::vector<Vector3> inCellsCenter) { cellsCenter_ = inCellsCenter; }
+#pragma endregion
+
+#pragma region ゲッター関数
+	bool GetIsClear() { return isClear_; }
 #pragma endregion
 };

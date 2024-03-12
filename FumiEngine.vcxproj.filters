@@ -165,9 +165,6 @@
     <ClCompile Include="Engine\Util\Math\Matrix4.cpp">
       <Filter>Engine\ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\TemplateScene.cpp">
-      <Filter>Engine\ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Light\LightGroup.cpp">
       <Filter>Engine\ソース ファイル\Light</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Base\PipelineObj.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\SceneManager.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\BoxCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
@@ -360,6 +354,15 @@
     <ClCompile Include="Application\DebugCamera.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Scene\SceneManager.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\BaseScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\IScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -383,9 +386,6 @@
     <ClInclude Include="Engine\Input\Key.h">
       <Filter>Engine\ヘッダー ファイル\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\BaseScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\3d\Object3D.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
     </ClInclude>
@@ -406,9 +406,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Util\Math\fMath.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TemplateScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Light\LightGroup.h">
       <Filter>Engine\ヘッダー ファイル\Light</Filter>
@@ -433,9 +430,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\PipelineObj.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\SceneManager.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\BaseCollider2D.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
@@ -627,6 +621,15 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\BasicTask.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\SceneManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\BaseScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\IScene.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

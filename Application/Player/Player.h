@@ -107,6 +107,8 @@ private:
 
 	uint8_t damageCooldown_ = 30;
 	uint8_t damageCount_ = 30;
+
+	bool isAlive_ = true;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -174,5 +176,6 @@ public:
 	uint16_t GetMaxBullet() { return maxBullet_; }
 	uint16_t GetNowBullet() { return nowBullet_; }
 	Camera* GetCamera() { return camera_.get(); }
+	bool GetIsAlive() { return isAlive_; }
 #pragma endregion
 };

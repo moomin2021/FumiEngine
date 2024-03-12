@@ -59,27 +59,22 @@ private:
 
 #pragma region メンバ関数
 public:
-	// コンストラクタ
-	GameScene();
+	// コンストラクタとデストラクタ
+	GameScene(IScene* sceneIf);
+	~GameScene() {}
 
-	// デストラクタ
-	~GameScene();
-
-	// 初期化処理
+	// 基本処理
 	void Initialize();
-
-	// 更新処理
 	void Update();
-
-	// 描画処理
 	void Draw();
+	void Finalize();
 
 	// デバック
 	void Debug();
 
 private:
 	// 衝突時処理
-	void OnCollision();
+	void Collision();
 
 	// 行列更新処理
 	void MatUpdate();

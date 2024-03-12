@@ -8,11 +8,8 @@
 
 #include "CollisionAttribute.h"
 
-GameOverScene::GameOverScene() {}
 
-GameOverScene::~GameOverScene() {
-	colMgr2D_->RemoveCollider(cMouse_.get());
-}
+GameOverScene::GameOverScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void GameOverScene::Initialize()
 {
@@ -109,7 +106,7 @@ void GameOverScene::Update()
 	for (auto& it : resultBoxs_) it->Update();
 
 	// 衝突時処理
-	OnCollision();
+	Collision();
 
 	// 行列更新処理
 	MatUpdate();
@@ -131,7 +128,12 @@ void GameOverScene::Draw()
 	else resultS_->Draw(resultH_[1]);
 }
 
-void GameOverScene::OnCollision()
+void GameOverScene::Finalize()
+{
+	colMgr2D_->RemoveCollider(cMouse_.get());
+}
+
+void GameOverScene::Collision()
 {
 	colMgr2D_->CheckAllCollision();
 
@@ -153,7 +155,7 @@ void GameOverScene::OnCollision()
 
 	if (buttonAttr == 1)
 	{
-		SceneManager::GetInstance()->SceneTransition(SCENE::TITLE);
+		sceneIf_->ChangeScene(Scene::TITLE);
 	}
 }
 

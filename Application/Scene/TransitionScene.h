@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "Camera.h"
@@ -21,23 +21,18 @@ private:
 
 #pragma region メンバ関数
 public:
-	// コンストラクタ
-	TransitionScene();
+	// コンストラクタとデストラクタ
+	TransitionScene(IScene* sceneIf);
+	~TransitionScene() {}
 
-	// デストラクタ
-	~TransitionScene();
-
-	// 初期化処理
+	// 基本処理
 	void Initialize();
-
-	// 更新処理
 	void Update();
-
-	// 描画処理
 	void Draw();
+	void Finalize();
 
 	// 衝突時処理
-	void OnCollision();
+	void Collision();
 
 	// 行列更新
 	void MatUpdate();

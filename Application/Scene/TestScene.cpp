@@ -8,12 +8,7 @@
 #include <set>
 #include <imgui_impl_DX12.h>
 
-TestScene::TestScene() {}
-
-TestScene::~TestScene()
-{
-	lightGroup_->RemoveDirLight(dirLight_.get());
-}
+TestScene::TestScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void TestScene::Initialize()
 {
@@ -104,7 +99,7 @@ void TestScene::Update()
 	debugCamera_->Update();
 
 	// 衝突時処理
-	OnCollision();
+	Collision();
 
 	// 行列更新処理
 	MatUpdate();
@@ -137,6 +132,11 @@ void TestScene::Draw()
 	sGameUI_->Draw(gGameUI_);
 
 	sObjectiveText_->Draw(gObjectiveText_);
+}
+
+void TestScene::Finalize()
+{
+	lightGroup_->RemoveDirLight(dirLight_.get());
 }
 
 void TestScene::Debug()
@@ -178,7 +178,7 @@ void TestScene::Debug()
 	player_->Debug();
 }
 
-void TestScene::OnCollision()
+void TestScene::Collision()
 {
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();

@@ -138,7 +138,7 @@ void Player::SetKnock(const Vector3& vec)
 void Player::CheckSceneChange()
 {
 	if (hp_ > 0) return;
-	SceneManager::GetInstance()->SceneTransition(SCENE::GAMEOVER);
+	isAlive_ = false;
 	WinAPI::GetInstance()->DisplayCursor(true);
 	WinAPI::GetInstance()->SetClipCursor(false);
 }

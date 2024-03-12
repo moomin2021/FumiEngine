@@ -11,6 +11,9 @@
 #pragma endregion
 
 #include "SceneManager.h"
+#include "PipelineManager.h"
+
+#include <memory>
 
 // --Windowsアプリでのエントリーポイント(main関数)-- //
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -30,12 +33,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ImGuiクラス
 	ImGuiManager::GetInstance()->Initialize();
 
+	PipelineManager::GetInstance();
+
+	// シーン管理クラスの生成と初期化
+	std::unique_ptr<SceneManager> sceneMgr = std::make_unique<SceneManager>();
+	sceneMgr->Initialize();
+
 	// --ゲームループ-- //
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
 		if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
-		if (SceneManager::GetInstance()->GetIsEnd() == true) break;
+		if (sceneMgr->GetIsGameEnd()) break;
 
 		// キーボード入力更新処理
 		Key::GetInstance()->Update();
@@ -50,10 +59,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Sound::GetInstance()->Update();
 
 		// シーン管理クラス更新処理
-		SceneManager::GetInstance()->Update();
+		sceneMgr->Update();
 
 		// シーン管理クラス描画処理
-		SceneManager::GetInstance()->Draw();
+		sceneMgr->Draw();
 	}
 
 	return 0;

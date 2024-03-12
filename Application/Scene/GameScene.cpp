@@ -8,12 +8,7 @@
 #include <set>
 #include <imgui_impl_DX12.h>
 
-GameScene::GameScene() {}
-
-GameScene::~GameScene()
-{
-	lightGroup_->RemoveDirLight(dirLight_.get());
-}
+GameScene::GameScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void GameScene::Initialize()
 {
@@ -104,7 +99,7 @@ void GameScene::Update()
 	debugCamera_->Update();
 
 	// 衝突時処理
-	OnCollision();
+	Collision();
 
 	// 行列更新処理
 	MatUpdate();
@@ -114,6 +109,12 @@ void GameScene::Update()
 
 	enemyMgr_->CheckSceneChange();
 	player_->CheckSceneChange();
+
+	// クリアフラグがTRUEになったらシーンを切り替える
+	if (enemyMgr_->GetIsClear()) sceneIf_->ChangeScene(Scene::RESULT);
+
+	// プレイヤーが死んだらシーンを切り替える
+	if (player_->GetIsAlive() == false) sceneIf_->ChangeScene(Scene::RESULT);
 }
 
 void GameScene::Draw()
@@ -137,6 +138,11 @@ void GameScene::Draw()
 	sGameUI_->Draw(gGameUI_);
 
 	sObjectiveText_->Draw(gObjectiveText_);
+}
+
+void GameScene::Finalize()
+{
+	lightGroup_->RemoveDirLight(dirLight_.get());
 }
 
 void GameScene::Debug()
@@ -178,7 +184,7 @@ void GameScene::Debug()
 	player_->Debug();
 }
 
-void GameScene::OnCollision()
+void GameScene::Collision()
 {
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();

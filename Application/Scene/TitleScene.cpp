@@ -9,13 +9,7 @@
 
 #include <imgui_impl_DX12.h>
 
-TitleScene::TitleScene() {}
-
-TitleScene::~TitleScene()
-{
-	colMgr2D_->RemoveCollider(cMouse_.get());
-	lightGroup_->RemoveDirLight(dirLight_.get());
-}
+TitleScene::TitleScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void TitleScene::Initialize()
 {
@@ -107,7 +101,7 @@ void TitleScene::Update()
 	CameraRota();
 
 	// 衝突処理2D
-	OnCollision();
+	Collision();
 
 	// 行列更新処理
 	MatUpdate();
@@ -128,7 +122,13 @@ void TitleScene::Draw()
 	audioLayer_->Draw();
 }
 
-void TitleScene::OnCollision()
+void TitleScene::Finalize()
+{
+	colMgr2D_->RemoveCollider(cMouse_.get());
+	lightGroup_->RemoveDirLight(dirLight_.get());
+}
+
+void TitleScene::Collision()
 {
 	// 衝突全チェック
 	colMgr2D_->CheckAllCollision();
@@ -155,7 +155,7 @@ void TitleScene::OnCollision()
 	// スタート
 	if (buttonAttr == ButtonAttribute::START)
 	{
-		SceneManager::GetInstance()->SceneTransition(SCENE::GAME);
+		sceneIf_->ChangeScene(Scene::GAME);
 	}
 
 	// 設定
@@ -167,22 +167,16 @@ void TitleScene::OnCollision()
 		audioLayer_->SetIsDisplay(false);
 	}
 
-	// マップ作成シーン
-	else if (buttonAttr == ButtonAttribute::MAPCREATE)
-	{
-		SceneManager::GetInstance()->SceneTransition(SCENE::MAPCREATE);
-	}
-
 	// テストシーン
 	else if (buttonAttr == ButtonAttribute::TEST)
 	{
-		SceneManager::GetInstance()->SceneTransition(SCENE::TEST);
+		sceneIf_->ChangeScene(Scene::TEST);
 	}
 
 	// ゲーム終了
 	else if (buttonAttr == ButtonAttribute::END)
 	{
-		SceneManager::GetInstance()->SetIsEnd(true);
+		sceneIf_->GameEnd();
 	}
 
 	// ゲームプレイ

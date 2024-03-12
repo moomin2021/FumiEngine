@@ -1,18 +1,10 @@
-﻿#include "TransitionScene.h"
+#include "TransitionScene.h"
 #include "WinAPI.h"
 #include "PipelineManager.h"
 #include "SceneManager.h"
 #include "Texture.h"
 
-TransitionScene::TransitionScene()
-{
-
-}
-
-TransitionScene::~TransitionScene()
-{
-
-}
+TransitionScene::TransitionScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void TransitionScene::Initialize()
 {
@@ -48,7 +40,7 @@ void TransitionScene::Update()
 	sLoad_->MatUpdate();
 
 	if (time_ >= maxTimr_) {
-		SceneManager::GetInstance()->ChangeScene(SceneManager::GetInstance()->GetNextScene());
+		sceneIf_->ChangeScene(Scene::TITLE);
 	}
 }
 
@@ -58,7 +50,11 @@ void TransitionScene::Draw()
 	sLoad_->Draw(loadHandle_);
 }
 
-void TransitionScene::OnCollision()
+void TransitionScene::Finalize()
+{
+}
+
+void TransitionScene::Collision()
 {
 }
 
