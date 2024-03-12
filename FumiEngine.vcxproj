@@ -182,6 +182,7 @@
     <ClInclude Include="Application\CameraManager.h" />
     <ClInclude Include="Application\DebugCamera.h" />
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
+    <ClInclude Include="Engine\Util\BasicTask.h" />
     <ClInclude Include="Engine\Util\DeltaTime.h" />
     <ClInclude Include="Engine\Util\Buffer.h" />
     <ClInclude Include="Engine\Collision\AABBCollider.h" />
