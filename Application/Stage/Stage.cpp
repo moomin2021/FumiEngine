@@ -1,8 +1,6 @@
 #include "Stage.h"
 #include "CollisionAttribute.h"
 #include "PipelineManager.h"
-#include "Zombie.h"
-#include "Magician.h"
 
 #include <iostream>
 #include <fstream>
@@ -38,8 +36,6 @@ void Stage::Initialize()
 
 	// ナビメッシュ
 	navMesh_ = std::make_unique<NavMesh>();
-	Zombie::SetNavMesh(navMesh_.get());
-	Magician::SetNavMesh(navMesh_.get());
 }
 
 void Stage::MatUpdate()
@@ -163,7 +159,6 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 		if (objectData.className == "enemyCore")
 		{
 			if (isCore == false) continue;
-			enemyMgr_->AddCore(objectData.translation);
 		}
 
 		// オブジェクト追加
@@ -212,7 +207,6 @@ void Stage::CreateStage(bool isTest)
 	}
 
 	navMesh_->LinkCell();
-	enemyMgr_->SetCellsCenter(navMesh_->GetCellsCenter());
 }
 
 void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota)
@@ -317,7 +311,7 @@ void Stage::LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA
 
 		if (objectData.className == "enemyCore")
 		{
-			enemyMgr_->AddCore(offset + objectData.translation);
+
 		}
 
 		else if (objectData.className == "Nav")

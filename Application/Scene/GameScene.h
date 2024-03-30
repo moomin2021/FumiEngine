@@ -9,11 +9,11 @@
 #include "Stage.h"
 #include "Player.h"
 #include "PlayerUI.h"
-#include "EnemyManager.h"
 #include "NavMesh.h"
 #include "DeltaTime.h"
 #include "CameraManager.h"
 #include "DebugCamera.h"
+#include "EnemyManager.h"
 
 #include <memory>
 

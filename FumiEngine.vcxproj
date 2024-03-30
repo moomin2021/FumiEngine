@@ -97,17 +97,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application\Enemy\EnemyGenerator.cpp" />
-    <ClCompile Include="Application\Enemy\EnemyCore.cpp" />
     <ClCompile Include="Application\CameraManager.cpp" />
     <ClCompile Include="Application\DebugCamera.cpp" />
+    <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Application\Enemy\BaseEnemy.cpp" />
+    <ClCompile Include="Application\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Util\DeltaTime.cpp" />
     <ClCompile Include="Engine\Util\Buffer.cpp" />
     <ClCompile Include="Engine\Collision\AABBCollider.cpp" />
     <ClCompile Include="Application\Player\Bullet.cpp" />
-    <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Application\Setting\BoxButton.cpp" />
     <ClCompile Include="Application\Setting\AudioLayer.cpp" />
     <ClCompile Include="Engine\Util\Easing.cpp" />
@@ -142,8 +142,6 @@
     <ClCompile Include="Engine\3d\Line3D.cpp" />
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp" />
     <ClCompile Include="Engine\Base\Instancing3D.cpp" />
-    <ClCompile Include="Application\Enemy\Magician.cpp" />
-    <ClCompile Include="Application\Enemy\MagicianBullet.cpp" />
     <ClCompile Include="Engine\Scene\IScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
@@ -169,19 +167,20 @@
     <ClCompile Include="Application\Scene\MapCreateScene.cpp" />
     <ClCompile Include="Application\Player\MapCreatePlayer.cpp" />
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp" />
-    <ClCompile Include="Application\Enemy\Zombie.cpp" />
     <ClCompile Include="Application\Player\PlayerUI.cpp" />
     <ClCompile Include="Application\Result\ResultBox.cpp" />
     <ClCompile Include="Application\Result\Number.cpp" />
     <ClCompile Include="Application\Result\ResultData.cpp" />
     <ClCompile Include="Engine\Util\Timer.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="Application\Enemy\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application\Enemy\EnemyGenerator.h" />
-    <ClInclude Include="Application\Enemy\EnemyCore.h" />
     <ClInclude Include="Application\CameraManager.h" />
     <ClInclude Include="Application\DebugCamera.h" />
+    <ClInclude Include="Application\Enemy\EnemyManager.h" />
+    <ClInclude Include="Application\Enemy\BaseEnemy.h" />
+    <ClInclude Include="Application\Enemy\EnemyFactory.h" />
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Util\BasicTask.h" />
@@ -189,7 +188,6 @@
     <ClInclude Include="Engine\Util\Buffer.h" />
     <ClInclude Include="Engine\Collision\AABBCollider.h" />
     <ClInclude Include="Application\Player\Bullet.h" />
-    <ClInclude Include="Application\Enemy\EnemyManager.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
     <ClInclude Include="Application\Setting\ButtonAttribute.h" />
     <ClInclude Include="Application\Setting\AudioLayer.h" />
@@ -256,17 +254,15 @@
     <ClInclude Include="Application\Scene\MapCreateScene.h" />
     <ClInclude Include="Application\Player\MapCreatePlayer.h" />
     <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
-    <ClInclude Include="Application\Enemy\Zombie.h" />
     <ClInclude Include="Application\Player\PlayerUI.h" />
     <ClInclude Include="Engine\Base\Instancing3D.h" />
     <ClInclude Include="Application\Result\ResultBox.h" />
     <ClInclude Include="Application\Result\Number.h" />
     <ClInclude Include="Application\Result\ResultData.h" />
-    <ClInclude Include="Application\Enemy\Magician.h" />
-    <ClInclude Include="Application\Enemy\MagicianBullet.h" />
     <ClInclude Include="Engine\Util\Timer.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\IScene.h" />
+    <ClInclude Include="Application\Enemy\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

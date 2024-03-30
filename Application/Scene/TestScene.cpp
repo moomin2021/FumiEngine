@@ -21,7 +21,6 @@ void TestScene::Initialize()
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
-	EnemyCore::SetLightGroup(lightGroup_);
 	Instancing3D::SetLightGroup(lightGroup_);
 #pragma endregion
 
@@ -44,14 +43,6 @@ void TestScene::Initialize()
 	playerUI_ = std::make_unique<PlayerUI>();
 	playerUI_->Initialize();
 	playerUI_->SetPlayer(player_.get());
-#pragma endregion
-
-#pragma region エネミーマネージャー
-	// エネミーマネージャー生成
-	enemyMgr_ = std::make_unique<EnemyManager>();
-	enemyMgr_->Initialize();
-	enemyMgr_->SetPlayer(player_.get());
-	stage_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
 #pragma region カメラマネージャー
@@ -82,7 +73,6 @@ void TestScene::Initialize()
 #pragma endregion
 
 	deltaTime_.Initialize();
-	enemyMgr_->SetDebugCamera(debugCamera_->GetCamera());
 }
 
 void TestScene::Update()
@@ -92,9 +82,6 @@ void TestScene::Update()
 	// プレイヤー
 	player_->Update();
 	playerUI_->Update();
-
-	// エネミーマネージャー
-	enemyMgr_->Update();
 
 	debugCamera_->Update();
 
@@ -107,7 +94,6 @@ void TestScene::Update()
 	// デバック
 	Debug();
 
-	enemyMgr_->CheckSceneChange();
 	player_->CheckSceneChange();
 }
 
@@ -120,9 +106,6 @@ void TestScene::Draw()
 
 	// プレイヤー
 	player_->Draw();
-
-	// エネミーマネージャー
-	enemyMgr_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
 
@@ -164,9 +147,6 @@ void TestScene::Debug()
 
 	stage_->Debug(isDebug_);
 
-	// エネミーマネージャー
-	enemyMgr_->Debug(isDebug_);
-
 	if (isDebug_ == false) return;
 
 	ImGui::Begin("DeltaTime");
@@ -187,9 +167,6 @@ void TestScene::Collision()
 	player_->OnCollision();
 
 	playerUI_->OnCollision();
-
-	// エネミーマネージャー
-	enemyMgr_->OnCollision();
 }
 
 void TestScene::MatUpdate()
@@ -199,9 +176,6 @@ void TestScene::MatUpdate()
 	// プレイヤー
 	player_->MatUpdate();
 	playerUI_->MatUpdate();
-
-	// エネミーマネージャー
-	enemyMgr_->MatUpdate();
 
 	// ステージクラス
 	stage_->MatUpdate();

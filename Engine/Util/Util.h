@@ -100,4 +100,6 @@ namespace Util {
 	/// <param name="num"> 小数点第何位 </param>
 	/// <returns></returns>
 	float Round(float value, uint8_t num);
+
+	float NormalizeAngle(float angle);
 } // namespace MathUtility

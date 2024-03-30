@@ -94,3 +94,12 @@ float Util::Round(float value, uint8_t num)
 {
 	return (float)std::round(value * powf(10, num)) / powf(10, num);
 }
+
+float Util::NormalizeAngle(float angle)
+{
+	float result = fmod(angle, 360.0f);
+
+	if (result < 0) result += 360.0f;
+
+	return result;
+}

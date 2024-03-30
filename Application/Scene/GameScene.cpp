@@ -21,7 +21,6 @@ void GameScene::Initialize()
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
-	EnemyCore::SetLightGroup(lightGroup_);
 	Instancing3D::SetLightGroup(lightGroup_);
 #pragma endregion
 
@@ -47,11 +46,8 @@ void GameScene::Initialize()
 #pragma endregion
 
 #pragma region エネミーマネージャー
-	// エネミーマネージャー生成
-	enemyMgr_ = std::make_unique<EnemyManager>();
+	enemyMgr_ = std::make_unique<EnemyManager>(stage_->GetNavMesh(), player_.get());
 	enemyMgr_->Initialize();
-	enemyMgr_->SetPlayer(player_.get());
-	stage_->SetEnemyManager(enemyMgr_.get());
 #pragma endregion
 
 #pragma region カメラマネージャー
@@ -82,7 +78,6 @@ void GameScene::Initialize()
 #pragma endregion
 
 	deltaTime_.Initialize();
-	enemyMgr_->SetDebugCamera(debugCamera_->GetCamera());
 }
 
 void GameScene::Update()
@@ -93,7 +88,6 @@ void GameScene::Update()
 	player_->Update();
 	playerUI_->Update();
 
-	// エネミーマネージャー
 	enemyMgr_->Update();
 
 	debugCamera_->Update();
@@ -107,11 +101,7 @@ void GameScene::Update()
 	// デバック
 	if (!isDebug_) Debug();
 
-	enemyMgr_->CheckSceneChange();
 	player_->CheckSceneChange();
-
-	// クリアフラグがTRUEになったらシーンを切り替える
-	if (enemyMgr_->GetIsClear()) sceneIf_->ChangeScene(Scene::RESULT);
 
 	// プレイヤーが死んだらシーンを切り替える
 	if (player_->GetIsAlive() == false) sceneIf_->ChangeScene(Scene::RESULT);
@@ -120,29 +110,20 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
-
-	// ステージクラス
 	stage_->Draw();
-
-	// プレイヤー
 	player_->Draw();
-
-	// エネミーマネージャー
 	enemyMgr_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
-
-	// プレイヤー
 	playerUI_->Draw();
-
 	sGameUI_->Draw(gGameUI_);
-
 	sObjectiveText_->Draw(gObjectiveText_);
 }
 
 void GameScene::Finalize()
 {
 	lightGroup_->RemoveDirLight(dirLight_.get());
+	enemyMgr_->Finalize();
 }
 
 void GameScene::Debug()
@@ -170,9 +151,6 @@ void GameScene::Debug()
 
 	stage_->Debug(isDebug_);
 
-	// エネミーマネージャー
-	enemyMgr_->Debug(isDebug_);
-
 	if (isDebug_ == false) return;
 
 	ImGui::Begin("DeltaTime");
@@ -188,32 +166,19 @@ void GameScene::Collision()
 {
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();
-
-	// プレイヤー
 	player_->OnCollision();
-
 	playerUI_->OnCollision();
-
-	// エネミーマネージャー
-	enemyMgr_->OnCollision();
+	enemyMgr_->Collision();
 }
 
 void GameScene::MatUpdate()
 {
 	cameraMgr_->MatUpdate();
-
-	// プレイヤー
 	player_->MatUpdate();
 	playerUI_->MatUpdate();
-
-	// エネミーマネージャー
 	enemyMgr_->MatUpdate();
-
-	// ステージクラス
 	stage_->MatUpdate();
-
 	debugCamera_->MatUpdate();
-
 	sGameUI_->MatUpdate();
 	sObjectiveText_->MatUpdate();
 }

@@ -201,9 +201,6 @@
     <ClCompile Include="Engine\Util\Easing.cpp">
       <Filter>Engine\ソース ファイル\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
-      <Filter>Application\ソースファイル\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Scene\GameOverScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
@@ -294,9 +291,6 @@
     <ClCompile Include="Application\Setting\GamePlayLayer.cpp">
       <Filter>Application\ソースファイル\Setting</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Enemy\Zombie.cpp">
-      <Filter>Application\ソースファイル\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Scene\MapCreateScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
@@ -307,12 +301,6 @@
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\AABBCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyGenerator.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyCore.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Player\PlayerUI.cpp">
@@ -336,12 +324,6 @@
     <ClCompile Include="Application\Result\ResultData.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Enemy\Magician.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\MagicianBullet.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
@@ -361,6 +343,18 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\IScene.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\BaseEnemy.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\Zombie.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Enemy\EnemyFactory.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -467,9 +461,6 @@
     <ClInclude Include="Engine\Util\Easing.h">
       <Filter>Engine\ヘッダー ファイル\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyManager.h">
-      <Filter>Application\ヘッダーファイル\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Scene\GameScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
@@ -560,9 +551,6 @@
     <ClInclude Include="Application\Setting\GamePlayLayer.h">
       <Filter>Application\ヘッダーファイル\Setting</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Enemy\Zombie.h">
-      <Filter>Application\ヘッダーファイル\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Scene\MapCreateScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
@@ -573,12 +561,6 @@
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\AABBCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyGenerator.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyCore.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Player\PlayerUI.h">
@@ -600,12 +582,6 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Result\ResultData.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\Magician.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\MagicianBullet.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collision\CollisionManager3D.h">
@@ -630,6 +606,18 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\IScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\EnemyManager.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\BaseEnemy.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\Zombie.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\EnemyFactory.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

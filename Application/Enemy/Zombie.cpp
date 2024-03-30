@@ -1,73 +1,48 @@
 #include "Zombie.h"
+#include "Player.h"
 
-#include "PipelineManager.h"
-
+#include "Util.h"
 #include "CollisionAttribute.h"
 
-CollisionManager3D* Zombie::sColMgr_ = nullptr;
-Model* Zombie::sModel0_ = nullptr;
-Model* Zombie::sModel1_ = nullptr;
-Player* Zombie::sPlayer_ = nullptr;
-NavMesh* Zombie::sNavMesh_ = nullptr;
-Vector3* Zombie::sDebugNavGoal_ = nullptr;
+#include <imgui_impl_DX12.h>
 
-Zombie::~Zombie()
+Zombie::Zombie(CollisionManager3D* inColMgr, NavMesh* inNavMesh, Player* inPlayer, Model* inModel0, Model* inModel1) :
+	BaseEnemy(inColMgr), pNavMesh_(inNavMesh), pPlayer_(inPlayer), model0_(inModel0), model1_(inModel1) {}
+
+void Zombie::Initialize(const Vector3& inPos)
 {
-	sColMgr_->RemoveCollider(headC_.get());
-	sColMgr_->RemoveCollider(bodyC_.get());
-	sColMgr_->RemovePushBackRayCollider(legC_.get());
-}
+	nowHP_ = 3;
 
-void Zombie::Initialize(const Vector3& inPos, const Vector3& inWanderingPos, State inState)
-{
-	wanderingPos_ = inWanderingPos;
-	state_ = inState;
+	object_ = std::make_unique<Object3D>(model0_);
+	object_->SetPosition(inPos);
 
-#pragma region オブジェクト
-	if (inState == State::CHASE)
-	{
-		object_ = std::make_unique<Object3D>(sModel1_);
-		object_->SetPosition(inPos);
-		speed_ = rushSpd_;
-	}
-
-	else
-	{
-		object_ = std::make_unique<Object3D>(sModel0_);
-		object_->SetPosition(inPos);
-		speed_ = defSpd_;
-	}
-#pragma endregion
-
-#pragma region コライダー
+	headColData_.offset = { 0.0f, 1.75f, 0.0f };
+	headColData_.radius = { 0.25f, 0.25f, 0.25f };
 	headC_ = std::make_unique<AABBCollider>();
-	headC_->SetOffset(headOffset_);
-	headC_->SetRadius(headRadius_);
+	headC_->SetOffset(headColData_.offset);
+	headC_->SetRadius(headColData_.radius);
 	headC_->SetAttribute(COL_ENEMY_HEAD);
 	headC_->SetObject3D(object_.get());
-	sColMgr_->AddCollider(headC_.get());
+	colMgr_->AddCollider(headC_.get());
 
+	bodyColData_.offset = { 0.0f, 0.75f, 0.0f };
+	bodyColData_.radius = { 0.25f, 0.75f, 0.25f };
 	bodyC_ = std::make_unique<AABBCollider>();
-	bodyC_->SetOffset(bodyOffset_);
-	bodyC_->SetRadius(bodyRadius_);
+	bodyC_->SetOffset(bodyColData_.offset);
+	bodyC_->SetRadius(bodyColData_.radius);
 	bodyC_->SetAttribute(COL_ENEMY_BODY);
 	bodyC_->SetObject3D(object_.get());
-	sColMgr_->AddCollider(bodyC_.get());
+	colMgr_->AddCollider(bodyC_.get());
 
-	legC_ = std::make_unique<RayCollider>();
-	legC_->SetOffSet(headOffset_);
-	legC_->SetDir({ 0.0f, -1.0f, 0.0f });
-	legC_->SetPushBackDistance(headOffset_.y);
-	legC_->SetAttribute(COL_LEG);
-	legC_->SetObject3D(object_.get());
-	sColMgr_->AddPushBackRayCollider(legC_.get());
-#pragma endregion
-
-	line_ = std::make_unique<Line3D>();
-	line_->Initialize(100);
-	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-
-	waitT_.coolTime = 3.0f;
+	groundColData_.offset = { 0.0f, 1.75f, 0.0f };
+	groundColData_.rayDir = { 0.0f, -1.0f, 0.0f };
+	groundC_ = std::make_unique<RayCollider>();
+	groundC_->SetOffSet(groundColData_.offset);
+	groundC_->SetDir(groundColData_.rayDir);
+	groundC_->SetPushBackDistance(groundColData_.offset.y);
+	groundC_->SetAttribute(COL_LEG);
+	groundC_->SetObject3D(object_.get());
+	colMgr_->AddPushBackRayCollider(groundC_.get());
 }
 
 void Zombie::Update()
@@ -75,197 +50,95 @@ void Zombie::Update()
 	// 状態別更新処理
 	(this->*stateTable[(size_t)state_])();
 
-	// 重力処理
-	Gravity();
+	Vector3 pos = object_->GetPosition();
+
+	ImGui::Begin("Zombie");
+
+	ImGui::Text("POS = { %f, %f, %f }", pos.x, pos.y, pos.z);
+	ImGui::Text("HP = %d", nowHP_);
+
+	ImGui::End();
 }
 
 void Zombie::Draw()
 {
 	object_->Draw();
-	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	if (isDebug_) line_->Draw();
-	PipelineManager::PreDraw("Object3D");
 }
 
-void Zombie::OnCollision()
+void Zombie::Collision()
 {
-	// 接地判定
+	HeadHit();
+	BodyHit();
+	JudDeath();
 	GroundingJudgment();
-
-	// 攻撃を食らったときの処理
-	Hit();
 }
 
 void Zombie::MatUpdate()
 {
 	object_->MatUpdate();
-	line_->MatUpdate();
 }
 
-void Zombie::Debug(bool isDebug)
+void Zombie::Finalize()
 {
-	isDebug_ = isDebug;
-	//if (isDebug == false) return;
-	if (isDebug == true)
-	{
-		state_ = State::DEBUG;
-	}
+	colMgr_->RemoveCollider(headC_.get());
+	colMgr_->RemoveCollider(bodyC_.get());
+	colMgr_->RemovePushBackRayCollider(groundC_.get());
 }
 
 void (Zombie::* Zombie::stateTable[]) () = {
-	&Zombie::Wait,		// 待機状態
-	&Zombie::Wandering,	// 徘徊状態
-	&Zombie::Chase,		// 追跡状態
-	&Zombie::DebugMove
+	&Zombie::Wait,
+	&Zombie::Chase,
 };
 
 void Zombie::Wait()
 {
-	if (waitT_.GetOn())
-	{
-		while (true)
-		{
-			Vector3 offset = Vector3();
-			offset.x = Util::GetRandomFloat(wanderingPos_.x - wanderingRadius_, wanderingPos_.x + wanderingRadius_);
-			offset.y = 3.0f;
-			offset.z = Util::GetRandomFloat(wanderingPos_.z - wanderingRadius_, wanderingPos_.z + wanderingRadius_);
-			bool result = CreateRoute(offset);
-			if (result) break;
-		}
-		state_ = State::WANDERING;
-	}
-}
-
-void Zombie::Wandering()
-{
-	bool result = Move();
-	if (result == false)
-	{
-		waitT_.last = Util::GetTimrMSec();
-		state_ = State::WAIT;
-	}
-
-	// 回転処理
 	Rotate();
+	Gravity();
 }
 
 void Zombie::Chase()
 {
-	speed_ += 0.01f;
-	speed_ = Util::Min(speed_, rushSpd_);
-
-	// ルート探索
-	CreateRoute(sPlayer_->GetPosition());
-
-	// 移動処理
-	RushMove();
-
-	// 回転処理
 	Rotate();
+	Gravity();
 }
 
-void Zombie::DebugMove()
+void Zombie::Rotate()
 {
-	speed_ += 0.01f;
-	speed_ = Util::Min(speed_, rushSpd_);
+	// ルートがないなら処理を飛ばす
+	//if (route_.size() == 0) return;
 
-	// ルート探索
-	CreateRoute(*sDebugNavGoal_);
+	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
+	Vector2 target = { pPlayer_->GetPosition().x, pPlayer_->GetPosition().z };
+	Vector2 targetVec = target - enemy;
 
-	// 移動処理
-	RushMove();
+	// 現在の正面ベクトルを求める
+	Vector2 nowForwardVec = 
+		{ sinf(Util::Degree2Radian(angle_)), cosf(Util::Degree2Radian(angle_)) };
 
-	// 回転処理
-	Rotate();
-}
+	// 各ベクトルを正規化
+	targetVec.normalize();
+	nowForwardVec.normalize();
 
-bool Zombie::CreateRoute(const Vector3& goalPos)
-{
-	//// 最後にルート探索してからの経過時間
-	//float elapsedTime = (Util::GetTimrMSec() - lastRouteSearchTime_) / 1000.0f;
+	// ベクトルの差分を計算
+	float difAngle = Util::Radian2Degree(acosf(nowForwardVec.dot(targetVec)));
 
-	//// 経過時間がインターバルを過ぎていたらルート探索をする
-	//if (!(routeSearchInterval_ <= elapsedTime)) return false;
-
-	//// 最後にルート探索した時間を更新
-	//lastRouteSearchTime_ = Util::GetTimrMSec();
-
-	// ルート探索する際に加算するベクトル
-	Vector3 addVec = { 0.0f, 1.0f, 0.0f };
-
-	// ルートを検索
-	bool result = sNavMesh_->RouteSearch(object_->GetPosition() + addVec, goalPos + addVec, route_);
-
-	// ルート検索が失敗したら処理を飛ばす
-	if (result == false) return false;
-
-	// ルート描画用変数の初期化
-	line_->ClearPoint();
-
-	// ルート描画用に座標を設定
-	for (uint16_t i = 0; i < route_.size() - 1; i++)
+	// どっち周りするか決める
+	if (nowForwardVec.cross(targetVec) < 0)
 	{
-		line_->AddPoint(route_[i], route_[i + 1]);
+		if (difAngle < rotaSpd_) angle_ += difAngle;
+		else angle_ += rotaSpd_;
 	}
 
-	// 最初の座標を削除
-	route_.erase(route_.begin());
-
-	return true;
-}
-
-bool Zombie::Move()
-{
-	// ルートがなかったら処理を飛ばす
-	if (route_.size() == 0) return false;
-
-	// 移動方向を計算
-	Vector3 moveVec = route_[0] - object_->GetPosition();
-	moveVec = { moveVec.x, 0.0f, moveVec.z };
-
-	// ルートの通過点を通ったら点を消す
-	if (moveVec.length() < speed_) route_.erase(route_.begin());
-
-	// 移動方向ベクトルを正規化
-	moveVec.normalize();
-
-	// オブジェクトの座標を更新
-	object_->SetPosition(object_->GetPosition() + moveVec * speed_);
-
-	return true;
-}
-
-bool Zombie::RushMove()
-{
-	Vector3 resultMoveVec = { moveVec_.x, 0.0f, moveVec_.z };
-	resultMoveVec.normalize();
-
-	if (route_.size() != 0)
+	else if (nowForwardVec.cross(targetVec) > 0)
 	{
-		Vector3 routeVec = route_[0] - object_->GetPosition();
-		if (routeVec.length() < speed_) route_.erase(route_.begin());
-		resultMoveVec += routeVec;
+		if (difAngle < rotaSpd_) angle_ -= difAngle;
+		else angle_ -= rotaSpd_;
 	}
 
-	resultMoveVec.normalize();
 
-	// オブジェクトの座標を更新
-	object_->SetPosition(object_->GetPosition() + resultMoveVec * speed_);
-
-	resultMoveVec = Vector3();
-
-	return true;
-}
-
-void Zombie::GroundingJudgment()
-{
-	// 衝突していなかったら処理を飛ばす
-	if (legC_->GetIsHit()) return;
-
-	if (legC_->GetDistance() > headOffset_.y) return;
-
-	isGround_ = true;
+	// 回転
+	Util::NormalizeAngle(angle_);
+	object_->SetRotation({ 0.0f, angle_, 0.0f });
 }
 
 void Zombie::Gravity()
@@ -273,120 +146,21 @@ void Zombie::Gravity()
 	// 接地していたら処理を飛ばす
 	if (isGround_) return;
 
-	// 速度を加速させる
-	velocity_ += accel_;
+	// 重力の計算
+	gravity_ += accel_;
+	gravity_ = Util::Min(gravity_, gravityLimit_);
 
-	// 速度制限処理
-	velocity_ = Util::Min(velocity_, velocityLimit_);
-
-	// 重力方向
-	Vector3 gravityVec = { 0.0f, -1.0f, 0.0f };
-
-	// 重力を加算した後の座標を計算
-	Vector3 result = object_->GetPosition() + gravityVec * velocity_;
-
-	// オブジェクト座標更新
+	// 座標の更新
+	Vector3 result = object_->GetPosition() + gravityVec_ * gravity_;
 	object_->SetPosition(result);
 }
 
-void Zombie::Rotate()
+void Zombie::GroundingJudgment()
 {
-	// ルートがなかったら処理を飛ばす
-	if (route_.size() == 0) return;
+	// 接地しているか判定
+	if (groundC_->GetIsHit()) return;
+	if (groundC_->GetDistance() > headColData_.offset.y) return;
 
-	// エネミーからプレイヤーまでの向きを計算
-	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
-	Vector2 player = { route_[0].x, route_[0].z };
-	Vector2 enemy2Player = player - enemy;
-	enemy2Player.normalize();
-
-	// エネミーの向きを計算
-	forwardVec_ = { sinf(Util::Degree2Radian(angle_)), cosf(Util::Degree2Radian(angle_)) };
-	forwardVec_.normalize();
-
-	float result = Util::Radian2Degree(acosf(forwardVec_.dot(enemy2Player)));
-
-	// 角度を計算
-	if (forwardVec_.cross(enemy2Player) < 0)
-	{
-		if (result < turnSpd_) angle_ += result;
-		else angle_ += turnSpd_;
-	}
-
-	else if (forwardVec_.cross(enemy2Player) > 0)
-	{
-		if (result < turnSpd_) angle_ -= result;
-		else angle_ -= turnSpd_;
-	}
-
-	object_->SetRotation({ 0.0f, angle_, 0.0f });
-}
-
-void Zombie::Hit()
-{
-	isBody_ = false;
-
-	// 頭に攻撃を受けたら
-	if (headC_->GetIsHit() && headC_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
-	{
-		isAlive_ = false;
-		isHead_ = true;
-		hp_ = 0;
-	}
-
-	// 体に攻撃を受けたら
-	if (bodyC_->GetIsHit() && bodyC_->GetHitCollider()->GetAttribute() == COL_PLAYER_SHOT)
-	{
-		velocity_ = 0.0f;
-		knockBackVec_ = sPlayer_->GetDir();
-		knockBackVec_.normalize();
-		knockBackVec_.y = 1.0f;
-		knockBackSpd_ = 0.5f;
-		hp_ -= 1;
-		speed_ = 0.0f;
-		if (state_ != State::CHASE)
-		{
-			isBody_ = true;
-		}
-
-		if (hp_ <= 0) isAlive_ = false;
-
-		hitTime_ = Util::GetTimrMSec();
-	}
-
-	// 壁に衝突したときの処理
-	if (bodyC_->GetIsHit() && bodyC_->GetHitCollider()->GetAttribute() == COL_BLOCK)
-	{
-		Jump();
-	}
-
-	// ヒット時色を変更
-	float elapsed = (Util::GetTimrMSec() - hitTime_) / 1000.0f;
-	if (hitReactionDuringTime_ >= elapsed)
-	{
-		object_->SetColor({ 0.8f, 0.0f, 0.0f, 1.0f });
-	}
-
-	else
-	{
-		object_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-	}
-}
-
-void Zombie::Jump()
-{
-	// 接地していなかったら処理を飛ばす
-	if (isGround_ == false) return;
-
-	// 速度を加算
-	velocity_ = JumpSpd_;
-
-	isGround_ = false;
-}
-
-void Zombie::SetRushMode()
-{
-	state_ = State::CHASE;
-	object_->SetModel(sModel1_);
-	speed_ = rushSpd_;
+	isGround_ = true;
+	gravity_ = 0.0f;
 }
