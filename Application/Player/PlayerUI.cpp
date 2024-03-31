@@ -2,6 +2,8 @@
 #include "Texture.h"
 #include "WinAPI.h"
 
+PlayerUI::PlayerUI(Player* inPlayer, Weapon* inWeapon) : pPlayer_(inPlayer), pWeapon_(inWeapon) {}
+
 PlayerUI::~PlayerUI()
 {
 }
@@ -100,7 +102,7 @@ void PlayerUI::Update()
 	// リロードUI画像の角度
 	static float rotaY = 0.0f;
 
-	if (pPlayer_->GetIsReload())
+	if (pWeapon_->GetIsReload())
 	{
 		rotaY -= 3.0f;
 		reloadUIS_->SetRotation(rotaY);
@@ -111,12 +113,12 @@ void PlayerUI::Update()
 void PlayerUI::Draw()
 {
 	// 最大弾数を表示
-	sMaxBulletUI_[0]->Draw(numberHandle_[pPlayer_->GetMaxBullet() / 10]);
-	sMaxBulletUI_[1]->Draw(numberHandle_[pPlayer_->GetMaxBullet() % 10]);
+	sMaxBulletUI_[0]->Draw(numberHandle_[pWeapon_->GetMaxBullet() / 10]);
+	sMaxBulletUI_[1]->Draw(numberHandle_[pWeapon_->GetMaxBullet() % 10]);
 
 	// 残弾数を表示
-	sNowBulletUI_[0]->Draw(numberHandle_[pPlayer_->GetNowBullet() / 10]);
-	sNowBulletUI_[1]->Draw(numberHandle_[pPlayer_->GetNowBullet() % 10]);
+	sNowBulletUI_[0]->Draw(numberHandle_[pWeapon_->GetNowBullet() / 10]);
+	sNowBulletUI_[1]->Draw(numberHandle_[pWeapon_->GetNowBullet() % 10]);
 
 	// 残弾数表示枠を描画
 	sBulletValueDisplayFrame_->Draw(bulletValueDisplayFrameHandle_);
@@ -124,9 +126,9 @@ void PlayerUI::Draw()
 	hpFrameShadowS_->Draw(hpFrameShadowH_);
 	hpBarS_->Draw(hpBarH_);
 	hpFrameS_->Draw(hpFrameH_);
-	if (pPlayer_->GetIsReload())reloadBackUIS_->Draw(reloadBackUIH_);
-	if (pPlayer_->GetIsReload())reloadUIS_->Draw(reloadUIH_);
-	if (!pPlayer_->GetIsReload()) crossHairS_->Draw(crossHairH_);
+	if (pWeapon_->GetIsReload())reloadBackUIS_->Draw(reloadBackUIH_);
+	if (pWeapon_->GetIsReload())reloadUIS_->Draw(reloadUIH_);
+	if (!pWeapon_->GetIsReload()) crossHairS_->Draw(crossHairH_);
 }
 
 void PlayerUI::OnCollision()
@@ -156,7 +158,7 @@ void PlayerUI::MatUpdate()
 
 void PlayerUI::HPUI()
 {
-	float rate = (float)pPlayer_->GetHP() / pPlayer_->GetMAXHP();
+	float rate = (float)pPlayer_->GetNowHP() / pPlayer_->GetMaxHP();
 	float result = hpBarSize_.x * rate;
 	hpBarS_->SetUV({ rate, 1.0f });
 	hpBarS_->SetSize({ result, hpBarSize_.y });

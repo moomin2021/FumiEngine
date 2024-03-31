@@ -10,6 +10,7 @@ class PlayerUI
 private:
 	// プレイヤー
 	Player* pPlayer_ = nullptr;
+	Weapon* pWeapon_ = nullptr;
 
 	// スプライト
 	std::unique_ptr<Sprite> hpBarS_ = nullptr;
@@ -37,7 +38,7 @@ private:
 
 #pragma region メンバ関数
 public:
-	PlayerUI() {}
+	PlayerUI(Player* inPlayer, Weapon* inWeapon);
 	~PlayerUI();
 
 	// 初期化処理

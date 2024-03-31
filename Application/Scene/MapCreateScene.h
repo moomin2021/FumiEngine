@@ -5,7 +5,6 @@
 #include "DirectionalLight.h"
 #include "Model.h"
 #include "Object3D.h"
-#include "MapCreatePlayer.h"
 
 #include <memory>
 

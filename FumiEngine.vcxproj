@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;DIRECTINPUT_VERSION=0x0800;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;$(ProjectDir)Application;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Player;$(ProjectDir)Application\Stage;$(ProjectDir)Application\NavMesh;$(ProjectDir)Application\Setting;$(ProjectDir)Application\Result;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;$(ProjectDir)Application;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Player;$(ProjectDir)Application\Stage;$(ProjectDir)Application\NavMesh;$(ProjectDir)Application\Setting;$(ProjectDir)Application\Result;$(ProjectDir)Engine\Scene;$(ProjectDir)Application\Player\Weapon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -81,7 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;$(ProjectDir)Application;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Player;$(ProjectDir)Application\Stage;$(ProjectDir)Application\NavMesh;$(ProjectDir)Application\Setting;$(ProjectDir)Application\Result;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Util;$(ProjectDir)Engine\Util\Math;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\Collision;$(ProjectDir)External;$(ProjectDir)Engine\Sound;$(ProjectDir)Application;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Player;$(ProjectDir)Application\Stage;$(ProjectDir)Application\NavMesh;$(ProjectDir)Application\Setting;$(ProjectDir)Application\Result;$(ProjectDir)Engine\Scene;$(ProjectDir)Application\Player\Weapon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -157,7 +157,6 @@
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Application\Stage\Stage.cpp" />
-    <ClCompile Include="Application\Player\Player.cpp" />
     <ClCompile Include="Application\Scene\TransitionScene.cpp" />
     <ClCompile Include="Application\NavMesh\NavMesh.cpp" />
     <ClCompile Include="Application\NavMesh\NavCell.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="Application\Setting\TitleLayer.cpp" />
     <ClCompile Include="Application\Setting\Slider.cpp" />
     <ClCompile Include="Application\Scene\MapCreateScene.cpp" />
-    <ClCompile Include="Application\Player\MapCreatePlayer.cpp" />
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp" />
     <ClCompile Include="Application\Player\PlayerUI.cpp" />
     <ClCompile Include="Application\Result\ResultBox.cpp" />
@@ -174,6 +172,9 @@
     <ClCompile Include="Engine\Util\Timer.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Application\Enemy\Zombie.cpp" />
+    <ClCompile Include="Application\Player\Player.cpp" />
+    <ClCompile Include="Application\Player\Weapon\Weapon.cpp" />
+    <ClCompile Include="Application\Player\Weapon\Revolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\CameraManager.h" />
@@ -241,7 +242,6 @@
     <ClInclude Include="Application\Scene\GameScene.h" />
     <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Stage\Stage.h" />
-    <ClInclude Include="Application\Player\Player.h" />
     <ClInclude Include="Application\Scene\TransitionScene.h" />
     <ClInclude Include="Application\NavMesh\NavMesh.h" />
     <ClInclude Include="Application\NavMesh\NavCell.h" />
@@ -252,7 +252,6 @@
     <ClInclude Include="Application\Setting\GamePlayLayer.h" />
     <ClInclude Include="Application\Setting\Slider.h" />
     <ClInclude Include="Application\Scene\MapCreateScene.h" />
-    <ClInclude Include="Application\Player\MapCreatePlayer.h" />
     <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
     <ClInclude Include="Application\Player\PlayerUI.h" />
     <ClInclude Include="Engine\Base\Instancing3D.h" />
@@ -263,6 +262,9 @@
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\IScene.h" />
     <ClInclude Include="Application\Enemy\Zombie.h" />
+    <ClInclude Include="Application\Player\Player.h" />
+    <ClInclude Include="Application\Player\Weapon\Weapon.h" />
+    <ClInclude Include="Application\Player\Weapon\Revolver.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

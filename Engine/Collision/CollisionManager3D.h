@@ -12,6 +12,12 @@
 
 #include <forward_list>
 
+struct ColData {
+	Vector3 offset = Vector3();
+	Vector3 radius = Vector3();
+	Vector3 rayDir = Vector3();
+};
+
 class CollisionManager3D
 {
 #pragma region メンバ変数

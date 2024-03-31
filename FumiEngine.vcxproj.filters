@@ -228,9 +228,6 @@
     <ClCompile Include="Engine\3d\ParticleEmitter.cpp">
       <Filter>Engine\ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Player\Player.cpp">
-      <Filter>Application\ソースファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\PointCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
@@ -294,9 +291,6 @@
     <ClCompile Include="Application\Scene\MapCreateScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Player\MapCreatePlayer.cpp">
-      <Filter>Application\ソースファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
@@ -355,6 +349,15 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Enemy\EnemyFactory.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Player\Player.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Player\Weapon\Weapon.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Player\Weapon\Revolver.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -485,9 +488,6 @@
     <ClInclude Include="Engine\3d\ParticleEmitter.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Player\Player.h">
-      <Filter>Application\ヘッダーファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collision\PointCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
@@ -554,9 +554,6 @@
     <ClInclude Include="Application\Scene\MapCreateScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Player\MapCreatePlayer.h">
-      <Filter>Application\ヘッダーファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Application\NavMesh\NavMeshPath.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
@@ -618,6 +615,15 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\EnemyFactory.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player\Player.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player\Weapon\Weapon.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Player\Weapon\Revolver.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

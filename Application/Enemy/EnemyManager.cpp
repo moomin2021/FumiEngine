@@ -12,8 +12,6 @@ void EnemyManager::Initialize()
 	// エネミー生成器
 	enemyFactory_ = std::make_unique<EnemyFactory>(pNavMesh_, pPlayer_);
 	enemyFactory_->Initialize();
-
-	CreateEnemy();
 }
 
 void EnemyManager::Update()

@@ -38,9 +38,9 @@ void GameScene::Initialize()
 
 #pragma region プレイヤー
 	player_ = std::make_unique<Player>();
-	player_->Initialize({ 0.0f, 5.0f, 0.0f });
+	player_->Initialize({ 0.0f, 0.0f, 0.0f });
 
-	playerUI_ = std::make_unique<PlayerUI>();
+	playerUI_ = std::make_unique<PlayerUI>(player_.get(), player_->GetWeapon());
 	playerUI_->Initialize();
 	playerUI_->SetPlayer(player_.get());
 #pragma endregion
@@ -101,8 +101,6 @@ void GameScene::Update()
 	// デバック
 	if (!isDebug_) Debug();
 
-	player_->CheckSceneChange();
-
 	// プレイヤーが死んだらシーンを切り替える
 	if (player_->GetIsAlive() == false) sceneIf_->ChangeScene(Scene::RESULT);
 }
@@ -158,15 +156,13 @@ void GameScene::Debug()
 	ImGui::End();
 
 	debugCamera_->Debug();
-
-	player_->Debug();
 }
 
 void GameScene::Collision()
 {
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();
-	player_->OnCollision();
+	player_->Collision();
 	playerUI_->OnCollision();
 	enemyMgr_->Collision();
 }

@@ -40,7 +40,7 @@ void TestScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Initialize({ 0.0f, 5.0f, 0.0f });
 
-	playerUI_ = std::make_unique<PlayerUI>();
+	playerUI_ = std::make_unique<PlayerUI>(player_.get(), player_->GetWeapon());
 	playerUI_->Initialize();
 	playerUI_->SetPlayer(player_.get());
 #pragma endregion
@@ -93,8 +93,6 @@ void TestScene::Update()
 
 	// デバック
 	Debug();
-
-	player_->CheckSceneChange();
 }
 
 void TestScene::Draw()
@@ -154,8 +152,6 @@ void TestScene::Debug()
 	ImGui::End();
 
 	debugCamera_->Debug();
-
-	player_->Debug();
 }
 
 void TestScene::Collision()
@@ -164,7 +160,7 @@ void TestScene::Collision()
 	CollisionManager3D::GetInstance()->CheckAllCollision();
 
 	// プレイヤー
-	player_->OnCollision();
+	player_->Collision();
 
 	playerUI_->OnCollision();
 }

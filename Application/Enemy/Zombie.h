@@ -1,14 +1,9 @@
 #pragma once
 #include "BaseEnemy.h"
 #include "NavMesh.h"
+#include "CollisionManager3D.h"
 
 class Player;
-
-struct ColData {
-	Vector3 offset = Vector3();
-	Vector3 radius = Vector3();
-	Vector3 rayDir = Vector3();
-};
 
 class Zombie : public BaseEnemy
 {
