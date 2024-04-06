@@ -30,6 +30,7 @@ protected:
 
 	Vector3 adsOffset_ = Vector3();
 	Vector3 noAdsOffset_ = Vector3();
+	Vector3 position_ = Vector3();
 
 #pragma endregion
 
@@ -48,6 +49,7 @@ public:
 	void PosRotaUpdate(const Vector3& forwardVec, const Vector3& rightVec, const Vector3& eyeAngle);
 	void StartReload();
 	bool Shot();
+	void Pitching(bool isMove);
 	
 protected:
 	void AdsProcess();

@@ -18,5 +18,8 @@ public:
 	void Collision() override;
 	void MatUpdate() override;
 	void Finalize() override;
+
+private:
+	void Reset();
 #pragma endregion
 };

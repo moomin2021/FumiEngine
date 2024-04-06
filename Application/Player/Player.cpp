@@ -65,6 +65,7 @@ void Player::Update()
 	if (key_->TriggerKey(DIK_R)) weapon_->StartReload();
 	weapon_->SetADS(mouse_->PushMouseButton(MouseButton::M_RIGHT));
 	weapon_->Update();
+	weapon_->Pitching(isMove_);
 
 	FovAngleUpdate();
 	JudgmentDeath();
@@ -131,6 +132,9 @@ void Player::Move()
 		0.0f,
 		static_cast<float>(key_->PushKey(DIK_W) - key_->PushKey(DIK_S))
 	};
+
+	if (inputVec.length()) isMove_ = true;
+	else isMove_ = false;
 
 	// 移動入力がされていたら加速させる
 	if (inputVec.length() > 0.0f)	moveSpd_ += moveAcc_;

@@ -20,6 +20,7 @@ void Revolver::Initialize()
 
 void Revolver::Update()
 {
+	Reset();
 	AdsProcess();
 	ReloadProcess();
 }
@@ -35,9 +36,16 @@ void Revolver::Collision()
 
 void Revolver::MatUpdate()
 {
+	position_ += parent_->GetPosition();
+	object_->SetPosition(position_);
 	object_->MatUpdate();
 }
 
 void Revolver::Finalize()
 {
+}
+
+void Revolver::Reset()
+{
+	position_ = Vector3();
 }

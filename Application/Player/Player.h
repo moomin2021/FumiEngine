@@ -64,6 +64,7 @@ private:
 	const float maxMoveSpd_ = 0.15f;
 	const float maxDashSpd_ = 0.25f;
 	bool isDash_ = false;
+	bool isMove_ = false;
 
 	const uint16_t maxHP_ = 10;
 	uint16_t nowHP_ = maxHP_;
