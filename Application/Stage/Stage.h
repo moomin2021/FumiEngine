@@ -89,8 +89,9 @@ public:
 	void Debug(bool isDebug);
 
 	// ステージ情報読み込み
-	void Load(std::string fileName, bool isCol = true, bool isCore = false);
+	void Load(std::string fileName, bool isTitle = false, bool isTest = false);
 
+private:
 	void CreateStage(bool isTest = false);
 
 	void LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota);
@@ -99,6 +100,7 @@ public:
 #pragma endregion
 
 #pragma region ゲッター関数
+public:
 	NavMesh* GetNavMesh() { return navMesh_.get(); }
 #pragma endregion
 };

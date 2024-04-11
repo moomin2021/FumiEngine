@@ -53,7 +53,7 @@ void TitleScene::Initialize()
 #pragma region ステージ
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
-	stage_->Load("Resources/StageJson/stage1.json", false);
+	stage_->Load("Resources/StageJson/stage1.json", true);
 #pragma endregion
 
 #pragma region コライダー

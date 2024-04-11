@@ -61,7 +61,7 @@ void GameScene::Initialize()
 #pragma endregion
 
 	// ステージ読み込み
-	stage_->CreateStage();
+	stage_->Load("Resources/StageJson/test.json");
 
 #pragma region ゲームUI
 	sGameUI_ = std::make_unique<Sprite>();

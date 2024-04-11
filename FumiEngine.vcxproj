@@ -102,6 +102,7 @@
     <ClCompile Include="Application\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Application\Enemy\BaseEnemy.cpp" />
     <ClCompile Include="Application\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Application\Enemy\EnemyCore.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Util\DeltaTime.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Application\Enemy\EnemyManager.h" />
     <ClInclude Include="Application\Enemy\BaseEnemy.h" />
     <ClInclude Include="Application\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Application\Enemy\EnemyCore.h" />
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Util\BasicTask.h" />

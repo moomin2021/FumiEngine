@@ -69,7 +69,7 @@ void Stage::Debug(bool isDebug)
 	else navMesh_->SetIsLinkLineDraw(false);
 }
 
-void Stage::Load(std::string fileName, bool isCol, bool isCore)
+void Stage::Load(std::string fileName, bool isTitle, bool isTest)
 {
 	// ファイルストリーム
 	std::ifstream file;
@@ -96,6 +96,8 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 
 	// 正しいレベルデータファイルかチェック
 	assert(name.compare("scene") == 0);
+
+	if (model_ == nullptr) model_ = std::make_unique<Model>("stoneBrick");
 
 	// レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
@@ -143,7 +145,7 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 			objectData.translation.y = (float)transform["translation"][2];
 			objectData.translation.z = (float)transform["translation"][1];
 
-			if (isCol == false) continue;
+			if (isTitle) continue;
 
 			// スケーリング
 			objectData.scale.x = (float)transform["scaling"][0];
@@ -158,28 +160,33 @@ void Stage::Load(std::string fileName, bool isCol, bool isCore)
 
 		if (objectData.className == "enemyCore")
 		{
-			if (isCore == false) continue;
+			if (isTitle) continue;
+			if (isTest) continue;
+		}
+
+		else if (objectData.className == "Nav")
+		{
+			if (isTitle) continue;
+			navMesh_->AddVertex(objectData.fileName, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
+		}
+
+		else if (objectData.className == "collision")
+		{
+			if (isTitle) continue;
+			// コライダー
+			colliders_.emplace_front(std::make_unique<AABBCollider>());
+			colliders_.front()->SetOffset(objectData.translation);
+			colliders_.front()->SetRadius(objectData.scale / 2.0f);
+			colliders_.front()->SetAttribute(COL_BLOCK);
+			colMgr_->AddBlockCollider(colliders_.front().get());
 		}
 
 		// オブジェクト追加
 		else
 		{
-			if (isCol == false)
-			{
-				// オブジェクト
-				if (objects_->GetModel() == nullptr) objects_->SetModel(models_[objectData.fileName].get());
-				objects_->AddTransform(objectData.translation);
-			}
-
-			else
-			{
-				// コライダー
-				colliders_.emplace_front(std::make_unique<AABBCollider>());
-				colliders_.front()->SetOffset(objectData.translation);
-				colliders_.front()->SetRadius(objectData.scale / 2.0f);
-				colliders_.front()->SetAttribute(COL_BLOCK);
-				colMgr_->AddBlockCollider(colliders_.front().get());
-			}
+			// オブジェクト
+			if (objects_->GetModel() == nullptr) objects_->SetModel(model_.get());
+			objects_->AddTransform(objectData.translation);
 		}
 	}
 }
