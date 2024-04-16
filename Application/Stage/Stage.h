@@ -6,6 +6,7 @@
 #include "Instancing3D.h"
 
 #include "NavMesh.h"
+#include "EnemyManager.h"
 
 #include <unordered_map>
 #include <string>
@@ -45,6 +46,7 @@ class Stage
 private:
 	// 衝突判定管理クラスインスタンス
 	CollisionManager3D* colMgr_ = nullptr;
+	EnemyManager* pEnemyMgr_ = nullptr;
 
 	// モデル保存用連想配列
 	std::unordered_map<std::string, std::unique_ptr<Model>> models_ = {};
@@ -97,6 +99,11 @@ private:
 	void LoadSection(std::string fileName, const Vector3& offset, SECTIONROTA sectionRota);
 
 	std::string RandomSection(SECTION selectSection);
+#pragma endregion
+
+#pragma region セッター関数
+public:
+	void SetEnemyManager(EnemyManager* inEnemyMgr) { pEnemyMgr_ = inEnemyMgr; }
 #pragma endregion
 
 #pragma region ゲッター関数

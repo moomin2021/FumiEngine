@@ -33,7 +33,6 @@ void GameScene::Initialize()
 
 #pragma region ステージクラス
 	stage_ = std::make_unique<Stage>();
-	stage_->Initialize();
 #pragma endregion
 
 #pragma region プレイヤー
@@ -45,10 +44,8 @@ void GameScene::Initialize()
 	playerUI_->SetPlayer(player_.get());
 #pragma endregion
 
-#pragma region エネミーマネージャー
-	enemyMgr_ = std::make_unique<EnemyManager>(stage_->GetNavMesh(), player_.get());
-	enemyMgr_->Initialize();
-#pragma endregion
+// エネミーマネージャー
+	enemyMgr_ = std::make_unique<EnemyManager>();
 
 #pragma region カメラマネージャー
 	cameraMgr_ = std::make_unique<CameraManager>();
@@ -59,6 +56,16 @@ void GameScene::Initialize()
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize(player_.get());
 #pragma endregion
+
+	// 設定
+	stage_->SetEnemyManager(enemyMgr_.get());
+	enemyMgr_->SetLightGroup(lightGroup_);
+	enemyMgr_->SetNavMesh(stage_->GetNavMesh());
+	enemyMgr_->SetPlayer(player_.get());
+
+	// 初期化
+	stage_->Initialize();
+	enemyMgr_->Initialize();
 
 	// ステージ読み込み
 	stage_->Load("Resources/StageJson/test.json");

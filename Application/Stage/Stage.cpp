@@ -162,6 +162,8 @@ void Stage::Load(std::string fileName, bool isTitle, bool isTest)
 		{
 			if (isTitle) continue;
 			if (isTest) continue;
+
+			pEnemyMgr_->CreateCore(objectData.translation);
 		}
 
 		else if (objectData.className == "Nav")
