@@ -71,14 +71,10 @@ void TestScene::Initialize()
 
 	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
 #pragma endregion
-
-	deltaTime_.Initialize();
 }
 
 void TestScene::Update()
 {
-	deltaTime_.Update();
-
 	// プレイヤー
 	player_->Update();
 	playerUI_->Update();
@@ -148,7 +144,6 @@ void TestScene::Debug()
 	if (isDebug_ == false) return;
 
 	ImGui::Begin("DeltaTime");
-	ImGui::Text("deltaTime = %f", deltaTime_.GetDeltaTime());
 	ImGui::End();
 
 	debugCamera_->Debug();

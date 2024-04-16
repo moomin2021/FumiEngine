@@ -24,6 +24,7 @@ private:
 	// インスタンス
 	Key* key_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
+	DeltaTime* deltaTime_ = nullptr;
 
 	// 平行光源
 	std::unique_ptr<DirectionalLight> dirLight_ = nullptr;
@@ -53,8 +54,6 @@ private:
 
 	std::unique_ptr<Sprite> sObjectiveText_ = nullptr;
 	uint16_t gObjectiveText_ = 0;
-
-	DeltaTime deltaTime_ = {};
 #pragma endregion
 
 #pragma region メンバ関数

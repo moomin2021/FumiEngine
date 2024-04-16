@@ -8,6 +8,7 @@
 #include "Object3D.h"// -> オブジェクト3Dクラス
 #include "Sound.h"
 #include "ImGuiManager.h"
+#include "DeltaTime.h"
 #pragma endregion
 
 #include "SceneManager.h"
@@ -33,6 +34,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ImGuiクラス
 	ImGuiManager::GetInstance()->Initialize();
 
+	DeltaTime::GetInstance()->Initialize();
+
 	PipelineManager::GetInstance();
 
 	// シーン管理クラスの生成と初期化
@@ -45,6 +48,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
 		if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
 		if (sceneMgr->GetIsGameEnd()) break;
+
+		DeltaTime::GetInstance()->Update();
 
 		// キーボード入力更新処理
 		Key::GetInstance()->Update();

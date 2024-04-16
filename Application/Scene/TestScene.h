@@ -10,7 +10,6 @@
 #include "Player.h"
 #include "PlayerUI.h"
 #include "NavMesh.h"
-#include "DeltaTime.h"
 #include "CameraManager.h"
 #include "DebugCamera.h"
 
@@ -49,8 +48,6 @@ private:
 
 	std::unique_ptr<Sprite> sObjectiveText_ = nullptr;
 	uint16_t gObjectiveText_ = 0;
-
-	DeltaTime deltaTime_ = {};
 #pragma endregion
 
 #pragma region メンバ関数
