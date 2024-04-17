@@ -13,7 +13,12 @@ void EnemyFactory::Initialize()
 
 BaseEnemy* EnemyFactory::CreateZombie()
 {
-	BaseEnemy* newEnemy = new Zombie(colMgr_, pNavMesh_, pPlayer_, zombie0M_.get(), zombie1M_.get());
+	Zombie* newEnemy = new Zombie();
+	newEnemy->SetCollisionManager3D(colMgr_);
+	newEnemy->SetNavMesh(pNavMesh_);
+	newEnemy->SetPlayer(pPlayer_);
+	newEnemy->SetModel(zombie0M_.get(), zombie1M_.get());
+
 	newEnemy->Initialize(Vector3(0.0f, 7.0f, 0.0f));
 	return newEnemy;
 }

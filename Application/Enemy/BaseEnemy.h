@@ -24,7 +24,7 @@ protected:
 
 #pragma region メンバ関数
 public:
-	BaseEnemy(CollisionManager3D* inColMgr);
+	BaseEnemy() {}
 	virtual ~BaseEnemy() {}
 
 	virtual void Initialize(const Vector3& inPos) = 0;

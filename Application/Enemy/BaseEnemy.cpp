@@ -1,8 +1,6 @@
 #include "BaseEnemy.h"
 #include "CollisionAttribute.h"
 
-BaseEnemy::BaseEnemy(CollisionManager3D* inColMgr) : colMgr_(inColMgr) {}
-
 void BaseEnemy::HeadHit()
 {
 	// 当たっていないなら処理を飛ばす

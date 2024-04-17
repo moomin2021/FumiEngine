@@ -6,9 +6,6 @@
 
 #include <imgui_impl_DX12.h>
 
-Zombie::Zombie(CollisionManager3D* inColMgr, NavMesh* inNavMesh, Player* inPlayer, Model* inModel0, Model* inModel1) :
-	BaseEnemy(inColMgr), pNavMesh_(inNavMesh), pPlayer_(inPlayer), model0_(inModel0), model1_(inModel1) {}
-
 void Zombie::Initialize(const Vector3& inPos)
 {
 	nowHP_ = 3;

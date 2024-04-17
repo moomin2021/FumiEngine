@@ -1,3 +1,17 @@
+/**
+ * @file EnemyManager.h
+ * @brief ゾンビクラス
+ * @author moomin
+ * @date 2024/04/17
+ */
+
+ // このクラスのインスタンスは初期化する前に各データのポインタを取得しておく必要がある
+ // 以下取得初期化前に取得しておくべきデータ一覧
+ // CollisionManager3D
+ // NavMesh
+ // Player
+ // Model
+
 #pragma once
 #include "BaseEnemy.h"
 #include "NavMesh.h"
@@ -41,7 +55,7 @@ private:
 
 #pragma region メンバ関数
 public:
-	Zombie(CollisionManager3D* inColMgr, NavMesh* inNavMesh, Player* inPlayer, Model* inModel0, Model* inModel1);
+	Zombie() : BaseEnemy() {}
 	~Zombie() {}
 
 	void Initialize(const Vector3& inPos) override;
@@ -60,5 +74,13 @@ private:
 	void Rotate();
 	void Gravity();
 	void GroundingJudgment();
+#pragma endregion
+
+#pragma region セッター関数
+public:
+	void SetCollisionManager3D(CollisionManager3D* inColMgr) { colMgr_ = inColMgr; }
+	void SetNavMesh(NavMesh* inNavMesh) { pNavMesh_ = inNavMesh; }
+	void SetPlayer(Player* inPlayer) { pPlayer_ = inPlayer; }
+	void SetModel(Model* inModel0, Model* inModel1) { model0_ = inModel0, model1_ = inModel1; }
 #pragma endregion
 };
