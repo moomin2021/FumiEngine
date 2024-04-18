@@ -178,6 +178,7 @@
     <ClCompile Include="Application\Player\Weapon\Revolver.cpp" />
     <ClCompile Include="Application\Setting\Layer\TitleLayer.cpp" />
     <ClCompile Include="Application\Setting\Layer\SettingLayer.cpp" />
+    <ClCompile Include="Application\Setting\Layer\PauseLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\CameraManager.h" />
@@ -271,6 +272,7 @@
     <ClInclude Include="Application\Setting\Layer\GamePlayLayer.h" />
     <ClInclude Include="Application\Setting\Layer\SettingLayer.h" />
     <ClInclude Include="Application\Setting\GameSettingData.h" />
+    <ClInclude Include="Application\Setting\Layer\PauseLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	while (true) {
 		// --終了メッセージが来ていたらループ終了-- //
 		if (WinAPI::GetInstance()->IsEndMessage() == true) break;
-		if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
+		//if (Key::GetInstance()->PushKey(DIK_ESCAPE) == true) break;
 		if (sceneMgr->GetIsGameEnd()) break;
 
 		DeltaTime::GetInstance()->Update();

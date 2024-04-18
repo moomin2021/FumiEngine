@@ -1,9 +1,15 @@
 #include "GameScene.h"
 #include "CollisionManager3D.h"
+#include "CollisionAttribute.h"
 #include "WinAPI.h"
 #include "Texture.h"
 
 #include "PipelineManager.h"
+#include "ButtonAttribute.h"
+#include "PauseLayer.h"
+#include "SettingLayer.h"
+#include "GamePlayLayer.h"
+#include "AudioLayer.h"
 
 #include <set>
 #include <imgui_impl_DX12.h>
@@ -19,8 +25,10 @@ void GameScene::Initialize()
 
 #pragma region インスタンス
 	key_ = Key::GetInstance();
+	mouse_ = Mouse::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
 	deltaTime_ = DeltaTime::GetInstance();
+	colMgr2D_ = CollisionManager2D::GetInstance();
 	Object3D::SetLightGroup(lightGroup_);
 	Instancing3D::SetLightGroup(lightGroup_);
 #pragma endregion
@@ -84,10 +92,36 @@ void GameScene::Initialize()
 
 	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
 #pragma endregion
+
+	mouseC_ = std::make_unique<PointCollider>();
+	mouseC_->SetAttribute(COL_POINT);
+	colMgr2D_->AddCollider(mouseC_.get());
+
+	// レイヤーの生成
+	layers_.emplace_back(std::make_unique<PauseLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<SettingLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<GamePlayLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<AudioLayer>(colMgr2D_));
+
+	// レイヤーの初期化
+	for (auto& it : layers_) it->Initialize();
+
+	layers_[0]->SetValid(false);
+	layers_[1]->SetValid(false);
+	layers_[2]->SetValid(false);
+	layers_[3]->SetValid(false);
+
+	// スプライトの生成&設定
+	backGroundS_ = std::make_unique<Sprite>();
+	backGroundS_->SetSize({ 1920.0f, 1080.0f });
+
+	// テクスチャ取得
+	backGroundH_ = LoadTexture("Sprite/pauseBackGround.png");
 }
 
 void GameScene::Update()
 {
+	mouseC_->SetOffset(mouse_->MousePos());
 	// プレイヤー
 	player_->Update();
 	playerUI_->Update();
@@ -95,6 +129,7 @@ void GameScene::Update()
 	enemyMgr_->Update();
 
 	debugCamera_->Update();
+	for (auto& it : layers_) it->Update();
 
 	// 衝突時処理
 	Collision();
@@ -120,12 +155,16 @@ void GameScene::Draw()
 	playerUI_->Draw();
 	sGameUI_->Draw(gGameUI_);
 	sObjectiveText_->Draw(gObjectiveText_);
+	if (isPause_) backGroundS_->Draw(backGroundH_);
+	for (auto& it : layers_) it->Draw();
 }
 
 void GameScene::Finalize()
 {
 	lightGroup_->RemoveDirLight(dirLight_.get());
 	enemyMgr_->Finalize();
+	for (auto& it : layers_) it->Finalize();
+	colMgr2D_->RemoveCollider(mouseC_.get());
 }
 
 void GameScene::Debug()
@@ -178,6 +217,79 @@ void GameScene::Collision()
 	player_->Collision();
 	playerUI_->OnCollision();
 	enemyMgr_->Collision();
+
+	CollisionManager2D::GetInstance()->CheckAllCollision();
+	for (auto& it : layers_) it->Collision();
+
+	if (key_->TriggerKey(DIK_ESCAPE))
+	{
+		if (isPause_)
+		{
+			layers_[0]->SetValid(false);
+			layers_[1]->SetValid(false);
+			layers_[2]->SetValid(false);
+			layers_[3]->SetValid(false);
+			isPause_ = false;
+			deltaTime_->SetTimeSpeed(1.0f);
+		}
+
+		else
+		{
+			layers_[0]->SetValid(true);
+			layers_[1]->SetValid(false);
+			layers_[2]->SetValid(false);
+			layers_[3]->SetValid(false);
+			isPause_ = true;
+			deltaTime_->SetTimeSpeed(0.0f);
+		}
+	}
+
+	if (!mouse_->TriggerMouseButton(MouseButton::M_LEFT)) return;
+	if (mouseC_->GetHitCollider() == nullptr) return;
+	int32_t tag = mouseC_->GetHitCollider()->GetTag();
+
+	if (tag == (int32_t)ButtonAttribute::START)
+	{
+		layers_[0]->SetValid(false);
+		layers_[1]->SetValid(false);
+		layers_[2]->SetValid(false);
+		layers_[3]->SetValid(false);
+		isPause_ = false;
+		deltaTime_->SetTimeSpeed(1.0f);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::SETTING)
+	{
+		layers_[0]->SetValid(false);
+		layers_[1]->SetValid(true);
+		layers_[2]->SetValid(true);
+		layers_[3]->SetValid(false);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::END)
+	{
+		sceneIf_->ChangeScene(Scene::TITLE);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::GAMEPLAY)
+	{
+		layers_[2]->SetValid(true);
+		layers_[3]->SetValid(false);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::AUDIO)
+	{
+		layers_[2]->SetValid(false);
+		layers_[3]->SetValid(true);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::RETURN)
+	{
+		layers_[0]->SetValid(true);
+		layers_[1]->SetValid(false);
+		layers_[2]->SetValid(false);
+		layers_[3]->SetValid(false);
+	}
 }
 
 void GameScene::MatUpdate()
@@ -190,4 +302,6 @@ void GameScene::MatUpdate()
 	debugCamera_->MatUpdate();
 	sGameUI_->MatUpdate();
 	sObjectiveText_->MatUpdate();
+	backGroundS_->MatUpdate();
+	for (auto& it : layers_) it->MatUpdate();
 }
