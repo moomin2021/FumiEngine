@@ -7,6 +7,7 @@ class BaseLayer
 protected:
 	CollisionManager2D* pColMgr2D_ = nullptr;
 	float alpha_ = 1.0f;
+	bool isValid_ = true;
 #pragma endregion
 
 #pragma region メンバ関数
@@ -25,6 +26,7 @@ public:
 #pragma region セッター関数
 public:
 	void SetAlpha(float inAlpha) { alpha_ = inAlpha; }
+	void SetValid(bool inValid) { isValid_ = inValid; }
 #pragma endregion
 
 #pragma region ゲッター関数

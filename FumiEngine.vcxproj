@@ -105,6 +105,7 @@
     <ClCompile Include="Application\Enemy\EnemyCore.cpp" />
     <ClCompile Include="Application\Setting\Layer\BaseLayer.cpp" />
     <ClCompile Include="Application\Setting\BoxButton.cpp" />
+    <ClCompile Include="Application\Setting\Layer\AudioLayer.cpp" />
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Util\DeltaTime.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="Engine\3d\Line3D.cpp" />
     <ClCompile Include="Engine\Base\Instancing3D.cpp" />
     <ClCompile Include="Engine\Scene\IScene.cpp" />
+    <ClCompile Include="Application\Setting\Layer\GamePlayLayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -174,6 +176,7 @@
     <ClCompile Include="Application\Player\Weapon\Weapon.cpp" />
     <ClCompile Include="Application\Player\Weapon\Revolver.cpp" />
     <ClCompile Include="Application\Setting\Layer\TitleLayer.cpp" />
+    <ClCompile Include="Application\Setting\Layer\SettingLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\CameraManager.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Application\Enemy\EnemyCore.h" />
     <ClInclude Include="Application\Setting\Layer\BaseLayer.h" />
     <ClInclude Include="Application\Setting\BoxButton.h" />
+    <ClInclude Include="Application\Setting\Layer\AudioLayer.h" />
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Util\BasicTask.h" />
@@ -263,6 +267,8 @@
     <ClInclude Include="Application\Player\Weapon\Weapon.h" />
     <ClInclude Include="Application\Player\Weapon\Revolver.h" />
     <ClInclude Include="Application\Setting\Layer\TitleLayer.h" />
+    <ClInclude Include="Application\Setting\Layer\GamePlayLayer.h" />
+    <ClInclude Include="Application\Setting\Layer\SettingLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

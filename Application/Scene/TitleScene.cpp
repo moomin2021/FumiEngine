@@ -8,6 +8,9 @@
 #include "Instancing3D.h"
 
 #include "TitleLayer.h"
+#include "GamePlayLayer.h"
+#include "SettingLayer.h"
+#include "AudioLayer.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -56,9 +59,16 @@ void TitleScene::Initialize()
 
 	// レイヤーの生成
 	layers_.emplace_back(std::make_unique<TitleLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<SettingLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<GamePlayLayer>(colMgr2D_));
+	layers_.emplace_back(std::make_unique<AudioLayer>(colMgr2D_));
 
 	// レイヤーの初期化
 	for (auto& it : layers_) it->Initialize();
+	layers_[0]->SetValid(true);
+	layers_[1]->SetValid(false);
+	layers_[2]->SetValid(false);
+	layers_[3]->SetValid(false);
 }
 
 void TitleScene::Update()
@@ -111,12 +121,35 @@ void TitleScene::Collision()
 
 	else if (tag == (int32_t)ButtonAttribute::SETTING)
 	{
-
+		layers_[0]->SetValid(false);
+		layers_[1]->SetValid(true);
+		layers_[2]->SetValid(true);
+		layers_[3]->SetValid(false);
 	}
 
 	else if (tag == (int32_t)ButtonAttribute::END)
 	{
 		sceneIf_->GameEnd();
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::GAMEPLAY)
+	{
+		layers_[2]->SetValid(true);
+		layers_[3]->SetValid(false);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::AUDIO)
+	{
+		layers_[2]->SetValid(false);
+		layers_[3]->SetValid(true);
+	}
+
+	else if (tag == (int32_t)ButtonAttribute::RETURN)
+	{
+		layers_[0]->SetValid(true);
+		layers_[1]->SetValid(false);
+		layers_[2]->SetValid(false);
+		layers_[3]->SetValid(false);
 	}
 }
 

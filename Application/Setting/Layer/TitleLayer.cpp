@@ -25,10 +25,12 @@ void TitleLayer::Initialize()
 void TitleLayer::Update()
 {
 	for (auto& it : buttons_) it->Update();
+	for (auto& it : buttons_) it->SetIsCollision(isValid_);
 }
 
 void TitleLayer::Draw()
 {
+	if (isValid_ == false) return;
 	for (auto& it : buttons_) it->Draw();
 }
 
