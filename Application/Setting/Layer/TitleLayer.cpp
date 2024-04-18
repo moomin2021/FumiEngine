@@ -8,7 +8,7 @@ void TitleLayer::Initialize()
 	for (uint16_t i = 0; i < buttons_.size(); i++)
 	{
 		buttons_[i] = std::make_unique<BoxButton>();
-		buttons_[i]->Initialize(i, { 250.0f, 525.0f + (i * 50.0f) }, { 310.0f, 40.0f }, { 324.0f, 54.0f },
+		buttons_[i]->Initialize(i, { 1920.0f / 2.0f, 600.0f + (i * 50.0f) }, { 310.0f, 40.0f }, { 324.0f, 54.0f },
 			LoadTexture("Sprite/titleSelectButton.png"),
 			LoadTexture("Sprite/titleSelectText" + std::string(std::to_string(i)) + std::string(".png")),
 			LoadTexture("Sprite/titleSelectButtonFrame.png"));
@@ -32,6 +32,7 @@ void TitleLayer::Draw()
 {
 	if (isValid_ == false) return;
 	for (auto& it : buttons_) it->Draw();
+	titleS_->Draw(titleH_);
 }
 
 void TitleLayer::Collision()
@@ -42,6 +43,7 @@ void TitleLayer::Collision()
 void TitleLayer::MatUpdate()
 {
 	for (auto& it : buttons_) it->MatUpdate();
+	titleS_->MatUpdate();
 }
 
 void TitleLayer::Finalize()
