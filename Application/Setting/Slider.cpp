@@ -45,6 +45,10 @@ void Slider::Initialize(const Vector2& inTrackPos, const Vector2& inTrackSize, c
 	minPos_ = { inTrackPos.x - inTrackSize.x / 2.0f, inTrackPos.y };
 	maxPos_ = { inTrackPos.x + inTrackSize.x / 2.0f, inTrackPos.y };
 #pragma endregion
+	value_ /= 2.0f;
+	float result = maxPos_.x - minPos_.x;
+	result *= value_;
+	sThumb_->SetPosition(Vector2(minPos_.x + result, maxPos_.y));
 }
 
 void Slider::Update()

@@ -26,4 +26,6 @@ public:
 
 	// ゲームを終了させる
 	virtual void GameEnd() = 0;
+
+	virtual bool GetIsGameEnd() = 0;
 };

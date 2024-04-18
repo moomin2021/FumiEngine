@@ -52,6 +52,7 @@ public:
 #pragma endregion
 
 #pragma region ゲッター関数
-	bool GetIsGameEnd() { return isGameEnd_; }
+public:
+	bool GetIsGameEnd() override { return isGameEnd_; }
 #pragma endregion
 };

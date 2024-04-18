@@ -63,6 +63,7 @@ public:
 
 	// 衝突判定の[ON][OFF]を切り替える
 	void SetIsCollision(bool frag);
+	void SetValue(float inValue) { value_ = inValue; }
 #pragma endregion
 
 #pragma region ゲッター関数

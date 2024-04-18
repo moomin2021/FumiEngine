@@ -19,11 +19,14 @@ void AudioLayer::Initialize()
 #pragma endregion
 
 #pragma region スライダー
+	GameSettingData* data = GameSettingData::GetInstance();
 	sliders_.resize(2);
 	Slider::SetCollisionManager2D(CollisionManager2D::GetInstance());
 	for (uint8_t i = 0; i < sliders_.size(); i++)
 	{
 		sliders_[i] = std::make_unique<Slider>();
+		if (i == 0) sliders_[i]->SetValue(data->bgm_);
+		if (i == 1) sliders_[i]->SetValue(data->se_);
 		sliders_[i]->Initialize({ 700.0f, 220.0f + (i * 70.0f) }, { 288.0f, 13.0f }, { 39.0f, 39.0f },
 			LoadTexture("Sprite/slider.png"),
 			LoadTexture("Sprite/sliderPoint.png"));

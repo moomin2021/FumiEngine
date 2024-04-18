@@ -162,6 +162,7 @@ void GameScene::Draw()
 void GameScene::Finalize()
 {
 	lightGroup_->RemoveDirLight(dirLight_.get());
+	player_->Finalize();
 	enemyMgr_->Finalize();
 	for (auto& it : layers_) it->Finalize();
 	colMgr2D_->RemoveCollider(mouseC_.get());
@@ -212,6 +213,8 @@ void GameScene::Debug()
 
 void GameScene::Collision()
 {
+	if (sceneIf_->GetIsGameEnd()) return;
+
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();
 	player_->Collision();

@@ -102,6 +102,7 @@ void TitleScene::Finalize()
 	for (auto& it : layers_) it->Finalize();
 	colMgr2D_->RemoveCollider(cMouse_.get());
 	lightGroup_->RemoveDirLight(dirLight_.get());
+	CollisionManager3D::GetInstance()->Release();
 }
 
 void TitleScene::Collision()
