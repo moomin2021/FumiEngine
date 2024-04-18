@@ -158,8 +158,14 @@ void Zombie::GroundingJudgment()
 {
 	// 接地しているか判定
 	if (groundC_->GetIsHit()) return;
-	if (groundC_->GetDistance() > headColData_.offset.y) return;
+	if (groundC_->GetDistance() > headColData_.offset.y)
+	{
+		isGround_ = false;
+	}
 
-	isGround_ = true;
-	gravity_ = 0.0f;
+	else
+	{
+		isGround_ = true;
+		gravity_ = 0.0f;
+	}
 }
