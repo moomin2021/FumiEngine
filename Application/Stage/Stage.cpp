@@ -191,6 +191,8 @@ void Stage::Load(std::string fileName, bool isTitle, bool isTest)
 			objects_->AddTransform(objectData.translation);
 		}
 	}
+
+	navMesh_->LinkCell();
 }
 
 void Stage::CreateStage(bool isTest)

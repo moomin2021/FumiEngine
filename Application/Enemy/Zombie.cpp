@@ -3,6 +3,8 @@
 
 #include "Util.h"
 #include "CollisionAttribute.h"
+#include "PipelineManager.h"
+#include "DeltaTime.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -40,6 +42,10 @@ void Zombie::Initialize(const Vector3& inPos)
 	groundC_->SetAttribute(COL_LEG);
 	groundC_->SetObject3D(object_.get());
 	colMgr_->AddPushBackRayCollider(groundC_.get());
+
+	line_ = std::make_unique<Line3D>();
+	line_->Initialize(200);
+	line_->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
 }
 
 void Zombie::Update()
@@ -62,6 +68,12 @@ void Zombie::Update()
 void Zombie::Draw()
 {
 	object_->Draw();
+	PipelineManager::PreDraw("Line3D", D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	if (isDebug_)
+	{
+		line_->Draw();
+	}
+	PipelineManager::PreDraw("Object3D");
 }
 
 void Zombie::Collision()
@@ -75,6 +87,7 @@ void Zombie::Collision()
 void Zombie::MatUpdate()
 {
 	object_->MatUpdate();
+	line_->MatUpdate();
 }
 
 void Zombie::Finalize()
@@ -84,6 +97,11 @@ void Zombie::Finalize()
 	colMgr_->RemovePushBackRayCollider(groundC_.get());
 }
 
+void Zombie::Debug(bool isDebug)
+{
+	isDebug_ = isDebug;
+}
+
 void (Zombie::* Zombie::stateTable[]) () = {
 	&Zombie::Wait,
 	&Zombie::Chase,
@@ -91,23 +109,40 @@ void (Zombie::* Zombie::stateTable[]) () = {
 
 void Zombie::Wait()
 {
+	RandomRoute();
+	Move();
 	Rotate();
 	Gravity();
 }
 
 void Zombie::Chase()
 {
+	Move();
 	Rotate();
 	Gravity();
+}
+
+void Zombie::Move()
+{
+	if (route_.size() == 0) return;
+
+	moveVec_ = route_[0] - object_->GetPosition();
+	moveVec_.y = 0.0f;
+
+	if (moveVec_.length() < speed_) route_.erase(route_.begin());
+	moveVec_.normalize();
+
+	Vector3 result = object_->GetPosition() + moveVec_ * speed_;
+	object_->SetPosition(result);
 }
 
 void Zombie::Rotate()
 {
 	// ルートがないなら処理を飛ばす
-	//if (route_.size() == 0) return;
+	if (route_.size() == 0) return;
 
 	Vector2 enemy = { object_->GetPosition().x, object_->GetPosition().z };
-	Vector2 target = { pPlayer_->GetPosition().x, pPlayer_->GetPosition().z };
+	Vector2 target = { route_[0].x, route_[0].z };
 	Vector2 targetVec = target - enemy;
 
 	// 現在の正面ベクトルを求める
@@ -167,5 +202,38 @@ void Zombie::GroundingJudgment()
 	{
 		isGround_ = true;
 		gravity_ = 0.0f;
+	}
+}
+
+bool Zombie::CreateRoute(const Vector3& goal)
+{
+	Vector3 offset = { 0.0f, 1.0f, 0.0f };
+	Vector3 start = object_->GetPosition();
+	bool result = pNavMesh_->RouteSearch(start + offset, goal + offset, route_);
+
+	if (result == false) return false;
+
+	line_->ClearPoint();
+	for (uint16_t i = 0; i < route_.size() - 1; i++) line_->AddPoint(route_[i] + offset, route_[i + 1] + offset);
+	route_.erase(route_.begin());
+
+	return true;
+}
+
+void Zombie::RandomRoute()
+{
+	static float elapsedTime = routeSearchInterval_;
+	elapsedTime += DeltaTime::GetInstance()->GetDeltaTime();
+
+	if (elapsedTime >= routeSearchInterval_)
+	{
+		Vector3 goal = Vector3();
+		Vector3 pos = object_->GetPosition();
+		goal.x = Util::GetRandomFloat(pos.x - randomRange_, pos.x + randomRange_);
+		goal.y = 1.0f;
+		goal.z = Util::GetRandomFloat(pos.z - randomRange_, pos.z + randomRange_);
+
+		bool result = CreateRoute(goal);
+		if (result) elapsedTime = 0.0f;
 	}
 }

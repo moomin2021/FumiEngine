@@ -53,7 +53,7 @@ public:
 	/// <returns></returns>
 	bool PushMouseButton(MouseButton button) { return nowMouse_.rgbButtons[button] == (0x80); }
 
-	uint8_t GetMouseWheel() { return (uint8_t)nowMouse_.lZ; }
+	int16_t GetMouseWheel() { return (int16_t)nowMouse_.lZ; }
 
 	/// <summary>
 	/// 指定されたマウスのボタンが押された瞬間だったら、1を返し、そうでなかった場合0を返す

@@ -10,7 +10,7 @@ void EnemyManager::Initialize()
 	key_ = Key::GetInstance();
 
 	// エネミー生成器
-	enemyFactory_ = std::make_unique<EnemyFactory>(pNavMesh_, pPlayer_);
+	enemyFactory_ = std::make_unique<EnemyFactory>();
 	enemyFactory_->Initialize();
 
 	// モデル
@@ -81,6 +81,11 @@ void EnemyManager::Finalize()
 	enemys_.clear();
 	for (auto& it : cores_) it->Finalize();
 	cores_.clear();
+}
+
+void EnemyManager::Debug(bool isDebug)
+{
+	for (auto& it : enemys_) it->Debug(isDebug);
 }
 
 void EnemyManager::CreateEnemy()

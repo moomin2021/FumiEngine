@@ -61,6 +61,7 @@ public:
 	void Collision() override;
 	void MatUpdate() override;
 	void Finalize() override;
+	void Debug(bool isDebug);
 
 	void CreateEnemy();
 	void CreateCore(const Vector3& inPos);
@@ -69,7 +70,7 @@ public:
 #pragma region セッター関数
 public:
 	void SetLightGroup(LightGroup* inLightGroup) { pLightGroup_ = inLightGroup; }
-	void SetNavMesh(NavMesh* inNavMesh) { pNavMesh_ = inNavMesh; }
-	void SetPlayer(Player* inPlayer) { pPlayer_ = inPlayer; }
+	void SetNavMesh(NavMesh* inNavMesh) { pNavMesh_ = inNavMesh, enemyFactory_->SetNavMesh(inNavMesh); }
+	void SetPlayer(Player* inPlayer) { pPlayer_ = inPlayer, enemyFactory_->SetPlayer(inPlayer); }
 #pragma endregion
 };

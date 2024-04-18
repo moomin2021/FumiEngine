@@ -20,11 +20,16 @@ class EnemyFactory
 
 #pragma region メンバ関数
 public:
-	EnemyFactory(NavMesh* inNavMesh, Player* inPlayer) : pNavMesh_(inNavMesh), pPlayer_(inPlayer) {}
+	EnemyFactory() {}
 	~EnemyFactory() {}
 
 	void Initialize();
 
 	BaseEnemy* CreateZombie();
+#pragma endregion
+
+#pragma region セッター関数
+	void SetNavMesh(NavMesh* inNavMesh) { pNavMesh_ = inNavMesh; }
+	void SetPlayer(Player* inPlayer) { pPlayer_ = inPlayer; }
 #pragma endregion
 };

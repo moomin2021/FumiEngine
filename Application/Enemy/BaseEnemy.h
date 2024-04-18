@@ -33,6 +33,7 @@ public:
 	virtual void Collision() = 0;
 	virtual void MatUpdate() = 0;
 	virtual void Finalize() = 0;
+	virtual void Debug(bool isDebug) = 0;
 
 protected:
 	void HeadHit();

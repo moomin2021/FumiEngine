@@ -18,11 +18,6 @@ GameScene::GameScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 
 void GameScene::Initialize()
 {
-#pragma region カーソルの設定
-	WinAPI::GetInstance()->DisplayCursor(true);
-	WinAPI::GetInstance()->SetClipCursor(false);
-#pragma endregion
-
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
@@ -65,20 +60,17 @@ void GameScene::Initialize()
 	debugCamera_ = std::make_unique<DebugCamera>();
 	debugCamera_->Initialize(player_.get());
 #pragma endregion
-
 	// 設定
 	stage_->SetEnemyManager(enemyMgr_.get());
-	enemyMgr_->SetLightGroup(lightGroup_);
-	enemyMgr_->SetNavMesh(stage_->GetNavMesh());
-	enemyMgr_->SetPlayer(player_.get());
 
 	// 初期化
 	stage_->Initialize();
 	enemyMgr_->Initialize();
+	enemyMgr_->SetLightGroup(lightGroup_);
+	enemyMgr_->SetPlayer(player_.get());
 
-	// ステージ読み込み
 	stage_->Load("Resources/StageJson/test.json");
-
+	enemyMgr_->SetNavMesh(stage_->GetNavMesh());
 #pragma region ゲームUI
 	sGameUI_ = std::make_unique<Sprite>();
 	sGameUI_->SetSize({ 1920.0f, 1080.0f });
@@ -138,7 +130,7 @@ void GameScene::Update()
 	MatUpdate();
 
 	// デバック
-	if (!isDebug_) Debug();
+	Debug();
 
 	// プレイヤーが死んだらシーンを切り替える
 	if (player_->GetIsAlive() == false) sceneIf_->ChangeScene(Scene::RESULT);
@@ -172,24 +164,23 @@ void GameScene::Debug()
 {
 	if (key_->TriggerKey(DIK_0))
 	{
+		isDebug_ = isDebug_;
+
 		if (isDebug_)
 		{
 			isDebug_ = false;
-			WinAPI::GetInstance()->DisplayCursor(false);
-			WinAPI::GetInstance()->SetClipCursor(true);
-
 			cameraMgr_->ChangeCamera(player_->GetCamera());
 		}
 
 		else
 		{
 			isDebug_ = true;
-			WinAPI::GetInstance()->DisplayCursor(true);
-			WinAPI::GetInstance()->SetClipCursor(false);
-
 			cameraMgr_->ChangeCamera(debugCamera_->GetCamera());
 		}
 	}
+
+	stage_->Debug(isDebug_);
+	enemyMgr_->Debug(isDebug_);
 
 	if (isDebug_ == false) return;
 
