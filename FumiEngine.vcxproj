@@ -145,6 +145,7 @@
     <ClCompile Include="Engine\Base\Instancing3D.cpp" />
     <ClCompile Include="Engine\Scene\IScene.cpp" />
     <ClCompile Include="Application\Setting\Layer\GamePlayLayer.cpp" />
+    <ClCompile Include="Application\Setting\GameSettingData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Material.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="Application\Setting\Layer\TitleLayer.h" />
     <ClInclude Include="Application\Setting\Layer\GamePlayLayer.h" />
     <ClInclude Include="Application\Setting\Layer\SettingLayer.h" />
+    <ClInclude Include="Application\Setting\GameSettingData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

@@ -1,6 +1,8 @@
 #include "AudioLayer.h"
 #include "Texture.h"
 
+#include "GameSettingData.h"
+
 void AudioLayer::Initialize()
 {
 #pragma region ボタン
@@ -35,6 +37,10 @@ void AudioLayer::Update()
 	for (auto& it : sliders_) it->Update();
 	for (auto& it : buttons_) it->SetIsCollision(isValid_);
 	for (auto& it : sliders_) it->SetIsCollision(isValid_);
+
+	GameSettingData* data = GameSettingData::GetInstance();
+	data->bgm_ = sliders_[0]->GetValue();
+	data->se_ = sliders_[1]->GetValue();
 }
 
 void AudioLayer::Draw()

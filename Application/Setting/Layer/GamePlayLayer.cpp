@@ -1,6 +1,8 @@
 #include "GamePlayLayer.h"
 #include "Texture.h"
 
+#include "GameSettingData.h"
+
 void GamePlayLayer::Initialize()
 {
 #pragma region ボタン
@@ -35,6 +37,9 @@ void GamePlayLayer::Update()
 	for (auto& it : sliders_) it->Update();
 	for (auto& it : buttons_) it->SetIsCollision(isValid_);
 	for (auto& it : sliders_) it->SetIsCollision(isValid_);
+
+	GameSettingData* data = GameSettingData::GetInstance();
+	data->sensitivity_ = sliders_[0]->GetValue();
 }
 
 void GamePlayLayer::Draw()

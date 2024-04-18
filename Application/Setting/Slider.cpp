@@ -74,6 +74,9 @@ void Slider::OnCollision()
 		Vector2 result = { 0.0f, maxPos_.y };
 		result.x = Util::Clamp(mouse_->MousePos().x, maxPos_.x, minPos_.x);
 		sThumb_->SetPosition(result);
+
+		float dif = maxPos_.x - minPos_.x;
+		value_ = ((result.x - minPos_.x) / dif) * 2.0f;
 	}
 }
 

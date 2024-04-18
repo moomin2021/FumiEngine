@@ -29,6 +29,8 @@ private:
 	Vector2 minPos_ = { 0.0f, 0.0f };
 	Vector2 maxPos_ = { 0.0f, 0.0f };
 
+	float value_ = 1.0f;
+
 	// スライダーを操作中か
 	bool isHold_ = false;
 #pragma endregion
@@ -61,5 +63,9 @@ public:
 
 	// 衝突判定の[ON][OFF]を切り替える
 	void SetIsCollision(bool frag);
+#pragma endregion
+
+#pragma region ゲッター関数
+	float GetValue() { return value_; }
 #pragma endregion
 };
