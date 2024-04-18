@@ -165,18 +165,20 @@ void GameScene::Debug()
 {
 	if (key_->TriggerKey(DIK_0))
 	{
-		isDebug_ = isDebug_;
-
 		if (isDebug_)
 		{
 			isDebug_ = false;
 			cameraMgr_->ChangeCamera(player_->GetCamera());
+			WinAPI::GetInstance()->DisplayCursor(false);
+			WinAPI::GetInstance()->SetClipCursor(true);
 		}
 
 		else
 		{
 			isDebug_ = true;
 			cameraMgr_->ChangeCamera(debugCamera_->GetCamera());
+			WinAPI::GetInstance()->DisplayCursor(true);
+			WinAPI::GetInstance()->SetClipCursor(false);
 		}
 	}
 
@@ -191,8 +193,6 @@ void GameScene::Debug()
 void GameScene::Collision()
 {
 	if (sceneIf_->GetIsGameEnd()) return;
-
-	
 
 	if (DeltaTime::GetInstance()->GetTimeSpeed() != 0.0f)
 	{
@@ -216,6 +216,11 @@ void GameScene::Collision()
 			layers_[3]->SetValid(false);
 			isPause_ = false;
 			deltaTime_->SetTimeSpeed(1.0f);
+			if (isDebug_ == false)
+			{
+				WinAPI::GetInstance()->DisplayCursor(false);
+				WinAPI::GetInstance()->SetClipCursor(true);
+			}
 		}
 
 		else
@@ -226,6 +231,8 @@ void GameScene::Collision()
 			layers_[3]->SetValid(false);
 			isPause_ = true;
 			deltaTime_->SetTimeSpeed(0.0f);
+			WinAPI::GetInstance()->DisplayCursor(true);
+			WinAPI::GetInstance()->SetClipCursor(false);
 		}
 	}
 
@@ -254,6 +261,8 @@ void GameScene::Collision()
 	else if (tag == (int32_t)ButtonAttribute::END)
 	{
 		sceneIf_->ChangeScene(Scene::TITLE);
+		WinAPI::GetInstance()->DisplayCursor(true);
+		WinAPI::GetInstance()->SetClipCursor(false);
 	}
 
 	else if (tag == (int32_t)ButtonAttribute::GAMEPLAY)

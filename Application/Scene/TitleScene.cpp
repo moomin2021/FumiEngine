@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Easing.h"
 #include "Instancing3D.h"
+#include "WinAPI.h"
 
 #include "TitleLayer.h"
 #include "GamePlayLayer.h"
@@ -118,6 +119,8 @@ void TitleScene::Collision()
 	if (tag == (int32_t)ButtonAttribute::START)
 	{
 		sceneIf_->ChangeScene(Scene::GAME);
+		WinAPI::GetInstance()->DisplayCursor(false);
+		WinAPI::GetInstance()->SetClipCursor(true);
 	}
 
 	else if (tag == (int32_t)ButtonAttribute::SETTING)
