@@ -115,8 +115,8 @@ void GameScene::Update()
 {
 	mouseC_->SetOffset(mouse_->MousePos());
 	// プレイヤー
-	player_->Update();
-	playerUI_->Update();
+	if (!isDebug_) player_->Update();
+	if (!isDebug_)playerUI_->Update();
 
 	enemyMgr_->Update();
 
@@ -140,11 +140,11 @@ void GameScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 	stage_->Draw();
-	player_->Draw();
+	if (!isDebug_)player_->Draw();
 	enemyMgr_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
-	playerUI_->Draw();
+	if (!isDebug_)playerUI_->Draw();
 	sGameUI_->Draw(gGameUI_);
 	sObjectiveText_->Draw(gObjectiveText_);
 	if (isPause_) backGroundS_->Draw(backGroundH_);
@@ -158,6 +158,7 @@ void GameScene::Finalize()
 	enemyMgr_->Finalize();
 	for (auto& it : layers_) it->Finalize();
 	colMgr2D_->RemoveCollider(mouseC_.get());
+	deltaTime_->SetTimeSpeed(1.0f);
 }
 
 void GameScene::Debug()
