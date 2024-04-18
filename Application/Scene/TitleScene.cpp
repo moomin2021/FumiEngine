@@ -7,6 +7,8 @@
 #include "Easing.h"
 #include "Instancing3D.h"
 
+#include "TitleLayer.h"
+
 #include <imgui_impl_DX12.h>
 
 TitleScene::TitleScene(IScene* sceneIf) : BaseScene(sceneIf) {}
@@ -14,20 +16,10 @@ TitleScene::TitleScene(IScene* sceneIf) : BaseScene(sceneIf) {}
 void TitleScene::Initialize()
 {
 
-	uint16_t leg = 0b0000000000000001;
-	uint16_t obj = 0b0000000010000111;
-
-	bool result = leg == obj;
-
-	result = result;
-
-	result = !(leg & obj);
-
-	result = result;
-
 #pragma region インスタンス取得
 	colMgr2D_ = CollisionManager2D::GetInstance();// 衝突マネージャー2D
 	mouse_ = Mouse::GetInstance();
+	BoxButton::SetCollisionManager2D(colMgr2D_);
 #pragma endregion
 
 #pragma region ライトグループ
@@ -62,28 +54,11 @@ void TitleScene::Initialize()
 	colMgr2D_->AddCollider(cMouse_.get());
 #pragma endregion
 
-#pragma region タイトルレイヤー
-	titleLayer_ = std::make_unique<TitleLayer>();
-	titleLayer_->Initialize();
-#pragma endregion
+	// レイヤーの生成
+	layers_.emplace_back(std::make_unique<TitleLayer>(colMgr2D_));
 
-#pragma region 設定レイヤー
-	settingLayer_ = std::make_unique<SettingLayer>();
-	settingLayer_->Initialize();
-	settingLayer_->SetIsDisplay(false);
-#pragma endregion
-
-#pragma region ゲームプレイレイヤー
-	gamePlayLayer_ = std::make_unique<GamePlayLayer>();
-	gamePlayLayer_->Initialize();
-	gamePlayLayer_->SetIsDisplay(false);
-#pragma endregion
-
-#pragma region オーディオレイヤー
-	audioLayer_ = std::make_unique<AudioLayer>();
-	audioLayer_->Initialize();
-	audioLayer_->SetIsDisplay(false);
-#pragma endregion
+	// レイヤーの初期化
+	for (auto& it : layers_) it->Initialize();
 }
 
 void TitleScene::Update()
@@ -91,11 +66,7 @@ void TitleScene::Update()
 	// コライダーとマウスの座標をリンク
 	cMouse_->SetOffset(mouse_->MousePos());
 
-	// レイヤー
-	titleLayer_->Update();
-	settingLayer_->Update();
-	gamePlayLayer_->Update();
-	audioLayer_->Update();
+	for (auto& it : layers_) it->Update();
 
 	// カメラ回転
 	CameraRota();
@@ -110,20 +81,15 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
-
 	stage_->Draw();
 
 	PipelineManager::PreDraw("Sprite");
-
-	// レイヤー
-	titleLayer_->Draw();
-	settingLayer_->Draw();
-	gamePlayLayer_->Draw();
-	audioLayer_->Draw();
+	for (auto& it : layers_) it->Draw();
 }
 
 void TitleScene::Finalize()
 {
+	for (auto& it : layers_) it->Finalize();
 	colMgr2D_->RemoveCollider(cMouse_.get());
 	lightGroup_->RemoveDirLight(dirLight_.get());
 }
@@ -132,76 +98,26 @@ void TitleScene::Collision()
 {
 	// 衝突全チェック
 	colMgr2D_->CheckAllCollision();
+	for (auto& it : layers_) it->Collision();
 
-	// レイヤー
-	titleLayer_->OnCollision();
-	settingLayer_->OnCollision();
-	gamePlayLayer_->OnCollision();
-	audioLayer_->OnCollision();
+	if (!mouse_->TriggerMouseButton(MouseButton::M_LEFT)) return;
+	if (cMouse_->GetHitCollider() == nullptr) return;
+	int32_t tag = cMouse_->GetHitCollider()->GetTag();
 
-#pragma region 左クリックを押したら
-	// 衝突していなかったらこれ以降の処理を飛ばす
-	if (mouse_->TriggerMouseButton(M_LEFT) == false) return;
-
-	// 取得するボタンの属性
-	ButtonAttribute buttonAttr = ButtonAttribute::NONE;
-
-	// マウスのコライダーから衝突しているコライダーのタグを属性に変換して取得
-	if (cMouse_->GetHitCollider() != nullptr)
-	{
-		buttonAttr = (ButtonAttribute)cMouse_->GetHitCollider()->GetTag();
-	}
-
-	// スタート
-	if (buttonAttr == ButtonAttribute::START)
+	if (tag == (int32_t)ButtonAttribute::START)
 	{
 		sceneIf_->ChangeScene(Scene::GAME);
 	}
 
-	// 設定
-	else if (buttonAttr == ButtonAttribute::SETTING)
+	else if (tag == (int32_t)ButtonAttribute::SETTING)
 	{
-		titleLayer_->SetIsDisplay(false);
-		settingLayer_->SetIsDisplay(true);
-		gamePlayLayer_->SetIsDisplay(true);
-		audioLayer_->SetIsDisplay(false);
+
 	}
 
-	// テストシーン
-	else if (buttonAttr == ButtonAttribute::TEST)
-	{
-		sceneIf_->ChangeScene(Scene::TEST);
-	}
-
-	// ゲーム終了
-	else if (buttonAttr == ButtonAttribute::END)
+	else if (tag == (int32_t)ButtonAttribute::END)
 	{
 		sceneIf_->GameEnd();
 	}
-
-	// ゲームプレイ
-	else if (buttonAttr == ButtonAttribute::GAMEPLAY)
-	{
-		gamePlayLayer_->SetIsDisplay(true);
-		audioLayer_->SetIsDisplay(false);
-	}
-
-	// オーディオ
-	else if (buttonAttr == ButtonAttribute::AUDIO)
-	{
-		gamePlayLayer_->SetIsDisplay(false);
-		audioLayer_->SetIsDisplay(true);
-	}
-
-	// 戻る
-	else if (buttonAttr == ButtonAttribute::RETURN)
-	{
-		titleLayer_->SetIsDisplay(true);
-		settingLayer_->SetIsDisplay(false);
-		gamePlayLayer_->SetIsDisplay(false);
-		audioLayer_->SetIsDisplay(false);
-	}
-#pragma endregion
 }
 
 void TitleScene::MatUpdate()
@@ -212,11 +128,7 @@ void TitleScene::MatUpdate()
 	// ステージ
 	stage_->MatUpdate();
 
-	// レイヤー
-	titleLayer_->MatUpdate();
-	settingLayer_->MatUpdate();
-	gamePlayLayer_->MatUpdate();
-	audioLayer_->MatUpdate();
+	for (auto& it : layers_) it->MatUpdate();
 }
 
 void TitleScene::CameraRota()

@@ -10,10 +10,7 @@
 #include "BoxCollider.h"
 
 #include "Stage.h"
-#include "TitleLayer.h"
-#include "SettingLayer.h"
-#include "GamePlayLayer.h"
-#include "AudioLayer.h"
+#include "BaseLayer.h"
 
 #include <memory>
 
@@ -40,17 +37,7 @@ private:
 	// コライダー
 	std::unique_ptr<PointCollider> cMouse_ = nullptr;
 
-	// タイトルレイヤー
-	std::unique_ptr<TitleLayer> titleLayer_ = nullptr;
-
-	// 設定レイヤー
-	std::unique_ptr<SettingLayer> settingLayer_ = nullptr;
-
-	// ゲームプレイレイヤー
-	std::unique_ptr<GamePlayLayer> gamePlayLayer_ = nullptr;
-
-	// オーディオレイヤー
-	std::unique_ptr<AudioLayer> audioLayer_ = nullptr;
+	std::vector<std::unique_ptr<BaseLayer>> layers_ = {};
 #pragma endregion
 
 #pragma region メンバ関数

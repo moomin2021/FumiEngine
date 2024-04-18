@@ -264,29 +264,14 @@
     <ClCompile Include="Application\NavMesh\NavMesh.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Setting\AudioLayer.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\BoxButton.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Setting\HitFrame.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\SettingLayer.cpp">
       <Filter>Application\ソースファイル\Setting</Filter>
     </ClCompile>
     <ClCompile Include="Application\Setting\Slider.cpp">
       <Filter>Application\ソースファイル\Setting</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Setting\TitleLayer.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\Line3D.cpp">
       <Filter>Engine\ソース ファイル\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\GamePlayLayer.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
     </ClCompile>
     <ClCompile Include="Application\Scene\MapCreateScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
@@ -361,6 +346,15 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\Enemy\EnemyCore.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\Layer\BaseLayer.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\BoxButton.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Setting\Layer\TitleLayer.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -527,32 +521,17 @@
     <ClInclude Include="Application\NavMesh\NavMesh.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Setting\AudioLayer.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\BoxButton.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Setting\ButtonAttribute.h">
       <Filter>Application\ヘッダーファイル\Setting</Filter>
     </ClInclude>
     <ClInclude Include="Application\Setting\HitFrame.h">
       <Filter>Application\ヘッダーファイル\Setting</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Setting\SettingLayer.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Setting\Slider.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\TitleLayer.h">
       <Filter>Application\ヘッダーファイル\Setting</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Line3D.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\GamePlayLayer.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\MapCreateScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
@@ -630,6 +609,15 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application\Enemy\EnemyCore.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\Layer\BaseLayer.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\BoxButton.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Setting\Layer\TitleLayer.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
