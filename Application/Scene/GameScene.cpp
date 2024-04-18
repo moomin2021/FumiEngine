@@ -191,21 +191,6 @@ void GameScene::Debug()
 		}
 	}
 
-	static float timeSpd = 1.0f;
-
-	if (key_->TriggerKey(DIK_UP)) timeSpd += 0.1f;
-	if (key_->TriggerKey(DIK_DOWN)) timeSpd -= 0.1f;
-
-	deltaTime_->SetTimeSpeed(timeSpd);
-
-	stage_->Debug(isDebug_);
-
-	ImGui::Begin("DeltaTime");
-	ImGui::Text("deltaTime = %f", deltaTime_->GetDeltaTime());
-	ImGui::Text("GameTime = %f", deltaTime_->GetGameTime());
-	ImGui::Text("GameSpeed = %f", deltaTime_->GetTimeSpeed());
-	ImGui::End();
-
 	if (isDebug_ == false) return;
 
 	debugCamera_->Debug();

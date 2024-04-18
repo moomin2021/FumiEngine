@@ -8,7 +8,7 @@ void Revolver::Initialize()
 	reloadTime_ = 3.0f;
 	maxBullet_ = 6;
 	nowBullet_ = 6;
-	shotInterval_ = 0.15f;
+	shotInterval_ = 0.4f;
 
 	adsOffset_ = { 0.0f, 1.65f, 0.5f };
 	noAdsOffset_ = { 0.5f, 1.55f, 0.5f };

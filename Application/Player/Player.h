@@ -8,6 +8,7 @@
 #pragma once
 #include "Key.h"
 #include "Mouse.h"
+#include "DeltaTime.h"
 
 #include "CollisionManager3D.h"
 #include "AABBCollider.h"
@@ -29,6 +30,7 @@ private:
 	Key* key_ = nullptr;
 	Mouse* mouse_ = nullptr;
 	CollisionManager3D* colMgr_ = nullptr;
+	DeltaTime* deltaTime_ = nullptr;
 
 	std::unique_ptr<Model> model_ = nullptr;
 	std::unique_ptr<Object3D> object_ = nullptr;

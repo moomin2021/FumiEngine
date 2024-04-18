@@ -1,6 +1,7 @@
 #include "PlayerUI.h"
 #include "Texture.h"
 #include "WinAPI.h"
+#include "DeltaTime.h"
 
 PlayerUI::PlayerUI(Player* inPlayer, Weapon* inWeapon) : pPlayer_(inPlayer), pWeapon_(inWeapon) {}
 
@@ -104,7 +105,7 @@ void PlayerUI::Update()
 
 	if (pWeapon_->GetIsReload())
 	{
-		rotaY -= 3.0f;
+		rotaY -= 100.0f * DeltaTime::GetInstance()->GetDeltaTime();
 		reloadUIS_->SetRotation(rotaY);
 		reloadBackUIS_->SetRotation(rotaY);
 	}

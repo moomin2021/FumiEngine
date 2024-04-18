@@ -44,6 +44,8 @@ void Zombie::Initialize(const Vector3& inPos)
 
 void Zombie::Update()
 {
+	if (DeltaTime::GetInstance()->GetTimeSpeed() == 0.0f) return;
+
 	// 状態別更新処理
 	(this->*stateTable[(size_t)state_])();
 

@@ -11,6 +11,7 @@ void Player::Initialize(const Vector3& inPos)
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
 	colMgr_ = CollisionManager3D::GetInstance();
+	deltaTime_ = DeltaTime::GetInstance();
 
 	// オブジェクト生成
 	model_ = std::make_unique<Model>("sphere");
@@ -55,6 +56,7 @@ void Player::Initialize(const Vector3& inPos)
 
 void Player::Update()
 {
+	if (deltaTime_->GetTimeSpeed() == 0.0f) return;
 	EyeMove();
 	Move();
 	Dash();

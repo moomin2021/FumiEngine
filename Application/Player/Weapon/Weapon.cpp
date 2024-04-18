@@ -2,6 +2,7 @@
 
 #include "Util.h"
 #include "Easing.h"
+#include "DeltaTime.h"
 
 #include <imgui_impl_DX12.h>
 
@@ -20,12 +21,14 @@ void Weapon::ReloadProcess()
 	// リロード処理
 	if (isReload_ == false) return;
 
-	float elapsedTime = (Util::GetTimrMSec() - startReloadTime_) / 1000.0f;
+	static float elapsedTime = 0;
+	elapsedTime += DeltaTime::GetInstance()->GetDeltaTime();
 	
 	if (elapsedTime >= reloadTime_)
 	{
 		isReload_ = false;
 		nowBullet_ = maxBullet_;
+		elapsedTime = 0;
 	}
 }
 
@@ -54,7 +57,6 @@ void Weapon::StartReload()
 	if (isReload_) return;
 
 	isReload_ = true;
-	startReloadTime_ = Util::GetTimrMSec();
 	nowBullet_ = 0;
 }
 
@@ -63,12 +65,13 @@ bool Weapon::Shot()
 	static uint64_t shotTime = 0;
 
 	// 最後に弾を撃ってからの経過時間
-	float result = (Util::GetTimrMSec() - shotTime) / 1000.0f;
+	static float result = shotInterval_;
+	result += DeltaTime::GetInstance()->GetDeltaTime();
 
 	if (result < shotInterval_) return false;
 
 	nowBullet_--;
-	shotTime = Util::GetTimrMSec();
+	result = 0.0f;
 
 	if (nowBullet_ <= 0) StartReload();
 
