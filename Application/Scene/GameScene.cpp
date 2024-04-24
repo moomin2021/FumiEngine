@@ -184,10 +184,7 @@ void GameScene::Debug()
 
 	stage_->Debug(isDebug_);
 	enemyMgr_->Debug(isDebug_);
-
-	if (isDebug_ == false) return;
-
-	debugCamera_->Debug();
+	debugCamera_->Debug(isDebug_);
 }
 
 void GameScene::Collision()

@@ -12,12 +12,8 @@ void DebugCamera::Initialize(Player* inPlayer)
 
 void DebugCamera::Update()
 {
-	Vector3 target = pPlayer_->GetPosition();
-	target_ = target;
-	eye_ = { target_.x, eye_.y, target_.z - 0.1f};
-
-	eye_.y += (float)mouse_->GetMouseWheel() * -0.01f;
-	eye_.y = Util::Clamp(eye_.y, 50.0f, 10.0f);
+	Move();
+	Zoom();
 
 	camera_->SetEye(eye_);
 	camera_->SetTarget(target_);
@@ -29,8 +25,10 @@ void DebugCamera::MatUpdate()
 	camera_->Update();
 }
 
-void DebugCamera::Debug()
+void DebugCamera::Debug(bool isDebug)
 {
+	if (isDebug == false) return;
+
 	ImGui::Begin("DebugCamera");
 	ImGui::SliderFloat("eyeX", &eye_.x, -100.0f, 100.0f);
 	ImGui::SliderFloat("eyeY", &eye_.y, -100.0f, 100.0f);
@@ -50,4 +48,19 @@ void DebugCamera::Debug()
 	camera_->SetTarget(target_);
 	camera_->SetUp(up_);
 	ImGui::End();
+}
+
+void DebugCamera::Move()
+{
+	eye_.z += (key_->PushKey(DIK_S) - key_->PushKey(DIK_W)) * moveSpd_;
+	eye_.x += (key_->PushKey(DIK_A) - key_->PushKey(DIK_D)) * moveSpd_;
+
+	target_.z = eye_.z - 0.1f;
+	target_.x = eye_.x;
+}
+
+void DebugCamera::Zoom()
+{
+	eye_.y += (float)mouse_->GetMouseWheel() * -0.01f;
+	eye_.y = Util::Clamp(eye_.y, maxEyeY_, minEyeY_);
 }

@@ -146,7 +146,7 @@ void TestScene::Debug()
 	ImGui::Begin("DeltaTime");
 	ImGui::End();
 
-	debugCamera_->Debug();
+	debugCamera_->Debug(isDebug_);
 }
 
 void TestScene::Collision()
