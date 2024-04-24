@@ -2,12 +2,11 @@
 
 #include <imgui_impl_DX12.h>
 
-void DebugCamera::Initialize(Player* inPlayer)
+void DebugCamera::Initialize()
 {
 	key_ = Key::GetInstance();
 	mouse_ = Mouse::GetInstance();
 	camera_ = std::make_unique<Camera>();
-	pPlayer_ = inPlayer;
 }
 
 void DebugCamera::Update()

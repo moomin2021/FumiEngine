@@ -58,7 +58,7 @@ void GameScene::Initialize()
 
 #pragma region デバックカメラ
 	debugCamera_ = std::make_unique<DebugCamera>();
-	debugCamera_->Initialize(player_.get());
+	debugCamera_->Initialize();
 #pragma endregion
 	// 設定
 	stage_->SetEnemyManager(enemyMgr_.get());

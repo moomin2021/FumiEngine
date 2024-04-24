@@ -52,7 +52,7 @@ void TestScene::Initialize()
 
 #pragma region デバックカメラ
 	debugCamera_ = std::make_unique<DebugCamera>();
-	debugCamera_->Initialize(player_.get());
+	debugCamera_->Initialize();
 #pragma endregion
 
 	// ステージ読み込み

@@ -32,15 +32,9 @@ private:
 
 #pragma region メンバ関数
 public:
-	// 初期化処理
-	void Initialize(Player* inPlayer);
-
-	// 更新処理
+	void Initialize();
 	void Update();
-
-	// 行列更新処理
 	void MatUpdate();
-
 	void Debug(bool isDebug);
 
 private:
