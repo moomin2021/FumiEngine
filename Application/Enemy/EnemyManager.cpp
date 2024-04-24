@@ -90,7 +90,7 @@ void EnemyManager::Debug(bool isDebug)
 
 void EnemyManager::CreateEnemy()
 {
-	enemys_.emplace_back(enemyFactory_->CreateZombie());
+	enemys_.emplace_back(enemyFactory_->CreateZombie(Vector3(0.0f, 5.0f, 0.0f)));
 }
 
 void EnemyManager::CreateCore(const Vector3& inPos)

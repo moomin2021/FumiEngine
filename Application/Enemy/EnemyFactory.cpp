@@ -11,7 +11,7 @@ void EnemyFactory::Initialize()
 	zombie1M_ = std::make_unique<Model>("zombie1");
 }
 
-BaseEnemy* EnemyFactory::CreateZombie()
+BaseEnemy* EnemyFactory::CreateZombie(const Vector3& inPos)
 {
 	Zombie* newEnemy = new Zombie();
 	newEnemy->SetCollisionManager3D(colMgr_);
@@ -19,6 +19,6 @@ BaseEnemy* EnemyFactory::CreateZombie()
 	newEnemy->SetPlayer(pPlayer_);
 	newEnemy->SetModel(zombie0M_.get(), zombie1M_.get());
 
-	newEnemy->Initialize(Vector3(0.0f, 0.0f, 5.0f));
+	newEnemy->Initialize(inPos);
 	return newEnemy;
 }

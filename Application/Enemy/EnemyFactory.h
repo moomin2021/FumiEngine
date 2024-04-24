@@ -25,7 +25,7 @@ public:
 
 	void Initialize();
 
-	BaseEnemy* CreateZombie();
+	BaseEnemy* CreateZombie(const Vector3& inPos);
 #pragma endregion
 
 #pragma region セッター関数
