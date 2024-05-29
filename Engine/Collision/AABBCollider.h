@@ -35,6 +35,9 @@ public:
 	// 半径を設定
 	inline void SetRadius(const Vector3& inRadius) { AABB::radius = inRadius; }
 
+
+	inline void SetPushBackRate(float inPushBackRate) { pushBackRate_ = inPushBackRate; }
+
 	// 押し戻しベクトルを設定
 	inline void AddReject(const Vector3& inReject) { reject_ += inReject; }
 #pragma endregion

@@ -20,66 +20,64 @@ void TestScene::Initialize()
 #pragma region インスタンス
 	key_ = Key::GetInstance();
 	lightGroup_ = LightGroup::GetInstance();
-	Object3D::SetLightGroup(lightGroup_);
-	Instancing3D::SetLightGroup(lightGroup_);
+	colMgr3D_ = CollisionManager3D::GetInstance();
 #pragma endregion
 
 #pragma region ライトグループ
+	lightGroup_ = LightGroup::GetInstance();
+	Object3D::SetLightGroup(lightGroup_);
+
 	dirLight_ = std::make_unique<DirectionalLight>();
 	dirLight_->SetLightDir({ 1.0f, -1.0f, 0.0f });
 	dirLight_->SetLightColor({ 1.0f, 1.0f, 1.0f });
 	lightGroup_->AddDirLight(dirLight_.get());
 #pragma endregion
 
-#pragma region ステージクラス
-	stage_ = std::make_unique<Stage>();
-	stage_->Initialize();
+#pragma region カメラ
+	camera_ = std::make_unique<Camera>();
+	camera_->SetEye({ 0.0f, 5.0f, -10.0f });
+	camera_->SetTarget({ 0.0f, 0.0f, 0.0f });
+	Object3D::SetCamera(camera_.get());
 #pragma endregion
 
-#pragma region プレイヤー
-	player_ = std::make_unique<Player>();
-	player_->Initialize({ 0.0f, 5.0f, 0.0f });
+	model_ = std::make_unique<Model>("stoneBrick");
 
-	playerUI_ = std::make_unique<PlayerUI>(player_.get(), player_->GetWeapon());
-	playerUI_->Initialize();
-	playerUI_->SetPlayer(player_.get());
-#pragma endregion
+	obj0_ = std::make_unique<Object3D>(model_.get());
+	obj1_ = std::make_unique<Object3D>(model_.get());
+	obj2_ = std::make_unique<Object3D>(model_.get());
+	obj0_->SetPosition(Vector3(2.0f, 0.0f, 0.0f));
+	obj1_->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	obj2_->SetPosition(Vector3(-2.0f, 0.0f, 0.0f));
 
-#pragma region カメラマネージャー
-	cameraMgr_ = std::make_unique<CameraManager>();
-	cameraMgr_->Initialize(player_->GetCamera());
-#pragma endregion
+	col0_ = std::make_unique<AABBCollider>();
+	col1_ = std::make_unique<AABBCollider>();
+	col2_ = std::make_unique<AABBCollider>();
 
-#pragma region デバックカメラ
-	debugCamera_ = std::make_unique<DebugCamera>();
-	debugCamera_->Initialize();
-#pragma endregion
+	col0_->SetAttribute(1);
+	col0_->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
+	col0_->SetObject3D(obj0_.get());
+	col0_->SetPushBackRate(1.0f);
+	col1_->SetAttribute(1);
+	col1_->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
+	col1_->SetObject3D(obj1_.get());
+	col1_->SetPushBackRate(1.0f);
+	col2_->SetAttribute(1);
+	col2_->SetRadius(Vector3(0.5f, 0.5f, 0.5f));
+	col2_->SetObject3D(obj2_.get());
+	col2_->SetPushBackRate(1.0f);
 
-	// ステージ読み込み
-	stage_->Load("Resources/StageJson/test.json", false, true);
-
-#pragma region ゲームUI
-	sGameUI_ = std::make_unique<Sprite>();
-	sGameUI_->SetSize({ 1920.0f, 1080.0f });
-
-	gGameUI_ = LoadTexture("Sprite/GameUI.png");
-
-	sObjectiveText_ = std::make_unique<Sprite>();
-	sObjectiveText_->SetAnchorPoint({ 0.5f, 0.5f });
-	sObjectiveText_->SetPosition({ 1700.0f, 300.0f });
-	sObjectiveText_->SetSize({ 400.0f, 200.0f });
-
-	gObjectiveText_ = LoadTexture("Sprite/objectiveText.png");
-#pragma endregion
+	colMgr3D_->AddCollider(col0_.get());
+	colMgr3D_->AddCollider(col1_.get());
+	colMgr3D_->AddBlockCollider(col2_.get());
 }
 
 void TestScene::Update()
 {
-	// プレイヤー
-	player_->Update();
-	playerUI_->Update();
+	static Vector3 pos = { 2.0f, 0.0f,0.0f };
 
-	debugCamera_->Update();
+	pos.x += (key_->PushKey(DIK_D) - key_->PushKey(DIK_A)) * 0.05f;
+	pos.z += (key_->PushKey(DIK_W) - key_->PushKey(DIK_S)) * 0.05f;
+	obj0_->SetPosition(pos);
 
 	// 衝突時処理
 	Collision();
@@ -95,20 +93,9 @@ void TestScene::Draw()
 {
 	PipelineManager::PreDraw("Object3D");
 
-	// ステージクラス
-	stage_->Draw();
-
-	// プレイヤー
-	player_->Draw();
-
-	PipelineManager::PreDraw("Sprite");
-
-	// プレイヤー
-	playerUI_->Draw();
-
-	sGameUI_->Draw(gGameUI_);
-
-	sObjectiveText_->Draw(gObjectiveText_);
+	obj0_->Draw();
+	obj1_->Draw();
+	obj2_->Draw();
 }
 
 void TestScene::Finalize()
@@ -118,61 +105,19 @@ void TestScene::Finalize()
 
 void TestScene::Debug()
 {
-	if (key_->TriggerKey(DIK_0))
-	{
-		if (isDebug_)
-		{
-			isDebug_ = false;
-			WinAPI::GetInstance()->DisplayCursor(false);
-			WinAPI::GetInstance()->SetClipCursor(true);
 
-			cameraMgr_->ChangeCamera(player_->GetCamera());
-		}
-
-		else
-		{
-			isDebug_ = true;
-			WinAPI::GetInstance()->DisplayCursor(true);
-			WinAPI::GetInstance()->SetClipCursor(false);
-
-			cameraMgr_->ChangeCamera(debugCamera_->GetCamera());
-		}
-	}
-
-	stage_->Debug(isDebug_);
-
-	if (isDebug_ == false) return;
-
-	ImGui::Begin("DeltaTime");
-	ImGui::End();
-
-	debugCamera_->Debug(isDebug_);
 }
 
 void TestScene::Collision()
 {
 	// 衝突判定をとる
 	CollisionManager3D::GetInstance()->CheckAllCollision();
-
-	// プレイヤー
-	player_->Collision();
-
-	playerUI_->OnCollision();
 }
 
 void TestScene::MatUpdate()
 {
-	cameraMgr_->MatUpdate();
-
-	// プレイヤー
-	player_->MatUpdate();
-	playerUI_->MatUpdate();
-
-	// ステージクラス
-	stage_->MatUpdate();
-
-	debugCamera_->MatUpdate();
-
-	sGameUI_->MatUpdate();
-	sObjectiveText_->MatUpdate();
+	camera_->Update();
+	obj0_->MatUpdate();
+	obj1_->MatUpdate();
+	obj2_->MatUpdate();
 }

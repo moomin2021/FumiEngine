@@ -54,6 +54,13 @@ void SceneManager::Update()
 		nextScene_ = Scene::NONE;
 	}
 
+	if (Key::GetInstance()->TriggerKey(DIK_1))
+	{
+		ChangeScene(Scene::TEST);
+	}
+
+	if (Key::GetInstance()->TriggerKey(DIK_2)) GameEnd();
+
 	// ImGuiの処理開始
 	imGuiMgr_->Begin();
 
