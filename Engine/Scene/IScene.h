@@ -10,8 +10,6 @@
 enum class Scene {
 	TITLE,
 	GAME,
-	RESULT,
-	TEST,
 
 	NONE,
 };

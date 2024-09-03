@@ -201,9 +201,6 @@
     <ClCompile Include="Engine\Util\Easing.cpp">
       <Filter>Engine\ソース ファイル\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\GameOverScene.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Scene\GameScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
@@ -255,9 +252,6 @@
     <ClCompile Include="Application\Scene\TransitionScene.cpp">
       <Filter>Engine\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\TestScene.cpp">
-      <Filter>Engine\ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Application\NavMesh\NavCell.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
     </ClCompile>
@@ -272,9 +266,6 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Line3D.cpp">
       <Filter>Engine\ソース ファイル\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\MapCreateScene.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp">
       <Filter>Application\ソースファイル\NavMesh</Filter>
@@ -479,9 +470,6 @@
     <ClInclude Include="Application\Scene\GameScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\GameOverScene.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Util\ImGuiManager.h">
       <Filter>Engine\ヘッダー ファイル\Util</Filter>
     </ClInclude>
@@ -524,9 +512,6 @@
     <ClInclude Include="Application\Scene\TransitionScene.h">
       <Filter>Engine\ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\TestScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Scene\TitleScene.h">
       <Filter>Engine\ヘッダー ファイル\Scene</Filter>
     </ClInclude>
@@ -547,9 +532,6 @@
     </ClInclude>
     <ClInclude Include="Engine\3d\Line3D.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\MapCreateScene.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Application\NavMesh\NavMeshPath.h">
       <Filter>Application\ヘッダーファイル\NavMesh</Filter>

@@ -139,7 +139,6 @@
     <ClCompile Include="Engine\Base\WinAPI.cpp" />
     <ClCompile Include="Engine\Util\ImGuiManager.cpp" />
     <ClCompile Include="Application\Scene\GameScene.cpp" />
-    <ClCompile Include="Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="Application\Setting\HitFrame.cpp" />
     <ClCompile Include="Engine\3d\Line3D.cpp" />
     <ClCompile Include="Engine\Base\Instancing3D.cpp" />
@@ -156,7 +155,6 @@
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Engine\Collision\PointCollider.cpp" />
     <ClCompile Include="Engine\Input\Pad.cpp" />
-    <ClCompile Include="Application\Scene\TestScene.cpp" />
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Application\Stage\Stage.cpp" />
@@ -164,7 +162,6 @@
     <ClCompile Include="Application\NavMesh\NavMesh.cpp" />
     <ClCompile Include="Application\NavMesh\NavCell.cpp" />
     <ClCompile Include="Application\Setting\Slider.cpp" />
-    <ClCompile Include="Application\Scene\MapCreateScene.cpp" />
     <ClCompile Include="Application\NavMesh\NavMeshPath.cpp" />
     <ClCompile Include="Application\Player\PlayerUI.cpp" />
     <ClCompile Include="Application\Result\ResultBox.cpp" />
@@ -242,11 +239,9 @@
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="Engine\Collision\PointCollider.h" />
     <ClInclude Include="Engine\Input\Pad.h" />
-    <ClInclude Include="Application\Scene\TestScene.h" />
     <ClInclude Include="Engine\Util\Math\Quaternion.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
     <ClInclude Include="Application\Scene\GameScene.h" />
-    <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Stage\Stage.h" />
     <ClInclude Include="Application\Scene\TransitionScene.h" />
     <ClInclude Include="Application\NavMesh\NavMesh.h" />
@@ -254,7 +249,6 @@
     <ClInclude Include="Application\Setting\HitFrame.h" />
     <ClInclude Include="Engine\3d\Line3D.h" />
     <ClInclude Include="Application\Setting\Slider.h" />
-    <ClInclude Include="Application\Scene\MapCreateScene.h" />
     <ClInclude Include="Application\NavMesh\NavMeshPath.h" />
     <ClInclude Include="Application\Player\PlayerUI.h" />
     <ClInclude Include="Engine\Base\Instancing3D.h" />
