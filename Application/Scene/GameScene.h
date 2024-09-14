@@ -16,19 +16,11 @@ public:
 	~GameScene() {}
 
 	// 基本処理
-	void Initialize();
-	void Update();
-	void Draw();
-	void Finalize();
-
-	// デバック
-	void Debug();
-
-private:
-	// 衝突時処理
-	void Collision();
-
-	// 行列更新処理
-	void MatUpdate();
+	void Initialize() override;
+	void Update() override;
+	void MatUpdate() override;
+	void ImGuiUpdate() override;
+	void Draw() override;
+	void Finalize() override;
 #pragma endregion
 };

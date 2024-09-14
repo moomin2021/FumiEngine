@@ -19,8 +19,8 @@ public:
 	virtual ~BaseScene() {}
 	virtual void Initialize() = 0;
 	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	virtual void Collision() = 0;
 	virtual void MatUpdate() = 0;
+	virtual void ImGuiUpdate() = 0;
+	virtual void Draw() = 0;
 	virtual void Finalize() = 0;
 };

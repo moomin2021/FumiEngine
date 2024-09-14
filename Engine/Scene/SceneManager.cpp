@@ -50,6 +50,9 @@ void SceneManager::Update()
 
 	// 現在のシーンを更新
 	nowScene_->Update();
+
+	// ImGuiの処理
+	nowScene_->ImGuiUpdate();
 }
 
 void SceneManager::Draw()
