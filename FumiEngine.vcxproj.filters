@@ -180,9 +180,6 @@
     <ClCompile Include="Engine\Collision\BoxCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Player\Bullet.cpp">
-      <Filter>Application\ソースファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\CircleCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
@@ -200,9 +197,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Util\Easing.cpp">
       <Filter>Engine\ソース ファイル\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\GameOverScene.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Application\Scene\GameScene.cpp">
       <Filter>Application\ソースファイル\Scene</Filter>
@@ -246,43 +240,10 @@
     <ClCompile Include="Engine\Collision\SphereCollider.cpp">
       <Filter>Engine\ソース ファイル\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Stage\Stage.cpp">
-      <Filter>Application\ソースファイル\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TitleScene.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TransitionScene.cpp">
-      <Filter>Engine\ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Scene\TestScene.cpp">
-      <Filter>Engine\ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\NavMesh\NavCell.cpp">
-      <Filter>Application\ソースファイル\NavMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\NavMesh\NavMesh.cpp">
-      <Filter>Application\ソースファイル\NavMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\HitFrame.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Slider.cpp">
-      <Filter>Application\ソースファイル\Setting</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\Line3D.cpp">
       <Filter>Engine\ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\MapCreateScene.cpp">
-      <Filter>Application\ソースファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\NavMesh\NavMeshPath.cpp">
-      <Filter>Application\ソースファイル\NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\AABBCollider.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player\PlayerUI.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Instancing3D.cpp">
@@ -294,25 +255,10 @@
     <ClCompile Include="Engine\Util\DeltaTime.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Result\ResultBox.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Result\Number.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Result\ResultData.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\CollisionManager3D.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Util\Timer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\CameraManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\DebugCamera.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneManager.cpp">
@@ -322,54 +268,6 @@
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\IScene.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyManager.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\BaseEnemy.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\Zombie.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyFactory.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player\Player.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player\Weapon\Weapon.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Player\Weapon\Revolver.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Enemy\EnemyCore.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\BaseLayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\BoxButton.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\TitleLayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\GamePlayLayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\SettingLayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\AudioLayer.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\GameSettingData.cpp">
-      <Filter>Engine\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Setting\Layer\PauseLayer.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -449,9 +347,6 @@
     <ClInclude Include="Engine\Collision\BoxCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Player\Bullet.h">
-      <Filter>Application\ヘッダーファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collision\CircleCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
@@ -477,9 +372,6 @@
       <Filter>Engine\ヘッダー ファイル\Util</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\GameScene.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\GameOverScene.h">
       <Filter>Application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\ImGuiManager.h">
@@ -518,46 +410,10 @@
     <ClInclude Include="Engine\Collision\SphereCollider.h">
       <Filter>Engine\ヘッダー ファイル\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Stage\Stage.h">
-      <Filter>Application\ヘッダーファイル\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TransitionScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TestScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Scene\TitleScene.h">
-      <Filter>Engine\ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\NavMesh\NavCell.h">
-      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\NavMesh\NavMesh.h">
-      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\ButtonAttribute.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\HitFrame.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Slider.h">
-      <Filter>Application\ヘッダーファイル\Setting</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\3d\Line3D.h">
       <Filter>Engine\ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Scene\MapCreateScene.h">
-      <Filter>Application\ヘッダーファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\NavMesh\NavMeshPath.h">
-      <Filter>Application\ヘッダーファイル\NavMesh</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collision\AABBCollider.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\PlayerUI.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Instancing3D.h">
@@ -569,25 +425,10 @@
     <ClInclude Include="Engine\Util\DeltaTime.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Result\ResultBox.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Result\Number.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Result\ResultData.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collision\CollisionManager3D.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\Timer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\CameraManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\DebugCamera.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Util\BasicTask.h">
@@ -600,54 +441,6 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\IScene.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyManager.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\BaseEnemy.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\Zombie.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyFactory.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\Player.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\Weapon\Weapon.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Player\Weapon\Revolver.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Enemy\EnemyCore.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\BaseLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\BoxButton.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\TitleLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\GamePlayLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\SettingLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\AudioLayer.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\GameSettingData.h">
-      <Filter>Engine\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Setting\Layer\PauseLayer.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

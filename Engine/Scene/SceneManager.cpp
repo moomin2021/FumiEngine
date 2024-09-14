@@ -1,9 +1,7 @@
 #include "SceneManager.h"
 
-#include "TitleScene.h"
 #include "GameScene.h"
-#include "GameOverScene.h"
-#include "TestScene.h"
+#include "Key.h"
 
 SceneManager::SceneManager()
 {
@@ -17,7 +15,7 @@ SceneManager::SceneManager()
 void SceneManager::Initialize()
 {
 	// 最初のシーンの生成と初期化
-	nowScene_ = std::make_unique<TitleScene>(this);
+	nowScene_ = std::make_unique<GameScene>(this);
 	nowScene_->Initialize();
 }
 
@@ -33,17 +31,8 @@ void SceneManager::Update()
 		// シーンの生成
 		switch (nextScene_)
 		{
-			case Scene::TITLE:
-				nowScene_ = std::make_unique<TitleScene>(this);
-				break;
 			case Scene::GAME:
 				nowScene_ = std::make_unique<GameScene>(this);
-				break;
-			case Scene::RESULT:
-				nowScene_ = std::make_unique<GameOverScene>(this);
-				break;
-			case Scene::TEST:
-				nowScene_ = std::make_unique<TestScene>(this);
 				break;
 		}
 
@@ -52,11 +41,6 @@ void SceneManager::Update()
 
 		// 次のシーンをクリア
 		nextScene_ = Scene::NONE;
-	}
-
-	if (Key::GetInstance()->TriggerKey(DIK_1))
-	{
-		ChangeScene(Scene::TEST);
 	}
 
 	if (Key::GetInstance()->TriggerKey(DIK_2)) GameEnd();
