@@ -111,7 +111,6 @@
     <ClCompile Include="Engine\Collision\CollisionManager.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Base\DX12Cmd.cpp" />
-    <ClCompile Include="Engine\Util\Math\float4.cpp" />
     <ClCompile Include="Engine\Input\Key.cpp" />
     <ClCompile Include="Engine\Light\LightGroup.cpp" />
     <ClCompile Include="Engine\Util\Math\Matrix4.cpp" />
@@ -145,6 +144,7 @@
     <ClCompile Include="Engine\Util\Math\Quaternion.cpp" />
     <ClCompile Include="Engine\Util\Timer.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\Util\Math\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Collision\CollisionManager3D.h" />
@@ -168,8 +168,6 @@
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DX12Cmd.h" />
-    <ClInclude Include="Engine\Util\Math\float4.h" />
-    <ClInclude Include="Engine\Util\Math\fMath.h" />
     <ClInclude Include="Engine\Input\Key.h" />
     <ClInclude Include="Engine\Light\LightGroup.h" />
     <ClInclude Include="Engine\Util\Math\Matrix4.h" />
@@ -204,6 +202,7 @@
     <ClInclude Include="Engine\Util\Timer.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\IScene.h" />
+    <ClInclude Include="Engine\Util\Math\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Bloom.hlsli" />

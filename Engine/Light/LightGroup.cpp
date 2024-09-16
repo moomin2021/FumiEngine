@@ -127,7 +127,7 @@ void LightGroup::TransferConstBuffer() {
 				{
 					constMap->pointLights[index].active = true;
 					constMap->pointLights[index].pos = (*itPointLight)->GetPosition();
-					constMap->pointLights[index].color = float4{ (*itPointLight)->GetColor(), 1.0f };
+					constMap->pointLights[index].color = Vector4{ (*itPointLight)->GetColor(), 1.0f };
 					constMap->pointLights[index].intensity = (*itPointLight)->GetIntensity();
 					constMap->pointLights[index].radius = (*itPointLight)->GetRadius();
 					constMap->pointLights[index].decay = (*itPointLight)->GetDecay();

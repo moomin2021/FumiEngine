@@ -1,12 +1,12 @@
 #pragma once
-#include "float4.h"
+#include "Vector4.h"
 
 class PointLight {
 #pragma region 構造体
 public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		float4 color;	// ライトの色
+		Vector4 color;	// ライトの色
 		Vector3 pos;	// ライトの位置
 		float intensity;// 輝度
 		float radius;	// ライトの届く距離

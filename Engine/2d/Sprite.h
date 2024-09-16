@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "Vector3.h"
-#include "float4.h"
+#include "Vector4.h"
 #include "Matrix4.h"
 #include "Camera.h"
 
@@ -24,7 +24,7 @@ private:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
 		Matrix4 mat;	// 行列
-		float4 color;	// 色(RGBA)
+		Vector4 color;	// 色(RGBA)
 	};
 #pragma endregion
 
@@ -37,7 +37,7 @@ private:
 	Vector2 position_ = { 0.0f, 0.0f };				// 座標(XY)
 	float rotation_ = 0.0f;						// 回転(Z)
 	Vector2 size_ = { 100.0f, 100.0f };			// サイズ(XY)
-	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// 色(RGBA)
+	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// 色(RGBA)
 	Vector2 anchorPoint_ = { 0.0f, 0.0f };				// アンカーポイント座標(XY)
 	bool isFlipX_ = false;					// 左右反転
 	bool isFlipY_ = false;					// 上下反転
@@ -92,7 +92,7 @@ public:
 	inline void SetSize(const Vector2& size) { size_ = size; }
 
 	// 色(RGBA)を設定
-	inline void SetColor(const float4& color) { color_ = color; }
+	inline void SetColor(const Vector4& color) { color_ = color; }
 
 	// アンカーポイント(XY)を設定
 	inline void SetAnchorPoint(const Vector2& anchorPoint) { anchorPoint_ = anchorPoint; }
@@ -118,7 +118,7 @@ public:
 	inline const Vector2& GetSize() { return size_; }
 
 	// 色(RGBA)を取得
-	inline const float4& GetColor() { return color_; }
+	inline const Vector4& GetColor() { return color_; }
 
 	// アンカーポイント(XY)を取得
 	inline const Vector2& GetAnchorPoint() { return anchorPoint_; }

@@ -168,9 +168,6 @@
     <ClCompile Include="Engine\Light\LightGroup.cpp">
       <Filter>Engine\ソース ファイル\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Util\Math\float4.cpp">
-      <Filter>Engine\ソース ファイル\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\PipelineManager.cpp">
       <Filter>Engine\ソース ファイル\Base</Filter>
     </ClCompile>
@@ -270,6 +267,9 @@
     <ClCompile Include="Engine\Scene\IScene.cpp">
       <Filter>Engine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Util\Math\Vector4.cpp">
+      <Filter>Engine\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\WinAPI.h">
@@ -311,9 +311,6 @@
     <ClInclude Include="Engine\Util\Math\Matrix4.h">
       <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Util\Math\fMath.h">
-      <Filter>Engine\ヘッダー ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Light\LightGroup.h">
       <Filter>Engine\ヘッダー ファイル\Light</Filter>
     </ClInclude>
@@ -328,9 +325,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Light\CircleShadow.h">
       <Filter>Engine\ヘッダー ファイル\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Util\Math\float4.h">
-      <Filter>Engine\ヘッダー ファイル\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\PipelineManager.h">
       <Filter>Engine\ヘッダー ファイル\Base</Filter>
@@ -441,6 +435,9 @@
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\IScene.h">
+      <Filter>Engine\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Util\Math\Vector4.h">
       <Filter>Engine\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

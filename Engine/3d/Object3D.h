@@ -1,6 +1,6 @@
 #pragma once
 #include "Matrix4.h"
-#include "float4.h"
+#include "Vector4.h"
 #include "Vector3.h"
 #include "Model.h"
 #include "Camera.h"
@@ -17,7 +17,7 @@ private:
 		Matrix4 world;		// ワールド行列
 		Vector3 cameraPos;	// カメラ座標(ワールド座標)
 		float pad1;			// パディング
-		float4 color;		// 色(RGBA)
+		Vector4 color;		// 色(RGBA)
 	};
 
 #pragma region メンバ変数
@@ -26,7 +26,7 @@ private:
 	Vector3 position_ = { 0.0f, 0.0f, 0.0f };	// 位置(XYZ)
 	Vector3 rotation_ = { 0.0f, 0.0f, 0.0f };	// 回転(XYZ)
 	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };		// 拡縮(XYZ)
-	float4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// 色(RGBA)
+	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };	// 色(RGBA)
 
 	// オブジェクトデータを変更したかどうか
 	bool hasChanget_ = true;
@@ -88,7 +88,7 @@ public:
 	/// 色(RGBA)を設定
 	/// </summary>
 	/// <param name="color"> 色(RGBA) </param>
-	inline void SetColor(const float4& color) { color_ = color, hasChanget_ = true; }
+	inline void SetColor(const Vector4& color) { color_ = color, hasChanget_ = true; }
 
 	/// <summary>
 	/// モデルを設定
