@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "Vector3.h"
-#include "float4.h"
+#include "Vector4.h"
 #include "Matrix4.h"
 #include "Key.h"
 
@@ -25,7 +25,7 @@ private:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
 		Matrix4 mat;	// 行列
-		float4 color;	// 色(RGBA)
+		Vector4 color;	// 色(RGBA)
 	};
 #pragma endregion
 

@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "DX12Cmd.h"
-#include "float4.h"
+#include "Vector4.h"
 #include "Util.h"
 //#include "DirectXTex/d3dx12.h"
 
